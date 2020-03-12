@@ -80,3 +80,7 @@ wp-content/themes/*
 !/wp-content/themes/wprig/screenshot.png
 !/wp-content/themes/wprig/.travis.yml
 !/wp-content/themes/wprig/.browserslistrc
+!/wp-content/themes/wprig/.stylelintrc
+!/wp-content/themes/wprig/.stylelintignore
+
+**/.DS_Store
