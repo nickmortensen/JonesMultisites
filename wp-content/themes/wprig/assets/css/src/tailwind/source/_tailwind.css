@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+	.bg-blur {
+	  -webkit-backdrop-filter: blur(10px);
+	  backdrop-filter        : blur(10px);
+	  background-color       : rgba(255, 255, 255, 0.5);
+	}
+};
+body {
+	font-size: calc(10px + 0.5vw);
+}
+
+a.material-icons {
+	transition: all 0.9s ease-in-ouit;
+}
+a.material-icons:hover {
+	@apply text-red-500;
+	transform : scale(1.1);
+	transition: all 0.5s ease-out;
+}
+
+.btn {
+	@apply border border-white bg-transparent text-white text-xs p-2 uppercase tracking-widest font-hairline rounded-full;
+	transition: all 2.6s ease-in-out;
+}
+.btn:hover {
+	transition: all 0 .6s ease-in-out;
+	@apply bg-indigo-700;
+}
+.btn:focus {
+	@apply outline-none shadow-outline;
+}
+.btn:active {
+	@apply bg-indigo-900;
+}
+.menu-link {
+	@apply bg-transparent text-white uppercase p-2;
+	transition: all 0.6s ease-in-out;
+}
+.menu-link:hover {
+	@apply bg-red-500;
+	transition: all 0.6s ease-in-out;
+}
+.menu-link:focus {
+	@apply outline-none shadow-outline;
+}
+.menu-link:active {
+	@apply border-4 bg-gray-800;
+}
+.warning {
+	@apply uppercase text-red-600 ml-2 italic;
+	font-size: 6px;
+}
+.tailwind-input {
+	@apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+}
+.tailwind-input:focus {
+	@apply outline-none shadow-outline;
+}
+.make-blurry {
+	background-color: rgba(255, 255, 255, 0.6 );
+}
+
+.buttonfx{
+	color          : black;                           /* button text color */
+	outline        : none;
+	background     : transparent;
+	border         : none;
+	border-bottom  : 4px solid #eee;
+	letter-spacing : 0.0625em;
+	padding        : 8px 10px;
+	text-transform : uppercase;
+	font           : bold 16px 'Bitter', sans-serif;  /* use google font */
+	line-height    : 2;
+	position       : relative;
+	display        : inline-block;
+	margin-right   : 20px;
+	margin-bottom  : 20px;
+	cursor         : pointer;
+	text-decoration: none;                            /* remove underline if using A instead of BUTTON tag */
+	overflow       : hidden;
+	transition     : all .5s;
+}
+
+.buttonfx: before,
+.buttonfx: after{
+	content          : '';
+	position         : absolute;
+	left             : 0;
+	top              : 0;
+	right            : 0;
+	bottom           : 0;
+	height           : 100%;
+	background       : #259f6c;                 /* onhover background color */
+	z-index          : -1;
+	transform        : translate3D(0,-100%,0);  /* move elements above button so they don't appear initially */
+	-webkit-transform: translate3D(0,-100%,0);  /* move elements above button so they don't appear initially */
+	transition       : all .5s;
+}
+
+.buttonfx:before{
+	background       : #fafcd6;             /* button default background color */
+	z-index          : -2;
+	transform        : translate3D(0,0,0);
+	-webkit-transform: translate3D(0,0,0);
+}
+
+.buttonfx:hover{
+	color: white;
+}
+
+.buttonfx:hover:after{
+	transform        : translate3D(0,0,0);
+	-webkit-transform: translate3D(0,0,0);
+	transition       : all 0.5s;
+}
+
+
+.slideleft:after{
+	top              : 0;
+	z-index          : -1;
+	transform        : translate3D(-101%,0,0);
+	-webkit-transform: translate3D(-101%,0,0);
+}
+
+.slideleft:hover:after{
+	transform        : translate3D(0,0,0);
+	-webkit-transform: translate3D(0,0,0);
+	transition       : all 0.5s;
+}
+
+/* #### Bounce classes #### */
+
+.bouncein: hover: before,
+.bouncein: hover: after{
+	transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
+}
+
+@tailwind utilities;
+
