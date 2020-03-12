@@ -82,5 +82,7 @@ wp-content/themes/*
 !/wp-content/themes/wprig/.browserslistrc
 !/wp-content/themes/wprig/.stylelintrc
 !/wp-content/themes/wprig/.stylelintignore
+!/wp-content/themes/wprig/tailwind.config.js
+!/wp-content/themes/wprig/postcss.config.js
 
 **/.DS_Store
