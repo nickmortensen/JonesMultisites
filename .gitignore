@@ -1,0 +1,81 @@
+# Ignore everything in the root except the "wp-content" directory.
+/*
+!.gitignore
+!wp-content/
+
+# Ignore everything in the "wp-content" directory, except the "plugins"
+# and "themes" directories.
+wp-content/*
+!wp-content/plugins/
+!wp-content/themes/
+
+# Ignore everything in the "plugins" directory, except the plugins you
+# specify (see the commented-out examples for hints on how to do this.)
+wp-content/plugins/*
+!wp-content/plugins/jones-multisite
+!wp-content/plugins/network-media-library.php/
+
+# Ignore everything in the "themes" directory, except the themes you
+# specify (see the commented-out example for a hint on how to do this.)
+wp-content/themes/*
+!wp-content/themes/wprig/
+/wp-content/themes/wprig/*
+/wp-content/themes/wprig/tests
+/wp-content/themes/wprig/tests/
+!/wp-content/themes/wprig/assets/
+!/wp-content/themes/wprig/assets/*
+!/wp-content/themes/wprig/assets/css/
+/wp-content/themes/wprig/assets/css/*
+!/wp-content/themes/wprig/assets/css/src/
+!/wp-content/themes/wprig/assets/js/
+/wp-content/themes/wprig/assets/js/*
+!/wp-content/themes/wprig/assets/js/src/
+!/wp-content/themes/wprig/assets/images/
+/wp-content/themes/wprig/assets/images/*
+
+!/.github/
+# use
+
+#use
+
+
+# use
+
+!/wp-content/themes/wprig/assets/images/src/
+!/wp-content/themes/wprig/languages/
+!/wp-content/themes/wprig/gulp/
+!/wp-content/themes/wprig/style.css
+!/wp-content/themes/wprig/*.php
+!/wp-content/themes/wprig/inc/
+!/wp-content/themes/wprig/template-parts/
+!/wp-content/themes/wprig/config/
+#use
+/wp-content/themes/wprig/config/config.local.json
+
+!/wp-content/themes/wprig/tests/
+!/wp-content/themes/wprig/optional/
+
+!README.md
+!CHANGELOG.md
+!CONTRIBUTING.md
+!/wp-content/themes/wprig/style.css
+!/wp-content/themes/wprig/.babelrc
+!/wp-content/themes/wprig/composer.json
+!/wp-content/themes/wprig/composer.lock
+!/wp-content/themes/wprig/README.md
+!/wp-content/themes/wprig/.editorconfig
+!/wp-content/themes/wprig/.eslintignore
+!/wp-content/themes/wprig/.eslintrc.json
+!/wp-content/themes/wprig/.gitignore
+!/wp-content/themes/wprig/gulpfile.babel.js
+!/wp-content/themes/wprig/LICENSE
+!/wp-content/themes/wprig/package-lock.json
+!/wp-content/themes/wprig/package.json
+!/wp-content/themes/wprig/phpcs.xml.dist
+!/wp-content/themes/wprig/phpunit.integration.xml.dist
+!/wp-content/themes/wprig/phpunit.xml.dist
+!/wp-content/themes/wprig/README.md
+!/wp-content/themes/wprig/readme.txt
+!/wp-content/themes/wprig/screenshot.png
+!/wp-content/themes/wprig/.travis.yml
+!/wp-content/themes/wprig/.browserslistrc
