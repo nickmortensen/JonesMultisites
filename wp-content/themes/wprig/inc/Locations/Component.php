@@ -169,7 +169,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_location_taxonomy() {
 		$locations = get_terms(
 			[
-				'taxonomy' => 'location',
+				'taxonomy'   => 'location',
 				'hide_empty' => false,
 			]
 		);
@@ -244,12 +244,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @since  1.0.0
 	 * @link   https://github.com/CMB2/CMB2/wiki/Box-Properties
+	 * @param string $states - HTML for the state select field.
 	 */
 	public function create_location_taxonomy_extra_fields( $states ) {
-
-		$prefix = $this->get_slug();
-
-		$args = [
+		$prefix  = $this->get_slug();
+		$args    = [
 			'id'           => $prefix . 'edit',
 			'title'        => 'Location Taxonomy Extra Info',
 			'object_types' => [ 'term' ],
@@ -258,7 +257,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'show_in_rest' => \WP_REST_Server::ALLMETHODS, // WP_REST_Server::READABLE|WP_REST_Server::EDITABLE, // Determines which HTTP methods the box is visible in.
 		];
 		$metabox = new_cmb2_box( $args );
-
 		/* BlogID */
 		$args = [
 			'name'        => 'blog id',
@@ -341,7 +339,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		/* JONES LOCATION DATA */
 		$args = [
 			'name'         => 'Location',
-			// 'desc'         => 'Address Info',
 			'id'           => 'jonesLocationInfo', // Name of the custom field type we setup.
 			'type'         => 'jonesaddress',
 			'object_types' => [ 'staff' ], // Only show on project post types.
@@ -465,7 +462,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$city     = $location['location'];
 			$cityname = 'national' !== $city ? ucwords( $city ) : 'Company';
 			$blogid   = $location['blog_id'];
-			$url      = 'nat' !== $location['slug'] ? 'https://' . $location['url']: 'https://jonessign.io';
+			$url      = 'nat' !== $location['slug'] ? 'https://' . $location['url'] : 'https://jonessign.io';
 			$termid   = $location['term_id'];
 			$slug     = $location['slug'];
 			$name     = 'nat' !== $slug ? ucwords( $location['location'] ) : 'Co.';

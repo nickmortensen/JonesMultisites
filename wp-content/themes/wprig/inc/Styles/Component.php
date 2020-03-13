@@ -97,7 +97,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'use_tailwind_styles' ] );
-		// add_action( 'admin_enqueue_scripts', [ $this, 'use_tailwind_styles' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'custom_admin_style' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_material_icons' ] );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
@@ -464,6 +464,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$media      = 'all';
 		$version    = wp_rig()->seconds_from_epoch();
 		wp_enqueue_style( $handle, $src, $dependency, $version, $media );
+	}
+
+	/**
+	 * Custom Admin Style.
+	 */
+	public function custom_admin_style() {
+		$css_files = [ 'about', 'admin-menu', 'code-editor', 'color-picker', 'common', 'customize-controls', 'customize-nav-menus' ];
+		$uri       = trailingslashit( get_theme_file_uri( 'assets/css/src/admin' ) );
+		$dir       = trailingslashit( get_theme_file_path( 'assets/css/src/admin' ) );
+		foreach ( $css_files as $css_file ) {
+			$handle  = 'wprig-admin-style-' . $css_file;
+			$src     = $uri . $css_file . '.css';
+			$deps    = [];
+			$version = wp_rig()->seconds_from_epoch();
+			$media   = 'all';
+			wp_enqueue_style( $handle, $src, $deps, $version, $media );
+		}
 	}
 
 	/**

@@ -158,6 +158,7 @@ class Theme {
 			new Customizer\Component(),
 			new Styles\Component(),
 			new Locations\Component(),
+			new Staffmembers\Component(),
 			new AdditionalFields\Component(),
 			new Projects\Component(),
 			new Media\Component(),

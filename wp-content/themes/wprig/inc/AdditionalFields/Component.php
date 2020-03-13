@@ -11,13 +11,6 @@ use WP_Rig\WP_Rig\Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function add_filter;
-// use WP_Post;
-// use function wp_enqueue_script;
-// use function get_theme_file_uri;
-// use function get_theme_file_path;
-// use function wp_script_add_data;
-// use function wp_localize_script;
-
 
 /**
  * Class for creating additional fields that are not part of the arsenal provided by CMB2.
@@ -126,6 +119,7 @@ class Component implements Component_Interface {
 		add_filter( 'cmb2_render_address', [ $this, 'render_address_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
+		add_filter( 'cmb2_render_staffmember', [ $this, 'render_staffmember_field_callback' ], 10, 5 );
 	}
 
 
@@ -290,6 +284,120 @@ STARRATING;
 	<?php
 	}//end render_address_field_callback()
 
+	/**
+	 * Use the id to get the post title - the name of the staffmember - and output a best guess for the email address.
+	 *
+	 * @param int $id The id of the post.
+	 */
+	public function get_email_default( $id ) {
+		$name    = preg_split( '#\s+#', get_the_title( $id ), 2 );
+		$default = strtolower( substr( $name[0], 0, 1 ) . str_replace( ' ', '', $name[1] ) . '@jonessign.com' );
+		return $default;
+	}
+
+	/**
+	 * Render fields specifically for the staffmember post type.
+	 *
+	 * @see Previous field names are
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type         The `CMB2_Types` object.
+	 */
+	public function render_staffmember_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+
+		$default_email = $this->get_email_default( $object_id );
+		$new_values    = [
+			'desk_phone'    => '',
+			'desk_ext'      => '',
+			'mobile_phone'  => '',
+			'staff_email'   => '',
+			'is_sales'      => '',
+			'jones_id'      => '',
+			'short_title'   => '',
+			'full_title'    => '',
+			'experience'    => '',
+			'date_hired'    => '',
+			'is_management' => '',
+			'short_title'   => '',
+		];
+		$value         = wp_parse_args( $value, $new_values );
+
+		?>
+
+<section class="staffmember-info-fields">
+		<!-- Desk Phone, Phone Extension, Mobile Phone -->
+		<div class="deskextmobile">
+			<!-- desk phone-->
+			<div class="field-div" data-fieldid="desk_phone">
+				<span class="innerlabel">
+					<label for="<?= $field_type->_id( '_desk_phone' ); ?>'">Desk Phone</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[desk_phone]' ),
+						'id'    => $field_type->_id( '_desk_phone' ),
+						'value' => $value['desk_phone'],
+						'type'  => 'text_small',
+					]
+				);
+				?>
+			</div><!-- /desk phone -->
+
+			<!-- extension -->
+			<div class="field-div" data-fieldid="desk_ext">
+				<span class="innerlabel">
+					<label for="<?= $field_type->_id( '_desk_ext' ); ?>'">Extension</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[desk_ext]' ),
+						'id'    => $field_type->_id( '_desk_ext' ),
+						'value' => $value['desk_ext'],
+						'type'  => 'text_small',
+					]
+				);
+				?>
+			</div><!-- /extension -->
+
+			<!-- mobile -->
+			<div class="field-div" data-fieldid="mobile_phone">
+				<span class="innerlabel">
+					<label for="<?= $field_type->_id( '_mobile_phone' ); ?>'">Mobile</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[mobile_phone]' ),
+						'id'    => $field_type->_id( '_mobile_phone' ),
+						'value' => $value['mobile_phone'],
+						'type'  => 'text_small',
+					]
+				);
+				?>
+			</div><!-- /mobile-->
+		</div><!-- /Desk Phone, Phone Extension, Mobile Phone -->
+
+</section>
+<!-- email -->
+<div class="field-div" data-fieldid="staff_email">
+	<span class="innerlabel">
+		<label for="<?= $field_type->_id( '_staff_email' ); ?>'">Email</label>
+	</span>
+	<?= $field_type->input(
+		[
+			'name'    => $field_type->_name( '[staff_email]' ),
+			'id'      => $field_type->_id( '_staff_email' ),
+			'value'   => $value['staff_email'],
+			'type'    => 'text_email',
+			'default' => $default_email,
+		]
+	);
+	?>
+</div><!-- /email-->
+<p class="cmb2-metabox-description">Staff information</p>
+	<?php
+	}
 
 
 	/**
@@ -501,3 +609,30 @@ locationLatitude = latitude
 locationLongitude = longitude
 locationGoogleCID = googleCID
 */
+/**
+ * Start Here.
+ * staffDOH
+ * staffEmail
+ * staffShortTitle
+ * staffIsManagement
+ * staffExperience
+ * staffPhoneMobile
+ * staffPhoneDesk
+ * staffPhoneExt
+ * staffID
+ * staff_user_link
+ * staffBio
+ * staffHighlights
+ * staff_highlights_0_staff_highlight
+ * staff_full_title
+ * staff_birthday
+ * staff_is_sales
+ * staff_sales_subcategory
+ * staff_highlights_1_staff_highlight
+ * staff_highlights_2_staff_highlight
+ * staff_highlights_3_staff_highlight
+ * staff_background_highlights_0_staff_background_highlight
+ * staff_background_highlights_1_staff_background_highlight
+ * staff_background_highlights_2_staff_background_highlight
+ * staff_background_highlights
+ */
