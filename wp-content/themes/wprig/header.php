@@ -30,16 +30,95 @@ namespace WP_Rig\WP_Rig;
 	<?php wp_head(); ?>
 </head>
 
+
+
+<?php
+$blendmode   = wp_rig()->get_blend_modes();
+$headerblend = 2 !== get_current_blog_id() ? $blendmode[4] : $blendmode[9];
+$textblend   = 2 !== get_current_blog_id() ? $blendmode[3] : $blendmode[8];
+$headertext  = 2 !== get_current_blog_id() ? 'var(--gray-900)' : 'var(--indigo-300)';
+$sites       = get_sites();
+$blog        = get_current_blog_id();
+$location_id = wp_rig()->get_term_by_blog( $blog );
+$term_id     = wp_rig()->get_term_by_blog( 1 );
+$city_image  = get_term_meta( $term_id, 'locationImage', true );
+$common_name = wp_rig()->get_location_name( $term_id );
+?>
+
+<style>
+
+
+	.location-header{
+		display: flex;
+		justify-content: space-around;
+		align-items: space-around;
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		min-height: 70vh;
+		overflow-y: hidden;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: 60%;
+		margin-top: 40px;
+		padding: 120px 50px 170px;
+		background-image: linear-gradient(rgba(40, 80, 120, 0.8), rgba(2, 155, 185, 0.9)), url('<?= $city_image; ?>');
+		background-blend-mode: <?= $headerblend; ?>;
+		background-size: cover;
+		min-width: 100%;
+	}
+
+	.checkout {
+		position: absolute;
+		padding-left: 4vw;
+		top: 0;
+		right: 0;
+		min-width:100%;
+		min-height: 100%;
+		background: rgba(2,115,185,0.4);
+		backdrop-filter: blur(2px) hue-rotate(60%);
+	}
+
+	.location-header .bigtext {
+		max-width: 40vw;
+		font-size: 12rem;
+		font-weight: 900;
+		color: <?= $headertext; ?>;
+		padding: 0;
+		margin: 0;
+		line-height: 1.08;
+		mix-blend-mode: <?= $textblend; ?>;
+		-webkit-mix-blend-mode: <?= $textblend; ?>;
+		/* mix-blend-mode: overlay; */
+	}
+
+</style>
+
+
 <body <?php body_class( 'w-screen ml-0 bg-blue-100' ); ?>>
 <?php wp_body_open(); ?>
+
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
-	<header id="masthead" class="site-header">
-		<?php get_template_part( 'template-parts/header/custom_header' ); ?>
+<header id="masthead" class="site-header">
 
-		<?php get_template_part( 'template-parts/header/branding' ); ?>
 
-		<?php get_template_part( 'template-parts/header/navigation' ); ?>
+<!-- #masthead -->
 
-	</header><!-- #masthead -->
+<section class="location-header">
+	<div class="checkout"></div>
+	<span class="bigtext">JONES SIGN <?= $common_name; ?> </span>
+</section>
+
+</header>
+		<?php
+		//phpcs:disable
+		// get_template_part( 'template-parts/header/custom_header' );
+		// get_template_part( 'template-parts/header/branding' );
+		// get_template_part( 'template-parts/header/navigation' );
+		?>
+
+
+

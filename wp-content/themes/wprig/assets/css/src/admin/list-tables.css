@@ -57,7 +57,7 @@
 	min-width: 24px;
 	height: 2em;
 	border-radius: 5px;
-	background-color: #72777c;
+	background-color: var(--gray-700);
 	color: #fff;
 	font-size: 11px;
 	line-height: 21px;
@@ -80,7 +80,7 @@
 	margin-left: 8px;
 	width: 0;
 	height: 0;
-	border-top: 5px solid #72777c;
+	border-top: 5px solid var(--gray-700);
 	border-right: 5px solid transparent;
 }
 
@@ -213,7 +213,7 @@ for these counters and the admin menu counters. */
 }
 
 #replyerror {
-	border-color: #ddd;
+	border-color: var(--gray-500);
 	background-color: #f9f9f9;
 }
 
@@ -233,7 +233,7 @@ for these counters and the admin menu counters. */
 }
 
 #the-comment-list .unapproved th.check-column {
-	border-left: 4px solid #d54e21;
+	border-left: 4px solid var(--color-theme-red);
 }
 
 #the-comment-list .unapproved th.check-column input {
@@ -809,7 +809,7 @@ p.pagenav {
 }
 
 .row-actions {
-	color: #ddd;
+	color: var(--gray-500);
 	font-size: 13px;
 	padding: 2px 0 0;
 	position: relative;
@@ -1058,7 +1058,7 @@ tr.inline-edit-row td,
 
 ul.cat-checklist {
 	height: 12em;
-	border: solid 1px #ddd;
+	border: solid 1px var(--gray-500);
 	overflow-y: scroll;
 	padding: 0 5px;
 	margin: 0;
@@ -1068,7 +1068,7 @@ ul.cat-checklist {
 #bulk-titles {
 	display: block;
 	height: 12em;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	overflow-y: scroll;
 	padding: 0 5px;
 	margin: 0 0 5px;
@@ -1316,7 +1316,7 @@ ul.cat-checklist {
 }
 
 .plugins tr.paused th.check-column {
-	border-left: 4px solid #d54e21;
+	border-left: 4px solid var(--color-theme-red);
 }
 
 .plugins tr.paused th,
@@ -1326,7 +1326,7 @@ ul.cat-checklist {
 
 .plugins tr.paused .plugin-title,
 .plugins .paused .dashicons-warning {
-	color: #dc3232;
+	color: var(--color-theme-red);
 }
 
 .plugins .paused .error-display p,
@@ -1337,7 +1337,7 @@ ul.cat-checklist {
 }
 
 .plugins .resume-link {
-	color: #dc3232;
+	color: var(--color-theme-red);
 }
 
 .plugin-card .update-now::before {
@@ -1399,7 +1399,7 @@ ul.cat-checklist {
 	width: 48.5%;
 	width: calc(50% - 8px);
 	background-color: #fff;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	box-sizing: border-box;
 }
 
@@ -1436,7 +1436,6 @@ ul.cat-checklist {
 		margin-right: 0;
 	}
 }
-
 @media screen and (min-width: 2300px) {
 	.plugin-card {
 		width: 25%;
@@ -1508,7 +1507,7 @@ div.action-links,
 	clear: both;
 	padding: 12px 20px;
 	background-color: #fafafa;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 	overflow: hidden;
 }
 
@@ -1523,7 +1522,7 @@ div.action-links,
 .plugin-card-update-failed .notice-error {
 	margin: 0;
 	padding-left: 16px;
-	box-shadow: 0 -1px 0 #ddd;
+	box-shadow: 0 -1px 0 var(--gray-500);
 }
 
 .plugin-card-update-failed .plugin-card-bottom {
@@ -1594,7 +1593,7 @@ div.action-links,
 }
 
 .no-plugin-results {
-	color: #666; /* same as no themes and no media */
+	color: var(--gray-700); /* same as no themes and no media */
 	font-size: 18px;
 	font-style: normal;
 	margin: 0;
@@ -1671,7 +1670,6 @@ div.action-links,
 		width: 14%;
 	}
 }
-
 @media screen and (max-width: 782px) {
 	/* WP List Table Options & Filters */
 	.tablenav {
@@ -1901,7 +1899,7 @@ div.action-links,
 
 	.column-response .post-com-count-pending:hover,
 	.column-comments .post-com-count-pending:hover {
-		color: #dc3232;
+		color: var(--color-theme-red);
 	}
 
 	.widefat thead td.check-column,
@@ -2111,7 +2109,7 @@ div.action-links,
 	}
 
 	.plugins .active.update + .plugin-update-tr::before {
-		border-left: 4px solid #d54e21;
+		border-left: 4px solid var(--color-theme-red);
 		background-color: #fef7f1;
 	}
 
@@ -2174,7 +2172,6 @@ div.action-links,
 		width: 100%;
 	}
 }
-
 @media screen and (max-width: 480px) {
 	.tablenav-pages .current-page {
 		margin: 0;

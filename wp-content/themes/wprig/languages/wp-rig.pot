@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: The WP Rig Contributors\n"
+"Last-Translator: Nick Mortensen\n"
 "Report-Msgid-Bugs-To: WP Rig\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -32,7 +32,7 @@ msgstr[1] ""
 msgid "Comments are closed."
 msgstr ""
 
-#: header.php:36
+#: header.php:103
 msgid "Skip to content"
 msgstr ""
 
@@ -72,20 +72,20 @@ msgid "The template tag method %1$s registered by theme component %2$s conflicts
 msgstr ""
 
 #. translators: 1: classname/type of the variable, 2: interface name
-#: inc/Theme.php:57
+#: inc/Theme.php:62
 msgid "The theme component %1$s does not implement the %2$s interface."
 msgstr ""
 
 #. translators: %s: slug
-#: inc/Theme.php:120
+#: inc/Theme.php:125
 msgid "No theme component with the slug %s exists."
 msgstr ""
 
-#: inc/Accessibility/Component.php:69
+#: inc/Accessibility/Component.php:69, inc/Projects/Component.php:126, inc/Staffmembers/Component.php:122
 msgid "Expand child menu"
 msgstr ""
 
-#: inc/Accessibility/Component.php:70
+#: inc/Accessibility/Component.php:70, inc/Projects/Component.php:127, inc/Staffmembers/Component.php:123
 msgid "Collapse child menu"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgid "Add widgets here."
 msgstr ""
 
 #. translators: %s: stylesheet handle
-#: inc/Styles/Component.php:264
+#: inc/Styles/Component.php:265
 msgid "Invalid theme stylesheet handle: %s"
 msgstr ""
 
@@ -343,20 +343,6 @@ msgstr ""
 
 #: template-parts/content/pagination.php:15
 msgid "Page navigation"
-msgstr ""
-
-#: template-parts/footer/info.php:13
-msgid "https://wordpress.org/"
-msgstr ""
-
-#. translators: %s: CMS name, i.e. WordPress.
-#: template-parts/footer/info.php:16
-msgid "Proudly powered by %s"
-msgstr ""
-
-#. translators: Theme name.
-#: template-parts/footer/info.php:22
-msgid "Theme: %s by the contributors."
 msgstr ""
 
 #: template-parts/header/navigation.php:16

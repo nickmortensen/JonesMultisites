@@ -10,14 +10,9 @@ namespace WP_Rig\WP_Rig\Projects;
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
-// use WP_Post;
 use function add_action;
-// use function add_filter;
 use function wp_enqueue_script;
 use function get_post_meta;
-// use function get_theme_file_uri;
-// use function get_theme_file_path;
-// use function wp_script_add_data;
 use function wp_localize_script;
 use function register_post_type;
 
@@ -93,7 +88,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_projects_script' ] );
-		add_action( 'cmb2_init', [ $this, 'additional_fields'] );
+		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
 		add_action( 'init', [ $this, 'create_project_posttype' ] );
 	}
 

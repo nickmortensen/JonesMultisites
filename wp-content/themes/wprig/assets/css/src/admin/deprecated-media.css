@@ -7,7 +7,7 @@ div#media-upload-header {
 	padding: 5px 5px 0;
 	font-weight: 600;
 	position: relative;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-500);
 	background: #f9f9f9;
 }
 
@@ -30,7 +30,7 @@ div#media-upload-header {
 	float: left;
 	line-height: 28px;
 	border-top: 1px solid #f9f9f9;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-500);
 	background-color: #f9f9f9;
 	text-decoration: none;
 	transition: none;
@@ -50,7 +50,7 @@ div#media-upload-header {
 	font-weight: 400;
 	padding-left: 6px;
 	padding-right: 6px;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	border-bottom-color: #f1f1f1;
 	background-color: #f1f1f1;
 	color: #000;
@@ -63,7 +63,7 @@ div#media-upload-header {
 }
 
 #media-upload .slidetoggle {
-	border-top-color: #ddd;
+	border-top-color: var(--gray-500);
 }
 
 #media-upload input[type="radio"] {
@@ -72,7 +72,7 @@ div#media-upload-header {
 
 .media-upload-form label.form-help,
 td.help {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 form {
@@ -245,7 +245,7 @@ span.required {
 }
 
 .menu_order_input {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	font-size: 10px;
 	padding: 1px;
 	width: 23px;
@@ -294,7 +294,7 @@ span.required {
 	clear: both;
 	padding: 0 0 3px;
 	font-size: 1.6em;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-500);
 }
 
 h3.media-title {
@@ -302,7 +302,7 @@ h3.media-title {
 }
 
 h4.media-sub-title {
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-500);
 	font-size: 1.3em;
 	margin: 12px;
 	padding: 0 0 3px;
@@ -355,7 +355,7 @@ h4.media-sub-title {
 }
 
 #gallery-settings p.ml-submit {
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 }
 
 #gallery-settings select#columns {

@@ -53,7 +53,7 @@ export function stylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		stylelint(),
+		stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' }),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
@@ -109,7 +109,7 @@ export function stylesAfterReplacementStream() {
 			AtImport( {
 				path   : [ paths.styles.srcDir ],
 				plugins: [
-					stylelint(),
+					stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' } ),
 				],
 			} ),
 		] ),

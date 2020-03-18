@@ -24,11 +24,42 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * The slug of this taxonomy.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @var      string    $slug The slug of this taxonomy..
 	 */
 	private $slug = 'location';
+
+	/**
+	 * The standard about us copy for Jones Sign Company.
+	 *
+	 * @access   public
+	 * @var      string    $about_jones The standard about us copy for Jones Sign Company.
+	 */
+	public $about_jones = ABOUT_US;
+
+	/**
+	 * The default location image id of Jones Sign Company .
+	 *
+	 * @access   public
+	 * @var      int    $default_jones_image_id The ID of the default image for Jones Sign Company in the database.
+	 */
+	public $default_jones_image_id = 101;
+
+	/**
+	 * The URL of the primary Jones Sign Company Website.
+	 *
+	 * @access   public
+	 * @var      int    $default_jones_url The url for Jones Sign Company.
+	 */
+	public $default_jones_url = WP_HOME;
+
+	/**
+	 * The Jones Sign Company slogan.
+	 *
+	 * @access   public
+	 * @var      int    $slogan The Jones Sign Company slogan.
+	 */
+	public $slogan = SLOGAN;
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -40,6 +71,65 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Query for all the data and metadata assigned to any of the location taxonomy.
+	 *
+	 * @param int $term_id The id for the taxonomy term.
+	 */
+	public function get_location_info_from_database( $term_id ) {
+		$info      = [];
+		$location = get_term( $term_id );
+			$info['id']                = $location->term_id;
+			$info['name']              = $location->name;
+			$info['slug']              = $location->slug;
+			$info['tax_id']            = $location->term_taxonomy_id;
+			$info['description']       = $location->description;
+			$info['location_image_id'] = get_term_meta( $info['id'], 'locationImage_id', true ) ?? 55;
+			$info['city_image_id']     = get_term_meta( $info['id'], 'cityImage_id', true ) ?? 55;
+			$info['blog_id']           = get_term_meta( $info['id'], 'locationBlogID', true );
+			$info['subdomain']         = preg_replace( '/^http:/i', 'https:', get_term_meta( $info['id'], 'subdomainURL', true ) );
+			$info['nimble']            = preg_replace( '/^http:/i', 'https:', get_term_meta( $info['id'], 'locationURL', true ) );
+			$info['address']           = get_term_meta( $info['id'], 'jonesLocationInfo', true );
+			$info['capabilities']      = get_term_meta( $info['id'], 'locationCapabilities', true );
+		return $info;
+	}
+	/**
+	 * Generates the default opening json section for the individual jones sign company locations.
+	 *
+	 * @return string The opening section of the schema.org markup for the Jones Sign Company Locations.
+	 */
+	private function get_location_opening_schema() {
+		// These constants are generated in wp-config.php.
+		$company_name     = COMPANY;
+		$company_url      = WP_HOME;
+		$company_logo_id  = 102;
+		$company_logo_url = LOGO;
+		$facebook         = FACEBOOK_URL;
+		$twitter          = TWITTER_URL;
+		$linkedin         = LINKEDIN_URL;
+		$slogan           = SLOGAN;
+		//phpcs:disable
+		$output           = <<<JSONLDOPEN
+		<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "Organization",
+			"name": "$company_name",
+			"url": "$company_url",
+			"logo": "$company_logo_url",
+			"foundingDate": "1910",
+			"foundingLocation": "Green Bay, WI",
+			"alternateName": ["Jones Sign Company", "Jones Sign", "Jones Sign Co"],
+			"slogan": "Your Vision. Accomplished.",
+			"legalName": "Jones Sign Co., Inc.",
+			"sameAs": ["$facebook", "$twitter", "$linked_in"],
+			"location":
+				[
+JSONLDOPEN;
+		//phpcs:enable
+		return $output;
+	}
+
+	/**
 	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
 	 *
 	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
@@ -48,21 +138,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'get_jones_locations'       => [ $this, 'get_jones_locations' ],
-			'location_links'            => [ $this, 'location_links' ],
-			'get_location_info_by_id'   => [ $this, 'get_location_info_by_id' ],
-			'get_city_image_url'        => [ $this, 'get_city_image_url' ],
-			'get_blend_modes'           => [ $this, 'get_blend_modes' ],
-			'get_location_taxonomy'     => [ $this, 'get_location_taxonomy' ],
-			'get_location_subdomain'    => [ $this, 'get_location_subdomain' ],
-			'get_location_url'          => [ $this, 'get_location_url' ],
-			'get_location_capability'   => [ $this, 'get_location_capability' ],
-			'get_location_image'        => [ $this, 'get_location_image' ],
-			'get_location_city_photo'   => [ $this, 'get_location_city_photo' ],
-			'get_location_address_info' => [ $this, 'get_location_address_info' ],
-
+			'get_location_name'               => [ $this, 'get_location_name' ],
+			'get_term_by_blog'                => [ $this, 'get_term_by_blog' ],
+			'get_jones_locations'             => [ $this, 'get_jones_locations' ],
+			'get_blend_modes'                 => [ $this, 'get_blend_modes' ],
+			'get_location_taxonomy'           => [ $this, 'get_location_taxonomy' ],
+			'get_location_subdomain'          => [ $this, 'get_location_subdomain' ],
+			'get_location_url'                => [ $this, 'get_location_url' ],
+			'get_location_capability'         => [ $this, 'get_location_capability' ],
+			'get_location_info'               => [ $this, 'get_location_info' ],
+			'get_location_info_from_database' => [ $this, 'get_location_info_from_database' ],
+			'get_city_image_by_blog'          => [ $this, 'get_city_image_by_blog' ],
+			'get_location_image_by_blog'      => [ $this, 'get_location_image_by_blog' ],
 		];
 	}
+
+
+
 
 	/**
 	 * Adds the action and filter hooks to integrate with WordPress.
@@ -72,67 +164,63 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
 		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_location_admin_columns' ], 10, 1 );
+		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_location_columns_sortable' ], 10, 1 );
+		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
 	}
-
-	/**
-	 * Jones Location information.
-	 *
-	 * @var array An array of associative arrays containing location information.
-	 */
-	protected $locations = [
-		//phpcs:disable
-		[ 'city_image' => 7, 'blog_id' => 1, 'location' => 'national', 'url' => 'www.jonessign.io', 'slug' => 'nat', 'term_id' => 71 ],
-		[ 'city_image' => 8, 'blog_id' => 2, 'location' => 'green bay', 'url' => 'greenbay.jonessign.io', 'slug' => 'grb', 'term_id' => 72 ],
-		[ 'city_image' => 7, 'blog_id' => 3, 'location' => 'philadelphia', 'url' => 'philadelphia.jonessign.io', 'slug' => 'phl', 'term_id' => 64 ],
-		[ 'city_image' => 7, 'blog_id' => 4, 'location' => 'denver', 'url' => 'denver.jonessign.io', 'slug' => 'den', 'term_id' => 75 ],
-		[ 'city_image' => 10, 'blog_id' => 5, 'location' => 'los angeles', 'url' => 'losangeles.jonessign.io', 'slug' => 'lax', 'term_id' => 70 ],
-		[ 'city_image' => 14, 'blog_id' => 6, 'location' => 'san diego', 'url' => 'sandiego.jonessign.io', 'slug' => 'san', 'term_id' => 69 ],
-		[ 'city_image' => 11, 'blog_id' => 7, 'location' => 'miami', 'url' => 'miami.jonessign.io', 'slug' => 'mia', 'term_id' => 73 ],
-		[ 'city_image' => 12, 'blog_id' => 8, 'location' => 'minneapolis', 'url' => 'minneapolis.jonessign.io', 'slug' => 'msp', 'term_id' => 74 ],
-		[ 'city_image' => 13, 'blog_id' => 9, 'location' => 'richmond', 'url' => 'richmond.jonessign.io', 'slug' => 'ric', 'term_id' => 62 ],
-		[ 'city_image' => 15, 'blog_id' => 10, 'location' => 'tampa', 'url' => 'tampa.jonessign.io', 'slug' => 'tpa', 'term_id' => 68 ],
-		[ 'city_image' => 9, 'blog_id' => 11, 'location' => 'las vegas', 'url' => 'vegas.jonessign.io', 'slug' => 'las', 'term_id' => 61 ],
-		[ 'city_image' => 13, 'blog_id' => 12, 'location' => 'virginia beach', 'url' => 'virginiabeach.jonessign.io', 'slug' => 'vab', 'term_id' => 67 ],
-		[ 'city_image' => 13, 'blog_id' => 13, 'location' => 'juarez', 'url' => 'juarez.jonessign.io', 'slug' => 'mxj', 'term_id' => 66 ],
-	];
-
 
 
 	/**
 	 * Output the locations array.
 	 */
 	public function get_jones_locations() {
-		$locations = $this->locations;
+		$locations = get_terms( 'location', [ 'hide_empty' => false ] );
 		return $locations;
 	}
 
+
 	/**
-	 * Get the array of information about the location from the $locations array.
+	 * Gets taxonomy term id by blog id.
 	 *
-	 * @param int $id Blog ID.
+	 * @param int $blog The blog id. Default is 1 - which is the Jones Sign Company Blog.
+	 * @return int The taxonomy id for location that is equivalent to this blog.
 	 */
-	public function get_location_info_by_id( $id ) : array {
-		$locations      = $this->get_jones_locations();
-		$location_index = array_search( $id, array_column( $locations, 'blog_id' ), false );
-		return $locations[$location_index];
+	public function get_term_by_blog( $blog = 1 ) {
+		$locations = $this->get_location_taxonomy();
+		$terms     = [];
+		$blogs     = [];
+		foreach ( $locations as $location ) {
+			$terms[] = $location->term_id;
+			$blogs[] = get_term_meta( $location->term_id, 'locationBlogID', true );
+		}
+		$terms_by_blog = array_combine( $blogs, $terms );
+		return $terms_by_blog[ $blog ];
 	}
 
 	/**
-	 * Retrieve the url of the city background image.
+	 * Get the city image based on the blog id.
 	 *
-	 * @param string $size Wordpress image size slug, options are: full | 2048x2048 | 1536x1536| large | medium_large | wp-rig-featured | medium | thumbnail
+	 * @param int  $blog The blog id. Default is 1 - which is the Jones Sign Company Blog.
+	 * @param bool $return_as_url Whether to return the url of the image. Defaults to false.
+	 * @return mixed Either the id of the image or the url of the image -- depending on the $return_as_url parameter.
 	 */
-	public function get_city_image_url( $size = 'wp-rig-featured' ) {
-		 $location      = $this->get_location_info_by_id( get_current_blog_id() );
-		 $city_image_id = $location['city_image'];
-		 return wp_get_attachment_image_url( $city_image_id, $size, false );
+	public function get_city_image_by_blog( $blog = 1, $return_as_url = false ) {
+		$key = false === $return_as_url ? 'cityImage_id' : 'cityImage';
+		$id  = $this->get_term_by_blog( $blog );
+		return get_term_meta( $id, $key, true );
 	}
 
 	/**
-	 * Gets taxonomy term information by blog id.
+	 * Get the Jones Sign location image id based on the blog id.
+	 *
+	 * @param int  $blog The blog id. Default is 1 - which is the Jones Sign Company Blog.
+	 * @param bool $return_as_url Whether to return the url of the image. Defaults to false.
+	 * @return int $city_image_id The city image ID from the jco_termmeta table. Defaults to 1.
 	 */
-	public function get_location_taxonomy_by_blog_id() {
-		return null;
+	public function get_location_image_by_blog( $blog = 1, $return_as_url = false ) {
+		$key = false === $return_as_url ? 'locationImage_id' : 'locationImage';
+		$id  = $this->get_term_by_blog( $blog );
+		return get_term_meta( $id, $key, true );
+
 	}
 
 	/**
@@ -143,15 +231,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $modes;
 	}
 
-	/**
-	 * Gets the css options for Background Filter as an array;
-	 */
-	public function getbackground_filters() {
-		$background_filters = [ 'normal', 'multiply', 'screen', 'overlay', 'darken', 'lighten', 'color-dodge', 'color-burn', 'hard-light', 'soft-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity' ];
-		return $background_filters;
-	}
-
-
 	//phpcs:enable
 
 	/**
@@ -160,7 +239,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return string Component slug.
 	 */
 	public function get_locations() : array {
-		return $this->locations;
+		return $this->get_location_taxonomy();
 	}
 
 	/**
@@ -267,6 +346,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		$metabox->add_field( $args );
 
+		/* Common Name */
+		$args = [
+			'name'        => 'general name',
+			'description' => 'general name for this location',
+			'id'          => 'locationCommonName',
+			'type'        => 'text_small',
+			'show_names'  => true,
+		];
+		$metabox->add_field( $args );
+
 		/* SUBDOMAIN URL */
 		$args = [
 			'name'        => 'Subdomain Website URL',
@@ -338,12 +427,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		/* JONES LOCATION DATA */
 		$args = [
-			'name'         => 'Location',
-			'id'           => 'jonesLocationInfo', // Name of the custom field type we setup.
-			'type'         => 'jonesaddress',
-			'object_types' => [ 'staff' ], // Only show on project post types.
-			'show_names'   => false, // false removes the left cell of the table -- this is worth understanding.
-			'after_row'    => '<hr>',
+			'name'       => 'Location',
+			'id'         => 'jonesLocationInfo', // Name of the custom field type we setup.
+			'type'       => 'jonesaddress',
+			'show_names' => false, // false removes the left cell of the table -- this is worth understanding.
+			'after_row'  => '<hr>',
 		];
 		$metabox->add_field( $args );
 
@@ -358,20 +446,73 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function set_location_admin_columns( $columns ) {
 		// Remove the checkbox that comes with $columns.
 		unset( $columns['cb'] );
+		unset( $columns['description'] );
 		// Add the checkbox back in so it can be before the ID column.
-		$new['cb'] = '<input type="checkbox" />';
-		$new['id'] = 'ID';
+		$new['cb']   = '<input type="checkbox" />';
+		$new['id']   = 'ID';
+		$new['blog'] = 'Blog#';
 		return array_merge( $new, $columns );
+	}
+
+	/**
+	 * Add the correct data to the custom columns.
+	 *
+	 * @param  string $content Already existing content for the already existing rows.
+	 * @param  string $column_name As instantiated in the 'set_location_admin_columns' function.
+	 * @param  int    $term_id Term in quation.
+	 * @echo   string $output The content for the columns.
+	 */
+	public function set_data_for_custom_admin_columns( $content, $column_name, $term_id ) {
+		$taxonomy = $this->get_slug();
+
+		switch ( $column_name ) {
+			case 'id':
+				$output = $term_id;
+				break;
+			case 'blog':
+				$blogid     = get_term_meta( $term_id, 'locationBlogID', true );
+				$admin_link = preg_replace( '/^http: /i', 'https: ', get_term_meta( $term_id, 'subdomainURL', true ) ) . '/wp-admin/';
+				$output     = '<a href = "' . $admin_link . '" >' . $blogid . '<span class="dashicons dashicons-external"></span></a>';
+				break;
+			default:
+				$output = $term_id;
+		}
+		echo $output;
+	}
+
+	/**
+	 * Make new column sortable within the admin area.
+	 *
+	 * @param array $columns The new columns to make sortable.
+	 * @return array $columns All the columns you want sortable.
+	 */
+	public function make_location_columns_sortable( $columns ) {
+		$columns['id']   = 'ID';
+		$columns['slug'] = 'Slug';
+		return $columns;
 	}
 
 	/**
 	 * Retrieve the taxonomy meta for 'subdomainURL' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
-	 * @return string $output The text of the directory of the project in our Jobs server. - not for public consumption.
+	 * @return string $output The sudomain of this location's homepage.
 	 */
 	public function get_location_subdomain( $term_id ) {
 		$key    = 'subdomainURL';
+		$single = true;
+		$output = get_term_meta( $term_id, $key, $single );
+		return $output;
+	}
+
+	/**
+	 * Retrieve the location common name meta.
+	 *
+	 * @param int $term_id Location Taxonomy id.
+	 * @return string $output The sudomain of this location's homepage.
+	 */
+	public function get_location_name( $term_id ) {
+		$key    = 'locationCommonName';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
@@ -380,7 +521,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Retrieve the taxonomy meta for 'locationURL' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
-	 * @return string $output The text of the directory of the project in our Jobs server. - not for public consumption.
+	 * @return string $output The domain that nimble gave this website.
 	 */
 	public function get_location_url( $term_id ) {
 		$key    = 'locationURL';
@@ -405,10 +546,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Retrieve the taxonomy meta for 'locationImage' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
-	 * @return string $output The text of the directory of the project in our Jobs server. - not for public consumption.
+	 * @return int $output The id of the location's photo.
 	 */
 	public function get_location_image( $term_id ) {
-		$key    = 'locationImage';
+		$key    = 'locationImage_id';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
@@ -417,77 +558,29 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Retrieve the taxonomy meta for 'cityImage' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
-	 * @return string $output The text of the directory of the project in our Jobs server. - not for public consumption.
+	 * @return int $output The id of the location's city photo.
 	 */
 	public function get_location_city_photo( $term_id ) {
-		$key    = 'cityImage';
+		$key    = 'cityImage_id';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
+
 	/**
 	 * Retrieve the taxonomy meta for 'jonesLocationInfo' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
 	 * @return array $output The text of the directory of the project in our Jobs server. - not for public consumption.
 	 */
-	public function get_location_address_info( $term_id ) {
+	public function get_location_info( $term_id ) {
 		$key    = 'jonesLocationInfo';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
 
-	/**
-	 * List of locations with links. Appears along bottom of the footer.
-	 */
-	public function location_links() {
-		$locations = $this->get_locations();
-		$current   = get_current_blog_id();
-		$classes   = [
-			'bg-blue-100',
-			'text-blue-400',
-			'font-bold',
-			'py-2',
-			'px-4',
-			'border-b-4',
-			'hover:border-b-2',
-			'border-blue-200',
-			'hover:border-blue-400',
-			'rounded',
-		];
-		$classes   = implode( ' ', $classes );
-		$items     = [];
-		foreach ( $locations as $location ) {
-			$city     = $location['location'];
-			$cityname = 'national' !== $city ? ucwords( $city ) : 'Company';
-			$blogid   = $location['blog_id'];
-			$url      = 'nat' !== $location['slug'] ? 'https://' . $location['url'] : 'https://jonessign.io';
-			$termid   = $location['term_id'];
-			$slug     = $location['slug'];
-			$name     = 'nat' !== $slug ? ucwords( $location['location'] ) : 'Co.';
-			// no need to link to the subdomain site we are currently on.
-			if ( 'Philadelphia' === $name ) continue;
-			if ( $current !== $blogid ) {
-				$items[] = "<a title=\"link to the homepage for Jones Sign $cityname\" data-tax=\"$termid\" class=\"$classes\" href=\"$url\">$name</a>";
-			}
-		}
-		$output  = '<div class="flex justify-around">';
-		$output .= implode( '', $items );
-		$output .= '</div>';
-		return $output;
-	}
 
-	/**
-	 * Standard description of the company.
-	 */
-	public function get_boilerplate_company_description() {
-		$locations       = $this->get_location_taxonomy();
-		$total_locations = count( $locations );
-		$description     = 'Jones Sign Company is headquartered in Green Bay, Wisconsin. We are a national company with locations across North America. Our focus is delivering signage solutions to large scale environments such as stadiums, shopping malls, and campuses.
-		Our expert staff is capable of servicing signs made by any manufacturer in the United States. Our reputation for creating unique and custom designed signs sets us apart from the competition.  As a full service company, we can manage every aspect of your project, and welcome the accountability expected from clients.';
-		return $description;
-	}
 
 
 }//end class

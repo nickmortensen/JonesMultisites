@@ -50,7 +50,7 @@ export function editorStylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		stylelint(),
+		stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' } ),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
@@ -107,7 +107,7 @@ export function editorStylesAfterReplacementStream() {
 			AtImport( {
 				path: [ paths.styles.srcDir ],
 				plugins: [
-					stylelint(),
+					stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' } ),
 				],
 			} ),
 		] ),

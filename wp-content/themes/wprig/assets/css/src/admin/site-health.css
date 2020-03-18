@@ -87,7 +87,7 @@
 
 .site-health-progress svg #bar {
 	stroke-dashoffset: 565;
-	stroke: #dc3232;
+	stroke: var(--color-theme-red);
 }
 
 .site-health-progress svg #bar.green {
@@ -95,7 +95,7 @@
 }
 
 .site-health-progress svg #bar.orange {
-	stroke: #ffb900;
+	stroke: var(--yellow-600);
 }
 
 @keyframes loadingPulse {
@@ -180,7 +180,7 @@
 
 .health-check-body .warning::before {
 	content: "\f460";
-	color: #ffb900;
+	color: var(--yellow-600);
 }
 
 .health-check-body .info::before {
@@ -191,7 +191,7 @@
 .health-check-body .fail::before,
 .health-check-body .error::before {
 	content: "\f335";
-	color: #dc3232;
+	color: var(--color-theme-red);
 }
 
 .site-health-copy-buttons {
@@ -352,11 +352,11 @@
 }
 
 .health-check-accordion-trigger .badge.orange {
-	border: 1px solid #ffb900;
+	border: 1px solid var(--yellow-600);
 }
 
 .health-check-accordion-trigger .badge.red {
-	border: 1px solid #dc3232;
+	border: 1px solid var(--color-theme-red);
 }
 
 .health-check-accordion-trigger .badge.green {

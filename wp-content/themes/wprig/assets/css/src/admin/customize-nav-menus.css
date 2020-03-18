@@ -6,7 +6,7 @@
 }
 
 #customize-theme-controls #accordion-section-menu_locations > .accordion-section-title {
-	border-bottom-color: #ddd;
+	border-bottom-color: var(--gray-500);
 	margin-top: 15px;
 }
 
@@ -211,7 +211,7 @@ also use the `button-link` class. */
 
 .wp-customizer .control-section-nav_menu .menu-location-settings {
 	margin-top: 24px;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 }
 
 .wp-customizer .control-section-nav_menu .menu-location-settings,
@@ -298,7 +298,7 @@ also use the `button-link` class. */
 .wp-customizer #screen-options-wrap {
 	display: none;
 	background: #fff;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 	padding: 4px 15px 15px;
 }
 
@@ -326,7 +326,7 @@ also use the `button-link` class. */
 	padding: 1px 2px 1px 0;
 	speak: none;
 	border-radius: 50%;
-	color: #72777c;
+	color: var(--gray-700);
 	font: 500 20px/1 dashicons, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -659,7 +659,7 @@ also use the `button-link` class. */
 .menu-item-bar .item-delete:focus {
 	box-shadow: none;
 	outline: none;
-	color: #dc3232;
+	color: var(--color-theme-red);
 }
 
 .adding-menu-items .menu-item-bar .item-edit {
@@ -786,7 +786,7 @@ also use the `button-link` class. */
 .menu-name-field.invalid:focus,
 #available-menu-items .new-content-item .create-item-input.invalid,
 #available-menu-items .new-content-item .create-item-input.invalid:focus {
-	border: 1px solid #dc3232;
+	border: 1px solid var(--color-theme-red);
 }
 
 #available-menu-items .menu-item-handle .item-type {
@@ -954,7 +954,7 @@ body.adding-menu-items #customize-preview iframe {
 /* Add/delete Menus */
 
 #customize-theme-controls .control-panel-content .control-section-nav_menu:nth-last-child(2) .accordion-section-title {
-	border-bottom-color: #ddd;
+	border-bottom-color: var(--gray-500);
 }
 
 /* @todo update selector */
@@ -1058,7 +1058,6 @@ li.assigned-to-menu-location .add-new-menu-item {
 		top: 63px;
 	}
 }
-
 @media screen and (max-width: 640px) {
 	#available-menu-items #available-menu-items-search .accordion-section-content {
 		top: 130px;

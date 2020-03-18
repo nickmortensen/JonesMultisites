@@ -78,7 +78,7 @@
 
 #adminmenu a.menu-top {
 	border-bottom: 0 none;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 }
 
 #adminmenu .separator {
@@ -130,7 +130,7 @@
 }
 
 #adminmenu .wp-submenu .wp-submenu-head {
-	border-top-color: #ddd;
+	border-top-color: var(--gray-500);
 }
 
 .folded #adminmenu .wp-submenu ul {
@@ -214,12 +214,12 @@ ul#adminmenu {
 
 .plugins td,
 .plugins th {
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 }
 
 table.fixed th,
 table.fixed td {
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 }
 
 #wpbody-content input.button,
@@ -245,7 +245,7 @@ table.fixed td {
 }
 
 #wpbody-content .postbox {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 }
 
 #wpbody-content .postbox .hndle {
@@ -688,7 +688,7 @@ input[type="password"],
 * html .stuffbox,
 * html .stuffbox input,
 * html .stuffbox textarea {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 }
 
 * html div.widget-liquid-left {
@@ -722,7 +722,7 @@ input[type="password"],
 }
 
 * html input {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 }
 
 * html .edit-box {

@@ -129,7 +129,7 @@
 }
 
 .welcome-panel p {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .welcome-panel a {
@@ -453,7 +453,7 @@
 	margin-bottom: 0;
 	padding: 12px;
 	border-top: 1px solid #eee;
-	color: #ddd;
+	color: var(--gray-500);
 }
 
 /* Safari 10 + VoiceOver specific: without
@@ -490,7 +490,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 .rssSummary {
-	color: #72777c;
+	color: var(--gray-700);
 	margin-top: 4px;
 }
 
@@ -510,7 +510,7 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_primary .rss-widget span,
 #dashboard_primary .rss-widget span.rss-date {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 #dashboard_primary .rss-widget span.rss-date {
@@ -587,7 +587,7 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_right_now .warning a::before,
 #dashboard_right_now .warning span::before {
-	color: #d54e21;
+	color: var(--color-theme-red);
 }
 
 /* Dashboard Quick Draft */
@@ -669,7 +669,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 #dashboard_quick_press .drafts li time {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 #dashboard_quick_press .drafts p {
@@ -732,7 +732,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 #dashboard_activity .no-activity p {
-	color: #72777c;
+	color: var(--gray-700);
 	font-size: 16px;
 }
 
@@ -763,7 +763,7 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_activity .subsubsub a .count,
 #dashboard_activity .subsubsub a.current .count {
-	color: #72777c; /* white background on the dashboard but #f1f1f1 on list tables */
+	color: var(--gray-700); /* white background on the dashboard but #f1f1f1 on list tables */
 }
 
 #future-posts ul,
@@ -782,7 +782,7 @@ body #dashboard-widgets .postbox form .submit {
 	display: inline-block;
 	margin-right: 5px;
 	min-width: 150px;
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .activity-block {
@@ -796,7 +796,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 .activity-block .subsubsub li {
-	color: #ddd;
+	color: var(--gray-500);
 }
 
 /* Dashboard activity widget - Comments */
@@ -847,7 +847,7 @@ body #dashboard-widgets .postbox form .submit {
 	left: 0;
 	top: 0;
 	bottom: 0;
-	background: #d54e21;
+	background: var(--color-theme-red);
 	width: 4px;
 }
 
@@ -949,7 +949,7 @@ body #dashboard-widgets .postbox form .submit {
 #latest-comments #the-comment-list .comment-meta {
 	line-height: 1.5;
 	margin: 0;
-	color: #666;
+	color: var(--gray-700);
 }
 
 #latest-comments #the-comment-list .comment-meta cite {
@@ -989,7 +989,7 @@ a.rsswidget {
 }
 
 .rss-widget span.rss-date {
-	color: #72777c;
+	color: var(--gray-700);
 	font-size: 13px;
 	margin-left: 3px;
 }
@@ -1041,7 +1041,7 @@ a.rsswidget {
 }
 
 #dashboard_browser_nag.postbox.browser-insecure h2 {
-	border-bottom-color: #cd5a5a;
+	border-bottom-color: var(--color-theme-red);
 	color: #fff;
 }
 
@@ -1075,7 +1075,7 @@ a.rsswidget {
 
 /* PHP Nag */
 #dashboard_php_nag .dashicons-warning {
-	color: #ffb900;
+	color: var(--yellow-600);
 	padding-right: 6px;
 }
 
@@ -1185,7 +1185,6 @@ a.rsswidget {
 		display: block;
 	}
 }
-
 @media screen and (max-width: 870px) {
 	.welcome-panel .welcome-panel-column,
 	.welcome-panel .welcome-panel-column:first-child {
@@ -1204,7 +1203,6 @@ a.rsswidget {
 	}
 
 }
-
 @media screen and (max-width: 782px) {
 	#dashboard_recent_comments #the-comment-list .comment-item .avatar {
 		height: 30px;
@@ -1264,7 +1262,6 @@ a.rsswidget {
 		left: -35px;
 	}
 }
-
 @media screen and (min-width: 355px) {
 	.community-events .event-info {
 		display: table-row;

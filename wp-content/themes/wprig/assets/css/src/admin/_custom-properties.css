@@ -164,4 +164,13 @@
 	--fontWeight: 300;
 
 	--admin-font: serif;
+	--admin-heading-color: var(--gray-700);
+	--admin-bg-color: var(--indigo-600);
+	--admin-bg-darker: var(--indigo-800);
+	--admin-bg-lighter: var(--indigo-400);
+
+	--admin-light-links: var(--color-theme-white);
+	--admin-dark-links: var(--gray-700);
+	--admin-table-bg: var(--indigo-200);
+
 }

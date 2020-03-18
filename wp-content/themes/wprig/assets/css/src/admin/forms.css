@@ -25,7 +25,7 @@ input[type="url"],
 input[type="week"],
 select,
 textarea {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
 	background-color: #fff;
 	color: #32373c;
@@ -229,30 +229,30 @@ textarea[readonly] {
 }
 
 ::-webkit-input-placeholder {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 ::-moz-placeholder {
-	color: #72777c;
+	color: var(--gray-700);
 	opacity: 1;
 }
 
 :-ms-input-placeholder {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .form-invalid input,
 .form-invalid input:focus,
 .form-invalid select,
 .form-invalid select:focus {
-	border-color: #dc3232 !important;
+	border-color: var(--color-theme-red);
 	box-shadow: 0 0 2px rgba(204, 0, 0, 0.8);
 }
 
 .form-table .form-required.form-invalid td::after {
 	content: "\f534";
 	font: 500 20px/1 dashicons, sans-serif;
-	color: #dc3232;
+	color: var(--color-theme-red);
 	margin-left: -25px;
 	vertical-align: middle;
 }
@@ -265,13 +265,13 @@ textarea[readonly] {
 .form-table .form-required.user-pass1-wrap.form-invalid .password-input-wrapper::after {
 	content: "\f534";
 	font: 500 20px/1 dashicons, sans-serif;
-	color: #dc3232;
+	color: var(--color-theme-red);
 	margin: 0 6px 0 -29px;
 	vertical-align: middle;
 }
 
 .form-input-tip {
-	color: #666;
+	color: var(--gray-700);
 }
 
 input:disabled,
@@ -465,7 +465,7 @@ fieldset label,
 
 #pass-strength-result {
 	background-color: #eee;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	color: #23282d;
 	margin: -1px 0 5px;
 	padding: 3px 5px;
@@ -618,7 +618,7 @@ ul#add-to-blog-users {
 
 /* Colors for the wplink toolbar autocomplete. */
 .ui-autocomplete .ui-state-focus {
-	background-color: #ddd;
+	background-color: var(--gray-500);
 }
 
 /* Colors for the tags autocomplete. */
@@ -757,7 +757,7 @@ table.form-table td .updated p {
 
 .color-option:hover,
 .color-option.selected {
-	background: #ddd;
+	background: var(--gray-500);
 }
 
 .color-palette {
@@ -881,7 +881,7 @@ table.form-table td .updated p {
 }
 
 .pressthis-bookmarklet span::before {
-	color: #72777c;
+	color: var(--gray-700);
 	font: 500 20px/1 dashicons, sans-serif;
 	content: "\f157";
 	position: relative;
@@ -1564,7 +1564,6 @@ table.form-table td .updated p {
 		max-width: 100%;
 	}
 }
-
 @media only screen and (max-width: 768px) {
 	.form-field input[type="text"],
 	.form-field input[type="email"],
@@ -1578,7 +1577,6 @@ table.form-table td .updated p {
 		padding: 0;
 	}
 }
-
 @media only screen and (max-height: 480px), screen and (max-width: 450px) {
 	/* Request Credentials / File Editor Warning */
 	.request-filesystem-credentials-dialog .notification-dialog,
@@ -1600,7 +1598,6 @@ table.form-table td .updated p {
 		width: 49%;
 	}
 }
-
 @media only screen and (max-width: 320px) {
 	.options-general-php .date-time-text.date-time-custom-text {
 		min-width: 0;

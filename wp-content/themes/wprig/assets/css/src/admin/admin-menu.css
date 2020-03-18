@@ -4,7 +4,7 @@
 	background: var(--indigo-600);
 	font-family: serif;
 	padding: 1vh 0;
-	border-bottom: 4px solid var(--gray-500);
+	border-bottom: 2px solid var(--yellow-500);
 }
 
 #adminmenuback,
@@ -762,7 +762,6 @@ li#wp-admin-bar-menu-toggle {
 	}
 
 }
-
 @media screen and (max-width: 782px) {
 	.auto-fold #wpcontent {
 		position: relative;

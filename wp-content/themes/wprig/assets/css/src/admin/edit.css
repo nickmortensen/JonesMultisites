@@ -70,7 +70,7 @@
 }
 
 #titlediv #title-prompt-text {
-	color: #72777c;
+	color: var(--gray-700);
 	position: absolute;
 	font-size: 1.7em;
 	padding: 11px 10px;
@@ -95,7 +95,7 @@ input#link_url {
 	min-height: 25px; /* Yes, line-height + 1 */
 	margin-top: 5px;
 	padding: 0 10px;
-	color: #666;
+	color: var(--gray-700);
 }
 
 #edit-slug-box .cancel {
@@ -259,7 +259,7 @@ ul.add-menu-item-tabs li {
 ul.category-tabs li.tabs,
 ul.add-menu-item-tabs li.tabs,
 .wp-tab-active {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	border-bottom-color: #fdfdfd;
 	background-color: #fdfdfd;
 }
@@ -709,7 +709,7 @@ span.wp-media-buttons-icon::before {
 
 .text-removed .policy-text {
 	font-style: italic;
-	color: #666;
+	color: var(--gray-700);
 	font-weight: 600;
 }
 
@@ -783,7 +783,7 @@ span.wp-media-buttons-icon::before {
 #postcustomstuff table {
 	margin: 0;
 	width: 100%;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	border-spacing: 0;
 	background-color: #f9f9f9;
 }
@@ -878,7 +878,7 @@ span.wp-media-buttons-icon::before {
 	width: 20px;
 	margin-top: -4px;
 	margin-right: 7px;
-	color: #ddd;
+	color: var(--gray-500);
 	font: 500 20px/1 dashicons, sans-serif;
 	speak: none;
 	-webkit-font-smoothing: antialiased;
@@ -972,7 +972,7 @@ label.post-format-icon {
 	max-height: 200px;
 	overflow: auto;
 	padding: 0 0.9em;
-	border: solid 1px #ddd;
+	border: solid 1px var(--gray-500);
 	background-color: #fdfdfd;
 }
 
@@ -1031,7 +1031,7 @@ ul.categorychecklist li {
 p.description,
 .form-wrap p {
 	margin: 2px 0 5px;
-	color: #666;
+	color: var(--gray-700);
 }
 
 p.help,
@@ -1187,7 +1187,7 @@ p.popular-tags a {
 	content: "(" attr(href) ")";
 	display: inline-block;
 	padding: 0 4px;
-	color: #72777c;
+	color: var(--gray-700);
 	font-size: 13px;
 	word-break: break-all;
 }
@@ -1407,7 +1407,6 @@ table.links-table {
 		display: none;
 	}
 }
-
 @media screen and (max-width: 782px) {
 	.wp-core-ui .edit-tag-actions .button-primary {
 		margin-bottom: 0;

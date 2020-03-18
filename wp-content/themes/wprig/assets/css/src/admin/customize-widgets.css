@@ -144,7 +144,7 @@
 #customize-theme-controls .move-widget-area {
 	display: none;
 	background: var(--color-theme-white);
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	border-top: none;
 	cursor: auto;
 }

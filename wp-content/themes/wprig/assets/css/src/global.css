@@ -20,7 +20,6 @@
 /*--------------------------------------------------------------
 # Imports
 --------------------------------------------------------------*/
-
 @import "_custom-properties.css";
 @import "_reset.css";
 @import "_typography.css";
@@ -279,7 +278,6 @@ select {
 		display: block;
 	}
 }
-
 @media (--wide-menu-query) {
 
 	.nav--toggle-small .menu-toggle {
@@ -586,7 +584,6 @@ select {
 .infinite-scroll .posts-navigation,
 .infinite-scroll .pagination,
 .infinite-scroll.neverending .site-footer {
-
 	/* Theme Footer (when set to scrolling) */
 	display: none;
 }
@@ -595,4 +592,12 @@ select {
 were hidden (via .neverending) before. */
 .infinity-end.neverending .site-footer {
 	display: block;
+}
+
+pre {
+	display: block;
+	min-width: 100vw;
+	background: #0273b9;
+	color: #fff;
+	padding-left: 8vw;
 }

@@ -136,11 +136,11 @@ body.folded .revisions .loading-indicator {
 }
 
 .revisions-controls .author-card .date {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .revisions-controls .author-card.autosave {
-	color: #d54e21;
+	color: var(--color-theme-red);
 }
 
 .revisions-controls .author-card .author-name {
@@ -381,7 +381,7 @@ table.diff .diff-addedline ins {
 
 .revisions-tooltip,
 .revisions-tooltip-arrow > span {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	background-color: #fff;
 }
 
@@ -442,7 +442,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
 /* jQuery UI Slider */
 .wp-slider.ui-slider {
 	position: relative;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	text-align: left;
 	cursor: pointer;
 }
@@ -565,7 +565,6 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
 		background-image: url(../images/spinner-2x.gif);
 	}
 }
-
 @media screen and (max-width: 782px) {
 	#diff-next-revision,
 	#diff-previous-revision {

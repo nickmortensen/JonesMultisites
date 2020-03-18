@@ -52,7 +52,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-		// add_filter( 'upload_dir', [ $this, 'use_same_uploads_folder_for_all_sites' ] );
 		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] );
 		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 );
 	}
@@ -71,12 +70,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Force all network uploads to reside in "wp-content/uploads", and by-pass
-	 * "files" URL rewrite for site-specific directories.
+	 * Force all network uploads to reside in "wp-content/uploads".
+	 * Bypass "files" URL rewrite for site-specific directories.
 	 *
 	 * @link    http://wordpress.stackexchange.com/q/147750/1685
 	 *
-	 * @param   array   $dirs
+	 * @param   array $directory Folder to utilize.
 	 * @return  array
 	 */
 	public function use_same_uploads_folder_for_all_sites( $directory ) {

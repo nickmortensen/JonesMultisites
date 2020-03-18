@@ -61,7 +61,7 @@ body.js .theme-browser.search-loading {
 	margin: 0 4% 4% 0;
 	position: relative;
 	width: 30.6%;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
 }
@@ -379,7 +379,7 @@ body.js .theme-browser.search-loading {
 	left: 0;
 	right: 0;
 	height: 48px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-500);
 }
 
 .theme-overlay .theme-header button {
@@ -393,14 +393,14 @@ body.js .theme-browser.search-loading {
 	text-align: center;
 	float: right;
 	border: 0;
-	border-left: 1px solid #ddd;
+	border-left: 1px solid var(--gray-500);
 	background-color: transparent;
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
 .theme-overlay .theme-header .close::before {
 	font: 500 22px/5 dashicons, serif !important;
-	color: #72777c;
+	color: var(--gray-700);
 	display: inline-block;
 	content: "\f335";
 	font-weight: 300;
@@ -410,14 +410,14 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right,
 .theme-overlay .theme-header .left {
 	cursor: pointer;
-	color: #72777c;
+	color: var(--gray-700);
 	background-color: transparent;
 	height: 48px;
 	width: 54px;
 	float: left;
 	text-align: center;
 	border: 0;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid var(--gray-500);
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
@@ -427,7 +427,7 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right:hover,
 .theme-overlay .theme-header .left:focus,
 .theme-overlay .theme-header .left:hover {
-	background: #ddd;
+	background: var(--gray-500);
 	border-color: #ccc;
 	color: #000;
 }
@@ -543,9 +543,9 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 .broken-themes a.delete-theme:focus,
 .theme-overlay .theme-actions .delete-theme:hover,
 .theme-overlay .theme-actions .delete-theme:focus {
-	background: #d54e21;
+	background: var(--color-theme-red);
 	color: #fff;
-	border-color: #d54e21;
+	border-color: var(--color-theme-red);
 }
 
 .theme-overlay .theme-actions .active-theme,
@@ -678,7 +678,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-version {
-	color: #72777c;
+	color: var(--gray-700);
 	font-size: 13px;
 	font-weight: 400;
 	float: none;
@@ -688,7 +688,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .theme-overlay .theme-author {
 	margin: 15px 0 25px;
-	color: #72777c;
+	color: var(--gray-700);
 	font-size: 16px;
 	font-weight: 400;
 	line-height: inherit;
@@ -786,7 +786,6 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 		margin-right: 0;
 	}
 }
-
 @media only screen and (min-width: 1680px) {
 	.theme-overlay .theme-wrap {
 		width: 1450px;
@@ -835,7 +834,6 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 		left: 65px;
 	}
 }
-
 @media only screen and (max-width: 780px) {
 	body.folded .theme-overlay .theme-wrap,
 	.theme-overlay .theme-wrap {
@@ -892,7 +890,6 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 		opacity: 1;
 	}
 }
-
 @media only screen and (max-width: 480px) {
 	.theme-browser .theme {
 		width: 100%;
@@ -904,7 +901,6 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 		margin-right: 0;
 	}
 }
-
 @media only screen and (max-width: 650px) {
 	.theme-overlay .theme-description {
 		margin-left: 0;
@@ -1072,7 +1068,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 p.no-themes,
 p.no-themes-local {
 	clear: both;
-	color: #666;
+	color: var(--gray-700);
 	font-size: 18px;
 	font-style: normal;
 	margin: 0;
@@ -1112,7 +1108,7 @@ p.no-themes-local {
 .theme-details .num-ratings,
 .theme-details .no-rating {
 	font-size: 11px;
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .theme-details .no-rating {
@@ -1125,7 +1121,7 @@ p.no-themes-local {
 ------------------------------------------------------------------------------*/
 
 .appearance_page_custom-header #headimg {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 	overflow: hidden;
 	width: 100%;
 }
@@ -1161,7 +1157,7 @@ p.no-themes-local {
 
 div#custom-background-image {
 	min-height: 100px;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-500);
 }
 
 div#custom-background-image img {
@@ -1349,7 +1345,6 @@ body.full-overlay-active {
 		margin-left: -18%;
 	}
 }
-
 @media screen and (min-width: 3333px) {
 	.wp-full-overlay.expanded {
 		margin-left: 600px;
@@ -1428,7 +1423,7 @@ body.full-overlay-active {
 	height: 45px;
 	padding-right: 2px;
 	background: #eee;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid var(--gray-500);
 	color: #444;
 	cursor: pointer;
 	text-decoration: none;
@@ -1441,7 +1436,7 @@ body.full-overlay-active {
 .theme-install-overlay .previous-theme:focus,
 .theme-install-overlay .next-theme:hover,
 .theme-install-overlay .next-theme:focus {
-	background: #ddd;
+	background: var(--gray-500);
 	border-color: #ccc;
 	color: #000;
 	outline: none;
@@ -1603,7 +1598,7 @@ body.full-overlay-active {
 	width: 18%;
 	width: calc(18% - 1px);
 	height: 45px;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
 	background: #eee;
 }
 
@@ -1814,7 +1809,7 @@ nstaller overlays the only available content. */
 
 .theme-details .theme-description {
 	float: left;
-	color: #72777c;
+	color: var(--gray-700);
 	line-height: 1.6;
 	max-width: 100%;
 }
@@ -1830,13 +1825,13 @@ nstaller overlays the only available content. */
 
 .theme-install-overlay .wp-full-overlay-sidebar {
 	background: #eee;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid var(--gray-500);
 }
 
 .theme-install-overlay .wp-full-overlay-sidebar-content {
 	background: #fff;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
+	border-top: 1px solid var(--gray-500);
+	border-bottom: 1px solid var(--gray-500);
 }
 
 .theme-install-overlay .wp-full-overlay-main {
@@ -1893,7 +1888,6 @@ nstaller overlays the only available content. */
 		background-image: url(../images/spinner-2x.gif);
 	}
 }
-
 @media screen and (max-width: 782px) {
 	.available-theme .action-links .delete-theme {
 		float: none;
@@ -1925,7 +1919,6 @@ nstaller overlays the only available content. */
 		padding-bottom: 8px;
 	}
 }
-
 @media aural {
 	.theme .notice::before,
 	.theme-info .updating-message::before,

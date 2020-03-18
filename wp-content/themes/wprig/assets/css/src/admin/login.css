@@ -65,7 +65,7 @@ p {
 }
 
 .login #login_error {
-	border-left-color: #dc3232;
+	border-left-color: var(--color-theme-red);
 }
 
 #loginform p.submit,
@@ -300,7 +300,6 @@ body.interim-login {
 		padding: 20px 0;
 	}
 }
-
 @media screen and (max-width: 782px) {
 	.interim-login input[type="checkbox"] {
 		height: 16px;

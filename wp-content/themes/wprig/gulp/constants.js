@@ -91,6 +91,8 @@ const paths = {
 			`!${ assetsDir }/css/src/**/_*.css`,
 			// Ignore editor source css.
 			`!${ assetsDir }/css/src/editor/**/*.css`,
+			// Ignore the css files in the admin folder.
+			`!${ assetsDir }/css/src/admin/*.css`,
 			// ignore tailwindcss
 			`!${ assetsDir }/css/src/tailwind/tailwind.css`,
 		],

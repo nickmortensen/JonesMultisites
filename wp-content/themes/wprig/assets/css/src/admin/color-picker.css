@@ -82,7 +82,7 @@
 
 .wp-picker-container .iris-picker {
 	border-radius: 0;
-	border-color: #ddd;
+	border-color: var(--gray-500);
 	margin-top: 6px;
 }
 
@@ -96,16 +96,16 @@
 }
 
 .wp-color-picker::-webkit-input-placeholder {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .wp-color-picker::-moz-placeholder {
-	color: #72777c;
+	color: var(--gray-700);
 	opacity: 1;
 }
 
 .wp-color-picker:-ms-input-placeholder {
-	color: #72777c;
+	color: var(--gray-700);
 }
 
 .wp-picker-container input[type="text"].iris-error {
@@ -162,7 +162,6 @@
 		padding: 0 10px;
 	}
 }
-
 @media screen and (max-width: 640px) {
 	.wp-customizer .wp-picker-container .wp-color-result.button {
 		font-size: 14px;

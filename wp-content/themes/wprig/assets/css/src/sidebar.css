@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------
 # Sidebar
 --------------------------------------------------------------*/
-
+/* stylelint-ignore */
 .primary-sidebar {
 	padding: 1.5rem;
 	font-family: var(--highlight-font-family);
@@ -19,7 +19,6 @@
 	}
 
 }
-
 @media (--sidebar-query) {
 
 	.primary-sidebar {
