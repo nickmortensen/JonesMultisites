@@ -171,6 +171,9 @@
 
 	--admin-light-links: var(--color-theme-white);
 	--admin-dark-links: var(--gray-700);
-	--admin-table-bg: var(--indigo-200);
+	--admin-table-bg: var(--indigo-100);
+
+	--admin-link: var(--indigo-600);
+	--admin-link-hover: var(--indigo-900);
 
 }

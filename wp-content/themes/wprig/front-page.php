@@ -11,7 +11,11 @@ namespace WP_Rig\WP_Rig;
 
 get_header();
 
-
+$term = 5;
+$term = wp_rig()->get_all_info( $term );
+echo '<pre>';
+print_r( $term );
+echo '</pre>';
 // Use grid layout if blog index is displayed.
 if ( is_home() ) {
 	wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-front-page' );

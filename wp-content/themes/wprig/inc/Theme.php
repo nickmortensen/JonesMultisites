@@ -162,6 +162,8 @@ class Theme {
 			new AdditionalFields\Component(),
 			new Projects\Component(),
 			new Media\Component(),
+			new Global_Taxonomies\Component(),
+			new SignType\Component(),
 		];
 
 		if ( defined( 'JETPACK__VERSION' ) ) {

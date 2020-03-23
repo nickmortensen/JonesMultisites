@@ -134,28 +134,28 @@ class Component implements Component_Interface {
 	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
 	 * @param object $field_type         The `CMB2_Types` object.
 	 */
-	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
-		$y      = 5;
-		$name   = $field_type->_id( false );
-		$inputs = [];
-		while ( $y > 0 ) {
-				$field_label  = "<input type=\"radio\" id=\"rating-$y\" name=\"$name\" value=\"$y" . checked( $value, $y ) . '/>';
-				$field_label .= "<label for=\"rating-$y\"><?php echo $y; ?></label>";
-				$inputs[]     = $field_label;
-				$y--;
+	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type_object ) {
+			?>
+				<section id="cmb2-star-rating-metabox">
+					<fieldset>
+						<span class="star-cb-group">
+							<?php
+								$y = 5;
+								while ( $y > 0 ) {
+									?>
+										<input type="radio" id="rating-<?php echo $y; ?>" name="<?php echo $field_type_object->_id( false ); ?>" value="<?php echo $y; ?>" <?php checked( $value, $y ); ?>/>
+										<label for="rating-<?php echo $y; ?>"><?php echo $y; ?></label>
+									<?php
+									$y--;
+								}
+							?>
+						</span>
+					</fieldset>
+				</section>
+			<?php
+			echo $field_type_object->_desc( true );
+
 		}
-		$fields = implode( '', $inputs );
-		$output = <<<STARRATING
-		<section id="cmb2-star-rating-metabox">
-			<fieldset>
-				<span class="star-cb-group">
-				$fields
-				</span>
-			</fieldset>
-		</section>
-STARRATING;
-		echo $output;
-	} //end cmb2_render_rating_field_callback
 
 	/**
 	 * Render Address Field

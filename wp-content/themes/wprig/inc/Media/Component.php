@@ -52,6 +52,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
+		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
 		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] );
 		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 );
 	}
@@ -101,13 +102,43 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		unset( $columns ['taxonomy-media_category'] ); // 'Data added' column.
 
 		// Add a new column.
-		$new['cb'] = '<input type = "checkbox">';
-		$new['id'] = 'ID';
+		$new['cb']     = '<input type="checkbox">';
+		$new['id']     = 'ID';
+		$new['rating'] = '<i style="color:var(--yellow-500)" class="material-icons">stars</i>';
 		// phpcs:ignore
 		// $new['star_rating'] = '<i class = "text-red-600 material-icons">stars</i>';
 		$columns = array_merge( $new, $columns );
 		return $columns;
 	}
+
+/**
+ * Template tag for returning a star rating from the CMB2 star rating field type (on the front-end)
+ *
+ * @since  0.1.0
+ *
+ * @param  string  $metakey The 'id' of the 'star rating' field (the metakey for get_post_meta)
+ * @param  integer $post_id (optional) post ID. If using in the loop, it is not necessary
+ */
+protected function get_star_rating_field( $metakey, $post_id = 0 ) {
+	$post_id         = $post_id ? $post_id : get_the_ID();
+	$rating          = get_post_meta( $post_id, $metakey, 1 );
+	$stars_container = '<section class = "cmb2-star-container">';
+	$x               = 1;
+	$total           = 5;
+		while ( $x <= $rating ) {
+			$stars_container .= '<span class="dashicons dashicons-star-filled"></span>';
+			$x++;
+		}
+		if ( $rating < $total ) {
+			while ( $rating < $total ) {
+				$stars_container .= '<span class="dashicons dashicons-star-empty"></span>';
+				$rating++;
+			}
+		}
+	$stars_container .= '</section>';
+	return $stars_container;
+}
+
 
 	/**
 	 * Remove certain default columns on the admin end for the media post type
@@ -121,10 +152,44 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			case 'id':
 				$output = $id;
 				break;
-		default:
-			$output = '<i class = "text-indigo-600 material-icons">stars</i>';
+			case 'rating':
+				$output = $this->get_star_rating_field( 'imageRating', $id );
+				break;
+			default:
+				$output = '';
 		}
 		echo $output;
+	}
+
+	/**
+	 * Create the extra fields for the post type.
+	 *
+	 * Use CMB2 to create additional fields for the client post type.
+	 *
+	 * @since  1.0.0
+	 * @link   https://github.com/CMB2/CMB2/wiki/Box-Properties
+	 */
+	public function create_extra_fields() {
+		$args    = [
+			'id'              => 'media_rating',
+			'context'         => 'side',
+			'title'           => 'Rating',
+			'object_types'    => [ 'attachment' ],
+			'cmb_styles'      => true,
+			'remove_box_wrap' => true,
+			'show_names' => false,
+			'show_in_rest'    => \WP_REST_Server::ALLMETHODS, // WP_REST_Server::READABLE|WP_REST_Server::EDITABLE, // Determines which HTTP methods the box is visible in.
+		];
+		$metabox = new_cmb2_box( $args );
+
+		/* Rating */
+		$args = [
+			'name'    => 'Rating',
+			'default' => '2',
+			'id'      => 'imageRating',
+			'type'    => 'rating',
+		];
+		$metabox->add_field( $args );
 	}
 
 }

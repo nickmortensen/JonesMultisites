@@ -13,8 +13,9 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-	<footer id="colophon" class="site-footer border-t-2 border-gray-400 relative bottom-0">
-		<?php get_template_part( 'template-parts/footer/info' ); ?>
+	<?php get_template_part( 'template-parts/footer/info' ); ?>
+	<footer id="colophon" class="site-footer border-t-2 border-gray-400 relative bottom-0 flex flex-row flex-no-wrap justify-around">
+		<?= wp_rig()->get_location_links(); ?>
 	</footer><!-- #colophon -->
 </div><!-- #page -->
 

@@ -1,5 +1,120 @@
 @import url(_custom-properties.css);
 
+th#rating {
+	width: 10%;
+}
+
+th#blog,
+th#count {
+	width: 4.7em;
+}
+th#id {
+	width: 4%;
+}
+th#title {
+	width: 50%
+}
+
+div#cmb2-metabox-media_rating {
+	display: flex;
+	justify-content: center;
+}
+div#media_rating {
+	background: var(--gray-400);
+}
+
+/* star rating custom field for media properties */
+#cmb2-star-rating-metabox .star-cb-group {
+	/* remove inline-block whitespace */
+	font-size: 0;
+	/* flip the order so we can use the + and ~ combinators */
+	unicode-bidi: bidi-override;
+	direction: rtl;
+	/* the hidden clearer */
+}
+
+#cmb2-star-rating-metabox .star-cb-group * {
+	font-size: 1.9rem;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input {
+	display: none;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input + label {
+	/* only enough room for the star */
+	display: inline-block;
+	overflow: hidden;
+	text-indent: 9999px;
+	width: 1.75em;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input + label:before {
+	display: inline-block;
+	text-indent: -9999px;
+	content: "\f154";
+	font-family: 'dashicons';
+	color: #888;
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input:checked ~ label:before,
+#cmb2-star-rating-metabox  .star-cb-group > input + label:hover ~ label:before,
+#cmb2-star-rating-metabox .star-cb-group > input + label:hover:before {
+	content: "\f155";
+	font-family: 'dashicons';
+	color: #FFC926;
+	text-shadow: 0 0 1px #333;
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label {
+	text-indent: -9999px;
+	width: .5em;
+	margin-left: -.5em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label:before {
+	width: .5em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group:hover > input + label:before {
+	content: "\f154";
+	font-family: 'dashicons';
+	color: #888;
+	text-shadow: none;
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover ~ label:before,
+#cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover:before {
+	content: "\f155";
+	font-family: 'dashicons';
+	color: #FFC926;
+	text-shadow: 0 0 1px #333;
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox fieldset {
+	border: 0;
+	background: transparent;
+	border-radius: 1px;
+}
+
+.dashicons-star-filled:before {
+	color: var(--yellow-500);
+	text-shadow: 1px 1px 1px var(--gray-700), -1px -1px 1px var(--gray-700), 1px -1px 1px var(--gray-700), -1px 1px 1px var(--gray-700);
+}
+
+.dashicons-star-empty:before,
+.dashicons-star-filled:before {
+	font-size: 0.9rem;
+	font-size: 0.4rem;
+}
+
+
 /* stylelint-disable selector-id-pattern, selector-class-pattern */
 /* 2 column liquid layout */
 #wpwrap {
@@ -214,11 +329,7 @@ p.popular-tags,
 	background: var(--admin-table-bg);
 }
 
-th#id,
-th#blog,
-th#count {
-	width: 4.7em;
-}
+
 
 td.blog.column-blog {
 	vertical-align: baseline;
@@ -292,7 +403,8 @@ td {
 
 /* Any change to the default link style must be applied to button-link too. */
 a {
-	color: #0073aa;
+	color: var(--admin-link);
+	font-weight: var(--bold);
 	transition-property: border, background, color;
 	transition-duration: 0.05s;
 	transition-timing-function: ease-in-out;
@@ -305,7 +417,8 @@ div {
 
 a:hover,
 a:active {
-	color: #00a0d2;
+	color: var(--admin-link-hover);
+	text-decoration: underline;
 }
 
 a:focus,
@@ -372,7 +485,7 @@ h4,
 h5,
 h6 {
 	display: block;
-	font-weight: 600;
+	font-weight: var(--semibold);
 }
 
 h1 {
@@ -464,8 +577,8 @@ kbd,
 code {
 	padding: 3px 5px 2px 5px;
 	margin: 0 1px;
-	background: #eaeaea;
-	background: rgba(0, 0, 0, 0.07);
+	border: 2px solid rgba(0, 0, 0, 0.07);
+	background: var(--color-theme-white);
 	font-size: 13px;
 }
 
@@ -486,7 +599,7 @@ code {
 
 .subsubsub a .count,
 .subsubsub a.current .count {
-	color: #555d66; /* var(--gray-100) background */
+	color: var(--gray-700)d66; /* var(--gray-100) background */
 	font-weight: 400;
 }
 
@@ -644,7 +757,7 @@ code {
 .subtitle {
 	margin: 0;
 	padding-left: 25px;
-	color: #555d66;
+	color: var(--gray-700);
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 1;
@@ -679,7 +792,7 @@ code {
 .wrap .page-title-action:hover {
 	border-color: #008ec2;
 	background: #00a0d2;
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 /* lower specificity: color needs to be overridden by :hover and :active */
@@ -700,7 +813,7 @@ code {
 }
 
 .wp-dialog {
-	background-color: #fff;
+	background-color: var(--color-theme-white);
 }
 
 .widgets-chooser ul,
@@ -724,7 +837,7 @@ div#widgets-right .widget-top:hover,
 .striped > tbody > :nth-child(odd),
 ul.striped > :nth-child(odd),
 .alternate {
-	background-color: #f9f9f9;
+	background-color: var(--indigo-200);
 }
 
 .bar {
@@ -740,7 +853,7 @@ ul.striped > :nth-child(odd),
 }
 
 .wp-ui-primary {
-	color: #fff;
+	color: var(--color-theme-white);
 	background-color: #32373c;
 }
 
@@ -749,7 +862,7 @@ ul.striped > :nth-child(odd),
 }
 
 .wp-ui-highlight {
-	color: #fff;
+	color: var(--color-theme-white);
 	background-color: #1e8cbe;
 }
 
@@ -758,7 +871,7 @@ ul.striped > :nth-child(odd),
 }
 
 .wp-ui-notification {
-	color: #fff;
+	color: var(--color-theme-white);
 	background-color: var(--color-theme-red);
 }
 
@@ -1046,8 +1159,8 @@ th.action-links {
 	width: 100%;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	border: 1px solid #e5e5e5;
-	background: #fff;
-	color: #555;
+	background: var(--color-theme-white);
+	color: var(--gray-700);
 	font-size: 13px;
 }
 
@@ -1069,7 +1182,7 @@ th.action-links {
 	padding: 4px 10px;
 	border-radius: 30px;
 	background: var(--gray-700);
-	color: #fff;
+	color: var(--color-theme-white);
 	font-size: 14px;
 	font-weight: 600;
 }
@@ -1100,7 +1213,7 @@ th.action-links {
 	display: inline-block;
 	margin: 0 10px;
 	padding: 15px 0;
-	border-bottom: 4px solid #fff;
+	border-bottom: 4px solid var(--color-theme-white);
 	color: var(--gray-700);
 	cursor: pointer;
 }
@@ -1187,7 +1300,7 @@ th.action-links {
 }
 
 .wp-filter .drawer-toggle.current::before {
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 .filter-drawer,
@@ -1212,7 +1325,7 @@ th.action-links {
 .show-filters .wp-filter .button.drawer-toggle {
 	border-radius: 2px;
 	background: var(--gray-700);
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 .show-filters .wp-filter .drawer-toggle:hover,
@@ -1221,7 +1334,7 @@ th.action-links {
 }
 
 .show-filters .wp-filter .drawer-toggle::before {
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 .filter-group {
@@ -1231,7 +1344,7 @@ th.action-links {
 	margin: 0 1% 0 0;
 	padding: 20px 10px 10px;
 	width: 24%;
-	background: #fff;
+	background: var(--color-theme-white);
 	border: 1px solid #e5e5e5;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
@@ -1316,7 +1429,7 @@ th.action-links {
 	padding: 4px 8px;
 	border: 1px solid #e5e5e5;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-	background: #fff;
+	background: var(--color-theme-white);
 	font-size: 11px;
 }
 
@@ -1408,8 +1521,8 @@ th.action-links {
 .notice,
 div.updated,
 div.error {
-	background: #fff;
-	border-left: 4px solid #fff;
+	background: var(--color-theme-white);
+	border-left: 4px solid var(--color-theme-white);
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 	margin: 5px 15px 2px;
 	padding: 1px 12px;
@@ -1496,7 +1609,7 @@ div.updated {
 }
 
 .notice-warning.notice-alt {
-	background-color: #fff8e5;
+	background-color: var(--color-theme-white)8e5;
 }
 
 .notice-error,
@@ -1601,7 +1714,7 @@ div.error {
 	font-size: 14px;
 	text-align: left;
 	margin: 25px 20px 0 2px;
-	background-color: #fff;
+	background-color: var(--color-theme-white);
 	border-left: 4px solid #ffba00;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
@@ -1654,7 +1767,7 @@ form.upgrade .hint {
 }
 
 .button-primary.updating-message::before {
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 .button-primary.updated-message::before {
@@ -1713,7 +1826,7 @@ form.upgrade .hint {
 	display: none;
 	margin: 0 20px -1px 0;
 	position: relative;
-	background-color: #fff;
+	background-color: var(--color-theme-white);
 	border: 1px solid var(--gray-500);
 	border-top: none;
 	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.025);
@@ -1737,7 +1850,7 @@ form.upgrade .hint {
 	height: auto;
 	margin-bottom: 0;
 	padding: 3px 6px 3px 16px;
-	background: #fff;
+	background: var(--color-theme-white);
 	border-radius: 0;
 	color: var(--gray-700);
 	line-height: 1.7;
@@ -1975,7 +2088,7 @@ html.wp-toolbar {
 
 .widefat th,
 .widefat td {
-	color: #555;
+	color: var(--gray-700);
 }
 
 .widefat th,
@@ -1988,7 +2101,8 @@ html.wp-toolbar {
 .widefat thead tr td,
 .widefat tfoot tr th,
 .widefat tfoot tr td {
-	color: #32373c;
+	color: var(--admin-light-links);
+	letter-spacing: 0.15rem;
 }
 
 .widefat td p {
@@ -2230,7 +2344,7 @@ html.wp-toolbar {
 	line-height: 1.71428571;
 	font-weight: 600;
 	background: #e5e5e5;
-	color: #555;
+	color: var(--gray-700);
 	text-decoration: none;
 	white-space: nowrap;
 }
@@ -2244,7 +2358,7 @@ h3 .nav-tab, /* Back-compat for pre-4.4 */
 
 .nav-tab:hover,
 .nav-tab:focus {
-	background-color: #fff;
+	background-color: var(--color-theme-white);
 	color: var(--gray-700);
 }
 
@@ -2296,7 +2410,6 @@ h1.nav-tab-wrapper, /* Back-compat for pre-4.4 */
 ------------------------------------------------------------------------------*/
 
 .spinner {
-	background: url(../images/spinner.gif) no-repeat;
 	background-size: 20px 20px;
 	display: inline-block;
 	visibility: hidden;
@@ -2434,7 +2547,7 @@ body.iframe {
 
 .importer-action {
 	line-height: 1.55; /* Same as with .updating-message */
-	color: #555;
+	color: var(--gray-700);
 	margin-bottom: 1em;
 }
 
@@ -2513,57 +2626,6 @@ fieldset {
 	display: inline;
 }
 
-/* Star Ratings - Back-compat for pre-3.8 */
-div.star-holder {
-	position: relative;
-	height: 17px;
-	width: 100px;
-	background: url(../images/stars.png?ver=20121108) repeat-x bottom left;
-}
-
-div.star-holder .star-rating {
-	background: url(../images/stars.png?ver=20121108) repeat-x top left;
-	height: 17px;
-	float: left;
-}
-
-/* Star Ratings */
-.star-rating {
-	white-space: nowrap;
-}
-
-.star-rating .star {
-	display: inline-block;
-	width: 20px;
-	height: 20px;
-	-webkit-font-smoothing: antialiased;
-	font-size: 20px;
-	line-height: 1;
-	font-family: dashicons, serif;
-	text-decoration: inherit;
-	font-weight: 400;
-	font-style: normal;
-	vertical-align: top;
-	transition: color 0.1s ease-in;
-	text-align: center;
-	color: var(--yellow-600);
-}
-
-.star-rating .star-full::before {
-	content: "\f155";
-}
-
-.star-rating .star-half::before {
-	content: "\f459";
-}
-
-.rtl .star-rating .star-half {
-	transform: rotateY(180deg);
-}
-
-.star-rating .star-empty::before {
-	content: "\f154";
-}
 
 div.action-links {
 	font-weight: 400;
@@ -2572,7 +2634,7 @@ div.action-links {
 
 /* Plugin install thickbox */
 #plugin-information {
-	background: #fff;
+	background: var(--color-theme-white);
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -2624,7 +2686,7 @@ div.action-links {
 	max-width: 100%;
 	padding: 0 15px;
 	margin-top: 174px;
-	color: #fff;
+	color: var(--color-theme-white);
 	background: rgba(30, 30, 30, 0.9);
 	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 	box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
@@ -2672,9 +2734,9 @@ div.action-links {
 
 #plugin-information-tabs a.current {
 	margin: 0 -1px -1px;
-	background: #fff;
+	background: var(--color-theme-white);
 	border: 1px solid var(--gray-500);
-	border-bottom-color: #fff;
+	border-bottom-color: var(--color-theme-white);
 	padding-top: 8px;
 	color: #32373c;
 }
@@ -2691,7 +2753,7 @@ div.action-links {
 
 #plugin-information-content {
 	overflow: hidden; /* equal height column trick */
-	background: #fff;
+	background: var(--color-theme-white);
 	position: relative;
 	top: 0;
 	right: 0;
@@ -3005,7 +3067,7 @@ div.action-links {
 	top: 50%;
 	z-index: -1;
 	margin: -10px 0 0 -10px;
-	background: #fcfcfc url(../images/spinner.gif) no-repeat center;
+	background: #fcfcfc;
 	background-size: 20px 20px;
 	transform: translateZ(0);
 }
@@ -3015,9 +3077,10 @@ div.action-links {
 	(min-resolution: 120dpi) {
 
 	#TB_window.plugin-details-modal.thickbox-loading::before {
-		background-image: url(../images/spinner-2x.gif);
+		background-image: inherit;
 	}
 }
+
 
 .plugin-details-modal #TB_title {
 	float: left;
@@ -3051,6 +3114,12 @@ div.action-links {
 	speak: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.plugin-update-tr.active td,
+.plugins .active th.check-column {
+	border-color: var(--indigo-600);
+	border-bottom: 8px solid var(--color-theme-white);
 }
 
 /* move plugin install close icon to top on narrow screens */
@@ -3435,7 +3504,7 @@ img {
 }
 
 .widget-action {
-	color: #555d66; /* #fafafa background in the Widgets screen */
+	color: var(--gray-700)d66; /* #fafafa background in the Widgets screen */
 }
 
 .widget-top:hover .widget-action,
@@ -3504,7 +3573,7 @@ img {
 	display: none;
 	padding: 10px 20px 15px;
 	overflow: hidden;
-	background: #fff;
+	background: var(--color-theme-white);
 }
 
 .accordion-section-title {
@@ -3553,7 +3622,7 @@ img {
 	border-right: none;
 	padding: 10px 10px 11px 14px;
 	line-height: 1.55;
-	background: #fff;
+	background: var(--color-theme-white);
 }
 
 .control-section .accordion-section-title::after,
@@ -3600,7 +3669,7 @@ img {
 }
 @media only screen and (min-width: 600px) {
 	.my-sites.striped li {
-		background-color: #fff;
+		background-color: var(--color-theme-white);
 		position: relative;
 	}
 	.my-sites.striped li::after {
@@ -3620,7 +3689,7 @@ img {
 		width: 44%;
 	}
 	.my-sites.striped li {
-		background-color: #fff;
+		background-color: var(--color-theme-white);
 	}
 	.my-sites.striped li:nth-of-type(2n+1) {
 		clear: left;
@@ -3638,7 +3707,7 @@ img {
 	.my-sites li {
 		float: left;
 		width: 27.333333%;
-		background-color: #fff;
+		background-color: var(--color-theme-white);
 	}
 	.my-sites.striped li:nth-of-type(3n+3)::after {
 		content: none;
@@ -3654,7 +3723,7 @@ img {
 		float: left;
 		width: 21%;
 		padding: 8px 2%;
-		background-color: #fff;
+		background-color: var(--color-theme-white);
 	}
 	.my-sites.striped li:nth-of-type(4n+1) {
 		clear: left;
@@ -3674,7 +3743,7 @@ img {
 		float: left;
 		width: 16%;
 		padding: 8px 2%;
-		background-color: #fff;
+		background-color: var(--color-theme-white);
 	}
 	.my-sites.striped li:nth-of-type(5n+1) {
 		clear: left;
@@ -3695,7 +3764,7 @@ img {
 		float: left;
 		width: 12.666666%;
 		padding: 8px 2%;
-		background-color: #fff;
+		background-color: var(--color-theme-white);
 	}
 	.my-sites.striped li:nth-of-type(6n+1) {
 		clear: left;

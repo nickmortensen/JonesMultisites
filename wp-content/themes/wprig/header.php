@@ -43,6 +43,12 @@ $location_id = wp_rig()->get_term_by_blog( $blog );
 $term_id     = wp_rig()->get_term_by_blog( 1 );
 $city_image  = get_term_meta( $term_id, 'locationImage', true );
 $common_name = wp_rig()->get_location_name( $term_id );
+$info = wp_rig()->get_location_info( $location_id );
+global $wpdb;
+echo $wpdb->base_prefix;
+
+
+
 ?>
 
 <style>
@@ -113,12 +119,36 @@ $common_name = wp_rig()->get_location_name( $term_id );
 </section>
 
 </header>
+
+<pre>
+<?php
+global $wpdb;
+if ( is_multisite() ) {
+	echo 'multisite install';
+}
+
+echo "\n";
+print_r( wp_rig()->get_all_possible_information( 60 ) );
+// print_r( wp_rig()->get_location_description( $term_id ));
+echo "\n";
+// print_r( wp_rig()->get_location_ids() );
+// print_r( wp_rig()->get_locations() );
+
+?>
+
+</pre>
 		<?php
 		//phpcs:disable
 		// get_template_part( 'template-parts/header/custom_header' );
 		// get_template_part( 'template-parts/header/branding' );
 		// get_template_part( 'template-parts/header/navigation' );
+
 		?>
 
-
+<div itemprop="location" itemscope itemtype="http://schema.org/Place">
+	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+		<span itemprop="addressLocality">Philadelphia</span>,
+		<span itemprop="addressRegion">PA</span>
+	</div>
+</div>
 

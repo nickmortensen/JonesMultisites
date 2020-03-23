@@ -71,11 +71,52 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Adds the action and filter hooks to integrate with WordPress.
+	 */
+	public function initialize() {
+		add_action( 'init', [ $this, 'create_location_taxonomy' ] );
+		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
+		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
+		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_location_admin_columns' ], 10, 1 );
+		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_location_columns_sortable' ], 10, 1 );
+		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
+	}
+
+	/**
+	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
+	 *
+	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
+	 *               a callable or an array with key 'callable'. This approach is used to reserve the possibility of
+	 *               adding support for further arguments in the future.
+	 */
+	public function template_tags() : array {
+		return [
+			'get_location_description'     => [ $this, 'get_location_description' ],
+			'get_location_links'           => [ $this, 'get_location_links' ],
+			'get_locations'                => [ $this, 'get_locations' ],
+			'get_location_ids'             => [ $this, 'get_location_ids' ],
+			'get_location_name'            => [ $this, 'get_location_name' ],
+			'get_term_by_blog'             => [ $this, 'get_term_by_blog' ],
+			'get_jones_locations'          => [ $this, 'get_jones_locations' ],
+			'get_blend_modes'              => [ $this, 'get_blend_modes' ],
+			'get_location_taxonomy'        => [ $this, 'get_location_taxonomy' ],
+			'get_location_subdomain'       => [ $this, 'get_location_subdomain' ],
+			'get_location_url'             => [ $this, 'get_location_url' ],
+			'get_location_capability'      => [ $this, 'get_location_capability' ],
+			'get_location_info'            => [ $this, 'get_location_info' ],
+			'get_location_info'            => [ $this, 'get_location_info' ],
+			'get_city_image_by_blog'       => [ $this, 'get_city_image_by_blog' ],
+			'get_location_image_by_blog'   => [ $this, 'get_location_image_by_blog' ],
+			'get_all_possible_information' => [ $this, 'get_all_possible_information' ],
+		];
+	}
+
+	/**
 	 * Query for all the data and metadata assigned to any of the location taxonomy.
 	 *
 	 * @param int $term_id The id for the taxonomy term.
 	 */
-	public function get_location_info_from_database( $term_id ) {
+	public function get_location_info( $term_id ) {
 		$info      = [];
 		$location = get_term( $term_id );
 			$info['id']                = $location->term_id;
@@ -129,45 +170,6 @@ JSONLDOPEN;
 		return $output;
 	}
 
-	/**
-	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
-	 *
-	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
-	 *               a callable or an array with key 'callable'. This approach is used to reserve the possibility of
-	 *               adding support for further arguments in the future.
-	 */
-	public function template_tags() : array {
-		return [
-			'get_location_name'               => [ $this, 'get_location_name' ],
-			'get_term_by_blog'                => [ $this, 'get_term_by_blog' ],
-			'get_jones_locations'             => [ $this, 'get_jones_locations' ],
-			'get_blend_modes'                 => [ $this, 'get_blend_modes' ],
-			'get_location_taxonomy'           => [ $this, 'get_location_taxonomy' ],
-			'get_location_subdomain'          => [ $this, 'get_location_subdomain' ],
-			'get_location_url'                => [ $this, 'get_location_url' ],
-			'get_location_capability'         => [ $this, 'get_location_capability' ],
-			'get_location_info'               => [ $this, 'get_location_info' ],
-			'get_location_info_from_database' => [ $this, 'get_location_info_from_database' ],
-			'get_city_image_by_blog'          => [ $this, 'get_city_image_by_blog' ],
-			'get_location_image_by_blog'      => [ $this, 'get_location_image_by_blog' ],
-		];
-	}
-
-
-
-
-	/**
-	 * Adds the action and filter hooks to integrate with WordPress.
-	 */
-	public function initialize() {
-		add_action( 'init', [ $this, 'create_location_taxonomy' ] );
-		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
-		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
-		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_location_admin_columns' ], 10, 1 );
-		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_location_columns_sortable' ], 10, 1 );
-		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
-	}
-
 
 	/**
 	 * Output the locations array.
@@ -177,14 +179,14 @@ JSONLDOPEN;
 		return $locations;
 	}
 
-
 	/**
 	 * Gets taxonomy term id by blog id.
 	 *
 	 * @param int $blog The blog id. Default is 1 - which is the Jones Sign Company Blog.
 	 * @return int The taxonomy id for location that is equivalent to this blog.
 	 */
-	public function get_term_by_blog( $blog = 1 ) {
+	public function get_term_by_blog() {
+		$blog_id   = get_current_blog_id();
 		$locations = $this->get_location_taxonomy();
 		$terms     = [];
 		$blogs     = [];
@@ -193,7 +195,7 @@ JSONLDOPEN;
 			$blogs[] = get_term_meta( $location->term_id, 'locationBlogID', true );
 		}
 		$terms_by_blog = array_combine( $blogs, $terms );
-		return $terms_by_blog[ $blog ];
+		return $terms_by_blog[ $blog_id ];
 	}
 
 	/**
@@ -253,6 +255,40 @@ JSONLDOPEN;
 			]
 		);
 		return $locations;
+	}
+
+	/**
+	 * Get all location term identifiers.
+	 */
+	public function get_location_ids() : array {
+		$ids = [];
+		$locations = $this->get_location_taxonomy();
+		foreach ( $locations as $location ) {
+			$ids[] = $location->term_id;
+		}
+		return $ids;
+	}
+
+	/**
+	 * Get links to all locations - for footer.
+	 *
+	 */
+	public function get_location_links() {
+		$locations = $this->get_location_ids();
+		$dont_show = $this->get_term_by_blog( get_current_blog_id() );
+		// $city = preg_replace( '/^http: /i', 'https: ', $item );
+		// locations I don't want.
+		$links     = [];
+		foreach ( $locations as $location ) {
+			if ( $dont_show === $location ) continue;
+			$subdomain   = $this->get_location_subdomain( $location );
+			$name        = $this->get_location_name( $location );
+			$name = preg_replace( '/^jones /i', '', get_term( $location )->name );
+			$description = $this->get_location_description( $location );
+			$links[]     = "<a href=\"$subdomain\" title=\"$description\">$name</a>";
+		}
+
+		return implode( '', $links );
 	}
 
 	/**
@@ -506,6 +542,16 @@ JSONLDOPEN;
 	}
 
 	/**
+	 * Retrieve the location description.
+	 *
+	 * @param int $term_id Location Taxonomy id.
+	 * @return string $output The description of the specified location.
+	 */
+	public function get_location_description( $term_id ) {
+		return get_term( $term_id )->description;
+	}
+
+	/**
 	 * Retrieve the location common name meta.
 	 *
 	 * @param int $term_id Location Taxonomy id.
@@ -517,6 +563,7 @@ JSONLDOPEN;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
+
 	/**
 	 * Retrieve the taxonomy meta for 'locationURL' for this jones sign location.
 	 *
@@ -573,12 +620,38 @@ JSONLDOPEN;
 	 * @param int $term_id Location Taxonomy id.
 	 * @return array $output The text of the directory of the project in our Jobs server. - not for public consumption.
 	 */
-	public function get_location_info( $term_id ) {
+	public function get_location_information( $term_id ) {
 		$key    = 'jonesLocationInfo';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
+
+	/**
+	 * Retrieve the taxonomy information - includes the custom taxmeta for a term.
+	 *
+	 * @param int $term_id Location Taxonomy id.
+	 * @return array $output The text of the directory of the project in our Jobs server. - not for public consumption.
+	 */
+	public function get_all_possible_information( $term_id ) {
+		$base_info = get_term( $term_id );
+		$unset_these = [ 'term_group', 'taxonomy', 'previous_term_id', 'prev_termid', 'parent', 'filter' ];
+		foreach ( $unset_these as $item ) {
+			unset ($base_info->$item );
+		}
+//phpcs:disable
+$base_info->jonesLocationInfo    = get_term_meta( $term_id, 'jonesLocationInfo', true );
+$base_info->cityImage            = get_term_meta( $term_id, 'cityImage_id', true );
+$base_info->locationImage        = get_term_meta( $term_id, 'locationImage_id', true );
+$base_info->locationCapabilities = get_term_meta( $term_id, 'locationCapabilities', true );
+$base_info->locationCommonName   = get_term_meta( $term_id, 'locationCommonName', true );
+$base_info->locationURL          = get_term_meta( $term_id, 'locationURL', true );
+$base_info->subdomainURL         = get_term_meta( $term_id, 'subdomainURL', true );
+//phpcs:enable
+
+		return $base_info;
+	}
+
 
 
 
