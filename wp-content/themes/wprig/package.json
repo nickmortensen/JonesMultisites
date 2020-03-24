@@ -148,64 +148,47 @@
     ]
   },
   "stylelint": {
-    "ignorePath": ".stylelintignore",
-    "extends": "/usr/local/lib/node_modules/stylelint-config-wordpress",
+    "ignorePath": "/Users/nickmortensen/.stylelintignore",
     "rules": {
       "at-rule-no-unknown": [
         true,
         {
-          "ignoreAtRules": [
-            "custom-media",
-            "/^custom/"
-          ]
+        "ignoreAtRules": [
+          "custom-media",
+          "/^custom/",
+          "tailwind"
+        ]
         }
       ],
       "no-descending-specificity": null,
       "no-duplicate-selectors": null,
+      "max-line-length": [ 120, {
+        "ignore": "comments",
+        "ignorePattern": ["/(https?://[0-9,a-z]*.*)|(^description\\:.+)|(^tags\\:.+)/i"]
+      } ],
       "comment-empty-line-before": [
         "always",
         {
-          "ignore": [
-            "after-comment",
-            "stylelint-commands"
-          ],
-          "except": [
-            "first-nested"
-          ]
+          "except": [ "first-nested" ],
+          "ignore": ["after-comment", "stylelint-commands" ]
         }
       ],
       "at-rule-empty-line-before": [
-        "always",
-        {
-          "except": [
-            "after-same-name",
-            "inside-block",
-            "first-nested"
-          ],
-          "ignore": [
-            "after-comment",
-            "first-nested"
-          ]
+        "always", {
+          "except": [ "after-same-name", "inside-block", "first-nested" ],
+          "ignore": [ "after-comment", "first-nested" ]
         }
       ],
       "rule-empty-line-before": [
         "always",
         {
-          "ignore": [
-            "after-comment",
-            "first-nested",
-            "inside-block"
-          ]
+          "ignore": ["after-comment","first-nested", "inside-block"]
         }
       ],
       "value-list-comma-newline-after": "always-multi-line",
-      "block-opening-brace-newline-after": [
-        "always"
-      ],
-      "block-closing-brace-newline-before": [
-        "always"
-      ]
-    }
+      "block-opening-brace-newline-after": [ "always" ],
+      "block-closing-brace-newline-before": [ "always" ]
+      }
   },
   "scripts": {
     "tailwind": "postcss assets/css/src/tailwind/source/_tailwind.css -o assets/css/src/tailwind/tailwind.css",

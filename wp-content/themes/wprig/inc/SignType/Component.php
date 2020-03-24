@@ -60,7 +60,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
 	}
 
-	// EXPOSE TEMPLATE TAGS //
+	// EXPOSE TEMPLATE TAGS.
 	/**
 	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
 	 *
@@ -113,7 +113,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Get all signtype term identifiers.
 	 */
 	public function get_signtype_ids() : array {
-		$ids = [];
+		$ids       = [];
 		$signtypes = $this->get_all_signtypes();
 		foreach ( $signtypes as $signtype ) {
 			$ids[] = $signtype->term_id;
@@ -128,8 +128,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function get_links( $except = [] ) {
 		$types = $this->get_signtype_ids();
-
-		$links     = [];
+		$links = [];
 		foreach ( $types as $type ) {
 			if ( $except === $type ) continue;
 			$name        = $type->name;
@@ -159,7 +158,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		$metabox = new_cmb2_box( $args );
 
-		/* Use Case List */
+		// Uses List.
 		$args = [
 			'name'       => 'Instance',
 			'desc'       => 'Scenario Wherein this type of sign is best.',
@@ -285,6 +284,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 /**
+ * This.
  * signtypeUseCases(group or multiple)
  * signtypeAltNames(group or multiple)
  * signtypeImageSixteenNine
@@ -388,10 +388,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function get_signtype_image_ids( $term ) : array {
 
+		$ids             = [];
 		$query_arguments = [
-			'tag' => $term,
-			'post_type' => 'attachment'
+			'tag'       => $term,
+			'post_type' => 'attachment',
 		];
+		return $ids;
 
 	}
 

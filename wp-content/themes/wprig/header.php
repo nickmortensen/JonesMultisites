@@ -43,17 +43,12 @@ $location_id = wp_rig()->get_term_by_blog( $blog );
 $term_id     = wp_rig()->get_term_by_blog( 1 );
 $city_image  = get_term_meta( $term_id, 'locationImage', true );
 $common_name = wp_rig()->get_location_name( $term_id );
-$info = wp_rig()->get_location_info( $location_id );
+$info        = wp_rig()->get_location_info( $location_id );
 global $wpdb;
-echo $wpdb->base_prefix;
-
-
 
 ?>
 
 <style>
-
-
 	.location-header{
 		display: flex;
 		justify-content: space-around;
@@ -67,7 +62,7 @@ echo $wpdb->base_prefix;
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: 60%;
-		margin-top: 40px;
+		margin-top: 0;
 		padding: 120px 50px 170px;
 		background-image: linear-gradient(rgba(40, 80, 120, 0.8), rgba(2, 155, 185, 0.9)), url('<?= $city_image; ?>');
 		background-blend-mode: <?= $headerblend; ?>;
@@ -106,9 +101,9 @@ echo $wpdb->base_prefix;
 <?php wp_body_open(); ?>
 
 <div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
-<header id="masthead" class="site-header">
+	<header id="masthead" class="site-header">
+		<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
 
 <!-- #masthead -->
@@ -127,12 +122,15 @@ if ( is_multisite() ) {
 	echo 'multisite install';
 }
 
-echo "\n";
-print_r( wp_rig()->get_all_possible_information( 60 ) );
-// print_r( wp_rig()->get_location_description( $term_id ));
-echo "\n";
-// print_r( wp_rig()->get_location_ids() );
-// print_r( wp_rig()->get_locations() );
+echo get_template_directory();
+$locations = wp_rig()->get_location_ids();
+$place     = [];
+foreach ( $locations as $location ) {
+	$place[] = wp_rig()->get_location_info( $location );
+}
+echo '<pre>';
+echo '</pre>';
+
 
 ?>
 

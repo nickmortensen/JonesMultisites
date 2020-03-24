@@ -14,8 +14,13 @@ use function add_action;
 
 /**
  * TOC
- * #1  get_slug()
- * #2  initialize()
+ * #1 get_slug()
+ * #2 initialize()
+ * #3 template_tags()
+ * #4 global_taxonomies()
+ * #5 create_signtype_taxonomy()
+ * #6 ()
+ * #7 ()
  */
 
 /**
@@ -50,6 +55,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'switch_blog', [ $this, 'global_taxonomies' ] );
 		// create signtype taxonomy at init.
 		add_action( 'init', [ $this, 'create_signtype_taxonomy' ] );
+		add_action( 'init', [ $this, 'create_location_taxonomy' ] );
 	}
 
 	/**
@@ -78,6 +84,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 	/**
 	 * Creates the custom taxonomy: 'signtype'.
+	 *
+	 * @note: is it better to create it here than in a different module entirely dedicated to the signtype taxonomy?
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
 	 */
@@ -114,7 +122,66 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		$args          = [
 			'labels'             => $labels,
+			'public'             => true,
 			'description'        => 'Types of Signage',
+			'hierarchical'       => false,
+			'show_ui'            => true,
+			'show_in_quick_edit' => true,
+			'show_admin_column'  => true,
+			'show_tagcloud'      => true,
+			'rewrite'            => $rewrite,
+			'show_in_rest'       => true,
+			'rest_base'          => $singular,
+			'query_var'          => $singular,
+		];
+		$objects_array = [
+			'post',
+			'page',
+			'attachment',
+			'nav_menu_item',
+		];
+		register_taxonomy( 'signtype', $objects_array, $args );
+	}//end create_signtype_taxonomy()
+
+	/**
+	 * Creates the custom taxonomy: 'Location'.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
+	 */
+	public function create_location_taxonomy() {
+		$singular      = 'location';
+		$plural        = ucfirst( $singular ) . 's';
+		$labels        = [
+			'name'                       => $plural . '- jones sign co',
+			'singular_name'              => $singular,
+			'menu_name'                  => $plural,
+			'all_items'                  => 'All' . $plural,
+			'parent_item'                => 'Main',
+			'parent_item_colon'          => 'Main ' . $singular,
+			'new_item_name'              => 'New ' . $singular,
+			'add_new_item'               => 'Add New ' . $singular,
+			'edit_item'                  => 'Edit ' . $singular,
+			'update_item'                => 'Update ' . $singular,
+			'view_item'                  => 'View ' . $singular,
+			'separate_items_with_commas' => 'Separate locations with commas',
+			'add_or_remove_items'        => 'Add or remove ' . $plural,
+			'choose_from_most_used'      => 'Frequently Used ' . $plural,
+			'popular_items'              => 'Popular ' . $plural,
+			'search_items'               => 'Search ' . $plural,
+			'not_found'                  => 'Not Found',
+			'no_terms'                   => 'No ' . $plural,
+			'items_list'                 => $plural . ' list',
+			'items_list_navigation'      => $plural . ' list navigation',
+			'back_to_terms'              => 'Back to ' . $singular . ' Tags',
+		];
+		$rewrite       = [
+			'slug'         => $singular,
+			'with_front'   => true,
+			'hierarchical' => false,
+		];
+		$args          = [
+			'labels'             => $labels,
+			'description'        => 'Covers Various Jones Sign Company Locations around North America',
 			'hierarchical'       => false,
 			'public'             => true,
 			'show_ui'            => true,
@@ -134,7 +201,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'attachment',
 			'nav_menu_item',
 		];
-		register_taxonomy( 'signtype', $objects_array, $args );
-	}//end create_signtype_taxonomy()
+		register_taxonomy( 'location', $objects_array, $args );
+	}//end create_location_taxonomy()
 
 }

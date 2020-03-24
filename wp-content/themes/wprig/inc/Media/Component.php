@@ -116,8 +116,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
  *
  * @since  0.1.0
  *
- * @param  string  $metakey The 'id' of the 'star rating' field (the metakey for get_post_meta)
- * @param  integer $post_id (optional) post ID. If using in the loop, it is not necessary
+ * @param  string  $metakey The 'id' of the 'star rating' field (the metakey for get_post_meta).
+ * @param  integer $post_id (optional) post ID. If using in the loop, it is not necessary.
  */
 protected function get_star_rating_field( $metakey, $post_id = 0 ) {
 	$post_id         = $post_id ? $post_id : get_the_ID();

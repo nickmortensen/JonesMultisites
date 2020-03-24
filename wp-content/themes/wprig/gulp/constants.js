@@ -1,4 +1,4 @@
-/* eslint-env es6 */
+/* eslint-env 2018 */
 /**TESTING */
 'use strict';
 

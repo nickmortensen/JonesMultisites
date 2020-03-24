@@ -9,13 +9,20 @@ namespace WP_Rig\WP_Rig\Locations;
 
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
-
+use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function get_terms;
-use function register_taxonomy;
+
+use function add_filter;
+use function get_theme_file_uri;
+use function get_theme_file_path;
+use function wp_enqueue_script;
+use function wp_localize_script;
 
 /**
- * Class to create the location taxonomy,
+ * Class to utilize the locations taxonomy.
+ *
+ * @see WP_Rig\Wp_Rig\Global_taxonomies\Component to find where the taxonomy is created and added to WordPress.
  *
  * @since 1.0.0
  */
@@ -74,8 +81,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-		add_action( 'init', [ $this, 'create_location_taxonomy' ] );
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
 		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_location_admin_columns' ], 10, 1 );
 		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_location_columns_sortable' ], 10, 1 );
@@ -91,23 +98,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'get_location_description'     => [ $this, 'get_location_description' ],
-			'get_location_links'           => [ $this, 'get_location_links' ],
-			'get_locations'                => [ $this, 'get_locations' ],
-			'get_location_ids'             => [ $this, 'get_location_ids' ],
-			'get_location_name'            => [ $this, 'get_location_name' ],
-			'get_term_by_blog'             => [ $this, 'get_term_by_blog' ],
-			'get_jones_locations'          => [ $this, 'get_jones_locations' ],
-			'get_blend_modes'              => [ $this, 'get_blend_modes' ],
-			'get_location_taxonomy'        => [ $this, 'get_location_taxonomy' ],
-			'get_location_subdomain'       => [ $this, 'get_location_subdomain' ],
-			'get_location_url'             => [ $this, 'get_location_url' ],
-			'get_location_capability'      => [ $this, 'get_location_capability' ],
-			'get_location_info'            => [ $this, 'get_location_info' ],
-			'get_location_info'            => [ $this, 'get_location_info' ],
-			'get_city_image_by_blog'       => [ $this, 'get_city_image_by_blog' ],
-			'get_location_image_by_blog'   => [ $this, 'get_location_image_by_blog' ],
-			'get_all_possible_information' => [ $this, 'get_all_possible_information' ],
+			'get_location_description'      => [ $this, 'get_location_description' ],
+			'get_location_links'            => [ $this, 'get_location_links' ],
+			'get_locations'                 => [ $this, 'get_locations' ],
+			'get_location_ids'              => [ $this, 'get_location_ids' ],
+			'get_location_name'             => [ $this, 'get_location_name' ],
+			'get_term_by_blog'              => [ $this, 'get_term_by_blog' ],
+			'get_jones_locations'           => [ $this, 'get_jones_locations' ],
+			'get_blend_modes'               => [ $this, 'get_blend_modes' ],
+			'get_location_taxonomy'         => [ $this, 'get_location_taxonomy' ],
+			'get_location_subdomain'        => [ $this, 'get_location_subdomain' ],
+			'get_location_url'              => [ $this, 'get_location_url' ],
+			'get_location_capability'       => [ $this, 'get_location_capability' ],
+			'get_location_info'             => [ $this, 'get_location_info' ],
+			'get_location_info'             => [ $this, 'get_location_info' ],
+			'get_city_image_by_blog'        => [ $this, 'get_city_image_by_blog' ],
+			'get_location_image_by_blog'    => [ $this, 'get_location_image_by_blog' ],
+			'get_all_possible_information'  => [ $this, 'get_all_possible_information' ],
 		];
 	}
 
@@ -117,20 +124,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param int $term_id The id for the taxonomy term.
 	 */
 	public function get_location_info( $term_id ) {
-		$info      = [];
-		$location = get_term( $term_id );
-			$info['id']                = $location->term_id;
-			$info['name']              = $location->name;
-			$info['slug']              = $location->slug;
-			$info['tax_id']            = $location->term_taxonomy_id;
-			$info['description']       = $location->description;
-			$info['location_image_id'] = get_term_meta( $info['id'], 'locationImage_id', true ) ?? 55;
-			$info['city_image_id']     = get_term_meta( $info['id'], 'cityImage_id', true ) ?? 55;
-			$info['blog_id']           = get_term_meta( $info['id'], 'locationBlogID', true );
-			$info['subdomain']         = preg_replace( '/^http:/i', 'https:', get_term_meta( $info['id'], 'subdomainURL', true ) );
-			$info['nimble']            = preg_replace( '/^http:/i', 'https:', get_term_meta( $info['id'], 'locationURL', true ) );
-			$info['address']           = get_term_meta( $info['id'], 'jonesLocationInfo', true );
-			$info['capabilities']      = get_term_meta( $info['id'], 'locationCapabilities', true );
+		$info                      = [];
+		$location                  = get_term( $term_id );
+		$info['id']                = $location->term_id;
+		$info['name']              = $location->name;
+		$info['slug']              = $location->slug;
+		$info['tax_id']            = $location->term_taxonomy_id;
+		$info['description']       = $location->description;
+		$info['location_image_id'] = get_term_meta( $info['id'], 'locationImage_id', true ) ?? 55;
+		$info['city_image_id']     = get_term_meta( $info['id'], 'cityImage_id', true ) ?? 55;
+		$info['blog_id']           = get_term_meta( $info['id'], 'locationBlogID', true );
+		$info['subdomain']         = preg_replace( '/^http:/i', 'https:', get_term_meta( $info['id'], 'subdomainURL', true ) );
+		$info['nimble']            = preg_replace( '/^http:/i', 'https:', get_term_meta( $info['id'], 'locationURL', true ) );
+		$info['address']           = get_term_meta( $info['id'], 'jonesLocationInfo', true );
+		$info['capabilities']      = get_term_meta( $info['id'], 'locationCapabilities', true );
 		return $info;
 	}
 	/**
@@ -182,7 +189,6 @@ JSONLDOPEN;
 	/**
 	 * Gets taxonomy term id by blog id.
 	 *
-	 * @param int $blog The blog id. Default is 1 - which is the Jones Sign Company Blog.
 	 * @return int The taxonomy id for location that is equivalent to this blog.
 	 */
 	public function get_term_by_blog() {
@@ -261,7 +267,7 @@ JSONLDOPEN;
 	 * Get all location term identifiers.
 	 */
 	public function get_location_ids() : array {
-		$ids = [];
+		$ids       = [];
 		$locations = $this->get_location_taxonomy();
 		foreach ( $locations as $location ) {
 			$ids[] = $location->term_id;
@@ -271,19 +277,18 @@ JSONLDOPEN;
 
 	/**
 	 * Get links to all locations - for footer.
-	 *
 	 */
 	public function get_location_links() {
 		$locations = $this->get_location_ids();
 		$dont_show = $this->get_term_by_blog( get_current_blog_id() );
 		// $city = preg_replace( '/^http: /i', 'https: ', $item );
 		// locations I don't want.
-		$links     = [];
+		$links = [];
 		foreach ( $locations as $location ) {
 			if ( $dont_show === $location ) continue;
 			$subdomain   = $this->get_location_subdomain( $location );
 			$name        = $this->get_location_name( $location );
-			$name = preg_replace( '/^jones /i', '', get_term( $location )->name );
+			$name        = preg_replace( '/^jones /i', '', get_term( $location )->name );
 			$description = $this->get_location_description( $location );
 			$links[]     = "<a href=\"$subdomain\" title=\"$description\">$name</a>";
 		}
@@ -291,66 +296,7 @@ JSONLDOPEN;
 		return implode( '', $links );
 	}
 
-	/**
-	 * Creates the custom taxonomy: 'Location'.
-	 *
-	 * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
-	 */
-	public function create_location_taxonomy() {
-		$singular      = 'location';
-		$plural        = ucfirst( $singular ) . 's';
-		$labels        = [
-			'name'                       => $plural . '- jones sign co',
-			'singular_name'              => $singular,
-			'menu_name'                  => $plural,
-			'all_items'                  => 'All' . $plural,
-			'parent_item'                => 'Main',
-			'parent_item_colon'          => 'Main ' . $singular,
-			'new_item_name'              => 'New ' . $singular,
-			'add_new_item'               => 'Add New ' . $singular,
-			'edit_item'                  => 'Edit ' . $singular,
-			'update_item'                => 'Update ' . $singular,
-			'view_item'                  => 'View ' . $singular,
-			'separate_items_with_commas' => 'Separate locations with commas',
-			'add_or_remove_items'        => 'Add or remove ' . $plural,
-			'choose_from_most_used'      => 'Frequently Used ' . $plural,
-			'popular_items'              => 'Popular ' . $plural,
-			'search_items'               => 'Search ' . $plural,
-			'not_found'                  => 'Not Found',
-			'no_terms'                   => 'No ' . $plural,
-			'items_list'                 => $plural . ' list',
-			'items_list_navigation'      => $plural . ' list navigation',
-			'back_to_terms'              => 'Back to ' . $singular . ' Tags',
-		];
-		$rewrite       = [
-			'slug'         => $singular,
-			'with_front'   => true,
-			'hierarchical' => false,
-		];
-		$args          = [
-			'labels'             => $labels,
-			'description'        => 'Covers Various Jones Sign Company Locations around North America',
-			'hierarchical'       => false,
-			'public'             => true,
-			'show_ui'            => true,
-			'show_in_quick_edit' => true,
-			'show_in_menu'       => true,
-			'show_admin_column'  => true,
-			'show_in_nav_menus'  => true,
-			'show_tagcloud'      => true,
-			'query_var'          => $singular,
-			'rewrite'            => $rewrite,
-			'show_in_rest'       => true,
-			'rest_base'          => $singular,
-		];
-		$objects_array = [
-			'post',
-			'page',
-			'attachment',
-			'nav_menu_item',
-		];
-		register_taxonomy( 'location', $objects_array, $args );
-	}//end create_location_taxonomy()
+
 
 	/**
 	 * Create the extra fields for the post type.
@@ -634,26 +580,48 @@ JSONLDOPEN;
 	 * @return array $output The text of the directory of the project in our Jobs server. - not for public consumption.
 	 */
 	public function get_all_possible_information( $term_id ) {
-		$base_info = get_term( $term_id );
+		$base_info   = get_term( $term_id );
 		$unset_these = [ 'term_group', 'taxonomy', 'previous_term_id', 'prev_termid', 'parent', 'filter' ];
 		foreach ( $unset_these as $item ) {
-			unset ($base_info->$item );
+			unset ( $base_info->$item );
 		}
 //phpcs:disable
-$base_info->jonesLocationInfo    = get_term_meta( $term_id, 'jonesLocationInfo', true );
-$base_info->cityImage            = get_term_meta( $term_id, 'cityImage_id', true );
-$base_info->locationImage        = get_term_meta( $term_id, 'locationImage_id', true );
-$base_info->locationCapabilities = get_term_meta( $term_id, 'locationCapabilities', true );
-$base_info->locationCommonName   = get_term_meta( $term_id, 'locationCommonName', true );
-$base_info->locationURL          = get_term_meta( $term_id, 'locationURL', true );
-$base_info->subdomainURL         = get_term_meta( $term_id, 'subdomainURL', true );
+		$base_info->jonesLocationInfo    = get_term_meta( $term_id, 'jonesLocationInfo', true );
+		$base_info->cityImage            = get_term_meta( $term_id, 'cityImage_id', true );
+		$base_info->locationImage        = get_term_meta( $term_id, 'locationImage_id', true );
+		$base_info->locationCapabilities = get_term_meta( $term_id, 'locationCapabilities', true );
+		$base_info->locationCommonName   = get_term_meta( $term_id, 'locationCommonName', true );
+		$base_info->locationURL          = get_term_meta( $term_id, 'locationURL', true );
+		$base_info->subdomainURL         = get_term_meta( $term_id, 'subdomainURL', true );
 //phpcs:enable
 
 		return $base_info;
 	}
 
 
-
+	/**
+	 * Output all the Jones Location information into a json-encoded array to use on any of the sites -- saves calls to the database.
+	 *
+	 * @see the only reason to run this, would be that I've added new information to any of the items within the location taxonomy.
+	 */
+	public function action_enqueue_locations_script() {
+		$location_ids = $this->get_location_ids();
+		$locations    = [];
+		foreach ( $location_ids as $identifier ) {
+			$locations[] = $this->get_location_info( $identifier );
+		}
+		$loc_data  = wp_json_encode( $locations );
+		$handle    = 'jones-locations-data'; // script handle.
+		$path      = get_theme_file_uri( '/assets/js/locations.min.js' ); // path to script.
+		$deps      = []; // dependencies.
+		$version   = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/locations.min.js' ) ); // script version.
+		$in_footer = false; // Do we enqueue the script into the footer -- no.
+		wp_enqueue_script( $handle, $path, $deps, $version, $in_footer );
+		wp_script_add_data( $handle, 'defer', true ); // wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
+		wp_localize_script( $handle, 'locationInfo', [
+			'locations' => $loc_data,
+		] );
+	}
 
 
 }//end class
