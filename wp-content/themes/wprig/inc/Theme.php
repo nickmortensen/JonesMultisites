@@ -164,6 +164,7 @@ class Theme {
 			new Media\Component(),
 			new Global_Taxonomies\Component(),
 			new SignType\Component(),
+			new MultiSites\Component(),
 		];
 
 		if ( defined( 'JETPACK__VERSION' ) ) {

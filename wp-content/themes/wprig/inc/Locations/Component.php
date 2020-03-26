@@ -84,8 +84,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
 		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
-		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_location_admin_columns' ], 10, 1 );
-		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_location_columns_sortable' ], 10, 1 );
+		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_admin_columns' ], 10, 1 );
+		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
 	}
 
@@ -98,23 +98,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'get_location_description'      => [ $this, 'get_location_description' ],
-			'get_location_links'            => [ $this, 'get_location_links' ],
-			'get_locations'                 => [ $this, 'get_locations' ],
-			'get_location_ids'              => [ $this, 'get_location_ids' ],
-			'get_location_name'             => [ $this, 'get_location_name' ],
-			'get_term_by_blog'              => [ $this, 'get_term_by_blog' ],
-			'get_jones_locations'           => [ $this, 'get_jones_locations' ],
-			'get_blend_modes'               => [ $this, 'get_blend_modes' ],
-			'get_location_taxonomy'         => [ $this, 'get_location_taxonomy' ],
-			'get_location_subdomain'        => [ $this, 'get_location_subdomain' ],
-			'get_location_url'              => [ $this, 'get_location_url' ],
-			'get_location_capability'       => [ $this, 'get_location_capability' ],
-			'get_location_info'             => [ $this, 'get_location_info' ],
-			'get_location_info'             => [ $this, 'get_location_info' ],
-			'get_city_image_by_blog'        => [ $this, 'get_city_image_by_blog' ],
-			'get_location_image_by_blog'    => [ $this, 'get_location_image_by_blog' ],
-			'get_all_possible_information'  => [ $this, 'get_all_possible_information' ],
+			'get_location_description'     => [ $this, 'get_location_description' ],
+			'get_location_links'           => [ $this, 'get_location_links' ],
+			'get_locations'                => [ $this, 'get_locations' ],
+			'get_location_ids'             => [ $this, 'get_location_ids' ],
+			'get_location_name'            => [ $this, 'get_location_name' ],
+			'get_term_by_blog'             => [ $this, 'get_term_by_blog' ],
+			'get_jones_locations'          => [ $this, 'get_jones_locations' ],
+			'get_blend_modes'              => [ $this, 'get_blend_modes' ],
+			'get_location_taxonomy'        => [ $this, 'get_location_taxonomy' ],
+			'get_location_subdomain'       => [ $this, 'get_location_subdomain' ],
+			'get_location_url'             => [ $this, 'get_location_url' ],
+			'get_location_capability'      => [ $this, 'get_location_capability' ],
+			'get_location_info'            => [ $this, 'get_location_info' ],
+			'get_location_info'            => [ $this, 'get_location_info' ],
+			'get_city_image_by_blog'       => [ $this, 'get_city_image_by_blog' ],
+			'get_location_image_by_blog'   => [ $this, 'get_location_image_by_blog' ],
+			'get_all_possible_information' => [ $this, 'get_all_possible_information' ],
 		];
 	}
 
@@ -425,7 +425,7 @@ JSONLDOPEN;
 	 * @param array $columns The existing columns before I monkeyed with them.
 	 * @link https://shibashake.com/wordpress-theme/modify-custom-taxonomy-columns
 	 */
-	public function set_location_admin_columns( $columns ) {
+	public function set_admin_columns( $columns ) {
 		// Remove the checkbox that comes with $columns.
 		unset( $columns['cb'] );
 		unset( $columns['description'] );
@@ -440,7 +440,7 @@ JSONLDOPEN;
 	 * Add the correct data to the custom columns.
 	 *
 	 * @param  string $content Already existing content for the already existing rows.
-	 * @param  string $column_name As instantiated in the 'set_location_admin_columns' function.
+	 * @param  string $column_name As instantiated in the 'set_admin_columns' function.
 	 * @param  int    $term_id Term in quation.
 	 * @echo   string $output The content for the columns.
 	 */
@@ -468,7 +468,7 @@ JSONLDOPEN;
 	 * @param array $columns The new columns to make sortable.
 	 * @return array $columns All the columns you want sortable.
 	 */
-	public function make_location_columns_sortable( $columns ) {
+	public function make_columns_sortable( $columns ) {
 		$columns['id']   = 'ID';
 		$columns['slug'] = 'Slug';
 		return $columns;
