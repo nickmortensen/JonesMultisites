@@ -84,7 +84,7 @@ body.locale-he-il .press-this a.wp-switch-editor {
 
 .locale-ru-ru #adminmenu,
 .locale-ru-ru #wpbody {
-	margin-left: 0; /* back-compat for pre-3.2 */
+	margin-right: 0; /* back-compat for pre-3.2 */
 }
 
 .locale-ru-ru .inline-edit-row fieldset label span.title,
@@ -94,7 +94,7 @@ body.locale-he-il .press-this a.wp-switch-editor {
 
 .locale-ru-ru .inline-edit-row fieldset label span.input-text-wrap,
 .locale-ru-ru .inline-edit-row fieldset .timestamp-wrap {
-	margin-left: 8em; /* default 6em */
+	margin-right: 8em; /* default 6em */
 }
 
 .locale-ru-ru.post-php .tagsdiv .newtag,
@@ -103,7 +103,7 @@ body.locale-he-il .press-this a.wp-switch-editor {
 }
 
 .locale-ru-ru.press-this .posting {
-	margin-right: 277px; /* default 252px + 25px */
+	margin-left: 277px; /* default 252px + 25px */
 }
 
 .locale-ru-ru .press-this-sidebar {
@@ -126,7 +126,7 @@ body.locale-he-il .press-this a.wp-switch-editor {
 
 .locale-lt-lt .inline-edit-row fieldset label span.input-text-wrap,
 .locale-lt-lt .inline-edit-row fieldset .timestamp-wrap {
-	margin-left: 8em; /* default 6em */
+	margin-right: 8em; /* default 6em */
 }
 
 @media screen and (max-width: 782px) {
@@ -134,6 +134,6 @@ body.locale-he-il .press-this a.wp-switch-editor {
 	.locale-ru-ru .inline-edit-row fieldset .timestamp-wrap,
 	.locale-lt-lt .inline-edit-row fieldset label span.input-text-wrap,
 	.locale-lt-lt .inline-edit-row fieldset .timestamp-wrap {
-		margin-left: 0;
+		margin-right: 0;
 	}
 }

@@ -34,7 +34,7 @@
 
 .customize-control .widget-top:hover .widget-action,
 .customize-control .widget-action:focus {
-	color: #23282d;
+	color: var(--gray-800);
 }
 
 .customize-control-widget_form:not(.widget-rendered) .widget-top {
@@ -134,7 +134,7 @@
 #customize-theme-controls .widget-reorder-nav {
 	display: none;
 	float: right;
-	background-color: #fafafa;
+	background-color: var(--color-theme-white);
 }
 
 .move-widget::before {
@@ -169,7 +169,7 @@
 	position: relative;
 	margin: 0;
 	padding: 13px 15px 15px 42px;
-	color: #555;
+	color: var(--gray-700);
 	border-top: 1px solid #eee;
 	cursor: pointer;
 	-webkit-user-select: none;
@@ -256,9 +256,9 @@
 #available-widgets .widget-tpl:hover,
 #available-widgets .widget-tpl.selected {
 	background: #f3f3f5;
-	border-bottom-color: #ccc;
-	color: #0073aa;
-	border-left: 4px solid #0073aa;
+	border-bottom-color: var(--gray-500);
+	color: var(--indigo-600);
+	border-left: 4px solid var(--indigo-600);
 }
 
 #customize-controls .widget-title h3 {
@@ -311,7 +311,7 @@ body.adding-widget #customize-preview {
 	margin-right: 20px;
 	width: 20px;
 	height: 20px;
-	color: #32373c;
+	color: var(--gray-800);
 	font: 500 20px/1 dashicons, sans-serif;
 	text-align: center;
 	box-sizing: border-box;

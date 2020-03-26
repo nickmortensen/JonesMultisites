@@ -36,9 +36,6 @@ body.js .theme-browser.search-loading {
 	left: 20px;
 	margin: 0;
 	width: 280px;
-	font-size: 16px;
-	font-weight: 300;
-	line-height: 1.5;
 }
 
 /* Position admin messages */
@@ -61,7 +58,7 @@ body.js .theme-browser.search-loading {
 	margin: 0 4% 4% 0;
 	position: relative;
 	width: 30.6%;
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 	box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
 }
@@ -301,7 +298,7 @@ body.js .theme-browser.search-loading {
 	display: inline-block;
 	content: "\f132";
 	-webkit-font-smoothing: antialiased;
-	font: 500 74px/115px dashicons, serif;
+	font: normal 74px/115px dashicons;
 	width: 100px;
 	height: 100px;
 	vertical-align: middle;
@@ -379,7 +376,7 @@ body.js .theme-browser.search-loading {
 	left: 0;
 	right: 0;
 	height: 48px;
-	border-bottom: 1px solid var(--gray-500);
+	border-bottom: 1px solid #ddd;
 }
 
 .theme-overlay .theme-header button {
@@ -393,14 +390,14 @@ body.js .theme-browser.search-loading {
 	text-align: center;
 	float: right;
 	border: 0;
-	border-left: 1px solid var(--gray-500);
+	border-left: 1px solid #ddd;
 	background-color: transparent;
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
 .theme-overlay .theme-header .close::before {
-	font: 500 22px/5 dashicons, serif !important;
-	color: var(--gray-700);
+	font: normal 22px/50px dashicons !important;
+	color: #72777c;
 	display: inline-block;
 	content: "\f335";
 	font-weight: 300;
@@ -410,14 +407,14 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right,
 .theme-overlay .theme-header .left {
 	cursor: pointer;
-	color: var(--gray-700);
+	color: #72777c;
 	background-color: transparent;
 	height: 48px;
 	width: 54px;
 	float: left;
 	text-align: center;
 	border: 0;
-	border-right: 1px solid var(--gray-500);
+	border-right: 1px solid #ddd;
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
@@ -427,7 +424,7 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right:hover,
 .theme-overlay .theme-header .left:focus,
 .theme-overlay .theme-header .left:hover {
-	background: var(--gray-500);
+	background: #ddd;
 	border-color: #ccc;
 	color: #000;
 }
@@ -455,7 +452,7 @@ body.js .theme-browser.search-loading {
 
 .theme-overlay .theme-header .right::before,
 .theme-overlay .theme-header .left::before {
-	font: 500 20px/50px dashicons, serif !important;
+	font: normal 20px/50px dashicons !important;
 	display: inline;
 	font-weight: 300;
 }
@@ -543,9 +540,9 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 .broken-themes a.delete-theme:focus,
 .theme-overlay .theme-actions .delete-theme:hover,
 .theme-overlay .theme-actions .delete-theme:focus {
-	background: var(--color-theme-red);
+	background: #d54e21;
 	color: #fff;
-	border-color: var(--color-theme-red);
+	border-color: #d54e21;
 }
 
 .theme-overlay .theme-actions .active-theme,
@@ -628,6 +625,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 	left: 0;
 	top: 0;
 	width: 100%;
+	height: auto;
 }
 
 .theme-overlay .screenshot.selected {
@@ -678,7 +676,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-version {
-	color: var(--gray-700);
+	color: #72777c;
 	font-size: 13px;
 	font-weight: 400;
 	float: none;
@@ -688,7 +686,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .theme-overlay .theme-author {
 	margin: 15px 0 25px;
-	color: var(--gray-700);
+	color: #72777c;
 	font-size: 16px;
 	font-weight: 400;
 	line-height: inherit;
@@ -829,7 +827,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 /* Admin menu is folded */
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 960px) {
 	.theme-overlay .theme-wrap {
 		left: 65px;
 	}
@@ -945,7 +943,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 	}
 
 	.theme-browser .theme.add-new-theme span::after {
-		font: 500 60px/90px dashicons, serif;
+		font: normal 60px/90px dashicons;
 		width: 80px;
 		height: 80px;
 		top: 30%;
@@ -995,7 +993,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 	color: #79ba49;
 	content: "\f147";
 	display: inline-block;
-	font: 500 20px/1 dashicons, serif;
+	font: normal 20px/1 "dashicons";
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	vertical-align: top;
@@ -1049,7 +1047,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 .upload-theme .wp-upload-form,
 .upload-plugin .wp-upload-form {
 	background: #fafafa;
-	border: 1px solid #e5e5e5;
+	border: 1px solid #ccd0d4;
 	padding: 30px;
 	margin: 30px auto;
 	max-width: 380px;
@@ -1068,7 +1066,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 p.no-themes,
 p.no-themes-local {
 	clear: both;
-	color: var(--gray-700);
+	color: #666;
 	font-size: 18px;
 	font-style: normal;
 	margin: 0;
@@ -1108,7 +1106,7 @@ p.no-themes-local {
 .theme-details .num-ratings,
 .theme-details .no-rating {
 	font-size: 11px;
-	color: var(--gray-700);
+	color: #72777c;
 }
 
 .theme-details .no-rating {
@@ -1121,7 +1119,7 @@ p.no-themes-local {
 ------------------------------------------------------------------------------*/
 
 .appearance_page_custom-header #headimg {
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 	overflow: hidden;
 	width: 100%;
 }
@@ -1157,7 +1155,7 @@ p.no-themes-local {
 
 div#custom-background-image {
 	min-height: 100px;
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 }
 
 div#custom-background-image img {
@@ -1214,8 +1212,7 @@ div#custom-background-image img {
 	border-radius: 0;
 	box-shadow: none;
 
-	/* Following properties are overridden
-	by buttons responsive styles (see: wp-includes/css/buttons.css). */
+	/* Following properties are overridden by buttons responsive styles (see: wp-includes/css/buttons.css). */
 	height: 40px !important;
 	line-height: 2.9 !important;
 	margin: 0 -1px 0 0 !important;
@@ -1284,8 +1281,7 @@ div#custom-background-image img {
 body.full-overlay-active {
 	overflow: hidden;
 
-	/* Hide all the content, the Customizer overlay
-	 is then made visible to be the only available content. */
+	/* Hide all the content, the Customizer overlay is then made visible to be the only available content. */
 	visibility: hidden;
 }
 
@@ -1421,9 +1417,8 @@ body.full-overlay-active {
 	float: left;
 	width: 45px;
 	height: 45px;
-	padding-right: 2px;
 	background: #eee;
-	border-right: 1px solid var(--gray-500);
+	border-right: 1px solid #ddd;
 	color: #444;
 	cursor: pointer;
 	text-decoration: none;
@@ -1436,7 +1431,7 @@ body.full-overlay-active {
 .theme-install-overlay .previous-theme:focus,
 .theme-install-overlay .next-theme:hover,
 .theme-install-overlay .next-theme:focus {
-	background: var(--gray-500);
+	background: #ddd;
 	border-color: #ccc;
 	color: #000;
 	outline: none;
@@ -1444,7 +1439,7 @@ body.full-overlay-active {
 }
 
 .theme-install-overlay .close-full-overlay::before {
-	font: 500 22px/1 dashicons, serif;
+	font: normal 22px/1 dashicons;
 	content: "\f335";
 	position: relative;
 	top: 7px;
@@ -1452,7 +1447,7 @@ body.full-overlay-active {
 }
 
 .theme-install-overlay .previous-theme::before {
-	font: 500 20px/1 dashicons, serif;
+	font: normal 20px/1 dashicons;
 	content: "\f341";
 	position: relative;
 	top: 6px;
@@ -1460,7 +1455,7 @@ body.full-overlay-active {
 }
 
 .theme-install-overlay .next-theme::before {
-	font: 500 20px/1 dashicons, serif;
+	font: normal 20px/1 dashicons;
 	content: "\f345";
 	position: relative;
 	top: 6px;
@@ -1549,7 +1544,7 @@ body.full-overlay-active {
 	display: block;
 	content: "\f148";
 	background: #eee;
-	font: 500 20px/1 dashicons, serif;
+	font: normal 20px/1 dashicons;
 	speak: none;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
@@ -1598,7 +1593,7 @@ body.full-overlay-active {
 	width: 18%;
 	width: calc(18% - 1px);
 	height: 45px;
-	border-top: 1px solid var(--gray-500);
+	border-top: 1px solid #ddd;
 	background: #eee;
 }
 
@@ -1636,7 +1631,7 @@ body.full-overlay-active {
 .wp-full-overlay-footer .devices button::before {
 	display: inline-block;
 	-webkit-font-smoothing: antialiased;
-	font: 500 20px/30px dashicons, serif;
+	font: normal 20px/30px "dashicons";
 	vertical-align: top;
 	margin: 3px 0;
 	padding: 4px 8px;
@@ -1737,8 +1732,7 @@ body.full-overlay-active {
 	display: none;
 }
 
-/* Make the Customizer and Theme i
-nstaller overlays the only available content. */
+/* Make the Customizer and Theme installer overlays the only available content. */
 #customize-container,
 .theme-install-overlay {
 	visibility: visible;
@@ -1809,7 +1803,7 @@ nstaller overlays the only available content. */
 
 .theme-details .theme-description {
 	float: left;
-	color: var(--gray-700);
+	color: #72777c;
 	line-height: 1.6;
 	max-width: 100%;
 }
@@ -1818,20 +1812,19 @@ nstaller overlays the only available content. */
 	float: right;
 	margin: 8px 10px 0 0;
 
-	/* For when .theme-install is a span
-	rather than a.button-primary (already installed theme) */
+	/* For when .theme-install is a span rather than a.button-primary (already installed theme) */
 	line-height: 2;
 }
 
 .theme-install-overlay .wp-full-overlay-sidebar {
 	background: #eee;
-	border-right: 1px solid var(--gray-500);
+	border-right: 1px solid #ddd;
 }
 
 .theme-install-overlay .wp-full-overlay-sidebar-content {
 	background: #fff;
-	border-top: 1px solid var(--gray-500);
-	border-bottom: 1px solid var(--gray-500);
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
 .theme-install-overlay .wp-full-overlay-main {
@@ -1875,7 +1868,7 @@ nstaller overlays the only available content. */
  */
 @media print,
 	(-webkit-min-device-pixel-ratio: 1.25),
-	(min-resolution: 120dpi) {
+  (min-resolution: 120dpi) {
 	.wp-full-overlay .collapse-sidebar-arrow {
 		background-image: url(../images/arrows-2x.png);
 		background-size: 15px 123px;

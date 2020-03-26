@@ -1,6 +1,5 @@
 @import url(_custom-properties.css);
 
-/* stylelint-disable */
 .wrap [class*="CodeMirror-lint-marker"],
 .wp-core-ui [class*="CodeMirror-lint-message"],
 .wrap .CodeMirror-lint-marker-multiple {
@@ -37,18 +36,18 @@
 }
 
 .wp-core-ui .CodeMirror-lint-message-warning {
-	background-color: #fff8e5;
+	background-color: var(--color-theme-white);
 	border-left: 4px solid var(--yellow-600);
 }
 
 .wrap .CodeMirror-lint-marker-warning::before,
 .wp-core-ui .CodeMirror-lint-message-warning::before {
 	content: "\f534";
-	color: #f6a306;
+	color: var(--yellow-600);
 }
 
 .wp-core-ui .CodeMirror-lint-message-error {
-	background-color: #fbeaea;
+	background-color: var(--color-theme-white);
 	border-left: 4px solid var(--color-theme-red);
 }
 

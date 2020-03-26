@@ -136,11 +136,11 @@ body.folded .revisions .loading-indicator {
 }
 
 .revisions-controls .author-card .date {
-	color: var(--gray-700);
+	color: #72777c;
 }
 
 .revisions-controls .author-card.autosave {
-	color: var(--color-theme-red);
+	color: #d54e21;
 }
 
 .revisions-controls .author-card .author-name {
@@ -225,8 +225,8 @@ table.diff td,
 table.diff th {
 	font-family: Consolas, Monaco, monospace;
 	font-size: 14px;
-	line-height: 1.618;
-	padding: 0.5em;
+	line-height: 1.57142857;
+	padding: 0.5em 0.5em 0.5em 2em;
 	vertical-align: top;
 	word-wrap: break-word;
 }
@@ -246,6 +246,7 @@ table.diff .diff-addedline ins {
 }
 
 table.diff .diff-deletedline {
+	position: relative;
 	background-color: #ffe9e9;
 }
 
@@ -254,7 +255,24 @@ table.diff .diff-deletedline del {
 }
 
 table.diff .diff-addedline {
+	position: relative;
 	background-color: #e9ffe9;
+}
+
+table.diff .diff-deletedline .dashicons,
+table.diff .diff-addedline .dashicons {
+	position: absolute;
+	top: 0.85714286em;
+	left: 0.5em;
+	width: 1em;
+	height: 1em;
+	font-size: 1em;
+	line-height: 1;
+}
+
+table.diff .diff-addedline .dashicons {
+	/* Compensate the vertically non-centered plus glyph. */
+	top: 0.92857143em;
 }
 
 table.diff .diff-addedline ins {
@@ -268,7 +286,7 @@ table.diff .diff-addedline ins {
 }
 
 .diff-title strong {
-	line-height: 32px;
+	line-height: 2.46153846;
 	min-width: 60px;
 	text-align: right;
 	float: left;
@@ -277,7 +295,7 @@ table.diff .diff-addedline ins {
 
 .revisions-controls .author-card .author-info {
 	font-size: 12px;
-	line-height: 16px;
+	line-height: 1.33333333;
 }
 
 .revisions-controls .author-card .avatar,
@@ -381,7 +399,7 @@ table.diff .diff-addedline ins {
 
 .revisions-tooltip,
 .revisions-tooltip-arrow > span {
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 	background-color: #fff;
 }
 
@@ -442,7 +460,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
 /* jQuery UI Slider */
 .wp-slider.ui-slider {
 	position: relative;
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 	text-align: left;
 	cursor: pointer;
 }
@@ -487,7 +505,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
 	left: 2px;
 	color: #555;
 	content: "\f229";
-	font: 500 18px/1 dashicons, serif;
+	font: normal 18px/1 dashicons;
 	speak: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -560,7 +578,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
  */
 @media print,
 	(-webkit-min-device-pixel-ratio: 1.25),
-	(min-resolution: 120dpi) {
+  (min-resolution: 120dpi) {
 	.revision-tick.completed-false {
 		background-image: url(../images/spinner-2x.gif);
 	}

@@ -78,7 +78,7 @@
 
 #adminmenu a.menu-top {
 	border-bottom: 0 none;
-	border-top: 1px solid var(--gray-500);
+	border-top: 1px solid #ddd;
 }
 
 #adminmenu .separator {
@@ -130,7 +130,7 @@
 }
 
 #adminmenu .wp-submenu .wp-submenu-head {
-	border-top-color: var(--gray-500);
+	border-top-color: #ddd;
 }
 
 .folded #adminmenu .wp-submenu ul {
@@ -214,12 +214,12 @@ ul#adminmenu {
 
 .plugins td,
 .plugins th {
-	border-top: 1px solid var(--gray-500);
+	border-top: 1px solid #ddd;
 }
 
 table.fixed th,
 table.fixed td {
-	border-top: 1px solid var(--gray-500);
+	border-top: 1px solid #ddd;
 }
 
 #wpbody-content input.button,
@@ -245,7 +245,7 @@ table.fixed td {
 }
 
 #wpbody-content .postbox {
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 }
 
 #wpbody-content .postbox .hndle {
@@ -303,7 +303,7 @@ table.fixed td {
 }
 
 #wpbody-content .inline-edit-row fieldset label span.input-text-wrap input {
-	line-height: 1.3;
+	line-height: 130%;
 }
 
 #wpbody-content .inline-edit-row .input-text-wrap input {
@@ -637,7 +637,7 @@ input[type="password"],
 .mce-btn i.mce-i-wp_page,
 .mce-btn i.mce-i-hr,
 .mce-close {
-	font-family: tinymce, Arial, serif;
+	font-family: tinymce, Arial;
 	font-style: normal;
 	font-weight: 400;
 	font-variant: normal;
@@ -688,7 +688,7 @@ input[type="password"],
 * html .stuffbox,
 * html .stuffbox input,
 * html .stuffbox textarea {
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 }
 
 * html div.widget-liquid-left {
@@ -722,7 +722,7 @@ input[type="password"],
 }
 
 * html input {
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ddd;
 }
 
 * html .edit-box {

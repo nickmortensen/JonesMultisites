@@ -163,7 +163,7 @@
 	font-size: 0.8em;
 	text-align: center;
 	background: #fff;
-	border: 1px solid #ccc;
+	border: 1px solid var(--gray-500);
 }
 
 .widget_calendar .pad {

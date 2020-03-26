@@ -75,7 +75,7 @@
 
 .bypostauthor .avatar {
 	box-sizing: content-box;
-	border: 5px solid #ccc;
+	border: 5px solid var(--gray-500);
 	margin-top: -5px;
 	margin-left: -5px;
 }

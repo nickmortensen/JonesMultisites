@@ -3,15 +3,25 @@
 #wpadminbar {
 	background: var(--indigo-600);
 	font-family: serif;
-	padding: 1vh 0;
+	padding: 1vh 2vw;
 	border-bottom: 2px solid var(--yellow-500);
+}
+
+#wpadminbar a {
+	font-family: serif;
+	letter-spacing: 2px;
+}
+
+#wpadminbar .ab-top-secondary {
+	float: right;
+	padding-right: 4vw;
 }
 
 #adminmenuback,
 #adminmenuwrap,
 #adminmenu,
 #adminmenu .wp-submenu {
-	width: 180px;
+	width: var(--submenu-width);
 	background-color: var(--indigo-600);
 }
 
@@ -27,7 +37,6 @@
 	margin: 12px 0;
 	padding: 0;
 	list-style: none;
-	font: serif;
 }
 
 .folded #adminmenuback,
@@ -48,7 +57,7 @@
 /* New Menu icons */
 
 .icon16::before {
-	color: #82878c; /* same as new icons */
+	color: var(--gray-700); /* same as new icons */
 	font: 500 20px/1 dashicons, sans-serif;
 	speak: none;
 	padding: 6px 0;
@@ -171,25 +180,28 @@
 	display: block;
 	line-height: 1.3;
 	padding: 2px 5px;
-	color: #eee;
+	color: var(--admin-light-links);
 }
 
 #adminmenu .wp-submenu a {
-	color: var(--yellow-100);
-	letter-spacing: 1.26px;
+	color: rgba(240, 245, 250, 0.7);
+	color: var(--admin-light-links);
+	font-size: 13px;
+	line-height: 1.4;
+	margin: 0;
+	padding: 5px 0;
 }
 
 #adminmenu .wp-submenu a:hover,
 #adminmenu .wp-submenu a:focus {
 	background: none;
-	border-bottom: 1px solid var(--yellow-200);
 }
 
 #adminmenu a:hover,
 #adminmenu li.menu-top > a:focus,
 #adminmenu .wp-submenu a:hover,
 #adminmenu .wp-submenu a:focus {
-	color: var(--yellow-600);
+	color: var(--indigo-500);
 }
 
 #adminmenu li.menu-top {
@@ -202,7 +214,7 @@
 	list-style: none;
 	position: absolute;
 	top: -1000em;
-	left: 180px;
+	left: var(--submenu-width);
 	overflow: visible;
 	word-wrap: break-word;
 }
@@ -212,7 +224,7 @@
 .folded #adminmenu .wp-has-current-submenu .wp-submenu {
 	padding: 7px 0 8px;
 	z-index: 9999;
-	background-color: var(--purple-900);
+	background-color: var(--gray-700);
 	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -237,17 +249,16 @@
 	border: 0 none;
 	margin-top: 0;
 	box-shadow: none;
-	background-color: var(--indigo-800);
+	background-color: var(--gray-700);
 }
 
-/* ensure that wp-submenu's box shadow doesn't
-appear on top of the focused menu item's background. */
+/* ensure that wp-submenu's box shadow doesn't appear on top of the focused menu item's background. */
 #adminmenu li.menu-top:hover,
 #adminmenu li.opensub > a.menu-top,
 #adminmenu li > a.menu-top:focus {
 	position: relative;
-	background-color: var(--indigo-800);
-	color: var(--indigo-200);
+	background-color: var(--gray-700);
+	color: var(--indigo-500);
 }
 
 .folded #adminmenu li.menu-top:hover,
@@ -263,8 +274,8 @@ appear on top of the focused menu item's background. */
 #adminmenu .wp-menu-arrow,
 #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head,
 #adminmenu .wp-menu-arrow div {
-	background: var(--gray-600);
-	color: #fff;
+	background: var(--indigo-600);
+	color: var(--color-theme-white);
 }
 
 .folded #adminmenu .wp-submenu.sub-open,
@@ -303,7 +314,7 @@ appear on top of the focused menu item's background. */
 #adminmenu a.wp-has-current-submenu:focus + .wp-submenu li.current a,
 #adminmenu .wp-submenu li.current a:hover,
 #adminmenu .wp-submenu li.current a:focus {
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 #adminmenu .wp-not-current-submenu li > a,
@@ -371,14 +382,14 @@ appear on top of the focused menu item's background. */
 }
 
 div.wp-menu-image::before {
-	color: #a0a5aa;
+	color: var(--color-gray-500);
 	color: rgba(240, 245, 250, 0.6);
 	padding: 7px 0;
 	transition: all 0.1s ease-in-out;
 }
 
 #adminmenu div.wp-menu-image::before {
-	color: #a0a5aa;
+	color: var(--color-gray-500);
 	color: rgba(240, 245, 250, 0.6);
 }
 
@@ -389,20 +400,18 @@ div.wp-menu-image::before {
 #adminmenu a.current:hover div.wp-menu-image::before,
 #adminmenu li.wp-has-current-submenu a:focus div.wp-menu-image::before,
 #adminmenu li.wp-has-current-submenu.opensub div.wp-menu-image::before {
-	color: #fff;
+	color: var(--color-theme-white);
 }
 
 #adminmenu li:hover div.wp-menu-image::before,
 #adminmenu li a:focus div.wp-menu-image::before,
 #adminmenu li.opensub div.wp-menu-image::before {
-	color: #00b9eb;
+	color: var(--indigo-500);
 }
 
-/* IE8 doesn't redraw the pseudo elements
-unless you make a change to the content,
-this restore the initial color after hover */
+/* IE8 doesn't redraw the pseudo elements unless you make a change to the content, this restore the initial color after hover */
 .ie8 #adminmenu li.opensub div.wp-menu-image::before {
-	color: #a0a5aa;
+	color: var(--color-gray-500);
 }
 
 .folded #adminmenu div.wp-menu-image {
@@ -456,7 +465,7 @@ ul#adminmenu > li.current > a.current::after {
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-	border-right-color: #f1f1f1;
+	border-right-color: var(--color-theme-white);
 	top: 50%;
 	margin-top: -8px;
 }
@@ -492,7 +501,7 @@ ul#adminmenu > li.current > a.current::after {
 }
 
 #adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover::after {
-	border-right-color: #32373c;
+	border-right-color: var(--gray-700);
 }
 
 #adminmenu li.menu-top:hover .wp-menu-image img,
@@ -508,15 +517,14 @@ ul#adminmenu > li.current > a.current::after {
 	cursor: inherit;
 }
 
-/* @todo: is this even needed given
- that it's nested beneath the above li.wp-menu-separator? */
+/* @todo: is this even needed given that it's nested beneath the above li.wp-menu-separator? */
 #adminmenu div.separator {
 	height: 2px;
 	padding: 0;
 }
 
 #adminmenu .wp-submenu .wp-submenu-head {
-	color: #fff;
+	color: var(--color-theme-white);
 	font-weight: 400;
 	font-size: 14px;
 	padding: 8px 4px 8px 11px;
@@ -528,8 +536,7 @@ ul#adminmenu > li.current > a.current::after {
 	border: 0 none;
 }
 
-/* @todo: consider to use a single rule for
-these counters and the list table comments counters. */
+/* @todo: consider to use a single rule for these counters and the list table comments counters. */
 #adminmenu .awaiting-mod,
 #adminmenu .update-plugins {
 	display: inline-block;
@@ -540,8 +547,8 @@ these counters and the list table comments counters. */
 	min-width: 18px;
 	height: 18px;
 	border-radius: 9px;
-	background-color: #ca4a1f;
-	color: #fff;
+	background-color: var(--color-red-500);
+	color: var(--color-theme-white);
 	font-size: 11px;
 	line-height: 1.6;
 	text-align: center;
@@ -550,8 +557,8 @@ these counters and the list table comments counters. */
 
 #adminmenu li.current a .awaiting-mod,
 #adminmenu li a.wp-has-current-submenu .update-plugins {
-	background-color: #ca4a1f;
-	color: #fff;
+	background-color: var(--color-red-500);
+	color: var(--color-theme-white);
 }
 
 #adminmenu li span.count-0 {
@@ -568,16 +575,16 @@ these counters and the list table comments counters. */
 	position: relative;
 	overflow: visible;
 	background: none;
-	color: #aaa;
+	color: var(--admin-light-links);
 	cursor: pointer;
 }
 
 #collapse-button:hover {
-	color: #00b9eb;
+	color: var(--indigo-200);
 }
 
 #collapse-button:focus {
-	color: #00b9eb;
+	color: var(--indigo-500);
 
 	/* Only visible in Windows High Contrast mode */
 	outline: 1px solid transparent;
@@ -653,7 +660,7 @@ li#wp-admin-bar-menu-toggle {
 /* Auto-folding of the admin menu */
 @media only screen and (max-width: 960px) {
 	.auto-fold #wpcontent,
-	.auto-fold #wpfooter {
+	.auto-fold #wpfooter {0
 		margin-left: 36px;
 	}
 
@@ -784,6 +791,10 @@ li#wp-admin-bar-menu-toggle {
 		z-index: 100;
 	}
 
+	.auto-fold #adminmenuback {
+		position: fixed;
+	}
+
 	.auto-fold #adminmenuback,
 	.auto-fold #adminmenuwrap {
 		display: none;
@@ -894,7 +905,7 @@ li#wp-admin-bar-menu-toggle {
 	}
 
 	.wp-responsive-open #wpadminbar #wp-admin-bar-menu-toggle a {
-		background: #32373c;
+		background: var(--gray-700);
 	}
 
 	li#wp-admin-bar-menu-toggle {
@@ -925,7 +936,7 @@ li#wp-admin-bar-menu-toggle {
 	}
 
 	.wp-responsive-open #wpadminbar #wp-admin-bar-menu-toggle .ab-icon::before {
-		color: #00b9eb;
+		color: var(--indigo-500);
 	}
 }
 

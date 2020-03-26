@@ -9,7 +9,7 @@
 .health-check-header h1 {
 	display: inline-block;
 	font-weight: 600;
-	margin: 1rem 0.8rem;
+	margin: 0 0.8rem 1rem;
 	font-size: 23px;
 	padding: 9px 0 4px 0;
 	line-height: 1.3;
@@ -39,10 +39,14 @@
 	clear: both;
 }
 
+.site-health-progress-wrapper {
+	margin-bottom: 1rem;
+}
+
 .site-health-progress {
 	display: inline-block;
-	height: 40px;
-	width: 40px;
+	height: 20px;
+	width: 20px;
 	margin: 0;
 	border-radius: 100%;
 	position: relative;
@@ -64,15 +68,7 @@
 	font-size: 2em;
 }
 
-.site-health-progress-count::after {
-	content: "";
-}
-
-.site-health-progress.loading .site-health-progress-count::after {
-	content: "···";
-}
-
-.site-health-progress.loading svg #bar {
+.loading .site-health-progress svg #bar {
 	stroke-dashoffset: 0;
 	stroke: #adc5d2;
 	animation: loadingPulse 3s infinite ease-in-out;
@@ -87,15 +83,29 @@
 
 .site-health-progress svg #bar {
 	stroke-dashoffset: 565;
-	stroke: var(--color-theme-red);
+	stroke: #dc3232;
 }
 
-.site-health-progress svg #bar.green {
+.green .site-health-progress #bar {
 	stroke: #46b450;
 }
 
-.site-health-progress svg #bar.orange {
-	stroke: var(--yellow-600);
+.green .site-health-progress .site-health-progress-label {
+	color: #46b450;
+}
+
+.orange .site-health-progress #bar {
+	stroke: #ffb900;
+}
+
+.orange .site-health-progress .site-health-progress-label {
+	color: #ffb900;
+}
+
+.site-health-progress-label {
+	font-weight: 600;
+	line-height: 20px;
+	margin-left: 0.3rem;
 }
 
 @keyframes loadingPulse {
@@ -116,7 +126,6 @@
 	-ms-grid-columns: 1fr 1fr;
 	vertical-align: top;
 
-	/* stylelint-disable declaration-block-no-duplicate-properties*/
 	/* modern browsers */
 	display: inline-grid;
 	grid-template-columns: 1fr 1fr;
@@ -180,7 +189,7 @@
 
 .health-check-body .warning::before {
 	content: "\f460";
-	color: var(--yellow-600);
+	color: #ffb900;
 }
 
 .health-check-body .info::before {
@@ -191,7 +200,7 @@
 .health-check-body .fail::before,
 .health-check-body .error::before {
 	content: "\f335";
-	color: var(--color-theme-red);
+	color: #dc3232;
 }
 
 .site-health-copy-buttons {
@@ -269,12 +278,12 @@
 }
 
 .health-check-accordion {
-	border: 1px solid #e2e4e7;
+	border: 1px solid #ccd0d4;
 }
 
 .health-check-accordion-heading {
 	margin: 0;
-	border-top: 1px solid #e2e4e7;
+	border-top: 1px solid #ccd0d4;
 	font-size: inherit;
 	line-height: inherit;
 	font-weight: 600;
@@ -352,11 +361,11 @@
 }
 
 .health-check-accordion-trigger .badge.orange {
-	border: 1px solid var(--yellow-600);
+	border: 1px solid #ffb900;
 }
 
 .health-check-accordion-trigger .badge.red {
-	border: 1px solid var(--color-theme-red);
+	border: 1px solid #dc3232;
 }
 
 .health-check-accordion-trigger .badge.green {
@@ -449,8 +458,7 @@
 	}
 }
 
-/* The breakpoint is usually at 960px,
-the additional space is to allow for the margin. */
+/* The breakpoint is usually at 960px, the additional space is to allow for the margin. */
 @media only screen and (max-width: 1004px) {
 	.health-check-body {
 		margin: 0 22px;
