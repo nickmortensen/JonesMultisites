@@ -372,7 +372,7 @@
 
 .about__section.is-feature {
 	font-size: 1.6em;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 @media screen and (max-width: 782px) {
@@ -434,7 +434,7 @@
 
 .about__header-title h1 span {
 	display: block;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	font-size: 1.2em;
 	line-height: 1;
 }
@@ -601,7 +601,7 @@
 
 .about__section .wp-person .web {
 	font-size: 1.4em;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	text-decoration: none;
 	color: #413E38;
 	color: var(--text);
@@ -701,13 +701,12 @@
 /* WordPress Version Badge */
 
 .wp-badge {
-	background: var(--indigo-600) url(../images/w-logo-white.png?ver=20160308) no-repeat;
 	background-position: center 25px;
 	background-size: 80px 80px;
 	color: var(--color-theme-white);
 	font-size: 14px;
 	text-align: center;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	margin: 5px 0 0;
 	padding-top: 120px;
 	height: 40px;
@@ -718,7 +717,6 @@
 }
 
 .svg .wp-badge {
-	background-image: url(../images/wordpress-logo-white.svg?ver=20160308);
 }
 
 .about-wrap .wp-badge {
@@ -992,7 +990,7 @@
 .about-wrap .return-to-dashboard {
 	margin: 30px 0 0 -5px;
 	font-size: 14px;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .about-wrap .return-to-dashboard a {
@@ -1011,7 +1009,7 @@
 	padding: 0;
 	font-size: 16px;
 	line-height: inherit;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	text-align: left;
 }
 
@@ -1081,7 +1079,7 @@
 
 .freedoms-php .about-wrap ol li {
 	list-style-type: decimal;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .freedoms-php .about-wrap ol p {

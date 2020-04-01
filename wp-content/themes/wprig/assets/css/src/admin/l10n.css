@@ -7,7 +7,7 @@
 /* RTL except Hebrew (see below): Tahoma as the first font; */
 body.rtl,
 body.rtl .press-this a.wp-switch-editor {
-	font-family: Tahoma, Arial, sans-serif;
+	font-family: var(--global-font-family);
 }
 
 /* Arial is best for RTL headings. */
@@ -18,19 +18,19 @@ body.rtl .press-this a.wp-switch-editor {
 .rtl h5,
 .rtl h6 {
 	font-family: Arial, sans-serif;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 /* he_IL: Remove Tahoma from the font stack. Arial is best for Hebrew. */
 body.locale-he-il,
 body.locale-he-il .press-this a.wp-switch-editor {
-	font-family: Arial, sans-serif;
+	font-family: var(--global-font-family);
 }
 
 /* he_IL: Have <em> be bold rather than italic. */
 .locale-he-il em {
 	font-style: normal;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 /* zh_CN: Remove italic properties. */

@@ -107,7 +107,7 @@
 	padding: 23px 10px 0;
 	border: 1px solid #ccd0d4;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
-	background: #fff;
+	background: var(--gray-100);
 	font-size: 13px;
 	line-height: 1.7;
 }
@@ -129,7 +129,7 @@
 }
 
 .welcome-panel p {
-	color: #72777c;
+	color: var(--gray-600);
 }
 
 .welcome-panel li a {
@@ -196,7 +196,7 @@
 
 .welcome-panel-column p {
 	margin-top: 7px;
-	color: #444;
+	color: var(--gray-700);
 }
 
 .welcome-panel .welcome-widgets-menus {
@@ -363,7 +363,7 @@
 }
 
 .community-events li.event-none {
-	border-left: 4px solid #00a0d2;
+	border-left: 4px solid var(--indigo-500);
 }
 
 .community-events-form label {
@@ -398,7 +398,7 @@
 }
 
 .community-events ul {
-	background-color: #fafafa;
+	background-color: var(--gray-100);
 	padding-left: 0;
 	padding-right: 0;
 	padding-bottom: 0;
@@ -407,19 +407,19 @@
 .community-events li {
 	margin: 0;
 	padding: 8px 12px;
-	color: #32373c;
+	color: var(--gray-800);
 }
 
 .community-events li:first-child {
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 }
 
 .community-events li ~ li {
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 }
 
 .community-events .activity-block.last {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid var(--gray-100);
 	padding-top: 0;
 	margin-top: -1px;
 }
@@ -449,7 +449,7 @@
 }
 
 .community-events .event-title {
-	font-weight: 600;
+	font-weight: var(--semibold);
 	display: block;
 }
 
@@ -462,8 +462,8 @@
 	margin-top: 0;
 	margin-bottom: 0;
 	padding: 12px;
-	border-top: 1px solid #eee;
-	color: #ddd;
+	border-top: 1px solid var(--gray-100);
+	color: var(--gray-100);
 }
 
 /* Safari 10 + VoiceOver specific: without this, the hidden text gets read out before the link. */
@@ -499,7 +499,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 .rssSummary {
-	color: #72777c;
+	color: var(--gray-600);
 	margin-top: 4px;
 }
 
@@ -519,7 +519,7 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_primary .rss-widget span,
 #dashboard_primary .rss-widget span.rss-date {
-	color: #72777c;
+	color: var(--gray-600);
 }
 
 #dashboard_primary .rss-widget span.rss-date {
@@ -580,14 +580,14 @@ body #dashboard-widgets .postbox form .submit {
 /* Dashboard right now - Colors */
 
 #dashboard_right_now .sub {
-	color: #555d66;
-	background: #f5f5f5;
-	border-top: 1px solid #eee;
+	color: var(--gray-600);
+	background: var(--gray-100);
+	border-top: 1px solid var(--gray-100);
 	padding: 10px 12px 6px 12px;
 }
 
 #dashboard_right_now .sub h3 {
-	color: #555;
+	color: var(--gray-600);
 }
 
 #dashboard_right_now .sub p {
@@ -596,7 +596,7 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_right_now .warning a::before,
 #dashboard_right_now .warning span::before {
-	color: #d54e21;
+	color: var(--red-700);
 }
 
 /* Dashboard Quick Draft */
@@ -608,7 +608,7 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_quick_press div.updated {
 	margin-bottom: 10px;
-	border: 1px solid #eee;
+	border: 1px solid var(--gray-100);
 	border-width: 1px 1px 1px 0;
 }
 
@@ -653,7 +653,7 @@ body #dashboard-widgets .postbox form .submit {
 /* Dashboard Quick Draft - Drafts list */
 
 .js #dashboard_quick_press .drafts {
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 }
 
 #dashboard_quick_press .drafts abbr {
@@ -678,7 +678,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 #dashboard_quick_press .drafts li time {
-	color: #72777c;
+	color: var(--gray-600);
 }
 
 #dashboard_quick_press .drafts p {
@@ -704,7 +704,7 @@ body #dashboard-widgets .postbox form .submit {
 	padding: 0;
 	font-size: 14px;
 	font-weight: 400;
-	color: #23282d;
+	color: var(--gray-800);
 }
 
 #dashboard_quick_press .drafts h2 {
@@ -741,7 +741,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 #dashboard_activity .no-activity p {
-	color: #72777c;
+	color: var(--gray-600);
 	font-size: 16px;
 }
 
@@ -765,14 +765,14 @@ body #dashboard-widgets .postbox form .submit {
 
 #dashboard_activity .subsubsub {
 	float: none;
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 	margin: 0 -12px;
 	padding: 8px 12px 4px;
 }
 
 #dashboard_activity .subsubsub a .count,
 #dashboard_activity .subsubsub a.current .count {
-	color: #72777c; /* white background on the dashboard but #f1f1f1 on list tables */
+	color: var(--gray-600); /* white background on the dashboard but var(--gray-100) on list tables */
 }
 
 #future-posts ul,
@@ -791,11 +791,11 @@ body #dashboard-widgets .postbox form .submit {
 	display: inline-block;
 	margin-right: 5px;
 	min-width: 150px;
-	color: #72777c;
+	color: var(--gray-600);
 }
 
 .activity-block {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid var(--gray-100);
 	margin: 0 -12px;
 	padding: 8px 12px 4px;
 }
@@ -805,7 +805,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 .activity-block .subsubsub li {
-	color: #ddd;
+	color: var(--gray-100);
 }
 
 /* Dashboard activity widget - Comments */
@@ -819,7 +819,7 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 #activity-widget #the-comment-list .comment-item {
-	background: #fafafa;
+	background: var(--gray-100);
 	padding: 12px;
 	position: relative;
 }
@@ -842,11 +842,11 @@ body #dashboard-widgets .postbox form .submit {
 }
 
 #activity-widget #the-comment-list .comment-item:first-child {
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 }
 
 #activity-widget #the-comment-list .unapproved {
-	background-color: #fef7f1;
+	background-color: var(--gray-200);
 }
 
 #activity-widget #the-comment-list .unapproved::before {
@@ -856,7 +856,7 @@ body #dashboard-widgets .postbox form .submit {
 	left: 0;
 	top: 0;
 	bottom: 0;
-	background: #d54e21;
+	background: var(--red-700);
 	width: 4px;
 }
 
@@ -958,7 +958,7 @@ body #dashboard-widgets .postbox form .submit {
 #latest-comments #the-comment-list .comment-meta {
 	line-height: 1.5;
 	margin: 0;
-	color: #666;
+	color: var(--gray-600);
 }
 
 #latest-comments #the-comment-list .comment-meta cite {
@@ -988,7 +988,7 @@ body #dashboard-widgets .postbox form .submit {
 
 a.rsswidget {
 	font-size: 13px;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	line-height: 1.4;
 }
 
@@ -998,7 +998,7 @@ a.rsswidget {
 }
 
 .rss-widget span.rss-date {
-	color: #72777c;
+	color: var(--gray-600);
 	font-size: 13px;
 	margin-left: 3px;
 }
@@ -1021,7 +1021,7 @@ a.rsswidget {
 /* Browser Nag */
 #dashboard_browser_nag a.update-browser-link {
 	font-size: 1.2em;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 #dashboard_browser_nag a {
@@ -1045,29 +1045,29 @@ a.rsswidget {
 	background-color: #e29808;
 	background-image: none;
 	border-color: #edc048;
-	color: #fff;
+	color: var(--gray-100);
 	box-shadow: none;
 }
 
 #dashboard_browser_nag.postbox.browser-insecure h2 {
 	border-bottom-color: #cd5a5a;
-	color: #fff;
+	color: var(--gray-100);
 }
 
 #dashboard_browser_nag.postbox h2 {
 	border-bottom-color: #f6e2ac;
 	background: transparent none;
-	color: #fff;
+	color: var(--gray-100);
 	box-shadow: none;
 }
 
 #dashboard_browser_nag a {
-	color: #fff;
+	color: var(--gray-100);
 }
 
 #dashboard_browser_nag h2.hndle {
 	border: none;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	font-size: 20px;
 	padding-top: 10px;
 }
@@ -1084,7 +1084,7 @@ a.rsswidget {
 
 /* PHP Nag */
 #dashboard_php_nag .dashicons-warning {
-	color: #ffb900;
+	color: var(--yellow-600);
 	padding-right: 6px;
 }
 
@@ -1097,7 +1097,7 @@ a.rsswidget {
 }
 
 #dashboard_php_nag h3 {
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 #dashboard_php_nag .button .dashicons-external {

@@ -10,16 +10,17 @@ body {
 }
 
 body {
-	background: #f1f1f1;
+	background-color: var(--indigo-600);
+	background: linear-gradient(45deg,  #42a5f5 0%,#478ed1 50%,#0d47a1 100%);
 	min-width: 0;
-	color: #444;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	color: var(--gray-700);
+	font-family: var(--highlight-font-family);
 	font-size: 13px;
 	line-height: 1.4;
 }
 
 a {
-	color: #0073aa;
+	color: var(--indigo-600);
 	transition-property: border, background, color;
 	transition-duration: 0.05s;
 	transition-timing-function: ease-in-out;
@@ -31,13 +32,13 @@ a {
 
 a:hover,
 a:active {
-	color: #00a0d2;
+	color: var(--indigo-500);
 }
 
 a:focus {
-	color: #124964;
+	color: var(--blue-800);
 	box-shadow:
-		0 0 0 1px #5b9dd9,
+		0 0 0 1px var(--indigo-500),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
@@ -48,20 +49,20 @@ p {
 .login .message,
 .login .success,
 .login #login_error {
-	border-left: 4px solid #00a0d2;
+	border-left: 4px solid var(--indigo-500);
 	padding: 12px;
 	margin-left: 0;
 	margin-bottom: 20px;
-	background-color: #fff;
+	background-color: var(--gray-100);
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .login .success {
-	border-left-color: #46b450;
+	border-left-color: var(--green-500);
 }
 
 .login #login_error {
-	border-left-color: #dc3232;
+	border-left-color: var(--red-700);
 }
 
 #loginform p.submit,
@@ -106,8 +107,8 @@ p {
 
 .login .button.wp-hide-pw:focus {
 	background: transparent;
-	border-color: #007cba;
-	box-shadow: 0 0 0 1px #007cba;
+	border-color: var(--indigo-500);
+	box-shadow: 0 0 0 1px var(--indigo-500);
 
 	/* Only visible in Windows High Contrast mode */
 	outline: 2px solid transparent;
@@ -139,7 +140,7 @@ p {
 	padding: 26px 24px 46px;
 	font-weight: 400;
 	overflow: hidden;
-	background: #fff;
+	background: var(--gray-100);
 	border: 1px solid #ccd0d4;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
@@ -227,7 +228,7 @@ p {
 	background-size: 84px;
 	background-position: center top;
 	background-repeat: no-repeat;
-	color: #444;
+	color: var(--gray-700);
 	height: 84px;
 	font-size: 20px;
 	font-weight: 400;
@@ -265,19 +266,19 @@ p {
 .login #nav a,
 .login #backtoblog a {
 	text-decoration: none;
-	color: #555d66;
+	color: var(--gray-600);
 }
 
 .login #nav a:hover,
 .login #backtoblog a:hover,
 .login h1 a:hover {
-	color: #00a0d2;
+	color: var(--indigo-500);
 }
 
 .login #nav a:focus,
 .login #backtoblog a:focus,
 .login h1 a:focus {
-	color: #124964;
+	color: var(--blue-800);
 }
 
 .login .privacy-policy-page-link {
@@ -317,7 +318,7 @@ p {
 }
 
 .login #pass-strength-result {
-	font-weight: 600;
+	font-weight: var(--semibold);
 	margin: -1px 5px 16px 0;
 	padding: 6px 5px;
 	text-align: center;
@@ -359,8 +360,10 @@ body.interim-login {
 	padding: 0;
 	position: absolute;
 	width: 1px;
+	/* stylelint-disable max-line-length */
 	word-wrap: normal !important; /* many screen reader and browser combinations announce broken words as they would appear visually */
 }
+/*stylelint-enable */
 
 /* Hide the Edge "reveal password" native button */
 input::-ms-reveal {

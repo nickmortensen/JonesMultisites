@@ -184,7 +184,6 @@
 }
 
 #adminmenu .wp-submenu a {
-	color: rgba(240, 245, 250, 0.7);
 	color: var(--admin-light-links);
 	font-size: 13px;
 	line-height: 1.4;
@@ -201,7 +200,8 @@
 #adminmenu li.menu-top > a:focus,
 #adminmenu .wp-submenu a:hover,
 #adminmenu .wp-submenu a:focus {
-	color: var(--indigo-500);
+	color: var(--indigo-100);
+	text-shadow: 2px 1px 1px var(--gray-800);
 }
 
 #adminmenu li.menu-top {
@@ -224,7 +224,7 @@
 .folded #adminmenu .wp-has-current-submenu .wp-submenu {
 	padding: 7px 0 8px;
 	z-index: 9999;
-	background-color: var(--gray-700);
+	background-color: var(--gray-600);
 	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -249,7 +249,7 @@
 	border: 0 none;
 	margin-top: 0;
 	box-shadow: none;
-	background-color: var(--gray-700);
+	background-color: var(--gray-600);
 }
 
 /* ensure that wp-submenu's box shadow doesn't appear on top of the focused menu item's background. */
@@ -257,8 +257,8 @@
 #adminmenu li.opensub > a.menu-top,
 #adminmenu li > a.menu-top:focus {
 	position: relative;
-	background-color: var(--gray-700);
-	color: var(--indigo-500);
+	background-color: var(--gray-600);
+	color: var(--indigo-100);
 }
 
 .folded #adminmenu li.menu-top:hover,
@@ -334,7 +334,7 @@
 #adminmenu a.menu-top,
 #adminmenu .wp-submenu-head {
 	font-size: 14px;
-	font-weight: 400;
+	font-weight: var(--normal);
 	line-height: 1.3;
 	padding: 0;
 }
@@ -660,7 +660,7 @@ li#wp-admin-bar-menu-toggle {
 /* Auto-folding of the admin menu */
 @media only screen and (max-width: 960px) {
 	.auto-fold #wpcontent,
-	.auto-fold #wpfooter {0
+	.auto-fold #wpfooter {
 		margin-left: 36px;
 	}
 

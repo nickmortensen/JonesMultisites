@@ -38,7 +38,7 @@
 	--gray-800: #2d3748;
 	--gray-900: #1a202c;
 
-	--red-100: #fff5f5;
+	--red-100: var(--gray-100)5f5;
 	--red-200: #fed7d7;
 	--red-300: #feb2b2;
 	--red-400: #fc8181;
@@ -48,7 +48,7 @@
 	--red-800: #9b2c2c;
 	--red-900: #742a2a;
 
-	--orange-100: #fffaf0;
+	--orange-100: var(--gray-100)af0;
 	--orange-200: #feebc8;
 	--orange-300: #fbd38d;
 	--orange-400: #f6ad55;
@@ -58,7 +58,7 @@
 	--orange-800: #9c4221;
 	--orange-900: #7b341e;
 
-	--yellow-100: #fffff0;
+	--yellow-100: var(--gray-100)ff0;
 	--yellow-200: #fefcbf;
 	--yellow-300: #faf089;
 	--yellow-400: #f6e05e;
@@ -108,7 +108,7 @@
 	--purple-800: #553c9a;
 	--purple-900: #44337a;
 
-	--pink-100: #fff5f7;
+	--pink-100: var(--gray-100)5f7;
 	--pink-200: #fed7e2;
 	--pink-300: #fbb6ce;
 	--pink-400: #f687b3;
@@ -145,7 +145,7 @@
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
 
-	--color-quote-border: #000;
+	--color-quote-border: var(--gray-800);
 	--color-quote-citation: #6c7781;
 
 	/* prefered timing function */
@@ -177,3 +177,147 @@
 	--admin-link-hover: var(--indigo-900);
 	--submenu-width: 180px;
 }
+
+/* stylelint-disable */
+/* last update 23_March_2020 */
+.flex { display: flex }
+
+/* flex flow displays the direction and the wrap styles, but this is just the plain old flex direction styles*/
+.direction-column { flex-direction: column }
+
+.direction-row { flex-direction: row }
+
+/*---------- MAIN AXIS ROW= X-Axis aligned, COLUMN = Y Axis Aligned----------*/
+.row-nw { flex-flow: row nowrap }
+
+.col-nw { flex-flow: column nowrap }
+
+.col-wrap { flex-flow: column wrap }
+
+.row-wrap { flex-flow: row wrap }
+
+.row-nowrap { flex-flow: row nowrap }
+
+.col-nowrap { flex-flow: column nowrap }
+
+/*===========================================
+=      PRIMARY AXIS STYLES      =
+===========================================*/
+/*---------- Justify Content is For MAIN AXIS ----------*/
+.justify-content-space-around { justify-content: space-around }
+
+.justify-content-space-between { justify-content: space-between }
+
+.justify-content-start { justify-content: flex-start }
+
+.justify-content-end { justify-content: flex-end }
+
+.justify-content-center { justify-content: center }
+
+/*simplified classes*/
+.justify-space-around { justify-content: space-around }
+
+.justify-space-between { justify-content: space-between }
+
+.justify-start { justify-content: flex-start }
+
+.justify-end { justify-content: flex-end }
+
+.justify-center { justify-content: center }
+
+/*===== End of PRIMARY AXIS STYLES ======*/
+
+/*=============================================
+=      SECONDARY AXIS STYLES      =
+=============================================*/
+/*------- "ALIGN" = "ALIGN ITEMS", BUT YOU KEEP FORGETTING, SO MIGHT AS WELL GO WITH IT ----*/
+.align-space-around { align-items: space-around }
+
+.align-space-between { align-items: space-between }
+
+.align-start { align-items: flex-start }
+
+.align-end { align-items: flex-end }
+
+.align-center { align-items: center }
+
+.align-stretch { align-items: stretch }
+
+.align-baseline { align-items: baseline }
+
+/*--- "ALIGN ITEMS" = "align" IS FOR SECONDARY AXIS ----------*/
+.align-items-space-around { align-items: space-around }
+
+.align-items-space-between { align-items: space-between }
+
+.align-items-start { align-items: flex-start }
+
+.align-items-end { align-items: flex-end }
+
+.align-items-center { align-items: center }
+
+.align-items-stretch { align-items: stretch }
+
+.align-items-baseline { align-items: baseline }
+
+
+/* ===== End of SECONDARY AXIS STYLES ====== */
+
+
+
+/*--- ALIGN CONTENT FOR CONTENT THAT WRAPS:Applies When a Wrapped Item has Extra Space ----------*/
+.align-content-space-around { align-content: space-around }
+
+.align-content-space-between { align-content: space-between }
+
+.align-content-start { align-content: flex-start }
+
+.align-content-end { align-content: flex-end }
+
+.align-content-center { align-content: center }
+
+
+/*simplified align content classes*/
+.content-space-around { align-content: space-around }
+
+.content-space-between { align-content: space-between }
+
+.content-start { align-content: flex-start }
+
+.content-end { align-content: flex-end }
+
+.content-center { align-content: center }
+
+/* ========== CHILD ITEM STYLES ==========*/
+
+/*---------- Align Self is for CHILD ITEMS , it OVERRIDES 'Align-Items' ----------*/
+.align-self-start { align-self: start }
+
+.align-self-end { align-self: end }
+
+.align-self-center { align-self: center }
+
+.align-self-stretch { align-self: stretch }
+
+/*---------- HOW SHOULD THIS CHILD ITEM GROW IN PROPORTION -- defaults to one, proportionate to one ----------*/
+.grow-1 { flex-grow: 1 }
+
+.grow-2 { flex-grow: 2 }
+
+.grow-3 { flex-grow: 3 }
+
+.grow-4 { flex-grow: 4 }
+
+/*---------- ORDER of a CHILD ITEM
+defaults to 1, so a negative number would go first ----------*/
+.order-minus-one { order: -1 }
+
+.order-one { order: 1 }
+
+.order-two { order: 2 }
+
+.order-three { order: 3 }
+
+.order-last { order: 25 }
+
+/* stylelint-enable */

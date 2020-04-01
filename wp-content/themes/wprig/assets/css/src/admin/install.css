@@ -1,14 +1,14 @@
 @import url(_custom-properties.css);
 
 html {
-	background: #f1f1f1;
+	background: var(--gray-100);
 	margin: 0 20px;
 }
 
 body {
-	background: #fff;
-	color: #444;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	background: var(--gray-100);
+	color: var(--gray-700);
+	font-family: var(--highlight-font-family);
 	margin: 140px auto 25px;
 	padding: 20px 20px 10px 20px;
 	max-width: 700px;
@@ -17,30 +17,30 @@ body {
 }
 
 a {
-	color: #0073aa;
+	color: var(--indigo-600);
 }
 
 a:hover,
 a:active {
-	color: #00a0d2;
+	color: var(--indigo-500);
 }
 
 a:focus {
-	color: #124964;
+	color: var(--blue-800);
 	box-shadow:
-		0 0 0 1px #5b9dd9,
+		0 0 0 1px var(--indigo-500),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
 .ie8 a:focus {
-	outline: #5b9dd9 solid 1px;
+	outline: var(--indigo-500) solid 1px;
 }
 
 h1,
 h2 {
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-100);
 	clear: both;
-	color: #666;
+	color: var(--gray-600);
 	font-size: 24px;
 	padding: 0;
 	padding-bottom: 7px;
@@ -98,12 +98,10 @@ label {
 }
 
 #logo a {
-	background-image: url(../images/w-logo-blue.png?ver=20131202);
-	background-image: none, url(../images/wordpress-logo.svg?ver=20131107);
 	background-size: 84px;
 	background-position: center top;
 	background-repeat: no-repeat;
-	color: #444; /* same as login.css */
+	color: var(--gray-700); /* same as login.css */
 	height: 84px;
 	font-size: 20px;
 	font-weight: 400;
@@ -136,8 +134,8 @@ th {
 }
 
 textarea {
-	border: 1px solid #ddd;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	border: 1px solid var(--gray-100);
+	font-family: var(--highlight-font-family);
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -177,13 +175,13 @@ textarea {
 	line-height: 1.33333333;
 	font-size: 15px;
 	padding: 3px 5px;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-100);
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
 }
 
 input,
 submit {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-family: var(--highlight-font-family);
 }
 
 .form-table input[type=text],
@@ -230,9 +228,9 @@ submit {
 }
 
 .message {
-	border-left: 4px solid #dc3232;
+	border-left: 4px solid var(--red-700);
 	padding: 0.7em 0.6em;
-	background-color: #fbeaea;
+	background-color: var(--gray-100);
 }
 
 /* rtl:ignore */
@@ -337,21 +335,21 @@ body.language-chooser {
 	padding: 8px;
 	width: 100%;
 	display: block;
-	border: 1px solid #ddd;
-	background: #fff;
-	color: #32373c;
+	border: 1px solid var(--gray-100);
+	background: var(--gray-100);
+	color: var(--gray-800);
 	font-size: 16px;
 	font-family: Arial, sans-serif;
 	font-weight: 400;
 }
 
 .language-chooser select:focus {
-	color: #32373c;
+	color: var(--gray-800);
 }
 
 .language-chooser select option:hover,
 .language-chooser select option:focus {
-	color: #016087;
+	color: var(--blue-700);
 }
 
 .language-chooser p {
@@ -374,7 +372,6 @@ body.language-chooser {
 }
 
 .spinner {
-	background: url(../images/spinner.gif) no-repeat;
 	background-size: 20px 20px;
 	visibility: hidden;
 	opacity: 0.7;
@@ -399,11 +396,7 @@ body.language-chooser {
  * HiDPI Displays
  */
 @media print,
-	(-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 120dpi) {
-
-	.spinner {
-		background-image: url(../images/spinner-2x.gif);
-	}
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 120dpi) {
 
 }

@@ -7,7 +7,7 @@
 .media-item .describe {
 	border-collapse: collapse;
 	width: 100%;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-100);
 	clear: both;
 	cursor: default;
 }
@@ -70,16 +70,16 @@
 	display: inline;
 	padding: 0 0 0 23px;
 	margin: 0 1em 0 3px;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .media-upload-form tr.image-size label {
 	margin: 0 0 0 5px;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .media-upload-form th.label label {
-	font-weight: 600;
+	font-weight: var(--semibold);
 	margin: 0.5em;
 	font-size: 13px;
 }
@@ -121,12 +121,12 @@
 	margin-bottom: 1px;
 	position: relative;
 	width: 100%;
-	background: #fff;
+	background: var(--gray-100);
 }
 
 .media-upload-form .media-item,
 .media-upload-form .media-item .error {
-	box-shadow: 0 1px 0 #ddd;
+	box-shadow: 0 1px 0 var(--gray-100);
 }
 
 #media-items:empty {
@@ -165,7 +165,7 @@
 	padding: 0;
 	overflow: hidden;
 	border-radius: 22px;
-	background: #ddd;
+	background: var(--gray-100);
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -175,7 +175,7 @@
 	height: 100%;
 	margin-top: -22px;
 	border-radius: 22px;
-	background-color: #0073aa;
+	background-color: var(--indigo-600);
 	box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -184,7 +184,7 @@
 	position: relative;
 	width: 200px;
 	padding: 0;
-	color: #fff;
+	color: var(--gray-100);
 	text-align: center;
 	line-height: 22px;
 	font-weight: 400;
@@ -223,7 +223,7 @@
 ------------------------------------------------------------------------------*/
 
 .find-box {
-	background-color: #fff;
+	background-color: var(--gray-100);
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
 	width: 600px;
 	overflow: hidden;
@@ -237,10 +237,10 @@
 
 .find-box-head {
 	background: #fcfcfc;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-100);
 	height: 36px;
 	font-size: 18px;
-	font-weight: 600;
+	font-weight: var(--semibold);
 	line-height: 2;
 	padding: 0 36px 0 16px;
 	position: absolute;
@@ -252,7 +252,7 @@
 .find-box-inside {
 	overflow: auto;
 	padding: 16px;
-	background-color: #fff;
+	background-color: var(--gray-100);
 	position: absolute;
 	top: 37px;
 	bottom: 45px;
@@ -303,17 +303,17 @@
 	cursor: pointer;
 	text-align: center;
 	background: none;
-	color: #666;
+	color: var(--gray-600);
 }
 
 #find-posts-close:hover,
 #find-posts-close:focus {
-	color: #00a0d2;
+	color: var(--indigo-500);
 }
 
 #find-posts-close:focus {
 	box-shadow:
-		0 0 0 1px #5b9dd9,
+		0 0 0 1px var(--indigo-500),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
 
 	/* Only visible in Windows High Contrast mode */
@@ -333,7 +333,7 @@
 .find-box-buttons {
 	padding: 8px 16px;
 	background: #fcfcfc;
-	border-top: 1px solid #ddd;
+	border-top: 1px solid var(--gray-100);
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -364,14 +364,14 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: #000;
+	background: var(--gray-800);
 	opacity: 0.7;
 	filter: alpha(opacity=70);
 	z-index: 100100;
 }
 
 .drag-drop #drag-drop-area {
-	border: 4px dashed #b4b9be;
+	border: 4px dashed var(--gray-500);
 	height: 200px;
 }
 
@@ -442,7 +442,7 @@ border color while dragging a file over the uploader drop area */
 	padding: 0 16px;
 	border-left: 4px solid #dd3d36;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-	background-color: #fff;
+	background-color: var(--gray-100);
 }
 
 .upload-php .mode-grid .hide-sidebar .media-sidebar {
@@ -473,7 +473,7 @@ border color while dragging a file over the uploader drop area */
 	content: "\f153";
 	display: block;
 	font: normal 16px/1 dashicons;
-	color: #72777c;
+	color: var(--gray-600);
 }
 
 .upload-php .mode-grid .media-sidebar .media-uploader-status .upload-dismiss-errors:focus::before,
@@ -493,7 +493,7 @@ border color while dragging a file over the uploader drop area */
 	bottom: auto;
 	padding-top: 0;
 	margin-top: 20px;
-	border: 4px dashed #b4b9be;
+	border: 4px dashed var(--gray-500);
 }
 
 .media-frame.mode-select .attachments-browser.fixed .attachments {
@@ -506,8 +506,8 @@ border color while dragging a file over the uploader drop area */
 .media-frame.mode-grid .selected.attachment:focus,
 .media-frame.mode-grid .attachment.details:focus {
 	box-shadow:
-		inset 0 0 2px 3px #f1f1f1,
-		inset 0 0 0 7px #5b9dd9;
+		inset 0 0 2px 3px var(--gray-100),
+		inset 0 0 0 7px var(--indigo-500);
 
 	/* Only visible in Windows High Contrast mode */
 	outline: 2px solid transparent;
@@ -516,13 +516,13 @@ border color while dragging a file over the uploader drop area */
 
 .media-frame.mode-grid .selected.attachment {
 	box-shadow:
-		inset 0 0 0 5px #f1f1f1,
-		inset 0 0 0 7px #ccc;
+		inset 0 0 0 5px var(--gray-100),
+		inset 0 0 0 7px var(--gray-400);
 }
 
 .media-frame.mode-grid .attachment.details {
 	box-shadow:
-		inset 0 0 0 3px #f1f1f1,
+		inset 0 0 0 3px var(--gray-100),
 		inset 0 0 0 7px #1e8cbe;
 }
 
@@ -588,7 +588,7 @@ border color while dragging a file over the uploader drop area */
 }
 
 .media-frame.mode-grid .attachments-browser .no-media {
-	color: #666; /* same as no plugins and no themes */
+	color: var(--gray-600); /* same as no plugins and no themes */
 	font-size: 18px;
 	font-style: normal;
 	margin: 0;
@@ -619,7 +619,7 @@ border color while dragging a file over the uploader drop area */
 .edit-attachment-frame .edit-media-header .left,
 .edit-attachment-frame .edit-media-header .right {
 	cursor: pointer;
-	color: #72777c;
+	color: var(--gray-600);
 	background-color: transparent;
 	height: 50px;
 	width: 50px;
@@ -627,7 +627,7 @@ border color while dragging a file over the uploader drop area */
 	position: absolute;
 	text-align: center;
 	border: 0;
-	border-left: 1px solid #ddd;
+	border-left: 1px solid var(--gray-100);
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
@@ -662,9 +662,9 @@ border color while dragging a file over the uploader drop area */
 .edit-attachment-frame .edit-media-header .right:hover,
 .edit-attachment-frame .edit-media-header .left:focus,
 .edit-attachment-frame .edit-media-header .right:focus {
-	background: #ddd;
-	border-color: #ccc;
-	color: #000;
+	background: var(--gray-100);
+	border-color: var(--gray-400);
+	color: var(--gray-800);
 	outline: none;
 	box-shadow: none;
 }
@@ -679,7 +679,7 @@ border color while dragging a file over the uploader drop area */
 
 .upload-php .media-modal-close:focus .media-modal-icon::before,
 .upload-php .media-modal-close:hover .media-modal-icon::before {
-	color: #000;
+	color: var(--gray-800);
 }
 
 .edit-attachment-frame .edit-media-header .left::before {
@@ -692,7 +692,7 @@ border color while dragging a file over the uploader drop area */
 
 .edit-attachment-frame .edit-media-header [disabled],
 .edit-attachment-frame .edit-media-header [disabled]:hover {
-	color: #ccc;
+	color: var(--gray-400);
 	background: inherit;
 	cursor: default;
 }
@@ -736,7 +736,8 @@ border color while dragging a file over the uploader drop area */
 	max-width: 100%;
 	max-height: 90%;
 	max-height: calc(100% - 42px); /* leave space for actions underneath */
-	background-image: linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4), linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
+	background-image: linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4),
+					  linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
 	background-position: 0 0, 10px 10px;
 	background-size: 20px 20px;
 }
@@ -768,8 +769,8 @@ border color while dragging a file over the uploader drop area */
 	height: 100%;
 	box-shadow: inset 0 4px 4px -4px rgba(0, 0, 0, 0.1);
 	border-bottom: 0;
-	border-left: 1px solid #ddd;
-	background: #f3f3f3;
+	border-left: 1px solid var(--gray-100);
+	background: var(--gray-100);
 }
 
 .edit-attachment-frame .attachment-info .details,
@@ -779,12 +780,12 @@ border color while dragging a file over the uploader drop area */
 	float: none;
 	margin-bottom: 15px;
 	padding-bottom: 15px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-100);
 }
 
 .edit-attachment-frame .attachment-info .filename {
 	font-weight: 400;
-	color: #666;
+	color: var(--gray-600);
 }
 
 .edit-attachment-frame .attachment-info .thumbnail {
@@ -872,7 +873,7 @@ border color while dragging a file over the uploader drop area */
 	top: 0;
 	bottom: 0;
 	width: 100%;
-	background: #fff;
+	background: var(--gray-100);
 	opacity: 0.7;
 	filter: alpha(opacity=70);
 	display: none;
@@ -900,7 +901,7 @@ border color while dragging a file over the uploader drop area */
 .imgedit-settings .disabled {
 	/* WCAG 1.4.3 Text or images of text that are part of an inactive user
 	   interface component ... have no contrast requirement. */
-	color: #a0a5aa;
+	color: var(--gray-500);
 }
 
 .A1B1 {
@@ -953,11 +954,11 @@ border color while dragging a file over the uploader drop area */
 }
 
 .imgedit-menu .button.disabled {
-	color: #a0a5aa;
-	border-color: #ddd;
+	color: var(--gray-500);
+	border-color: var(--gray-100);
 	background: #f7f7f7;
 	box-shadow: none;
-	text-shadow: 0 1px 0 #fff;
+	text-shadow: 0 1px 0 var(--gray-100);
 	cursor: default;
 	transform: none;
 }
@@ -995,7 +996,8 @@ border color while dragging a file over the uploader drop area */
 }
 
 .imgedit-crop-wrap img {
-	background-image: linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4), linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
+	background-image: linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4),
+					  linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
 	background-position: 0 0, 10px 10px;
 	background-size: 20px 20px;
 }
@@ -1046,7 +1048,7 @@ border color while dragging a file over the uploader drop area */
 
 #poststuff .imgedit-group-top .button-link {
 	text-decoration: none;
-	color: #23282d;
+	color: var(--gray-800);
 }
 
 .imgedit-applyto .imgedit-label {
@@ -1077,7 +1079,7 @@ border color while dragging a file over the uploader drop area */
 
 .image-editor .imgedit-settings .imgedit-help-toggle:focus {
 	color: #0074a2;
-	border-color: #5b9dd9;
+	border-color: var(--indigo-500);
 	box-shadow: 0 0 3px rgba(0, 115, 170, 0.8);
 
 	/* Only visible in Windows High Contrast mode */
@@ -1103,7 +1105,7 @@ border color while dragging a file over the uploader drop area */
 }
 
 span.imgedit-scale-warn {
-	color: #dc3232;
+	color: var(--red-700);
 	font-size: 20px;
 	font-style: normal;
 	visibility: hidden;
@@ -1115,7 +1117,7 @@ span.imgedit-scale-warn {
 }
 
 .imgedit-save-target legend {
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .imgedit-group {
@@ -1140,7 +1142,7 @@ span.imgedit-scale-warn {
 	width: 7px;
 	text-align: center;
 	font-size: 13px;
-	color: #444;
+	color: var(--gray-700);
 }
 
 .imgedit-settings .imgedit-scale-button-wrapper {

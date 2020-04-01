@@ -8,7 +8,7 @@
 /* Emulates .wrap h1 styling */
 .health-check-header h1 {
 	display: inline-block;
-	font-weight: 600;
+	font-weight: var(--semibold)
 	margin: 0 0.8rem 1rem;
 	font-size: 23px;
 	padding: 9px 0 4px 0;
@@ -28,7 +28,7 @@
 .health-check-header {
 	text-align: center;
 	margin: 0 0 1rem;
-	background: #fff;
+	background: var(--gray-100);
 	border-bottom: 1px solid #e2e4e7;
 }
 
@@ -50,7 +50,7 @@
 	margin: 0;
 	border-radius: 100%;
 	position: relative;
-	font-weight: 600;
+	font-weight: var(--semibold)
 	font-size: 0.4rem;
 }
 
@@ -70,53 +70,53 @@
 
 .loading .site-health-progress svg #bar {
 	stroke-dashoffset: 0;
-	stroke: #adc5d2;
+	stroke: var(--gray-400);
 	animation: loadingPulse 3s infinite ease-in-out;
 }
 
 .site-health-progress svg circle {
 	stroke-dashoffset: 0;
 	transition: stroke-dashoffset 1s linear;
-	stroke: #ccc;
+	stroke: var(--gray-400);
 	stroke-width: 2em;
 }
 
 .site-health-progress svg #bar {
 	stroke-dashoffset: 565;
-	stroke: #dc3232;
+	stroke: var(--red-700);
 }
 
 .green .site-health-progress #bar {
-	stroke: #46b450;
+	stroke: var(--green-500);
 }
 
 .green .site-health-progress .site-health-progress-label {
-	color: #46b450;
+	color: var(--green-500);
 }
 
 .orange .site-health-progress #bar {
-	stroke: #ffb900;
+	stroke: var(--yellow-600);
 }
 
 .orange .site-health-progress .site-health-progress-label {
-	color: #ffb900;
+	color: var(--yellow-600);
 }
 
 .site-health-progress-label {
-	font-weight: 600;
+	font-weight: var(--semibold)
 	line-height: 20px;
 	margin-left: 0.3rem;
 }
 
 @keyframes loadingPulse {
 	0% {
-		stroke: #adc5d2;
+		stroke: var(--gray-400);
 	}
 	50% {
-		stroke: #00a0d2;
+		stroke: var(--indigo-500);
 	}
 	100% {
-		stroke: #adc5d2;
+		stroke: var(--gray-400);
 	}
 }
 
@@ -149,14 +149,14 @@
 }
 
 .health-check-tab:focus {
-	color: #191e23;
+	color: var(--gray-800);
 	outline: 1px solid #6c7781;
 	box-shadow: none;
 }
 
 .health-check-tab.active {
-	box-shadow: inset 0 -3px #007cba;
-	font-weight: 600;
+	box-shadow: inset 0 -3px var(--indigo-500);
+	font-weight: var(--semibold)
 }
 
 .health-check-body {
@@ -184,23 +184,23 @@
 .health-check-body .pass::before,
 .health-check-body .good::before {
 	content: "\f147";
-	color: #46b450;
+	color: var(--green-500);
 }
 
 .health-check-body .warning::before {
 	content: "\f460";
-	color: #ffb900;
+	color: var(--yellow-600);
 }
 
 .health-check-body .info::before {
 	content: "\f348";
-	color: #00a0d2;
+	color: var(--indigo-500);
 }
 
 .health-check-body .fail::before,
 .health-check-body .error::before {
 	content: "\f335";
-	color: #dc3232;
+	color: var(--red-700);
 }
 
 .site-health-copy-buttons {
@@ -213,7 +213,7 @@
 
 .site-health-copy-buttons .success {
 	display: none;
-	color: #40860a;
+	color: var(--green-700);
 	line-height: 1.8;
 	margin-left: 0.5rem;
 }
@@ -270,7 +270,7 @@
 
 .site-status-all-clear .encouragement {
 	font-size: 1.5rem;
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .site-status-all-clear p {
@@ -286,7 +286,7 @@
 	border-top: 1px solid #ccd0d4;
 	font-size: inherit;
 	line-height: inherit;
-	font-weight: 600;
+	font-weight: var(--semibold)
 	color: inherit;
 }
 
@@ -295,9 +295,9 @@
 }
 
 .health-check-accordion-trigger {
-	background: #fff;
+	background: var(--gray-100);
 	border: 0;
-	color: #32373c;
+	color: var(--gray-800);
 	cursor: pointer;
 	display: flex;
 	font-weight: 400;
@@ -319,26 +319,26 @@
 
 .health-check-accordion-trigger:hover,
 .health-check-accordion-trigger:active {
-	background: #f8f9f9;
+	background: var(--gray-200);
 }
 
 .health-check-accordion-trigger:focus {
-	color: #191e23;
+	color: var(--gray-800);
 	border: none;
 	box-shadow: none;
 	outline-offset: -2px;
-	outline: 1px dotted #555d66;
+	outline: 1px dotted var(--gray-600);
 }
 
 .health-check-accordion-trigger .title {
 	pointer-events: none;
-	font-weight: 600;
+	font-weight: var(--semibold)
 	flex-grow: 1;
 }
 
 .health-check-accordion-trigger .icon,
 .site-health-view-passed .icon {
-	border: solid #555d66;
+	border: solid var(--gray-600);
 	border-width: 0 2px 2px 0;
 	height: 0.5rem;
 	pointer-events: none;
@@ -351,8 +351,8 @@
 
 .health-check-accordion-trigger .badge {
 	padding: 0.1rem 0.5rem 0.15rem;
-	color: #32373c;
-	font-weight: 600;
+	color: var(--gray-800);
+	font-weight: var(--semibold)
 	margin-left: 0.5rem;
 }
 
@@ -361,15 +361,15 @@
 }
 
 .health-check-accordion-trigger .badge.orange {
-	border: 1px solid #ffb900;
+	border: 1px solid var(--yellow-600);
 }
 
 .health-check-accordion-trigger .badge.red {
-	border: 1px solid #dc3232;
+	border: 1px solid var(--red-700);
 }
 
 .health-check-accordion-trigger .badge.green {
-	border: 1px solid #46b450;
+	border: 1px solid var(--green-500);
 }
 
 .health-check-accordion-trigger .badge.purple {
@@ -388,7 +388,7 @@
 .health-check-accordion-panel {
 	margin: 0;
 	padding: 1em 1.5em;
-	background: #fff;
+	background: var(--gray-100);
 }
 
 .health-check-accordion-panel[hidden] {
@@ -454,7 +454,7 @@
 	.health-check-table td:first-child {
 		width: 100%;
 		padding-bottom: 0;
-		font-weight: 600;
+		font-weight: var(--semibold)
 	}
 }
 

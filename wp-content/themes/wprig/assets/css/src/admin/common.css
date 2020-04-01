@@ -1,24 +1,71 @@
 @import url(_custom-properties.css);
 
-td.blog_id.column-blog_id,
+
+/* Additional field for posttype taxonomy styles */
+div.field-div {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	margin: 1vw;
+}
+
+.field-div > span {
+	flex-grow: 1;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	max-width: 220px;
+}
+
+.field-div > span ~ input {
+	background: var(--gray-400);
+	font-size: 1.2rem;
+	margin-right: 12vw;
+	min-width: 40%;
+}
+
+.field-div > span > label {
+	min-width: 160px;
+	font-weight: bold;
+	font-size: 1.6rem;
+	background: var(--gray-300);
+	justify-self: end;
+	align:right;
+
+}
+
+/* Quick Edit fields */
+#wpbody-content .inline-edit-row fieldset {
+	font-size: 15px;
+}
+
+.inline-edit-row fieldset label span.title.added_fields {
+	width: unset;
+	margin-right: 8px;
+}
+
+/* Additional Admin Columns created for post types, taxonomies, and multisites */
+/* td.blog_id.column-blog_id,
 td.users.column-users {
 	color: var(--indigo-600);
 	font-weight: var(--superbold);
 	font-size: 1.9rem;
 	vertical-align: baseline;
+} */
+#users, #id {
+	width: 8%;
 }
 
 th#rating {
 	width: 10%;
 }
 
-th#blog,
-th#count {
-	width: 4.7em;
+#blog_id {
+	width: 12%;
 }
 
-th#id {
-	width: 4%;
+th#count {
+	width: 4.7em;
 }
 
 th#title {
@@ -2166,7 +2213,7 @@ html.wp-toolbar {
 }
 
 .metabox-holder .postbox-container .empty-container {
-	border: 3px dashed #b4b9be;
+	border: 3px dashed var(--gray-500);
 	height: 250px;
 	position: relative;
 }
@@ -2253,7 +2300,7 @@ html.wp-toolbar {
 }
 
 .sortable-placeholder {
-	border: 1px dashed #b4b9be;
+	border: 1px dashed var(--gray-500);
 	margin-bottom: 20px;
 }
 
@@ -2340,12 +2387,13 @@ html.wp-toolbar {
 ------------------------------------------------------------------------------*/
 
 #wpfooter {
+	border-left: 8px solid var(--gray-700);
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	padding: 10px 20px;
-	color: var(--gray-700);
+	color: var(--admin-light-links);
 	background: var(--admin-bg-color);
 }
 
@@ -2362,6 +2410,7 @@ html.wp-toolbar {
 #footer-thankyou a {
 	color: var(--admin-light-links);
 }
+
 /*------------------------------------------------------------------------------
   25.0 - Tabbed Admin Screen Interface (Experimental)
 ------------------------------------------------------------------------------*/

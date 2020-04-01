@@ -58,7 +58,7 @@ body.js .theme-browser.search-loading {
 	margin: 0 4% 4% 0;
 	position: relative;
 	width: 30.6%;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-100);
 	box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.1);
 	box-sizing: border-box;
 }
@@ -79,7 +79,7 @@ body.js .theme-browser.search-loading {
 
 .theme-browser .theme .theme-name {
 	font-size: 15px;
-	font-weight: 600;
+	font-weight: var(--semibold)
 	height: 18px;
 	margin: 0;
 	padding: 15px;
@@ -87,7 +87,7 @@ body.js .theme-browser.search-loading {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	background: #fff;
+	background: var(--gray-100);
 	background: rgba(255, 255, 255, 0.65);
 }
 
@@ -148,7 +148,7 @@ body.js .theme-browser.search-loading {
 
 .theme-browser .theme:hover .theme-screenshot,
 .theme-browser .theme:focus .theme-screenshot {
-	background: #fff;
+	background: var(--gray-100);
 }
 
 .theme-browser.rendered .theme:hover .theme-screenshot img,
@@ -163,13 +163,13 @@ body.js .theme-browser.search-loading {
 	top: 35%;
 	right: 20%;
 	left: 20%;
-	background: #23282d;
+	background: var(--gray-800);
 	background: rgba(0, 0, 0, 0.7);
-	color: #fff;
+	color: var(--gray-100);
 	font-size: 15px;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
 	-webkit-font-smoothing: antialiased;
-	font-weight: 600;
+	font-weight: var(--semibold)
 	padding: 15px 12px;
 	text-align: center;
 	border-radius: 3px;
@@ -177,7 +177,7 @@ body.js .theme-browser.search-loading {
 }
 
 .theme-browser .theme:focus {
-	border-color: #5b9dd9;
+	border-color: var(--indigo-500);
 	box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
 }
 
@@ -200,8 +200,8 @@ body.js .theme-browser.search-loading {
  * The currently active theme
  */
 .theme-browser .theme.active .theme-name {
-	background: #23282d;
-	color: #fff;
+	background: var(--gray-800);
+	color: var(--gray-100);
 	padding-right: 110px;
 	font-weight: 300;
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
@@ -212,7 +212,7 @@ body.js .theme-browser.search-loading {
 }
 
 .theme-browser .theme.active .theme-name span {
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 .theme-browser .theme.active .theme-actions {
@@ -240,8 +240,8 @@ body.js .theme-browser.search-loading {
 }
 
 .theme-browser .theme .theme-author {
-	background: #23282d;
-	color: #eee;
+	background: var(--gray-800);
+	color: var(--gray-100);
 	display: none;
 	font-size: 14px;
 	margin: 0 10px;
@@ -292,7 +292,7 @@ body.js .theme-browser.search-loading {
 }
 
 .theme-browser .theme.add-new-theme span::after {
-	background: #e5e5e5;
+	background: var(--gray-100);
 	background: rgba(153, 153, 153, 0.1);
 	border-radius: 50%;
 	display: inline-block;
@@ -325,15 +325,15 @@ body.js .theme-browser.search-loading {
 
 .theme-browser .theme.add-new-theme a:hover span::after,
 .theme-browser .theme.add-new-theme a:focus span::after {
-	background: #fff;
-	color: #0073aa;
+	background: var(--gray-100);
+	color: var(--indigo-600);
 }
 
 .theme-browser .theme.add-new-theme a:hover::after,
 .theme-browser .theme.add-new-theme a:focus::after {
 	border-color: transparent;
-	color: #fff;
-	background: #0073aa;
+	color: var(--gray-100);
+	background: var(--indigo-600);
 	content: "";
 }
 
@@ -351,7 +351,7 @@ body.js .theme-browser.search-loading {
 
 .theme-browser .theme.add-new-theme a:hover .theme-name,
 .theme-browser .theme.add-new-theme a:focus .theme-name {
-	color: #fff;
+	color: var(--gray-100);
 	z-index: 2;
 }
 
@@ -365,7 +365,7 @@ body.js .theme-browser.search-loading {
 	right: 0;
 	top: 0;
 	bottom: 0;
-	background: #f1f1f1;
+	background: var(--gray-100);
 	background: rgba(238, 238, 238, 0.9);
 	z-index: 10000; /* Over WP Pointers. */
 }
@@ -376,7 +376,7 @@ body.js .theme-browser.search-loading {
 	left: 0;
 	right: 0;
 	height: 48px;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--gray-100);
 }
 
 .theme-overlay .theme-header button {
@@ -390,14 +390,14 @@ body.js .theme-browser.search-loading {
 	text-align: center;
 	float: right;
 	border: 0;
-	border-left: 1px solid #ddd;
+	border-left: 1px solid var(--gray-100);
 	background-color: transparent;
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
 .theme-overlay .theme-header .close::before {
 	font: normal 22px/50px dashicons !important;
-	color: #72777c;
+	color: var(--gray-600);
 	display: inline-block;
 	content: "\f335";
 	font-weight: 300;
@@ -407,14 +407,14 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right,
 .theme-overlay .theme-header .left {
 	cursor: pointer;
-	color: #72777c;
+	color: var(--gray-600);
 	background-color: transparent;
 	height: 48px;
 	width: 54px;
 	float: left;
 	text-align: center;
 	border: 0;
-	border-right: 1px solid #ddd;
+	border-right: 1px solid var(--gray-100);
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
 }
 
@@ -424,14 +424,14 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right:hover,
 .theme-overlay .theme-header .left:focus,
 .theme-overlay .theme-header .left:hover {
-	background: #ddd;
-	border-color: #ccc;
-	color: #000;
+	background: var(--gray-100);
+	border-color: var(--gray-400);
+	color: var(--gray-800);
 }
 
 .theme-overlay .theme-header .close:focus::before,
 .theme-overlay .theme-header .close:hover::before {
-	color: #000;
+	color: var(--gray-800);
 }
 
 .theme-overlay .theme-header .close:focus,
@@ -445,7 +445,7 @@ body.js .theme-browser.search-loading {
 .theme-overlay .theme-header .right.disabled,
 .theme-overlay .theme-header .left.disabled:hover,
 .theme-overlay .theme-header .right.disabled:hover {
-	color: #ccc;
+	color: var(--gray-400);
 	background: inherit;
 	cursor: inherit;
 }
@@ -472,7 +472,7 @@ body.js .theme-browser.search-loading {
 	left: 190px;
 	right: 30px;
 	bottom: 3%;
-	background: #fff;
+	background: var(--gray-100);
 	box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.1);
 	z-index: 10000; /* Over WP Pointers. */
 	box-sizing: border-box;
@@ -500,14 +500,14 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 	left: 0;
 	right: 0;
 	padding: 10px 25px 5px;
-	background: #f3f3f3;
+	background: var(--gray-100);
 	z-index: 30;
 	box-sizing: border-box;
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 }
 
 .ie8 .theme-overlay .theme-actions {
-	border: 1px solid #eee;
+	border: 1px solid var(--gray-100);
 }
 
 .theme-overlay .theme-actions a {
@@ -523,7 +523,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .broken-themes a.delete-theme,
 .theme-overlay .theme-actions .delete-theme {
-	color: #a00;
+	color: var(--red-900);
 	text-decoration: none;
 	border-color: transparent;
 	box-shadow: none;
@@ -540,9 +540,9 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 .broken-themes a.delete-theme:focus,
 .theme-overlay .theme-actions .delete-theme:hover,
 .theme-overlay .theme-actions .delete-theme:focus {
-	background: #d54e21;
-	color: #fff;
-	border-color: #d54e21;
+	background: var(--red-700);
+	color: var(--gray-100);
+	border-color: var(--red-700);
 }
 
 .theme-overlay .theme-actions .active-theme,
@@ -568,7 +568,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 /* First screenshot, shown big */
 .theme-overlay .screenshot {
-	border: 1px solid #fff;
+	border: 1px solid var(--gray-100);
 	box-sizing: border-box;
 	overflow: hidden;
 	position: relative;
@@ -602,8 +602,8 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 /* Other screenshots, shown small and square */
 .theme-overlay .screenshot.thumb {
-	background: #ccc;
-	border: 1px solid #eee;
+	background: var(--gray-400);
+	border: 1px solid var(--gray-100);
 	float: none;
 	display: inline-block;
 	margin: 10px 5px 0;
@@ -630,7 +630,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .theme-overlay .screenshot.selected {
 	background: transparent;
-	border: 2px solid #00a0d2;
+	border: 2px solid var(--indigo-500);
 }
 
 .theme-overlay .screenshot.selected img {
@@ -652,8 +652,8 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .current-label {
-	background: #32373c;
-	color: #fff;
+	background: var(--gray-800);
+	color: var(--gray-100);
 	font-size: 11px;
 	display: inline-block;
 	padding: 2px 8px;
@@ -666,7 +666,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-name {
-	color: #23282d;
+	color: var(--gray-800);
 	font-size: 32px;
 	font-weight: 100;
 	margin: 10px 0 0;
@@ -676,7 +676,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-version {
-	color: #72777c;
+	color: var(--gray-600);
 	font-size: 13px;
 	font-weight: 400;
 	float: none;
@@ -686,7 +686,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .theme-overlay .theme-author {
 	margin: 15px 0 25px;
-	color: #72777c;
+	color: var(--gray-600);
 	font-size: 16px;
 	font-weight: 400;
 	line-height: inherit;
@@ -697,7 +697,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-description {
-	color: #555;
+	color: var(--gray-600);
 	font-size: 15px;
 	font-weight: 400;
 	line-height: 1.5;
@@ -705,8 +705,8 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-tags {
-	border-top: 3px solid #eee;
-	color: #82878c;
+	border-top: 3px solid var(--gray-100);
+	color: var(--gray-600);
 	font-size: 13px;
 	font-weight: 400;
 	margin: 30px 0 0 0;
@@ -714,15 +714,15 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .theme-tags span {
-	color: #444;
-	font-weight: 600;
+	color: var(--gray-700);
+	font-weight: var(--semibold)
 	margin-right: 5px;
 }
 
 .theme-overlay .parent-theme {
-	background: #f7fcfe;
-	border: 1px solid #eee;
-	border-left: 4px solid #00a0d2;
+	background: var(--gray-100);
+	border: 1px solid var(--gray-100);
+	border-left: 4px solid var(--indigo-500);
 	font-size: 14px;
 	font-weight: 400;
 	margin-top: 30px;
@@ -730,7 +730,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 }
 
 .theme-overlay .parent-theme strong {
-	font-weight: 600;
+	font-weight: var(--semibold)
 }
 
 /**
@@ -986,11 +986,11 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 /* Already installed theme */
 .theme-browser .theme .theme-installed {
-	background: #0073aa;
+	background: var(--indigo-600);
 }
 
 .theme-browser .theme .notice-success p::before {
-	color: #79ba49;
+	color: var(--green-600);
 	content: "\f147";
 	display: inline-block;
 	font: normal 20px/1 "dashicons";
@@ -1046,7 +1046,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .upload-theme .wp-upload-form,
 .upload-plugin .wp-upload-form {
-	background: #fafafa;
+	background: var(--gray-100);
 	border: 1px solid #ccd0d4;
 	padding: 30px;
 	margin: 30px auto;
@@ -1055,7 +1055,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 
 .upload-theme .install-help,
 .upload-plugin .install-help {
-	color: #555d66; /* #f1f1f1 background */
+	color: var(--gray-600); /* var(--gray-100) background */
 	font-size: 18px;
 	font-style: normal;
 	margin: 0;
@@ -1066,7 +1066,7 @@ body.folded .theme-browser ~ .theme-overlay .theme-wrap {
 p.no-themes,
 p.no-themes-local {
 	clear: both;
-	color: #666;
+	color: var(--gray-600);
 	font-size: 18px;
 	font-style: normal;
 	margin: 0;
@@ -1106,7 +1106,7 @@ p.no-themes-local {
 .theme-details .num-ratings,
 .theme-details .no-rating {
 	font-size: 11px;
-	color: #72777c;
+	color: var(--gray-600);
 }
 
 .theme-details .no-rating {
@@ -1119,7 +1119,7 @@ p.no-themes-local {
 ------------------------------------------------------------------------------*/
 
 .appearance_page_custom-header #headimg {
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-100);
 	overflow: hidden;
 	width: 100%;
 }
@@ -1155,7 +1155,7 @@ p.no-themes-local {
 
 div#custom-background-image {
 	min-height: 100px;
-	border: 1px solid #ddd;
+	border: 1px solid var(--gray-100);
 }
 
 div#custom-background-image img {
@@ -1164,16 +1164,16 @@ div#custom-background-image img {
 }
 
 .background-position-control input[type="radio"]:checked ~ .button {
-	background: #eee;
-	border-color: #999;
+	background: var(--gray-100);
+	border-color: var(--gray-500);
 	box-shadow: inset 0 2px 5px -3px rgba(0, 0, 0, 0.5);
 	z-index: 1;
 }
 
 .background-position-control input[type="radio"]:focus ~ .button {
-	border-color: #5b9dd9;
+	border-color: var(--indigo-500);
 	box-shadow: inset 0 2px 5px -3px rgba(0, 0, 0, 0.5), 0 0 3px rgba(0, 115, 170, 0.8);
-	color: #23282d;
+	color: var(--gray-800);
 }
 
 .background-position-control .background-position-center-icon,
@@ -1192,7 +1192,7 @@ div#custom-background-image img {
 }
 
 .background-position-control .background-position-center-icon::before {
-	background-color: #555;
+	background-color: var(--gray-600);
 	border-radius: 50%;
 	content: "";
 	height: 12px;
@@ -1201,7 +1201,7 @@ div#custom-background-image img {
 
 .background-position-control .button:hover .background-position-center-icon::before,
 .background-position-control input[type="radio"]:focus ~ .button .background-position-center-icon::before {
-	background-color: #23282d;
+	background-color: var(--gray-800);
 }
 
 .background-position-control .button-group {
@@ -1227,7 +1227,7 @@ div#custom-background-image img {
 }
 
 .background-position-control .button-group:last-child .button {
-	box-shadow: 0 1px 0 #ccc;
+	box-shadow: 0 1px 0 var(--gray-400);
 }
 
 .background-position-control .button-group > label {
@@ -1311,7 +1311,7 @@ body.full-overlay-active {
 	padding: 0;
 	margin: 0;
 	z-index: 10;
-	background: #eee;
+	background: var(--gray-100);
 	border-right: none;
 }
 
@@ -1417,9 +1417,9 @@ body.full-overlay-active {
 	float: left;
 	width: 45px;
 	height: 45px;
-	background: #eee;
-	border-right: 1px solid #ddd;
-	color: #444;
+	background: var(--gray-100);
+	border-right: 1px solid var(--gray-100);
+	color: var(--gray-700);
 	cursor: pointer;
 	text-decoration: none;
 	transition: color 0.1s ease-in-out, background 0.1s ease-in-out;
@@ -1431,9 +1431,9 @@ body.full-overlay-active {
 .theme-install-overlay .previous-theme:focus,
 .theme-install-overlay .next-theme:hover,
 .theme-install-overlay .next-theme:focus {
-	background: #ddd;
-	border-color: #ccc;
-	color: #000;
+	background: var(--gray-100);
+	border-color: var(--gray-400);
+	color: var(--gray-800);
 	outline: none;
 	box-shadow: none;
 }
@@ -1468,8 +1468,8 @@ body.full-overlay-active {
 .theme-install-overlay .previous-theme.disabled:focus,
 .theme-install-overlay .next-theme.disabled:hover,
 .theme-install-overlay .next-theme.disabled:focus {
-	color: #b4b9be;
-	background: #eee;
+	color: var(--gray-500);
+	background: var(--gray-100);
 	cursor: default;
 	pointer-events: none;
 }
@@ -1496,7 +1496,7 @@ body.full-overlay-active {
 	left: 0;
 	padding: 9px 0 9px 10px;
 	height: 45px;
-	color: #656a6f;
+	color: var(--gray-600);
 	outline: 0;
 	line-height: 1;
 	background-color: transparent !important;
@@ -1507,7 +1507,7 @@ body.full-overlay-active {
 
 .wp-core-ui .wp-full-overlay .collapse-sidebar:hover,
 .wp-core-ui .wp-full-overlay .collapse-sidebar:focus {
-	color: #0073aa;
+	color: var(--indigo-600);
 }
 
 .wp-full-overlay .collapse-sidebar-arrow,
@@ -1528,7 +1528,7 @@ body.full-overlay-active {
 .wp-full-overlay .collapse-sidebar:hover .collapse-sidebar-arrow,
 .wp-full-overlay .collapse-sidebar:focus .collapse-sidebar-arrow {
 	box-shadow:
-		0 0 0 1px #5b9dd9,
+		0 0 0 1px var(--indigo-500),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
 
@@ -1543,7 +1543,7 @@ body.full-overlay-active {
 .wp-full-overlay .collapse-sidebar-arrow::before {
 	display: block;
 	content: "\f148";
-	background: #eee;
+	background: var(--gray-100);
 	font: normal 20px/1 dashicons;
 	speak: none;
 	padding: 0;
@@ -1577,11 +1577,11 @@ body.full-overlay-active {
 /* Device/preview size toggles */
 
 .wp-full-overlay {
-	background: #191e23;
+	background: var(--gray-800);
 }
 
 .wp-full-overlay-main {
-	background-color: #f1f1f1;
+	background-color: var(--gray-100);
 }
 
 .expanded .wp-full-overlay-footer {
@@ -1593,8 +1593,8 @@ body.full-overlay-active {
 	width: 18%;
 	width: calc(18% - 1px);
 	height: 45px;
-	border-top: 1px solid #ddd;
-	background: #eee;
+	border-top: 1px solid var(--gray-100);
+	background: var(--gray-100);
 }
 
 .wp-full-overlay-footer .devices-wrapper {
@@ -1603,8 +1603,8 @@ body.full-overlay-active {
 
 .wp-full-overlay-footer .devices {
 	position: relative;
-	background: #eee;
-	box-shadow: -20px 0 10px -5px #eee;
+	background: var(--gray-100);
+	box-shadow: -20px 0 10px -5px var(--gray-100);
 }
 
 .wp-full-overlay-footer .devices button {
@@ -1635,30 +1635,30 @@ body.full-overlay-active {
 	vertical-align: top;
 	margin: 3px 0;
 	padding: 4px 8px;
-	color: #656a6f;
+	color: var(--gray-600);
 }
 
 .wp-full-overlay-footer .devices button.active {
-	border-bottom-color: #191e23;
+	border-bottom-color: var(--gray-800);
 }
 
 .wp-full-overlay-footer .devices button:hover,
 .wp-full-overlay-footer .devices button:focus {
-	background-color: #fff;
+	background-color: var(--gray-100);
 }
 
 .wp-full-overlay-footer .devices button:focus,
 .wp-full-overlay-footer .devices button.active:hover {
-	border-bottom-color: #0073aa;
+	border-bottom-color: var(--indigo-600);
 }
 
 .wp-full-overlay-footer .devices button.active::before {
-	color: #191e23;
+	color: var(--gray-800);
 }
 
 .wp-full-overlay-footer .devices button:hover::before,
 .wp-full-overlay-footer .devices button:focus::before {
-	color: #0073aa;
+	color: var(--indigo-600);
 }
 
 .wp-full-overlay-footer .devices .preview-desktop::before {
@@ -1717,7 +1717,7 @@ body.full-overlay-active {
 
 #customize-container,
 #customize-controls .notice.notification-overlay {
-	background: #eee;
+	background: var(--gray-100);
 	z-index: 500000;
 	position: fixed;
 	overflow: visible;
@@ -1790,7 +1790,7 @@ body.full-overlay-active {
 .install-theme-info .theme-screenshot {
 	margin: 15px 0;
 	width: 258px;
-	border: 1px solid #ccc;
+	border: 1px solid var(--gray-400);
 }
 
 .install-theme-info .theme-details {
@@ -1803,7 +1803,7 @@ body.full-overlay-active {
 
 .theme-details .theme-description {
 	float: left;
-	color: #72777c;
+	color: var(--gray-600);
 	line-height: 1.6;
 	max-width: 100%;
 }
@@ -1817,24 +1817,24 @@ body.full-overlay-active {
 }
 
 .theme-install-overlay .wp-full-overlay-sidebar {
-	background: #eee;
-	border-right: 1px solid #ddd;
+	background: var(--gray-100);
+	border-right: 1px solid var(--gray-100);
 }
 
 .theme-install-overlay .wp-full-overlay-sidebar-content {
-	background: #fff;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
+	background: var(--gray-100);
+	border-top: 1px solid var(--gray-100);
+	border-bottom: 1px solid var(--gray-100);
 }
 
 .theme-install-overlay .wp-full-overlay-main {
 	position: absolute;
 	z-index: 0;
-	background-color: #f1f1f1;
+	background-color: var(--gray-100);
 }
 
 .customize-loading #customize-container {
-	background-color: #f1f1f1;
+	background-color: var(--gray-100);
 }
 
 #customize-preview.wp-full-overlay-main::before,

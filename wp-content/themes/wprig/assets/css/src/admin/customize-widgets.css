@@ -170,7 +170,7 @@
 	margin: 0;
 	padding: 13px 15px 15px 42px;
 	color: var(--gray-700);
-	border-top: 1px solid #eee;
+	border-top: 1px solid var(--gray-100);
 	cursor: pointer;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -190,13 +190,13 @@
 }
 
 #customize-theme-controls .widget-area-select li:last-child {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid var(--gray-100);
 }
 
 #customize-theme-controls .widget-area-select .selected {
 	color: var(--color-theme-white);
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-	background: #00a0d2;
+	background: var(--indigo-500);
 }
 
 #customize-theme-controls .widget-area-select .selected::before {
