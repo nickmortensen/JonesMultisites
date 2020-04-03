@@ -32,7 +32,7 @@ msgstr[1] ""
 msgid "Comments are closed."
 msgstr ""
 
-#: header.php:103
+#: header.php:110
 msgid "Skip to content"
 msgstr ""
 
@@ -81,11 +81,11 @@ msgstr ""
 msgid "No theme component with the slug %s exists."
 msgstr ""
 
-#: inc/Accessibility/Component.php:69, inc/Projects/Component.php:126, inc/Staffmembers/Component.php:122
+#: inc/Accessibility/Component.php:69, inc/Projects/Component.php:126, inc/Staffmembers/Component.php:141
 msgid "Expand child menu"
 msgstr ""
 
-#: inc/Accessibility/Component.php:70, inc/Projects/Component.php:127, inc/Staffmembers/Component.php:123
+#: inc/Accessibility/Component.php:70, inc/Projects/Component.php:127, inc/Staffmembers/Component.php:142
 msgid "Collapse child menu"
 msgstr ""
 

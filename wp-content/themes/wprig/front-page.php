@@ -10,9 +10,10 @@
 namespace WP_Rig\WP_Rig;
 
 get_header();
-
+$blog_identifier = get_current_blog_id();
 
 echo '<pre>';
+print_r( wp_rig()->get_location_city_photo_url( $blog_identifier ) );
 echo '</pre>';
 // Use grid layout if blog index is displayed.
 if ( is_home() ) {
@@ -20,7 +21,17 @@ if ( is_home() ) {
 } else {
 	wp_rig()->print_styles( 'wp-rig-content' );
 }
-
+echo '<pre>';
+// print_r( $GLOBALS['wpdb'] );
+echo '<br>';
+print_r( get_main_network_id() );
+echo '<br>';
+print_r( get_current_network_id() );
+echo '<br>';
+print_r( get_network() );
+echo '<br>';
+print_r( network_home_url() );
+echo '</pre>';
 ?>
 <main id="primary" class="site-main">
 	<?php

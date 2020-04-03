@@ -1,5 +1,3 @@
-@import url(_custom-properties.css);
-
 /*------------------------------------------------------------------------------
   11.2 - Post Revisions
 ------------------------------------------------------------------------------*/
@@ -144,7 +142,7 @@ body.folded .revisions .loading-indicator {
 }
 
 .revisions-controls .author-card .author-name {
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 .comparing-two-revisions .diff-meta-to strong {
@@ -507,7 +505,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
 	left: 2px;
 	color: var(--gray-600);
 	content: "\f229";
-	font: normal 18px/1 dashicons;
+	font: var(--normal) 18px/1 dashicons, serif;
 	speak: none;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -580,7 +578,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
  */
 @media print,
 	(-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 120dpi) {
+	(min-resolution: 120dpi) {
 	.revision-tick.completed-false {
 		background-image: url(../images/spinner-2x.gif);
 	}

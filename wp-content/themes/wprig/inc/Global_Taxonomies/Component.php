@@ -138,7 +138,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'post',
 			'page',
 			'attachment',
-			'nav_menu_item',
+			'project',
 		];
 		register_taxonomy( 'signtype', $objects_array, $args );
 	}//end create_signtype_taxonomy()
@@ -152,7 +152,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$singular      = 'location';
 		$plural        = ucfirst( $singular ) . 's';
 		$labels        = [
-			'name'                       => $plural . '- jones sign co',
+			'name'                       => $plural,
 			'singular_name'              => $singular,
 			'menu_name'                  => $plural,
 			'all_items'                  => 'All' . $plural,
@@ -200,6 +200,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'page',
 			'attachment',
 			'nav_menu_item',
+			'staffmember'
 		];
 		register_taxonomy( 'location', $objects_array, $args );
 	}//end create_location_taxonomy()

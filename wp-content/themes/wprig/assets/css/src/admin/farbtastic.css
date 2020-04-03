@@ -1,5 +1,3 @@
-@import url(_custom-properties.css);
-
 .farbtastic {
 	position: relative;
 }
@@ -26,9 +24,6 @@
 .farbtastic .wheel {
 	width: 195px;
 	height: 195px;
-}
-
-.farbtastic .overlay {
 }
 
 .farbtastic .marker {

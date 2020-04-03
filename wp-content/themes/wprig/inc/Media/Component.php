@@ -55,6 +55,50 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
 		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] );
 		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 );
+		add_action( 'upload_mimes', [ $this, 'additional_mime_types' ], 10, 1 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_media_scripts' ] );
+		add_action( 'wp_ajax_svg_get_attachment_url', [ $this, 'get_attachment_url_media_library' ] );
+	}
+
+	/**
+	 * Allow SVG to be uploaded.
+	 *
+	 * @param array $mimes The mime types that are already a part of WordPress.
+	 * @return array $mimes The mime types plus what has been added via the function.
+	 * @link https://developer.wordpress.org/reference/hooks/upload_mimes/
+	 */
+	public function additional_mime_types( $mimes ) {
+		$mimes['svg'] = 'image/svg+xml';
+		return $mimes;
+	}
+
+	/**
+	 * Enqueue SVG js and stylesheet in the admin.
+	 *
+	 * @link https://wordpress.stackexchange.com/questions/252256/svg-image-upload-stopped-working/305177#305177
+	 */
+	public function enqueue_media_scripts() {
+		$style_handle  = 'media_svg_style';
+		$script_handle = 'media_svg_script';
+		wp_enqueue_style( $style_handle, get_theme_file_uri( '/assets/css/src/_svg.css' ), [], '1', 'all' );
+
+		wp_enqueue_script( $script_handle, get_theme_file_uri( '/assets/js/src/svg.js' ), 'jQuery', '1', false );
+		wp_localize_script( $script_handle, 'script_vars', [ 'AJAXurl' => admin_url( 'admin-ajax.php' ) ] );
+	}
+
+	/**
+	 * Ajax get_attachment_url_media_library.
+	 */
+	public function get_attachment_url_media_library() {
+		$url = '';
+		//phpcs:disable
+		$attachmentID = isset( $_REQUEST['attachmentID'] ) ?? '';
+		if ( $attachmentID ) {
+			$url = wp_get_attachment_url( $attachmentID );
+		}
+		//phpcs:enable
+		echo $url;
+		die();
 	}
 
 	/**
@@ -177,7 +221,7 @@ protected function get_star_rating_field( $metakey, $post_id = 0 ) {
 			'object_types'    => [ 'attachment' ],
 			'cmb_styles'      => true,
 			'remove_box_wrap' => true,
-			'show_names' => false,
+			'show_names'      => false,
 			'show_in_rest'    => \WP_REST_Server::ALLMETHODS, // WP_REST_Server::READABLE|WP_REST_Server::EDITABLE, // Determines which HTTP methods the box is visible in.
 		];
 		$metabox = new_cmb2_box( $args );

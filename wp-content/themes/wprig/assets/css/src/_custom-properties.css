@@ -5,8 +5,7 @@
  * @link: https://developer.mozilla.org/en-US/docs/Web/CSS/--*
  **/
 
-:root {
-	/* Tailwind Weights */
+ :root {
 	--hairline: 100;
 	--thin: 200;
 	--light: 300;
@@ -145,7 +144,7 @@
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
 
-	--color-quote-border: #000;
+	--color-quote-border: var(--gray-800);
 	--color-quote-citation: #6c7781;
 
 	/* prefered timing function */
@@ -162,4 +161,19 @@
 	--lineHeight: calc(var(--fontSize) * 1.4);
 	--letterSpacing: calc(var(--fontSize) * 0.0015);
 	--fontWeight: 300;
+
+	--admin-font: serif;
+	--admin-heading-color: var(--gray-700);
+	--admin-bg-color: var(--indigo-600);
+	--admin-bg-darker: var(--indigo-800);
+	--admin-bg-lighter: var(--indigo-400);
+
+	--admin-light-links: var(--color-theme-white);
+	--admin-dark-links: var(--gray-700);
+	--admin-table-bg: var(--indigo-100);
+
+	--admin-link: var(--indigo-600);
+	--admin-link-hover: var(--indigo-900);
+	--submenu-width: 180px;
 }
+

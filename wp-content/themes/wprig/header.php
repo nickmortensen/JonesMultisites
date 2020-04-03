@@ -28,6 +28,7 @@ namespace WP_Rig\WP_Rig;
 	?>
 
 	<?php wp_head(); ?>
+	<?php $blog  = get_current_blog_id(); ?>
 </head>
 
 
@@ -44,6 +45,8 @@ $term_id     = wp_rig()->get_term_by_blog( 1 );
 $city_image  = get_term_meta( $term_id, 'locationImage', true );
 $common_name = wp_rig()->get_location_name( $term_id );
 $info        = wp_rig()->get_location_info( $location_id );
+
+$capability = wp_rig()->get_location_capability( $term_id );
 global $wpdb;
 
 ?>
@@ -82,6 +85,7 @@ global $wpdb;
 	}
 
 	.location-header .bigtext {
+		text-transform: uppercase;
 		max-width: 40vw;
 		font-size: 12rem;
 		font-weight: 900;
@@ -106,35 +110,34 @@ global $wpdb;
 		<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
 
-<!-- #masthead -->
+		<!-- #masthead -->
 
-<section class="location-header">
-	<div class="checkout"></div>
-	<span class="bigtext">JONES SIGN <?= $common_name; ?> </span>
-</section>
+		<section class="location-header">
+			<div class="checkout"></div>
+			<span class="bigtext">JONES <?= $common_name; ?> </span>
+		</section>
 
-</header>
+	</header>
 
-<pre>
+
+<?php if ( is_front_page() ) : ?>
+	<section class="flex justify-center align-middle">
+		<h1> This is the front page!! </h1>
+	</section>
+<?php endif; ?>
+
+
+<h2>Capability: <?= count( $capability ); ?></h2>
+
 <?php
-global $wpdb;
-if ( is_multisite() ) {
-	echo 'multisite install';
-}
 
-echo get_template_directory();
-$locations = wp_rig()->get_location_ids();
-$place     = [];
-foreach ( $locations as $location ) {
-	$place[] = wp_rig()->get_location_info( $location );
-}
-echo '<pre>';
-echo '</pre>';
+$array_a = [14, 16, 24, 28, 31, 9, 15 ];
+$array_b = [ 4, 8, 15, 9, 28 ];
 
+print_r( array_diff( $array_b, $array_a ));
 
 ?>
 
-</pre>
 		<?php
 		//phpcs:disable
 		// get_template_part( 'template-parts/header/custom_header' );

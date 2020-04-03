@@ -17,6 +17,7 @@ import images from './images';
 import scripts from './scripts';
 import styles from './styles';
 import editorStyles from './editorStyles';
+import adminStyles from './wpAdminStyles';
 
 /**
  * Watch everything
@@ -42,6 +43,8 @@ export default function watch() {
 			] );
 		} );
 	}
+
+	gulpWatch( backslashToForwardSlash( paths.styles.adminPartials ), adminStyles );
 
 	gulpWatch( backslashToForwardSlash( paths.styles.src[ 0 ] ), series( styles, editorStyles ) );
 

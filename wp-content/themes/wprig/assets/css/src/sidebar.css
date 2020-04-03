@@ -10,9 +10,8 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-
+/* stylelint-disable at-rule-empty-line-before */
 @media (--content-query) {
-
 	.primary-sidebar {
 		padding-left: 0;
 		padding-right: 0;

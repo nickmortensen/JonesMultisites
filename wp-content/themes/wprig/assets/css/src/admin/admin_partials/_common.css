@@ -1,6 +1,3 @@
-@import url(_custom-properties.css);
-
-
 /* Additional field for posttype taxonomy styles */
 div.field-div {
 	display: flex;
@@ -26,12 +23,11 @@ div.field-div {
 
 .field-div > span > label {
 	min-width: 160px;
-	font-weight: bold;
+	font-weight: var(--bold);
 	font-size: 1.6rem;
 	background: var(--gray-300);
 	justify-self: end;
-	align:right;
-
+	align-items: flex-end;
 }
 
 /* Quick Edit fields */
@@ -44,15 +40,9 @@ div.field-div {
 	margin-right: 8px;
 }
 
-/* Additional Admin Columns created for post types, taxonomies, and multisites */
-/* td.blog_id.column-blog_id,
-td.users.column-users {
-	color: var(--indigo-600);
-	font-weight: var(--superbold);
-	font-size: 1.9rem;
-	vertical-align: baseline;
-} */
-#users, #id {
+
+#users,
+#id {
 	width: 8%;
 }
 
@@ -69,7 +59,7 @@ th#count {
 }
 
 th#title {
-	width: 50%
+	width: 50%;
 }
 
 div#cmb2-metabox-media_rating {
@@ -113,7 +103,7 @@ div#media_rating {
 	display: inline-block;
 	text-indent: -9999px;
 	content: "\f154";
-	font-family: 'dashicons';
+	font-family: dashicons, serif;
 	color: var(--gray-700);
 	font-size: 1.75em;
 }
@@ -122,7 +112,7 @@ div#media_rating {
 #cmb2-star-rating-metabox  .star-cb-group > input + label:hover ~ label::before,
 #cmb2-star-rating-metabox .star-cb-group > input + label:hover::before {
 	content: "\f155";
-	font-family: 'dashicons';
+	font-family: dashicons, serif;
 	color: var(--yellow-600);
 	text-shadow: 0 0 1px var(--gray-800);
 	font-size: 1.75em;
@@ -130,17 +120,17 @@ div#media_rating {
 
 #cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label {
 	text-indent: -9999px;
-	width: .5em;
-	margin-left: -.5em;
+	width: 0.5em;
+	margin-left: -0.5em;
 }
 
 #cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label::before {
-	width: .5em;
+	width: 0.5em;
 }
 
 #cmb2-star-rating-metabox .star-cb-group:hover > input + label::before {
 	content: "\f154";
-	font-family: 'dashicons';
+	font-family: dashicons, serif;
 	color: var(--gray-700);
 	text-shadow: none;
 	font-size: 1.75em;
@@ -149,7 +139,7 @@ div#media_rating {
 #cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover ~ label::before,
 #cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover::before {
 	content: "\f155";
-	font-family: 'dashicons';
+	font-family: dashicons, serif;
 	color: var(--yellow-600);
 	text-shadow: 0 0 1px var(--gray-800);
 	font-size: 1.75em;
@@ -163,10 +153,11 @@ div#media_rating {
 
 .dashicons-star-filled::before {
 	color: var(--yellow-500);
-	text-shadow: 1px 1px 1px var(--gray-700),
-				-1px -1px 1px var(--gray-700),
-				1px -1px 1px var(--gray-700),
-				-1px 1px 1px var(--gray-700);
+	text-shadow:
+		1px 1px 1px var(--gray-700),
+		-1px -1px 1px var(--gray-700),
+		1px -1px 1px var(--gray-700),
+		-1px 1px 1px var(--gray-700);
 }
 
 .dashicons-star-empty::before,
@@ -400,19 +391,22 @@ td.blog.column-blog > a {
 
 
 /* table.widefat th#id, */
-table.wp-list-table thead, tfoot {
+table.wp-list-table thead,
+tfoot {
 	background: var(--indigo-600);
 	color: var(--yellow-600);
 }
 
 /* Admin List Tables */
 
-table.wp-list-table thead a, tfoot a {
+table.wp-list-table thead a,
+tfoot a {
 	color: var(--yellow-600);
 	letter-spacing: 3px;
 }
 
-table.wp-list-table thead a:hover, tfoot a:hover {
+table.wp-list-table thead a:hover,
+tfoot a:hover {
 	color: var(--yellow-600);
 	text-decoration: underline;
 }
@@ -495,8 +489,8 @@ a:focus .media-icon img,
 		0 0 0 1px var(--indigo-400),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
 
-		/* Only visible in Windows High Contrast mode */
-		outline: 1px solid transparent;
+	/* Only visible in Windows High Contrast mode */
+	outline: 1px solid transparent;
 }
 
 .ie8 a:focus {
@@ -911,11 +905,6 @@ div#widgets-right .widget-top:hover,
 	color: var(--gray-900);
 }
 
-.striped > tbody > :nth-child(odd),
-ul.striped > :nth-child(odd),
-.alternate {
-	background-color: var(--indigo-200);
-}
 
 .bar {
 	background-color: var(--color-theme-white);
@@ -1596,7 +1585,7 @@ div.error {
 	background: var(--color-theme-white);
 	border: 1px solid var(--gray-300);
 	border-left-width: 4px;
-	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	margin: 5px 15px 2px;
 	padding: 1px 12px;
 }
@@ -2733,12 +2722,12 @@ div.star-holder .star-rating {
 	-webkit-font-smoothing: antialiased;
 	font-size: 20px;
 	line-height: 1;
-	font-family: dashicons;
+	font-family: dashicons, serif;
 	text-decoration: inherit;
 	font-weight: var(--normal);
 	font-style: normal;
 	vertical-align: top;
-	transition: color .1s ease-in;
+	transition: color 0.1s ease-in;
 	text-align: center;
 	color: var(--yellow-600);
 }
@@ -2893,12 +2882,12 @@ div.action-links {
 	min-height: 100%;
 
 	/* Height of title + tabs + install now */
-	min-height: calc( 100% - 152px );
+	min-height: calc(100% - 152px);
 }
 
 #plugin-information-content.with-banner {
 	/* Height of banner + tabs + install now */
-	min-height: calc( 100% - 346px );
+	min-height: calc(100% - 346px);
 }
 
 #section-holder {
@@ -3343,7 +3332,7 @@ img {
 #template .CodeMirror {
 	width: 100%;
 	min-height: 60vh;
-	height: calc( 100vh - 295px );
+	height: calc(100vh - 295px);
 	border: 1px solid var(--color-theme-white);
 	box-sizing: border-box;
 }
@@ -3439,7 +3428,7 @@ img {
 }
 
 /* Styles for folder indicators/depth */
-.tree-folder .tree-folder:::after {
+.tree-folder .tree-folder::after {
 	content: "";
 	display: block;
 	position: absolute;
@@ -3449,7 +3438,7 @@ img {
 	bottom: 10px;
 }
 
-.tree-folder > li:::before {
+.tree-folder > li::before {
 	content: "";
 	position: absolute;
 	display: block;
@@ -3461,7 +3450,7 @@ img {
 	border-bottom: 1px solid var(--color-theme-white);
 }
 
-.tree-folder > li:::after {
+.tree-folder > li::after {
 	content: "";
 	position: absolute;
 	display: block;
@@ -3476,7 +3465,7 @@ img {
 	margin: -4px 0 -2px;
 }
 
-.tree-folder > .current-file:::before {
+.tree-folder > .current-file::before {
 	left: 4px;
 	height: 15px;
 	width: 0;
@@ -3484,7 +3473,7 @@ img {
 	top: 3px;
 }
 
-.tree-folder > .current-file:::after {
+.tree-folder > .current-file::after {
 	bottom: -4px;
 	height: 7px;
 	left: 2px;
@@ -3492,8 +3481,8 @@ img {
 }
 
 /* Lines shouldn't continue on last item */
-.tree-folder > li:last-child:::after,
-.tree-folder li:last-child > .tree-folder:::after {
+.tree-folder > li:last-child::after,
+.tree-folder li:last-child > .tree-folder::after {
 	display: none;
 }
 
@@ -3542,7 +3531,7 @@ img {
 	padding: 0;
 }
 
-#template .submit input[type=submit][disabled] {
+#template .submit input[type="submit"][disabled] {
 	cursor: not-allowed;
 }
 
@@ -3607,7 +3596,7 @@ img {
 
 .fileedit-sub {
 	padding: 10px 0 8px;
-	line-height: 180%;
+	line-height: 1.8;
 }
 
 #file-editor-warning .file-editor-warning-content {
@@ -3620,7 +3609,7 @@ img {
 .control-section .accordion-section-title::after,
 .accordion-section-title::after {
 	content: "\f140";
-	font: normal 20px/1 dashicons;
+	font: var(--normal) 20px/1 dashicons, serif;
 	speak: none;
 	display: block;
 	-webkit-font-smoothing: antialiased;
@@ -3823,7 +3812,7 @@ img {
 
 }
 @media only screen and (min-width: 600px) and (max-width: 699px) {
-	.my-sites li{
+	.my-sites li {
 		float: left;
 		width: 44%;
 	}
@@ -3932,17 +3921,12 @@ img {
  * HiDPI Displays
  */
 @media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 120dpi) {
+	(-webkit-min-device-pixel-ratio: 1.25),
+	(min-resolution: 120dpi) {
 	/* Back-compat for pre-3.8 */
 	div.star-holder,
 	div.star-holder .star-rating {
-		background: url(../images/stars-2x.png?ver=20121108) repeat-x bottom left;
 		background-size: 21px 37px;
-	}
-
-	.spinner {
-		background-image: url(../images/spinner-2x.gif);
 	}
 
 	/* @todo: evaluate - most of these were likely replaced by dashicons */
@@ -4037,7 +4021,7 @@ img {
 		margin: 20px 0 10px 0;
 		padding: 5px 10px;
 		font-size: 14px;
-		line-height: 175%;
+		line-height: 1.7;
 	}
 
 	.wp-core-ui .notice.is-dismissible {
@@ -4142,21 +4126,21 @@ img {
 		display: block;
 		padding: 5px;
 	}
-	.tree-folder > li:::before,
-	.tree-folder > li:::after,
-	.tree-folder .tree-folder:::after {
+	.tree-folder > li::before,
+	.tree-folder > li::after,
+	.tree-folder .tree-folder::after {
 		left: -8px;
 	}
-	.tree-folder > li:::before {
+	.tree-folder > li::before {
 		top: 0;
 		height: 13px;
 	}
-	.tree-folder > .current-file:::before {
+	.tree-folder > .current-file::before {
 		left: -5px;
 		top: 7px;
 		width: 4px;
 	}
-	.tree-folder > .current-file:::after {
+	.tree-folder > .current-file::after {
 		height: 9px;
 		left: -8px;
 	}

@@ -1,5 +1,4 @@
-@import url(_custom-properties.css);
-
+/* stylelint-disable selector-class-pattern */
 .wrap [class*="CodeMirror-lint-marker"],
 .wp-core-ui [class*="CodeMirror-lint-message"],
 .wrap .CodeMirror-lint-marker-multiple {
@@ -17,13 +16,13 @@
 }
 
 .wrap [class*="CodeMirror-lint-marker"]::before {
-	font: normal 18px/1 dashicons;
+	font: var(--normal) 18px/1 dashicons, serif;
 	position: relative;
 	top: -2px;
 }
 
 .wp-core-ui [class*="CodeMirror-lint-message"]::before {
-	font: normal 16px/1 dashicons;
+	font: var(--normal) 16px/1 dashicons, serif;
 	left: 16px;
 	position: absolute;
 }

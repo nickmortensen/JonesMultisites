@@ -122,7 +122,6 @@ export function editorStylesAfterReplacementStream() {
 		server.stream( { match: '**/*.css' } ),
 	] );
 }
-
 /**
 * CSS via PostCSS + CSSNext (includes Autoprefixer by default).
 * @param {function} done function to call when async processes finish

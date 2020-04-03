@@ -1,5 +1,3 @@
-@import url(_custom-properties.css);
-
 /*------------------------------------------------------------------------------
   14.0 - Media Screen
 ------------------------------------------------------------------------------*/
@@ -40,7 +38,7 @@
 	padding: 4px 10px 0;
 }
 
-.media-item .media-item-info .A1B1 {
+.media-item .media-item-info .a1b1 {
 	padding: 0 0 0 10px;
 }
 
@@ -70,12 +68,12 @@
 	display: inline;
 	padding: 0 0 0 23px;
 	margin: 0 1em 0 3px;
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 .media-upload-form tr.image-size label {
 	margin: 0 0 0 5px;
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 .media-upload-form th.label label {
@@ -161,7 +159,7 @@
 	height: 22px;
 	margin: 7px 6px;
 	width: 200px;
-	line-height: 2em;
+	line-height: 2;
 	padding: 0;
 	overflow: hidden;
 	border-radius: 22px;
@@ -322,7 +320,7 @@
 }
 
 #find-posts-close::before {
-	font: normal 20px/36px dashicons;
+	font: var(--normal) 20px/36px dashicons, serif;
 	vertical-align: top;
 	speak: none;
 	-webkit-font-smoothing: antialiased;
@@ -472,7 +470,7 @@ border color while dragging a file over the uploader drop area */
 .upload-php .mode-grid .media-sidebar .media-uploader-status .upload-dismiss-errors::before {
 	content: "\f153";
 	display: block;
-	font: normal 16px/1 dashicons;
+	font: var(--normal) 16px/1 dashicons, serif;
 	color: var(--gray-600);
 }
 
@@ -651,7 +649,7 @@ border color while dragging a file over the uploader drop area */
 
 .edit-attachment-frame .edit-media-header .right::before,
 .edit-attachment-frame .edit-media-header .left::before {
-	font: normal 20px/50px dashicons !important;
+	font: var(--normal) 20px/2.5 dashicons, serif !important;
 	display: inline;
 	font-weight: 300;
 }
@@ -736,8 +734,9 @@ border color while dragging a file over the uploader drop area */
 	max-width: 100%;
 	max-height: 90%;
 	max-height: calc(100% - 42px); /* leave space for actions underneath */
-	background-image: linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4),
-					  linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
+	background-image:
+		linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4),
+		linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
 	background-position: 0 0, 10px 10px;
 	background-size: 20px 20px;
 }
@@ -904,12 +903,12 @@ border color while dragging a file over the uploader drop area */
 	color: var(--gray-500);
 }
 
-.A1B1 {
+.a1b1 {
 	overflow: hidden;
 }
 
 .wp_attachment_image .button,
-.A1B1 .button {
+.a1b1 .button {
 	float: left;
 }
 
@@ -918,7 +917,7 @@ border color while dragging a file over the uploader drop area */
 }
 
 .wp_attachment_image .spinner,
-.A1B1 .spinner {
+.a1b1 .spinner {
 	float: left;
 }
 
@@ -943,7 +942,7 @@ border color while dragging a file over the uploader drop area */
 }
 
 .imgedit-menu .button::before {
-	font: normal 16px/1 dashicons;
+	font: var(--normal) 16px/1 dashicons, serif;
 	margin-right: 8px;
 	speak: none;
 	vertical-align: middle;
@@ -996,8 +995,9 @@ border color while dragging a file over the uploader drop area */
 }
 
 .imgedit-crop-wrap img {
-	background-image: linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4),
-					  linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
+	background-image:
+		linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4),
+		linear-gradient(45deg, #c4c4c4 25%, transparent 25%, transparent 75%, #c4c4c4 75%, #c4c4c4);
 	background-position: 0 0, 10px 10px;
 	background-size: 20px 20px;
 }
@@ -1117,7 +1117,7 @@ span.imgedit-scale-warn {
 }
 
 .imgedit-save-target legend {
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 .imgedit-group {
@@ -1177,7 +1177,7 @@ video {
  */
 @media print,
 	(-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 120dpi) {
+	(min-resolution: 120dpi) {
 	.imgedit-wait::before {
 		background-image: url(../images/spinner-2x.gif);
 	}

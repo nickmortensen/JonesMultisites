@@ -5,7 +5,6 @@
  * External dependencies
  */
 import { src, dest } from 'gulp';
-import tailwindcss from 'tailwindcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import AtImport from 'postcss-import';
 import pump from 'pump';
@@ -18,7 +17,7 @@ import { pipeline } from 'mississippi';
 /**
  * Internal dependencies
  */
-import { rootPath, paths, gulpPlugins, isProd, userPath } from './constants';
+import { rootPath, paths, gulpPlugins, isProd, userPath, assetsDir } from './constants';
 import {
 	getThemeConfig,
 	getStringReplacementTasks,
@@ -28,18 +27,18 @@ import {
 } from './utils';
 import { server } from './browserSync';
 
-export function stylesBeforeReplacementStream() {
+export function adminStylesBeforeReplacementStream() {
 	// Return a single stream containing all the
 	// before replacement functionality
 	return pipeline.obj( [
-		logError( 'CSS' ),
+		logError( 'Admin CSS' ),
 		gulpPlugins.newer( {
-			dest : paths.styles.dest,
+			dest: paths.styles.adminDest,
 			extra: [ paths.config.themeConfig ],
 		} ),
 		gulpPlugins.phpcs( {
-			bin            : `${userPath}/.composer/vendor/bin/phpcs`,
-			standard       : 'mortensen',
+			bin: `${userPath}/.composer/vendor/bin/phpcs`,
+			standard: 'mortensen',
 			warningSeverity: 0,
 		} ),
 		// Log all problems that were found.
@@ -47,9 +46,7 @@ export function stylesBeforeReplacementStream() {
 	] );
 }
 
-
-
-export function stylesAfterReplacementStream() {
+export function adminStylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
@@ -57,28 +54,30 @@ export function stylesAfterReplacementStream() {
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
-					appendBaseToFilePathArray( config.dev.styles.importFrom, paths.styles.srcDir ):
+					appendBaseToFilePathArray( config.dev.styles.importFrom, paths.styles.srcDir ) :
 					[]
 			),
 			stage: (
 				configValueDefined( 'config.dev.styles.stage' ) ?
-					config.dev.styles.stage:
+					config.dev.styles.stage :
 					3
 			),
 			autoprefixer: (
 				configValueDefined( 'config.dev.styles.autoprefixer' ) ?
-					config.dev.styles.autoprefixer:
+					config.dev.styles.autoprefixer :
 					{}
 			),
+			preserve: false,
 			features: (
 				configValueDefined( 'config.dev.styles.features' ) ?
-					config.dev.styles.features:
+					config.dev.styles.features :
 					{
 						'custom-media-queries': {
 							preserve: false,
 						},
 						'custom-properties': {
-							preserve: true,
+						// Preserve must always be false for the editor
+							preserve: false,
 						},
 						'nesting-rules': true,
 					}
@@ -87,7 +86,6 @@ export function stylesAfterReplacementStream() {
 		calc( {
 			preserve: false,
 		} ),
-		tailwindcss(`${rootPath}/gulp/tailwind.js`),
 		cssnano(),
 	];
 
@@ -107,7 +105,8 @@ export function stylesAfterReplacementStream() {
 	return pipeline.obj( [
 		gulpPlugins.postcss( [
 			AtImport( {
-				path   : [ paths.styles.srcDir ],
+				// path: `${assetsDir}/css/src/admin/wp-admin.css`,
+				path: [ paths.styles.adminSrcDir ],
 				plugins: [
 					stylelint( { configFile: `${userPath}/.stylelintrc` } ),
 				],
@@ -125,21 +124,22 @@ export function stylesAfterReplacementStream() {
 	] );
 }
 
+
 /**
 * CSS via PostCSS + CSSNext (includes Autoprefixer by default).
 * @param {function} done function to call when async processes finish
 * @return {Stream} single stream
 */
-export default function styles( done ) {
+export default function adminStyles( done ) {
 	return pump( [
-		src( paths.styles.src, { sourcemaps: ! isProd } ),
-		stylesBeforeReplacementStream(),
+		src( paths.styles.adminSrc, { sourcemaps: ! isProd } ),
+		adminStylesBeforeReplacementStream(),
 		// Only do string replacements when building for production
 		gulpPlugins.if(
 			isProd,
 			getStringReplacementTasks()
 		),
-		stylesAfterReplacementStream(),
-		dest( paths.styles.dest, { sourcemaps: ! isProd } ),
+		adminStylesAfterReplacementStream(),
+		dest( paths.styles.adminDest, { sourcemaps: ! isProd } ),
 	], done );
 }

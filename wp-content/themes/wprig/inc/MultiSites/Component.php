@@ -40,11 +40,10 @@ class Component implements Component_Interface {
 		add_filter( 'manage_sites-network_sortable_columns', [ $this, 'make_columns_sortable' ] );
 		add_action( 'manage_sites_custom_column', [ $this, 'add_columns' ], 10, 2 );
 		add_action( 'manage_blogs_custom_column', [ $this, 'add_columns' ], 10, 2 );
-		add_action( 'admin_footer', [ $this, 'add_admin_style' ] );
 	}
 
 	/**
-	 * Adds a column to the multisites admin table.
+	 * Adds a column to the multisites admin table for blog_id.
 	 *
 	 * @param string $column_name Name of the column.
 	 * @param int    $blog_id     Id of the site / blog.
@@ -76,6 +75,7 @@ class Component implements Component_Interface {
 
 	/**
 	 * Ensure that the Blog ID Column is sortable.
+	 *
 	 * @link https://developer.wordpress.org/reference/hooks/manage_this-screen-id_sortable_columns/
 	 * @param array $columns Existing columns.
 	 * @return array $columns Existing columns + any new columns you want to be sortable.
@@ -85,13 +85,5 @@ class Component implements Component_Interface {
 		$columns['users']    = 'Users';
 		return $columns;
 	}
-
-	/**
-	 * Enqueues a css style for the admin footer.
-	 */
-	public function add_admin_style() {
-		echo '<style>#blog_id, #users { width:9%; }</style>';
-	}
-
 
 }

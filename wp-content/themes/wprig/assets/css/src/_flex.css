@@ -1,5 +1,3 @@
-@import "_custom-properties.css";
-
 /* last update 23_March_2020 */
 .flex {
 	display: flex;
@@ -149,8 +147,6 @@
 
 
 /* ===== End of SECONDARY AXIS STYLES ====== */
-
-
 
 /*--- ALIGN CONTENT FOR CONTENT THAT WRAPS:Applies When a Wrapped Item has Extra Space ----------*/
 .align-content-space-around {

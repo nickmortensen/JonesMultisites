@@ -12,8 +12,24 @@ use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function add_filter;
 
+
+/**
+ * TABLE OF CONTENTS.
+ * 1. get_state_options()
+ * 2. get_slug()
+ * 3. initialize()
+ * 4. cmb2_render_rating_field_callback() -- Star Rating.
+ * 5. render_address_field_callback().
+ * 6. render_staffmember_field_callback().
+ * 7. render_jonesaddress_field_callback().
+ */
+
 /**
  * Class for creating additional fields that are not part of the arsenal provided by CMB2.
+ *
+ * This class is used to create field types containing several inputs for use within custom post types, taxonomies, and attachments.
+ *
+ * @property array $states
  */
 class Component implements Component_Interface {
 
@@ -102,12 +118,6 @@ class Component implements Component_Interface {
 	 *
 	 * @return string Component slug.
 	 */
-
-	/**
-	 * Gets the unique identifier for the theme component.
-	 *
-	 * @return string Component slug.
-	 */
 	public function get_slug() : string {
 		return 'additionalfields';
 	}
@@ -124,7 +134,7 @@ class Component implements Component_Interface {
 
 
 	/**
-	 * Render 'star rating' custom field type
+	 * Render 'STAR RATING' custom field type
 	 *
 	 * @since 0.1.0
 	 *
@@ -132,7 +142,7 @@ class Component implements Component_Interface {
 	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
 	 * @param int    $object_id          The ID of the current object.
 	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
-	 * @param object $field_type         The `CMB2_Types` object.
+	 * @param object $field_type_object  The `CMB2_Types` object.
 	 */
 	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type_object ) {
 			?>
@@ -181,7 +191,7 @@ class Component implements Component_Interface {
 	<section class="projectAddressFields">
 		<!-- address-1 -->
 		<div class="field-div" data-fieldid="address1">
-			<span class="innerlabel">
+			<span>
 				<label for="<?= $field_type->_id( '_address_1', false ); ?>">Address</label>
 			</span>
 			<?= $field_type->input(
@@ -199,7 +209,7 @@ class Component implements Component_Interface {
 		<div class="citystatezip">
 			<!-- city-->
 			<div class="field-div" data-fieldid="city">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_city' ); ?>'">City</label>
 				</span>
 				<?= $field_type->input(
@@ -216,7 +226,7 @@ class Component implements Component_Interface {
 
 			<!-- state -->
 			<div class="field-div" data-fieldid="state">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_state' ); ?>'">State</label>
 				</span>
 				<?= $field_type->select(
@@ -232,7 +242,7 @@ class Component implements Component_Interface {
 
 			<!-- /zip -->
 			<div class="field-div" data-fieldid="zip">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_zip' ); ?>'">Zip</label>
 				</span>
 				<?= $field_type->input(
@@ -251,7 +261,7 @@ class Component implements Component_Interface {
 		<!-- coordinates -->
 		<div class="coordinates">
 			<div data-fieldid="latitude" class="field-div">
-				<span class="innerlabel">
+				<span>
 					<label for="<?=$field_type->_id( '_latitude' ); ?>'">Latitude</label>
 				</span>
 				<?= $field_type->input(
@@ -265,7 +275,7 @@ class Component implements Component_Interface {
 				?>
 			</div><!-- /latitude -->
 			<div data-fieldid="longitude" class="field-div">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_longitude' ); ?>'">Longitude</label>
 				</span>
 				<?= $field_type->input(
@@ -309,6 +319,9 @@ class Component implements Component_Interface {
 
 		$default_email = $this->get_email_default( $object_id );
 		$new_values    = [
+			'staff_id'      => '',
+			'full_title'    => '',
+			'short_title'   => '',
 			'desk_phone'    => '',
 			'desk_ext'      => '',
 			'mobile_phone'  => '',
@@ -320,18 +333,67 @@ class Component implements Component_Interface {
 			'experience'    => '',
 			'date_hired'    => '',
 			'is_management' => '',
-			'short_title'   => '',
 		];
 		$value         = wp_parse_args( $value, $new_values );
-
 		?>
 
-<section class="staffmember-info-fields">
-		<!-- Desk Phone, Phone Extension, Mobile Phone -->
-		<div class="deskextmobile">
+
+		<section class="staffmember-info-fields">
+
+			<!--title (full) -->
+			<div class="field-div" data-fieldid="staff_id">
+				<span>
+					<label for="<?= $field_type->_id( '_staff_id' ); ?>">Staff ID</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[staff_id]' ),
+						'id'    => $field_type->_id( '_staff_id' ),
+						'value' => $value['staff_id'],
+						'type'  => 'text-small',
+						'class' => '',
+					]
+				);
+				?>
+			</div>
+
+			<!--title (full) -->
+			<div class="field-div" data-fieldid="full_title">
+				<span>
+					<label for="<?= $field_type->_id( '_full_title' ); ?>">Full Title</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[full_title]' ),
+						'id'    => $field_type->_id( '_full_title' ),
+						'value' => $value['full_title'],
+						'type'  => 'text_medium',
+						'class' => '',
+					]
+				);
+				?>
+			</div>
+
+			<!--title (short) -->
+			<div class="field-div" data-fieldid="short_title">
+				<span>
+					<label for="<?= $field_type->_id( '_short_title' ); ?>">Short Title</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[short_title]' ),
+						'id'    => $field_type->_id( '_short_title' ),
+						'value' => $value['short_title'],
+						'type'  => 'text_medium',
+						'class' => '',
+					]
+				);
+				?>
+			</div>
+
 			<!-- desk phone-->
 			<div class="field-div" data-fieldid="desk_phone">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_desk_phone' ); ?>'">Desk Phone</label>
 				</span>
 				<?= $field_type->input(
@@ -340,15 +402,17 @@ class Component implements Component_Interface {
 						'id'    => $field_type->_id( '_desk_phone' ),
 						'value' => $value['desk_phone'],
 						'type'  => 'text_small',
+						'class' => '',
 					]
 				);
 				?>
-			</div><!-- /desk phone -->
+			</div>
+			<!-- /desk phone -->
 
 			<!-- extension -->
 			<div class="field-div" data-fieldid="desk_ext">
-				<span class="innerlabel">
-					<label for="<?= $field_type->_id( '_desk_ext' ); ?>'">Extension</label>
+				<span>
+					<label for="<?= $field_type->_id( '_desk_ext' ); ?>'">ext</label>
 				</span>
 				<?= $field_type->input(
 					[
@@ -356,6 +420,7 @@ class Component implements Component_Interface {
 						'id'    => $field_type->_id( '_desk_ext' ),
 						'value' => $value['desk_ext'],
 						'type'  => 'text_small',
+						'class' => '',
 					]
 				);
 				?>
@@ -363,7 +428,7 @@ class Component implements Component_Interface {
 
 			<!-- mobile -->
 			<div class="field-div" data-fieldid="mobile_phone">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_mobile_phone' ); ?>'">Mobile</label>
 				</span>
 				<?= $field_type->input(
@@ -372,30 +437,31 @@ class Component implements Component_Interface {
 						'id'    => $field_type->_id( '_mobile_phone' ),
 						'value' => $value['mobile_phone'],
 						'type'  => 'text_small',
+						'class' => '',
 					]
 				);
 				?>
 			</div><!-- /mobile-->
-		</div><!-- /Desk Phone, Phone Extension, Mobile Phone -->
 
-</section>
-<!-- email -->
-<div class="field-div" data-fieldid="staff_email">
-	<span class="innerlabel">
-		<label for="<?= $field_type->_id( '_staff_email' ); ?>'">Email</label>
-	</span>
-	<?= $field_type->input(
-		[
-			'name'    => $field_type->_name( '[staff_email]' ),
-			'id'      => $field_type->_id( '_staff_email' ),
-			'value'   => $value['staff_email'],
-			'type'    => 'text_email',
-			'default' => $default_email,
-		]
-	);
-	?>
-</div><!-- /email-->
-<p class="cmb2-metabox-description">Staff information</p>
+			<!-- email -->
+			<div class="field-div" data-fieldid="staff_email">
+				<span>
+					<label for="<?= $field_type->_id( '_staff_email' ); ?>'">Email</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'    => $field_type->_name( '[staff_email]' ),
+						'id'      => $field_type->_id( '_staff_email' ),
+						'value'   => $value['staff_email'],
+						'type'    => 'text_email',
+						'default' => $default_email,
+						'class'   => '',
+					]
+				);
+				?>
+			</div><!-- /email-->
+
+		</section>
 	<?php
 	}
 
@@ -428,7 +494,7 @@ class Component implements Component_Interface {
 	<section class="jonesAddressFields">
 		<!-- address -->
 		<div class="field-div" data-fieldid="address">
-			<span class="innerlabel">
+			<span>
 				<label for="<?= $field_type->_id( '_address', false ); ?>">Address</label>
 			</span>
 			<?= $field_type->input(
@@ -445,7 +511,7 @@ class Component implements Component_Interface {
 		<div class="citystatezip">
 			<!-- city-->
 			<div class="field-div" data-fieldid="city">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_city' ); ?>'">City</label>
 				</span>
 				<?= $field_type->input(
@@ -461,7 +527,7 @@ class Component implements Component_Interface {
 
 			<!-- state -->
 			<div class="field-div" data-fieldid="state">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_state' ); ?>'">State</label>
 				</span>
 				<?= $field_type->select(
@@ -476,7 +542,7 @@ class Component implements Component_Interface {
 
 			<!-- /zip -->
 			<div class="field-div" data-fieldid="zip">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_zip' ); ?>'">Zip</label>
 				</span>
 				<?= $field_type->input(
@@ -496,7 +562,7 @@ class Component implements Component_Interface {
 		<div class="phonefaxemail">
 			<!-- phone-->
 			<div class="field-div" data-fieldid="phone">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_phone' ); ?>'">Phone</label>
 				</span>
 				<?= $field_type->input(
@@ -512,7 +578,7 @@ class Component implements Component_Interface {
 
 			<!-- /fax -->
 			<div class="field-div" data-fieldid="fax">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_fax' ); ?>'">Fax</label>
 				</span>
 				<?= $field_type->input(
@@ -528,7 +594,7 @@ class Component implements Component_Interface {
 
 			<!-- email -->
 			<div class="field-div" data-fieldid="email">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_email' ); ?>'">Email</label>
 				</span>
 				<?= $field_type->input(
@@ -547,7 +613,7 @@ class Component implements Component_Interface {
 		<div class="coordinates">
 			<!-- latitude -->
 			<div data-fieldid="latitude" class="field-div">
-				<span class="innerlabel">
+				<span>
 					<label for="<?=$field_type->_id( '_latitude' ); ?>'">Latitude</label>
 				</span>
 				<?= $field_type->input(
@@ -562,7 +628,7 @@ class Component implements Component_Interface {
 			</div><!-- /latitude -->
 			<!-- longitude -->
 			<div data-fieldid="longitude" class="field-div">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_longitude' ); ?>'">Longitude</label>
 				</span>
 				<?= $field_type->input(
@@ -577,7 +643,7 @@ class Component implements Component_Interface {
 			</div><!-- /longitude -->
 			<!-- googleCID -->
 			<div data-fieldid="googleCID" class="field-div">
-				<span class="innerlabel">
+				<span>
 					<label for="<?= $field_type->_id( '_googleCID' ); ?>'">googleCID</label>
 				</span>
 				<?= $field_type->input(

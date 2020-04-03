@@ -1,5 +1,3 @@
-@import url(_custom-properties.css);
-
 /* nav-menu */
 
 /* @todo: determine if this is truly for nav menus only */
@@ -132,7 +130,7 @@ ul.add-menu-item-tabs li {
 	clear: both;
 	width: 25%;
 	padding: 3px 0 0;
-	margin-left: -25%; /* 20 container left padding x ( 100 container % width / 80 this % width ) */
+	margin-left: -25%; /* 20 container left padding x (100 container % width / 80 this % width) */
 }
 
 .menu-settings label {
@@ -209,7 +207,7 @@ ul.add-menu-item-tabs li {
 }
 
 #menu-management .menu-add-new abbr {
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 #select-nav-menu-container {
@@ -232,7 +230,7 @@ ul.add-menu-item-tabs li {
 }
 
 .menu-location-title label {
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 .menu-location-menus select {
@@ -412,13 +410,13 @@ ul.add-menu-item-tabs li {
 	margin-top: -3px;
 }
 
-.menu-item-title input[type=checkbox] {
+.menu-item-title input[type="checkbox"] {
 	display: inline-block;
 	margin-top: -4px;
 }
 
 .menu-item-title .post-state {
-	font-weight: var(--semibold)
+	font-weight: var(--semibold);
 }
 
 /* Nav Menu */
