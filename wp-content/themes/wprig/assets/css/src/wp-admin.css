@@ -1,0 +1,25 @@
+/* stylelint-disable */
+
+@import url(./_custom-properties.css);
+@import url(./_flex.css);
+@import url(./admin_partials/_admin-menu.css);
+@import url(./admin_partials/_dashboard.css);
+@import url(./admin_partials/_edit.css);
+/* @import url(./admin_partials/_revisions.css); */
+@import url(./admin_partials/_media.css);
+/* @import url(./admin_partials/_themes.css); */
+@import url(./admin_partials/_about.css);
+@import url(./admin_partials/_nav-menus.css);
+/* @import url(./admin_partials/_widgets.css); */
+@import url(./admin_partials/_site-icon.css);
+/* @import url(./admin_partials/_site-health.css); */
+@import url(./admin_partials/_color-picker.css);
+/* @import url(./admin_partials/_deprecated-media.css); */
+/* @import url(./admin_partials/_customize-controls.css); */
+@import url(./admin_partials/_customize-nav-menus.css);
+/* @import url(./admin_partials/_customize-widgets.css); */
+/* @import url(./admin_partials/_farbtastic.css); */
+/* @import url(./admin_partials/_ie.css); */
+/* @import url(./admin_partials/_install.css); */
+@import url(./admin_partials/_list-tables.css);
+@import url(./admin_partials/_common.css);

@@ -1,0 +1,312 @@
+<?php
+/**
+ * WP_Rig\WP_Rig\Extend_Quickedit\Component class.
+ *
+ * @package wp_rig
+ */
+
+namespace WP_Rig\WP_Rig\Extend_Quickedit;
+
+use WP_Rig\WP_Rig\Staffmembers\Component as Staffmembers;
+use WP_Rig\WP_Rig\Component_Interface;
+use function WP_Rig\WP_Rig\wp_rig;
+use function add_action;
+use function add_filter;
+
+
+/**
+ * TABLE OF CONTENTS.
+ * 1. get_state_options()
+ * 2. get_slug()
+ * 3. initialize()
+ * 4. cmb2_render_rating_field_callback() -- Star Rating.
+ * 5. render_address_field_callback().
+ * 6. render_staffmember_field_callback().
+ * 7. render_jonesaddress_field_callback().
+ */
+class Component implements Component_Interface {
+
+
+	/**
+	 * Gets the unique identifier for the theme component.
+	 *
+	 * @return string Component slug.
+	 */
+	public function get_slug() : string {
+		return 'extendquickedit';
+	}
+
+	/**
+	 * Adds the action and filter hooks to integrate with WordPress.
+	 */
+	public function initialize() {
+		// add_action( 'manage_staffmember_posts_columns', array( $this, 'add_custom_admin_column' ), 10, 1 ); // add custom column.
+		// add_action( 'manage_staffmember_posts_custom_column', array( $this, 'manage_custom_admin_columns' ), 10, 2 ); // populate column.
+		// add_action( 'quick_edit_custom_box', array( $this, 'display_quick_edit_custom' ), 10, 2 ); // output form elements for quickedit interface.
+		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts_and_styles' ) ); // enqueue admin script (for prepopulting fields with JS).
+		// add_action( 'add_meta_boxes', array( $this, 'add_metabox_to_posts' ), 10, 2 ); // add metabox to posts to add our meta info.
+		// add_action( 'save_post', array( $this, 'save_post' ), 10, 1 ); // call on save, to update metainfo attached to our metabox.
+	}
+
+/**
+ * Add a new metabox on our single post edit screen
+ *
+ * @param string $post_type Type of post - in our case here - 'staffmember'.
+ * @param int    $post ID of post.
+ *
+ * @link https://generatewp.com/managing-content-easily-quick-edit/
+ * @link https://ducdoan.com/add-custom-field-to-quick-edit-screen-in-wordpress/
+ * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
+ */
+public function add_metabox_to_posts( $post_type, $post ) {
+		// return Staffmembers::additional_fields();
+		add_meta_box(
+			'additional-meta-box',
+			__('Additional Info', 'post-quick-edit-extension'),
+			array($this, 'display_metabox_output'),
+			'post',
+			'side',
+			'default'
+		);
+}
+
+/**
+ * Metabox output - display fields
+ *
+ * @param int $post The post id to display this metabox on.
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_nonce_field/
+ */
+public function display_metabox_output( $post ) {
+		// $html = '';
+		// wp_nonce_field();
+		// $management = Staffmember::is_management( $post );
+		// $current    = Staffmember::is_current( $post );
+		// $staff_info = Staffmember::get_staffmember_info( $post );
+		// $jones_id   = $staff_info['staff_id'];
+
+		// $html .= '<p>';
+		// $html .= '<p><strong>Management?</strong></p>';
+		// if ( 'on' === $management ) {
+		// 	$html .= '<input type="checkbox" name="staffManagement" id="staffManagement" value="on" checked/>';
+		// } else {
+		// 	$html .= '<input type="checkbox" name="staffManagement" id="staffManagement" value="on"/>';
+		// }
+		// $html .= '<label for="staffManagement">Management?</label>';
+		// $html .= '</br>';
+		// if ( 'on' === $current ) {
+		// 	$html .= '<input type="checkbox" name="staffCurrent" id="staffCurrent" value="on" checked/>';
+		// } else {
+		// 	$html .= '<input type="checkbox" name="staffCurrent" id="staffCurrent" value="on"/>';
+		// }
+		// $html .= '<label for="staffCurrent">Currently?</label>';
+		// $html .= '</p>';
+		// $html .= '<p>';
+		// $html .= '<p>';
+		// $html .= '<label for="jones_id"><strong>Jones ID </strong></label>';
+		// $html .= '</p>';
+		// $html .= '<input type="text" name="jones_id" id="jones_id" value="' . $jones_id . '" class="widefat"/>';
+		// $html .= '</p>';
+		// echo $html;
+
+		$html = '';
+		wp_nonce_field('post_metadata', 'post_metadata_field');
+
+		$post_featured = get_post_meta($post->ID, 'post_featured', true);
+		$post_rating = get_post_meta($post->ID, 'post_rating', true);
+		$post_subtitle = get_post_meta($post->ID, 'post_subtitle', true);
+
+		//Featured post (radio)
+		$html .= '<p>';
+			$html .= '<p><strong>Featured Post?</strong></p>';
+			$html .= '<label for="post_featured_no">';
+				if($post_featured == 'no' || empty($post_featured)){
+					$html .= '<input type="radio" checked name="post_featured" id="post_featured_no" value="no"/>';
+				}else{
+					$html .= '<input type="radio" name="post_featured" id="post_featured_no" value="no"/>';
+				}
+			$html .= ' No</label>';
+			$html .= '</br>';
+			$html .= '<label for="post_featured_yes">';
+				if($post_featured == 'yes'){
+					$html .= '<input type="radio" checked name="post_featured" id="post_featured_yes" value="yes"/>';
+				}else{
+					$html .= '<input type="radio" name="post_featured" id="post_featured_yes" value="yes"/>';
+				}
+			$html .= ' Yes</label>';
+		$html .= '</p>';
+
+		//Internal Rating (select)
+		$html .= '<p>';
+			$html .= '<p>';
+				$html .= '<label for="post_rating"><strong>Post Rating</strong></label>';
+			$html .= '</p>';
+			$html .= '<select name="post_rating" id="post_rating" value="' . $post_rating .'" class="widefat">';
+				$html .= '<option value="1" ' . (($post_rating == '1') ? 'selected' : '') . '>1</option>';
+				$html .= '<option value="2" ' . (($post_rating == '2') ? 'selected' : '') . '>2</option>';
+				$html .= '<option value="3" ' . (($post_rating == '3') ? 'selected' : '') . '>3</option>';
+				$html .= '<option value="4" ' . (($post_rating == '4') ? 'selected' : '') . '>4</option>';
+				$html .= '<option value="5" ' . (($post_rating == '5') ? 'selected' : '') . '>5</option>';
+			$html .= '</select>';
+
+		$html .= '</p>';
+
+
+		//Subtitle (text)
+		$html .= '<p>';
+			$html .= '<p>';
+				$html .= '<label for="post_subtitle"><strong>Subtitle</strong></label>';
+			$html .= '</p>';
+			$html .= '<input type="text" name="post_subtitle" id="post_subtitle" value="' . $post_subtitle .'" class="widefat"/>';
+		$html .= '</p>';
+
+
+		echo $html;
+
+
+}
+
+	/**
+	 * Enqueue admin js to pre-populate the quick-edit fields
+	 */
+	public function enqueue_admin_scripts_and_styles() {
+		// If the AMP plugin is active, return early.
+		if ( wp_rig()->is_amp() ) {
+			return;
+		}
+		// Only use the minified script if we are in a production environment.
+		$script_uri   = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/staffmember_quickedit.js' ) : get_theme_file_uri( '/assets/js/staffmember_quickedit.min.js' );
+		$version      = '18';
+		$dependencies = [ 'jquery', 'inline-edit-post' ]; // location: wp-admin/js/inline-edit-post.js.
+		$in_footer    = false; // True if we want to load the script in footer, false to load within header.
+		// Enqueue the navigation script.
+		wp_enqueue_script( 'staffmember-quickedit', $script_uri, $dependencies, $version, $in_footer );
+	}
+
+	/**
+	 * Display our custom content on the quick-edit interface, no values can be pre-populated (all done in JS)
+	 *
+	 * @param string $column Name of column.
+	 *
+	 * @link https://developer.wordpress.org/reference
+	 */
+	public function display_quick_edit_custom( $column ) {
+		$html = '';
+		wp_nonce_field( 'post_metadata', 'post_metadata_field' );
+		$output = 'temporary output';
+		$side   = 'left';
+		switch ( $column ) {
+			case 'staffManagement':
+				$output = $this->build_quickedit_checkbox( 'left', 'staffManagement', 'Management?', true );
+				break;
+			case 'staffCurrent':
+				$output = $this->build_quickedit_checkbox( 'center', 'staffCurrent', 'Current', true );
+				break;
+			case 'jones_id':
+				$html   = '<fieldset class="inline-edit-col-right ">';
+				$html  .= '<div class="inline-edit-group wp-clearfix">';
+				$html  .= '<label class="alignleft" for="staffInfo[staff_id]"><span class="title">Jones ID</span></label>';
+				$html  .= '<input type="text" name="staffInfo[staff_id]" id="staff_id" value="" />';
+				$html  .= '</div>';
+				$html  .= '</fieldset>';
+				$output = $html;
+				break;
+			default:
+				$output = '';
+		}
+		echo $output;
+	}
+
+	/**
+	 * Build a quickedit field.
+	 *
+	 * @param string $side The side of the columns - comes after inline-edit-col. Options: left, center, right.
+	 * @param string $name_att The string to be used for the labels 'for' attribute and the checkbox's 'name' & 'id' attribute.
+	 * @param string $title The label of the field.
+	 *
+	 * @link https://developer.wordpress.org/reference
+	 */
+	private function build_quickedit_checkbox( $side = 'left', $name_att = 'staffManagement', $title = 'Management' ) {
+		$clear = 'left' === $side ? ' clear' : ''; // Need to add a class of clear to any fieldset on the left side.
+		$html  = '';
+		$html .= '<fieldset class="inline-edit-col-' . $side . $clear . '">';
+		$html .= '<div class="inline-edit-group wp-clearfix">';
+		$html .= '<label class="switch alignleft" for="' . $name_att . '">';
+		$html .= '<input data-quickedit="true" type="checkbox" name="' . $name_att . '" id="' . $name_att . '" value="on" />';
+		$html .= '<span class="checkbox-title" desc="' . $title . '">' . $title . '?</span></label>';
+		$html .= '</div>';
+		$html .= '</fieldset>';
+		return $html;
+	}
+
+	/**
+	 * Add a custom column to hold our data.
+	 *
+	 * @param string $columns name of columns.
+	 *
+	 * @link https://developer.wordpress.org/reference
+	 */
+	public function add_custom_admin_column( $columns ) {
+		return Staffmembers::new_admin_columns( $columns );
+	}
+
+	/**
+	 * Grab the data for the new columns in the admin area for this post type.
+	 *
+	 * @param string $column_name Name of column.
+	 * @param int    $post_id   Post ID.
+	 */
+	public function manage_custom_admin_columns( $column_name, $post_id ) {
+		Staffmembers::populate_data( $column_name, $post_id );
+	}
+
+	/**
+	 * Saving meta info (used for both traditional and quick-edit saves)
+	 *
+	 * @param int $post_id The id of the post.
+	 */
+	public function save_post( $post_id ) {
+		$post_type = get_post_type( $post_id );
+
+		if ( 'staffmember' === $post_type ) {
+			// Determine whether nonce is set.
+			if ( ! isset( $_POST['post_metadata_field'] ) ) {
+				return false;
+			}
+
+			// Verify nonce.
+			if ( ! wp_verify_nonce( $_POST['post_metadata_field'], 'post_metadata' ) ) {
+				return false;
+			}
+
+			// If not autosaving.
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+				return false;
+			}
+
+			// All clear to save now.
+			$is_manager = isset( $_POST['staffManagement'] ) ? sanitize_text_field( $_POST['staffManagement'] ) : '';
+			$is_current = isset( $_POST['staffCurrent'] ) ? sanitize_text_field( $_POST['staffCurrent'] ) : '';
+			$jones_id   = isset( $_POST['staffInfo[staff_id]'] ) ? sanitize_text_field( $_POST['staffInfo[staff_id]'] ) : '';
+			$default    = get_post_meta( $post_id, 'staffInfo', true );
+			if ( '' !== $jones_id && $default['staff_id'] !== $jones_id ) {
+				$new = [ 'staff_id' => $jones_id ];
+				update_post_meta( $post_id, 'staffInfo', maybe_serialize( wp_parse_args( $new, $default ) ) );
+			}
+			update_post_meta( $post_id, 'isManagement', $is_manager );
+			update_post_meta( $post_id, 'isCurrent', $is_current );
+		}
+	}
+
+/**
+ * Get singleton instance
+ */
+public static function getInstance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+			}
+		return self::$instance;
+}
+
+
+}//end class
