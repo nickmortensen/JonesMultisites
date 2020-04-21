@@ -37,6 +37,7 @@
 	flex-flow: column nowrap;
 }
 
+
 /*===========================================
 =      PRIMARY AXIS STYLES      =
 ===========================================*/
@@ -66,7 +67,15 @@
 	justify-content: space-around;
 }
 
+.justify-around {
+	justify-content: space-around;
+}
+
 .justify-space-between {
+	justify-content: space-between;
+}
+
+.justify-between {
 	justify-content: space-between;
 }
 

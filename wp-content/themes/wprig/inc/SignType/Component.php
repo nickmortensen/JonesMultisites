@@ -277,7 +277,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param array $columns The new columns to make sortable.
 	 * @return array $columns All the columns you want sortable.
 	 */
-	public function make_location_columns_sortable( $columns ) {
+	public function make_signtype_columns_sortable( $columns ) {
 		$columns['id']   = 'ID';
 		$columns['slug'] = 'Slug';
 		return $columns;

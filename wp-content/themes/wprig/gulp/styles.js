@@ -53,7 +53,7 @@ export function stylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		stylelint( { configFile: `${userPath}/.stylelintrc` }),
+		// stylelint( { configFile: `${userPath}/.stylelintrc` }),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?

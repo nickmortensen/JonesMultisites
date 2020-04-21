@@ -1,34 +1,72 @@
-/* Additional field for posttype taxonomy styles */
-div.field-div {
+.njm {
+	font-weight: var(--semibold);
+	padding: 0.5vw 6px 0.5vw 0;
+}
+
+.cntr {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50% );
+}
+
+.toggle_checkbox {
+	--input-width: 40px;
+	--input-height: 20px;
+	max-width: 30%;
+	font-weight: var(--semibold);
+	padding: 0.5vw 6px 0.5vw 0;
 	display: flex;
 	flex-flow: row nowrap;
-	justify-content: flex-start;
-	margin: 1vw;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.field-div > span {
-	flex-grow: 1;
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: flex-start;
-	max-width: 220px;
+.toggle-checkbox label {
+	min-width: calc( 100% - ( var(--input-width) + 5 ) );
+	background: var(--indigo-300);
 }
 
-.field-div > span ~ input {
-	background: var(--gray-400);
-	font-size: 1.2rem;
-	margin-right: 12vw;
-	min-width: 40%;
+.toggle_checkbox input[type="checkbox"] {
+	position: relative;
+	width: var(--input-width);
+	height: var(--input-height);
+	appearance: none;
+	background-color: var(--red-400);
+	outline: none;
+	border-radius: 20px;
+	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+	transition: 0.5s;
 }
 
-.field-div > span > label {
-	min-width: 160px;
-	font-weight: var(--bold);
-	font-size: 1.6rem;
-	background: var(--gray-300);
-	justify-self: end;
-	align-items: flex-end;
+.toggle_checkbox input:checked[type="checkbox"] {
+	background: var(--green-500);
 }
+
+.toggle_checkbox input[type="checkbox"]::before {
+	content: '';
+	position: absolute;
+	width: var(--input-height);
+	height: var(--input-height);
+	border-radius: 20px;
+	top:0;
+	left: 0;
+	background: var(--gray-100);
+	transition: 0.5s;
+	/* box-shadow: inset -2px -4px 5px rgba(0, 0, 0, 0.8); */
+	box-shadow: -3px 2px 5px rgba(0, 0, 0, 0.3), inset -3px 2px 5px rgba(0, 0, 0, 0.3);
+	transform: scale(1.1);
+
+}
+
+.toggle_checkbox input:checked[type="checkbox"]::before {
+	left: var(--input-height);
+	box-shadow: inset -1px -2px 3px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
 
 /* Quick Edit fields */
 #wpbody-content .inline-edit-row fieldset {

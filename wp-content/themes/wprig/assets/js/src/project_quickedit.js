@@ -1,5 +1,5 @@
 /*
- * Post Bulk Edit Script
+ * Project Quickedit & Bulk Edit Script
  * Hooks into the inline post editor functionality to extend it to our custom metadata
  *
  * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
@@ -7,27 +7,27 @@
 
 document.addEventListener( 'DOMContentLoaded', function() {
 
-	//Prepopulating our quick-edit post info
-	var inline_editor   = inlineEditPost.edit;
+	//Prepopulating our quick-edit post info -- set the original from WordPresses 'inline-edit-post' script to a variable prior to altering it in my own way.
+	const inline_editor   = inlineEditPost.edit;
 	inlineEditPost.edit = function(id) {
 
-		//call old copy.
-		inline_editor.apply( this, arguments);
+		// Call old copy.
+		inline_editor.apply( this, arguments );
 
-		//our custom functionality below
-		var post_id = 0;
+		// Custom functionality for inlineEditPost.edit below.
+		let post_id = 0; // Set this to 0 , so we can know whether we are on a post or not.
 		if ( typeof( id ) === 'object' ){
-			post_id = parseInt( this.getId( id ) );
+			post_id = parseInt( this.getId( id ), 10 );
 		}
 
-		// If we have our post, post_id will be assigned a number that is not zero.
+		// If we have a post, post_id will be assigned a number !== zero.
 		if ( 0 !== post_id ) {
 
-			// Find our row.
+			// Find row to edit.
 			let row = document.getElementById( `edit-${post_id}` );
-			// let row = document.querySelector( `#edit-${post_id}` );
 
-			// This staffmembers data-status resolves to 'on' if the staffmember is managemtnent, 'off' if the staffmember isn't managemtnent.
+			// This projects additional field -must also be a column.
+
 			let isManagement = document.querySelector( `#staff_management_${post_id}` ).dataset.state;
 			if ( 'on' === isManagement ) {
 				let managerCheckbox = row.querySelector( '#staff_management' );

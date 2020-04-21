@@ -471,10 +471,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function custom_admin_style() {
 		$css_files = [ 'about', 'admin-menu', 'code-editor', 'color-picker', 'common', 'customize-controls', 'customize-nav-menus' ];
-		$uri       = trailingslashit( get_theme_file_uri() ) . 'assets/css/src/admin';
-		$dir       = trailingslashit( get_theme_file_path() ) . 'assets/css/src/admin';
-		$version   = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/src/admin/wp-admin.css' );
-		wp_enqueue_style( 'admincss', get_theme_file_uri( '/assets/css/src/admin/wp-admin.css' ), [], '9', 'all' );
+		$uri       = trailingslashit( get_theme_file_uri() ) . 'assets/css/src';
+		$dir       = trailingslashit( get_theme_file_path() ) . 'assets/css/src';
+		$version   = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/wp-admin.min.css' );
+		wp_enqueue_style( 'admincss', get_theme_file_uri( '/assets/css/wp-admin.min.css' ), [], '9', 'all' );
 	}
 
 	/**

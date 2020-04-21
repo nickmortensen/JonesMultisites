@@ -129,15 +129,6 @@ global $wpdb;
 
 <h2>Capability: <?= count( $capability ); ?></h2>
 
-<?php
-
-$array_a = [14, 16, 24, 28, 31, 9, 15 ];
-$array_b = [ 4, 8, 15, 9, 28 ];
-
-print_r( array_diff( $array_b, $array_a ));
-
-?>
-
 		<?php
 		//phpcs:disable
 		// get_template_part( 'template-parts/header/custom_header' );

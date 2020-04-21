@@ -52,7 +52,7 @@ class Component implements Component_Interface {
 	 * @return string $column_name Name of the column.
 	 */
 	public function add_columns( $column_name, $blog_id ) {
-		if ( 'blog_id' === $column_name) {
+		if ( 'blog_id' === $column_name ) {
 			$url = esc_url( network_admin_url( 'site-info.php?id=' . $blog_id ) );
 			echo "<a href='$url' class=\"edit\">$blog_id</a>";
 		}

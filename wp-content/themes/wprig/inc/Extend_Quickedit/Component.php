@@ -26,7 +26,11 @@ use function add_filter;
  */
 class Component implements Component_Interface {
 
-
+	/**
+	 * The instance has yet to be established.
+	 *
+	 * @var string
+	 */
 	private static $instance = null;
 
 	/**
@@ -42,77 +46,16 @@ class Component implements Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-		add_action( 'manage_staffmember_posts_columns', array( $this, 'add_custom_admin_column' ), 10, 1 ); // add custom column.
-		add_action( 'manage_staffmember_posts_custom_column', array( $this, 'manage_custom_admin_columns' ), 10, 2 ); // populate column.
-		add_action( 'quick_edit_custom_box', array( $this, 'display_quick_edit_custom' ), 10, 2 ); // output form elements for quickedit interface.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts_and_styles' ) ); // enqueue admin script (for prepopulting fields with JS).
+		// add_action( 'manage_staffmember_posts_columns', array( $this, 'add_custom_admin_column' ), 10, 1 ); // add custom column.
+		// add_action( 'manage_staffmember_posts_custom_column', array( $this, 'manage_custom_admin_columns' ), 10, 2 ); // populate column.
+		// add_action( 'quick_edit_custom_box', array( $this, 'display_quick_edit_custom' ), 10, 2 ); // output form elements for quickedit interface.
+		// add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts_and_styles' ) ); // enqueue admin script (for prepopulting fields with JS).
 		// add_action( 'add_meta_boxes', array( $this, 'add_metabox_to_posts' ), 10, 2 ); // add metabox to posts to add our meta info.
-		add_action( 'save_post', array( $this, 'save_post' ), 10, 1 ); // call on save, to update metainfo attached to our metabox.
-		add_action( 'cmb2_init', [ $this, 'add_metabox_to_posts' ] );
+		// add_action( 'save_post', array( $this, 'save_post' ), 10, 1 ); // call on save, to update metainfo attached to our metabox.
 	}
 
 
 
-	/**
-	 * Add a new metabox on our single post edit screen
-	 *
-	 * @param string $post_type Type of post - in our case here - 'staffmember'.
-	 * @param int    $post ID of post.
-	 *
-	 * @link https://generatewp.com/managing-content-easily-quick-edit/
-	 * @link https://ducdoan.com/add-custom-field-to-quick-edit-screen-in-wordpress/
-	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
-	 */
-	public function add_metabox_to_posts() {
-
-
-			// add_meta_box( 'additional-meta-box', __( 'Additional Info', 'post-quick-edit-extension' ), array( $this, 'display_metabox_output' ), 'staffmember', 'side', 'high' );
-			$args = [
-				'id'           => 'more-staff-details',
-				'context'      => 'side',
-				'priority'     => 'high',
-				'object_types' => [ 'staffmember' ],
-				'show_in_rest' => \WP_REST_Server::ALLMETHODS,
-				'show_names'   => true,
-				'title'        => 'More Details',
-
-			];
-
-			$cmb = new_cmb2_box( $args );
-
-			$cmb->add_field( [
-				'row_classes' => [ 'customized_radio', 'staff_management' ],
-				'desc'        => 'Management',
-				'type'        => 'checkbox',
-				'id'          => 'staffManagement',
-				'default'     => $this->default_for_staff_current_checkbox_field( false ),
-			] );
-
-			$cmb->add_field( [
-				'row_classes' => [ 'customized_radio', 'staff_current' ],
-				'desc'        => 'Current',
-				'type'        => 'checkbox',
-				'id'          => 'staffCurrent',
-				'default'     => $this->default_for_staff_current_checkbox_field( true ),
-			] );
-
-			$args = [
-				'type' => 'text_small',
-				'name' => 'Jones ID',
-				'id'   => 'staffID',
-			];
-			$cmb->add_field( $args );
-	}
-
-	/**
-	 * Set a checkbox efault value if we don't have a post ID (in the 'post' query variable).
-	 *
-	 * @param  bool  $default On/Off (true/false)
-	 * @return mixed          Returns true or '', the blank default
-	 */
-	public function default_for_staff_current_checkbox_field( $default ) {
-		return isset ( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
-	}
 
 
 
@@ -128,7 +71,7 @@ class Component implements Component_Interface {
 		$script_uri   = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/staffmember_quickedit.js' ) : get_theme_file_uri( '/assets/js/staffmember_quickedit.min.js' );
 		$version      = '20';
 		$dependencies = [ 'jquery', 'inline-edit-post' ]; // location: wp-admin/js/inline-edit-post.js.
-		$in_footer    = false; // True if we want to load the script in footer, false to load within header.
+		$in_footer    = true; // True if we want to load the script in footer, false to load within header.
 		// Enqueue the navigation script.
 		wp_enqueue_script( 'staffmember-quickedit', $script_uri, $dependencies, $version, $in_footer );
 	}
@@ -143,52 +86,50 @@ class Component implements Component_Interface {
 	public function display_quick_edit_custom( $column ) {
 		$html = '';
 		wp_nonce_field( 'post_metadata', 'post_metadata_field' );
-
-		// output post featured checkbox
-		if ( $column === 'post_featured' ) {
-			$html .= '<fieldset class="inline-edit-col-left clear">';
-			$html .= '<div class="inline-edit-group wp-clearfix">';
-			$html .= '<label class="alignleft" for="post_featured_no">';
-			$html .= '<input type="radio" name="post_featured" id="post_featured_no" value="no"/>';
-			$html .= '<span class="checkbox-title">Post Not Featured QE</span></label>';
-			$html .= '<label class="alignleft" for="post_featured_yes">';
-			$html .= '<input type="radio" name="post_featured" id="post_featured_yes" value="yes"/>';
-			$html .= '<span class="checkbox-title">Post Featured</span></label>';
-
-			$html .= '</div>';
-			$html .= '</fieldset>';
-		}
-		// output post rating select field
-		elseif ( 'post_rating' === $column ) {
-			$html .= '<fieldset class="inline-edit-col-center ">';
-			$html .= '<div class="inline-edit-group wp-clearfix">';
-			$html .= '<label class="alignleft" for="post_rating">Post Rating QE</label>';
-			$html .= '<select name="post_rating" id="post_rating" value="">';
-			$html .= '<option value="1">1</option>';
-			$html .= '<option value="2">2</option>';
-			$html .= '<option value="3">3</option>';
-			$html .= '<option value="4">4</option>';
-			$html .= '<option value="5">5</option>';
-			$html .= '</select>';
-			$html .= '</div>';
-			$html .= '</fieldset>';
-		} // output post subtitle text field.
-		elseif ( 'post_subtitle' == $column ) {
-			$html .= '<fieldset class="inline-edit-col-right ">';
-			$html .= '<div class="inline-edit-group wp-clearfix">';
-			$html .= '<label class="alignleft" for="post_rating">Post Subtitle QE </label>';
-			$html .= '<input type="text" name="post_subtitle" id="post_subtitle" value="" />';
-			$html .= '</div>';
-			$html .= '</fieldset>';
-		}
-
+		switch ( $column ) {
+			// Output checkbox with name attribute staff_management.
+			case 'staff_management':
+				$html .= '<fieldset class="inline-edit-col-left clear">';
+				$html .= '<div class="inline-edit-group wp-clearfix toggle_checkbox">';
+				$html .= '<input name="staff_management" type="checkbox" id="staff_management" value="YES"/>';
+				$html .= '<label for="staff_management">Management?</label>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
+				break;
+			// Output checkbox with name attribute staff_current.
+			case 'staff_current':
+				$html .= '<fieldset class="inline-edit-col-left clear">';
+				$html .= '<div class="inline-edit-group wp-clearfix toggle_checkbox">';
+				$html .= '<input name="staff_current" type="checkbox" id="staff_current" value="YES"/>';
+				$html .= '<label for="staff_current">';
+				$html .= 'current?</label>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
+				break;
+			case 'jones_id':
+				$html .= '<fieldset class="inline-edit-col-left clear">';
+				$html .= '<div class="inline-edit-group wp-clearfix">';
+				$html .= '<label for="jones_id" class="alignleft" >Staff ID</label>';
+				$html .= '<input type="text" class="text_small" name="jones_id" id="jones_id"/>';
+				$html .= '</div>';
+				$html .= '<div class="inline-edit-group wp-clearfix">';
+				$html .= '<label for="staff_title" class="alignleft" >Title</label>';
+				$html .= '<input type="text" name="staff_title" id="staff_title"/>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
+				break;
+			default:
+				$html = '';
+		} // End switch.
 		echo $html;
 	}
 
 	/**
-	 * Add a custom column to hold our data.
+	 * Add a custom columns on the admin page -- will not hold any data.
 	 *
 	 * @param string $columns name of columns.
+	 *
+	 * @see manage_custom_admin_columns() for method to populate data into these columns.
 	 *
 	 * @link https://developer.wordpress.org/reference
 	 */
@@ -199,12 +140,12 @@ class Component implements Component_Interface {
 		unset( $columns['taxonomy-location'] );
 		unset( $columns['date'] );
 		unset( $columns['cb'] );
-		$id['cb']                              = '<input type="checkbox"/>';
-		$id['identifier']                      = '#';
-		$id['staffmember_title']               = 'Position';
-		$id['jones_id']                        = 'Jones ID';
-		$new_columns['staffmember_management'] = 'Mgmt?';
-		$new_columns['staffmember_current'] = 'Current?';
+		$id['cb']                        = '<input type = "checkbox"/>';
+		$id['identifier']                = '#';
+		$id['staff_title']               = 'Position';
+		$id['jones_id']                  = 'Jones ID';
+		$new_columns['staff_management'] = 'Mgmt?';
+		$new_columns['staff_current']    = 'Current?';
 
 		return array_merge( $id, $columns, $new_columns );
 	}
@@ -217,13 +158,12 @@ class Component implements Component_Interface {
 	 */
 	public function manage_custom_admin_columns( $column_name, $post_id ) {
 		// Staffmembers::populate_data( $column_name, $post_id );
-		$newcols = [ 'identifier', 'jones_id', 'staffmember_management', 'staffmember_title' ];
 		$html    = '';
 		switch ( $column_name ) {
 			case 'identifier':
 				$html = $post_id;
 				break;
-			case 'staffmember_title':
+			case 'staff_title':
 				$staff_info = get_post_meta( $post_id, 'staffInfo', true );
 				$jobtitle   = $staff_info['full_title'];
 				$html       = '<div id="staff_title_' . $post_id . '">';
@@ -231,19 +171,18 @@ class Component implements Component_Interface {
 				$html      .= '</div>';
 				break;
 			case 'jones_id':
-				$html  = $this->output_circular_images( $post_id );
-				$html .= '<div id="staff_id_' . $post_id . '">';
-				$html .= get_post_meta( $post_id, 'staffID', true ) ?? '';
-				$html .= '</div>';
+				$html     = $this->output_circular_images( $post_id );
+				$staff_id = get_post_meta( $post_id, 'staffID', true );
+				$html    .= '<div id="jones_id_' . $post_id . '" data-jonesid="' . $staff_id . '">' .  $staff_id . '</div>';
 				break;
-			case 'staffmember_management':
+			case 'staff_management':
 				$state = get_post_meta( $post_id, 'staffManagement', true ) ? 'on' : 'off';
 				$html  = '<div id="staff_management_' . $post_id . '" data-state="' . $state . '">';
 				$color = 'on' === $state ? 'var(--indigo-600)' : 'var(--gray-500)';
 				$html .= '<span class="material-icons" style="color: ' . $color . ';">supervisor_account</span></span>';
 				$html .= '</div>';
 				break;
-			case 'staffmember_current':
+			case 'staff_current':
 				$state = get_post_meta( $post_id, 'staffCurrent', true ) ? 'on' : 'off';
 				$html  = '<div id="staff_current_' . $post_id . '" data-state="' . $state . '">';
 				$color = 'on' === $state ? 'var(--green-600)' : 'var(--gray-500)';
@@ -257,25 +196,7 @@ class Component implements Component_Interface {
 		echo $html;
 	}
 
-	/**
-	 * Output the image for the person as an image in a circle
-	 *
-	 * @param int $post_id The ID of the staffmember.
-	 * @return string The HTML to display the photo.
-	 */
-	public function output_circular_images( $post_id ) {
-		$size      = 'thumbnail';
-		$thumb_url = get_the_post_thumbnail_url( $post_id, $size );
-		return '<svg role="none" style="height: 36px; width: 36px;">
-				<mask id="avatar">
-					<circle cx="18" cy="18" fill="white" r="18"></circle>
-				</mask>
-				<g mask="url(#avatar)">
-					<image x="0" y="0" height="100%" preserveAspectRatio="xMidYMid slice" width="100%" xlink:href="' . $thumb_url . '" style="height: 36px; width: 36px;"></image>
-					<circle cx="18" cy="18" r="18" style="stroke-width:2;stroke:rgba(0,0,0,0.1);fill:none;"></circle>
-				</g>
-			</svg>';
-	}
+
 
 	/**
 	 * Saving meta info (used for both traditional and quick-edit saves)
@@ -303,24 +224,19 @@ class Component implements Component_Interface {
 					return false;
 			}
 
-			// all good to save.
-			$featured_post = isset( $_POST['post_featured'] ) ? sanitize_text_field( $_POST['post_featured'] ) : '';
-			$post_rating   = isset( $_POST['post_rating'] ) ? sanitize_text_field( $_POST['post_rating'] ) : '';
-			$post_subtitle = isset( $_POST['post_subtitle'] ) ? sanitize_text_field( $_POST['post_subtitle'] ) : '';
+			$staff_id      = sanitize_text_field ( $_POST['jones_id'] ) ?? '';
+			$staff_title   = sanitize_text_field ( $_POST['staff_title'] ) ?? '';
+			$is_current    = sanitize_text_field ( $_POST['staff_current'] ) ?? '';
+			$is_management = sanitize_text_field ( $_POST['staff_management'] ) ?? '';
 
-			$staff_id      = sanitize_text_field ( $_POST['staffID'] ) ?? '';
-			$is_current    = sanitize_text_field ( $_POST['isCurrent'] ) ?? '';
-			$is_management = sanitize_text_field ( $_POST['isManagement'] ) ?? '';
+			// This field is saved as serialized data, so I need to use wp_parse_args to get to it.
+			update_post_meta( $post_id, 'staffInfo', wp_parse_args( [ 'full_title' => $staff_title ], get_post_meta( $post_id, 'staffInfo', true ) ) );
 
-			update_post_meta( $post_id, 'post_featured', $featured_post );
-			update_post_meta( $post_id, 'post_rating', $post_rating );
-			update_post_meta( $post_id, 'post_subtitle', $post_subtitle );
-
-			update_post_meta( $post_id, 'staffCurrent', $staff_id );
-			update_post_meta( $post_id, 'isCurrent', $is_current );
-			update_post_meta( $post_id, 'isManagement', $is_management );
-		}
-	}
+			update_post_meta( $post_id, 'staffID', $staff_id );
+			update_post_meta( $post_id, 'staffCurrent', $is_current );
+			update_post_meta( $post_id, 'staffManagement', $is_management );
+		}//end if 'staffmember' === $post_type
+	}//end save_post()
 
 	/**
 	 * Get singleton instance
@@ -333,6 +249,8 @@ class Component implements Component_Interface {
 	}
 
 
+
 }//end class
 
 $staffmember_quickedit = Component::getInstance();
+

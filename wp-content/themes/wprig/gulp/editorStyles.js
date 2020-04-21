@@ -132,10 +132,7 @@ export default function editorStyles( done ) {
 		src( paths.styles.editorSrc, { sourcemaps: ! isProd } ),
 		editorStylesBeforeReplacementStream(),
 		// Only do string replacements when building for production
-		gulpPlugins.if(
-			isProd,
-			getStringReplacementTasks()
-		),
+		gulpPlugins.if( isProd, getStringReplacementTasks() ),
 		editorStylesAfterReplacementStream(),
 		dest( paths.styles.editorDest, { sourcemaps: ! isProd } ),
 	], done );

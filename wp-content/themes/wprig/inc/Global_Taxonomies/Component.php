@@ -25,8 +25,6 @@ use function add_action;
 
 /**
  * Class for adding basic theme support, most of which is mandatory to be implemented by all themes.
- *
-
  */
 class Component implements Component_Interface, Templating_Component_Interface {
 
@@ -200,7 +198,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'page',
 			'attachment',
 			'nav_menu_item',
-			'staffmember'
+			'staffmember',
 		];
 		register_taxonomy( 'location', $objects_array, $args );
 	}//end create_location_taxonomy()

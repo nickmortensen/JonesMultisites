@@ -7,7 +7,7 @@ const mediaGridObserver = new MutationObserver( function ( mutations ) {
 
 		for ( let j = 0; j < mutations[i].addedNodes.length; j++ ) {
 			element = jQuery( mutations[i].addedNodes[j] );
-			console.log( element );
+			// console.log( element );
 			if ( element.attr( 'class' ) ) {
 				elementClass = element.attr( 'class' );
 				if ( element.attr( 'class' ).indexOf( 'attachment' ) != -1 ) {

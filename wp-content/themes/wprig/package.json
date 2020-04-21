@@ -148,7 +148,6 @@
     ]
   },
   "scripts": {
-    "wpadmin": "gulp adminStyles",
     "tailwind": "postcss assets/css/src/tailwind/source/_tailwind.css -o assets/css/src/tailwind/tailwind.css",
     "watch-tailwind": "postcss assets/css/src/tailwind/source/_tailwind.css -o assets/css/src/tailwind/tailwind.css --watch",
     "build": "gulp buildDev",

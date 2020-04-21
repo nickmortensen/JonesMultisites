@@ -78,33 +78,6 @@ const paths = {
 		dest: `${ rootPath }/`,
 	},
 	styles: {
-		adminSrc:[
-			`${ assetsDir }/css/src/admin/code-editor.css`,
-			`${ assetsDir }/css/src/admin/color-picker.css`,
-			`${ assetsDir }/css/src/admin/customize-controls.css`,
-			`${ assetsDir }/css/src/admin/customize-nav-menus.css`,
-			`${ assetsDir }/css/src/admin/customize-widgets.css`,
-			`${ assetsDir }/css/src/admin/deprecated-media.css`,
-			`${ assetsDir }/css/src/admin/farbtastic.css`,
-			`${ assetsDir }/css/src/admin/ie.css`,
-			`${ assetsDir }/css/src/admin/install.css`,
-			`${ assetsDir }/css/src/admin/login.css`,
-			`${ assetsDir }/css/src/admin/wp-admin.css`,
-			`!${assetsDir}/css/**/*.min.css`,
-		],
-		adminPartials: [
-			`${assetsDir}/css/src/admin/admin_partials/_l10n.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_list-tables.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_media.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_nav-menus.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_revisions.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_site-health.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_site-icon.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_themes.css`,
-			`${assetsDir}/css/src/admin/admin_partials/_widgets.css`,
-		],
-		adminSrcDir: `${ assetsDir }/css/src/admin`,
-		adminDest  : `${ assetsDir }/css/admin`,
 		editorSrc: [
 			`${ assetsDir }/css/src/editor/**/*.css`,
 			// Ignore partial files.
@@ -116,18 +89,12 @@ const paths = {
 			`${ assetsDir }/css/src/**/*.css`,
 			// Ignore partial files.
 			`!${ assetsDir }/css/src/**/_*.css`,
+			`!${ assetsDir }/css/src/admin_partials/_*.css`,
 			// Ignore editor source css.
 			`!${ assetsDir }/css/src/editor/**/*.css`,
-			// Ignore the css files in the admin folder.
-			`!${ assetsDir }/css/src/admin/**/*.css`,
-			`!${ assetsDir }/css/src/admin/admin_partials/_*.css`,
 			// ignore tailwindcss
 			`!${ assetsDir }/css/src/tailwind/tailwind.css`,
 		],
-		tailwind: {
-			source: `${ assetsDir }/css/src/tailwind/source/_tailwind.css`,
-			dest  : `${ assetsDir }/css/src/tailwind/tailwind.css`,
-		},
 		srcDir: `${ assetsDir }/css/src`,
 		dest  : `${ assetsDir }/css`,
 	},

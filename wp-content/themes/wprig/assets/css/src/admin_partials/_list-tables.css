@@ -397,59 +397,7 @@ tr:nth-child(even) {
 	background-color: var(--indigo-200);
 }
 
-#comments-form .fixed .column-author {
-	width: 20%;
-}
-
-#comments-form .fixed .column-date {
-	width: 14%;
-}
-
-#commentsdiv.postbox .inside {
-	margin: 0;
-	padding: 0;
-}
-
-#commentsdiv .inside .row-actions {
-	line-height: 1.38461538;
-}
-
-#commentsdiv .inside .column-author {
-	width: 25%;
-}
-
-#commentsdiv .column-comment p {
-	margin: 0.6em 0;
-	padding: 0;
-}
-
-#commentsdiv #replyrow td {
-	padding: 0;
-}
-
-#commentsdiv p {
-	padding: 8px 10px;
-	margin: 0;
-}
-
-#commentsdiv .comments-box {
-	border: 0 none;
-}
-
-#commentsdiv .comments-box thead th,
-#commentsdiv .comments-box thead td {
-	background: transparent;
-	padding: 0 7px 4px;
-	font-style: italic;
-}
-
-#commentsdiv .comments-box tr:last-child td {
-	border-bottom: 0 none;
-}
-
-#commentsdiv #edithead .inside input {
-	width: 160px;
-}
+/* was #comments-form and #commentsdiv*/
 
 .sorting-indicator {
 	display: block;

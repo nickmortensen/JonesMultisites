@@ -165,6 +165,7 @@ class Theme {
 			new Global_Taxonomies\Component(),
 			new SignType\Component(),
 			new MultiSites\Component(),
+			new Extend_Quickedit\Component(),
 		];
 
 		if ( defined( 'JETPACK__VERSION' ) ) {

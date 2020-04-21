@@ -11,6 +11,7 @@ use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
+use function get_current_screen;
 use function wp_enqueue_script;
 use function get_post_meta;
 use function wp_localize_script;
@@ -68,12 +69,26 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Get the label for the Staffmember Additional Information;
-	 *
-	 * @return string HTML for the label staffmember post type.
+	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
-	private function get_project_address_field_label_cb() {
-		return '<span class="indigo" style="font-size: 2.5rem;">Staffmember Info</span><hr>';
+	public function initialize() {
+		// Create the post type of 'staffmember'.
+		add_action( 'init', [ $this, 'create_staffmember_posttype' ] );
+		// Add metabox to posts to add our meta info.
+		add_action( 'add_meta_boxes', [ $this, 'add_metabox_to_staffmembers' ], 10, 2 );
+		// Add additional fields to staffmember that save the bulk of the information for a staffmember as serialized json.
+		add_filter( 'cmb2_render_staffmember', [ $this, 'render_staffmember_field_callback' ], 10, 5 );
+		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
+		// Add custom columns for the admin edit screens.
+		add_action( 'manage_staffmember_posts_columns', [ $this, 'new_admin_columns' ], 10, 1 );
+		// Grab and display data in the new admin columns.
+		add_action( 'manage_staffmember_posts_custom_column', [ $this, 'manage_custom_admin_columns' ], 10, 2 );
+		// Output form elements for quickedit interface.
+		add_action( 'quick_edit_custom_box', [ $this, 'display_quick_edit_custom' ], 10, 2 );
+		// Load the javascript admin script (for prepopulting fields with JS).
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts_and_styles' ] );
+		// Save the new data added to the staffmember post type in the quick edit screen.
+		add_action( 'save_post', [ $this, 'save_post' ], 10, 1 ); // call on save, to update metainfo attached to our metabox.
 	}
 
 	/**
@@ -92,20 +107,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 	}
 
-	/**
-	 * Adds the action and filter hooks to integrate with WordPress.
-	 */
-	public function initialize() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_staffmembers_script' ] );
-		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
-		add_action( 'init', [ $this, 'create_staffmember_posttype' ] );
-		add_filter( 'manage_staffmember_posts_columns', [ $this, 'new_admin_columns' ] );
-		add_action( 'manage_staffmember_posts_custom_column', [ $this, 'populate_data' ], 10, 2 );
-		add_action( 'quick_edit_custom_box', [ $this, 'new_quickedit_field_management' ], 10, 2 );
-		add_action( 'quickedit_javascript', [ $this, 'quickedit_javascript' ] );
-		add_filter( 'post_row_actions', [ $this, 'expand_quick_edit_link' ], 10, 2 );
-		add_action( 'save_post', [ $this, 'save_quickedit_data' ], 10, 2 );
-	}
+
 
 	/**
 	 * Enqueues a script that improves navigation menu accessibility.
@@ -119,7 +121,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		// Enqueue the navigation script. The last element asks whether to load the script within the footer. We don't want that.
 		wp_enqueue_script(
-			'wp-rig-projects',
+			'wp-rig-staffmembers',
 			get_theme_file_uri( '/assets/js/staffmembers.min.js' ),
 			[],
 			wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/staffmembers.min.js' ) ),
@@ -227,15 +229,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function additional_fields() {
 		$after        = '<hr>';
-		$prefix       = 'staffmember';
+		$prefix       = 'staffmembers_';
 		$metabox_args = [
 			'context'      => 'normal',
-			'classes'      => $prefix . '-posttype-metabox',
+			'classes'      => $prefix . 'metabox',
 			'id'           => $prefix . '_metabox',
 			'object_types' => [ 'staffmember' ],
 			'show_in_rest' => \WP_REST_Server::ALLMETHODS,
 			'show_names'   => true,
 			'title'        => 'Staffmember Information',
+			'show_title'   => false,
 		];
 		// Create the metabox to add fields to.
 		$metabox = new_cmb2_box( $metabox_args );
@@ -243,7 +246,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Get the label for the project address field;
 		 */
 		function get_label_cb() {
-			return '<span class="indigo" style="font-size: 2.5rem;">Base Info</span><hr>';
+			$html = '<span style="color:var(--indigo-600);font-size: 2.5rem; border-bottom: 2px solid var(--indigo-600)">Base Info</span>';
+			return $html;
 		}
 
 		/**
@@ -252,32 +256,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * @see WP_Rig\WP_Rig\AdditionalFields\Component->render_staffmember_field_callback()
 		 */
 
-		 //phpcs:disable
 		/**
 		 * Additional Details about the staffmember - field is defined in WP_Rig\WP_Rig\AdditionalFields\Component
 		 */
 		$args = [
-			'name'                => 'Information',
-			'id'                  => 'staffInfo', // Name of the custom field type we setup.
-			'type'                => 'staffmember',
-			'label_cb'            => $this->get_project_address_field_label_cb(),
-			'show_names'          => false, // false removes the left cell of the table -- this is worth understanding.
-			'classes'             => [ 'staff-information-fields' ],
-			'after_row'           => '<hr>',
+			'name'       => 'Information',
+			'id'         => 'staffInfo', // Name of the custom field type we setup.
+			'type'       => 'staffmember',
+			'label_cb'   => get_label_cb(),
+			'show_names' => false, // false removes the left cell of the table -- this is worth understanding.
+			'classes'    => [ 'staff-information-fields' ],
+			'after_row'  => '<hr>',
 
-		];
-		$metabox->add_field( $args );
-
-		/**
-		 * Checkbox Field to determine whether this staff is considered to be management.
-		 */
-		$args = [
-			'name'    => 'Current',
-			'id'      => 'staffCurrent',
-			'type'    => 'checkbox',
-			'desc'    => 'Is this staffmember currently with the company?',
-			'classes' => [ 'checkbox-as-toggle' ],
-			'default' => $this->set_checkbox_default( true ),
 		];
 		$metabox->add_field( $args );
 
@@ -285,31 +275,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Calendar Field For Date Of Hire.
 		 */
 		$args = [
-			'name'    => 'Date Hired',
-			'id'      => 'staffHire',
-			'type'    => 'text_date',
-			'desc'    => 'date of hire',
-			'classes' => [ 'custom-calendar' ],
+			'name'       => 'Date Hired',
+			'id'         => 'staffHire',
+			'type'       => 'text_date',
+			'desc'       => 'date of hire',
+			'classes'    => [ 'custom-calendar' ],
 			'attributes' => [
-				'data-datepicker' => json_encode( [
+				'data-datepicker' => wp_json_encode( [
 					'yearRange' => '-42:+0',
 				] ),
 			],
 		];
 		$metabox->add_field( $args );
-
-		/**
-		 * Checkbox Field to determine whether this staff is considered to be management.
-		 */
-		$args = [
-			'name' => 'Management',
-			'id'   => 'staffManagement',
-			'type' => 'checkbox',
-			'desc' => 'Is this staffmember a manager?',
-			'classes' => [ 'checkbox-as-toggle' ],
-		];
-		$metabox->add_field( $args );
-
 	}//end additional_fields()
 
 	/**
@@ -319,8 +296,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return array $output - JSON Encoded array containing, full_title, short_title, jones id, deskphone, extension, mobilephone, and email address.
 	 */
 	public function get_staffmember_info( $id ) {
-		$key = 'staffInfo';
-		$single = true; //If true, returns only the first value for the specified meta key. This parameter has no effect if $key is not specified.
+		$key    = 'staffInfo';
+		$single = true; // If true, returns only the first value for the specified meta key. This parameter has no effect if $key is not specified.
 		$output = get_post_meta( $id, $key, $single );
 		return $output;
 	}
@@ -332,8 +309,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return array $output - JSON Encoded array containing, deskphone, extension, mobilephone, and email address.
 	 */
 	public function get_date_of_hire( $id ) {
-		$key = 'staffHire';
-		$single = true; //If true, returns only the first value for the specified meta key. This parameter has no effect if $key is not specified.
+		$key    = 'staffHire';
+		$single = true; // If true, returns only the first value for the specified meta key. This parameter has no effect if $key is not specified.
 		$output = get_post_meta( $id, $key, $single );
 		return $output;
 	}
@@ -342,7 +319,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Output the management status of the staffmember.
 	 *
 	 * @param int $id The ID of the staffmember post.
-	 *
 	 */
 	public function is_management( $id ) {
 		$key = 'staffManagement';
@@ -353,7 +329,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Output the management status of the staffmember.
 	 *
 	 * @param int $id The ID of the staffmember post.
-	 *
 	 */
 	public function is_current( $id ) {
 		$key = 'staffCurrent';
@@ -368,155 +343,378 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @link https://generatewp.com/managing-content-easily-quick-edit/
 	 */
-	public function new_admin_columns( $columns ) {
-		unset( $columns['taxonomy-location']);
-		$new['cb']              = array_slice( $columns, 0, 1 );
-		$new['id']              = 'ID';
-		$new['title']           = array_slice( $columns, 0, 1 );
-		$new['staffManagement'] = '<span title="Is this a Manager?" style="color:var(--yellow-500);" class="material-icons">supervisor_account</span>';
-		$new['staffCurrent']    = '<span title="Is this Person Currently On Staff?" style="color:var(--yellow-500);" class="material-icons">how_to_reg</span>';
-		return array_merge( $new, $columns );
+	public static function new_admin_columns( $columns ) {
+		global $post_type;
+		$adminurl = admin_url( '/wp-admin/edit.php?post_type=' . $post_type . '&orderby=identifier&order=asc' );
+		unset( $columns['taxonomy-location'] );
+		unset( $columns['date'] );
+		$new = [
+			'cb'          => array_slice( $columns, 0, 1 ),
+			'id'          => 'ID',
+			'staff_title' => 'Position',
+			'staff_id'    => '',
+			'title'       => array_slice( $columns, 0, 1 ),
+		];
+
+		$new_columns['staff_management'] = 'Mgmt?';
+		$new_columns['staff_current']    = 'Current?';
+
+		return array_merge( $new, $columns, $new_columns );
 	}
 
 	/**
-	 * Grab the data for the new fields.
+	 * Grab the data for the new columns in the admin area for this post type.
 	 *
-	 * @param string $column Name of column.
-	 * @param int $post_id   Post ID.
+	 * @param string $column_name Name of column.
+	 * @param int    $post_id   Post ID.
 	 */
-	public function populate_data( $column, $post_id ) {
-		switch ( $column ) {
-			case 'staffCurrent':
-				$color = 'on' === get_post_meta( $post_id, 'staffCurrent', true ) ? 'green' : 'red';
-				$title = 'on' === get_post_meta( $post_id, 'staffManagement', true ) ? 'done_outline' : 'clear';
-				$output = '<span style="color: var(--' . $color . '-600);" class="material-icons">' . $title . '</span>';
+	public function manage_custom_admin_columns( $column_name, $post_id ) {
+		global $post_type;
+		$html       = '';
+		$staff_info = get_post_meta( $post_id, 'staffInfo', true );
+		switch ( $column_name ) {
+			case 'id':
+				$html = $post_id;
 				break;
-			case 'staffManagement':
-				$color = 'on' === get_post_meta( $post_id, 'staffManagement', true ) ? 'green' : 'red';
-				$title = 'on' === get_post_meta( $post_id, 'staffManagement', true ) ? 'done_outline' : 'clear';
-				$output = '<span style="color: var(--' . $color . '-600);" class="material-icons">' . $title . '</span>';
+			case 'staff_title':
+				$jobtitle    = isset( $staff_info['full_title'] ) ? $staff_info['full_title'] : '';
+				$short_title = isset( $staff_info['short_title'] ) ? $staff_info['short_title'] : '';
+				$html        = "<div id=\"full_title_$post_id\">$jobtitle</div>";
+				$html       .= "<div id=\"short_title_$post_id\" hidden>$short_title</div>";
+				break;
+			case 'staff_id':
+				$img      = $this->output_circular_images( $post_id );
+				$staff_id = $staff_info['staff_id'] ?? '';
+				$html     = "$img<div id=\"staff_id_$post_id\" data-staffid=\"$staff_id\">$staff_id</div>";
+				break;
+			case 'staff_management':
+				$state = $staff_info['staff_management'] ?? 'off';
+				$html  = '<div id="staff_management_' . $post_id . '" data-state="' . $state . '">';
+				$color = 'on' === $state ? 'var(--indigo-600)' : 'var(--gray-500)';
+				$html .= '<span class="material-icons" style="color: ' . $color . ';">supervisor_account</span></span>';
+				$html .= '</div>';
+				break;
+			case 'staff_current':
+				$state = $staff_info['staff_current'] ?? 'off';
+				$html  = '<div id="staff_current_' . $post_id . '" data-state="' . $state . '">';
+				$color = 'on' === $state ? 'var(--green-600)' : 'var(--gray-500)';
+				$html .= '<span class="material-icons" style="color: ' . $color . ';">check_circle</span></span>';
+				$html .= '</div>';
 				break;
 			default:
-				$are_they = 'huh?';
-				$output = $post_id;
+				$html = '';
 		}
-		echo $output;
+		echo $html;
 	}
 
 	/**
-	 * Create additional fields for the quick edit screen.
+	 * Output the image for the person as an image in a circle.
 	 *
-	 * @param string $column The name of the column.
+	 * @param int    $post_id The ID of the staffmember.
+	 * @param string $size The size of the image -- defaults to 'thumbnail.
+	 * @return string      The HTML to display the photo.
+	 */
+	public function output_circular_images( $post_id, $size = 'thumbnail' ) {
+		$thumb_url = get_the_post_thumbnail_url( $post_id, $size );
+		return '<svg role="none" style="height: 36px; width: 36px;">
+				<mask id="avatar">
+					<circle cx="18" cy="18" fill="white" r="18"></circle>
+				</mask>
+				<g mask="url(#avatar)">
+					<image x="0" y="0" height="100%" preserveAspectRatio="xMidYMid slice" width="100%" xlink:href="' . $thumb_url . '" style="height: 36px; width: 36px;"></image>
+					<circle cx="18" cy="18" r="18" style="stroke-width:2;stroke:rgba(0,0,0,0.1);fill:none;"></circle>
+				</g>
+			</svg>';
+	}
+
+	/**
+	 * Add a new metabox on our single staffmember edit screen. Shows up on the side.
+	 *
+	 * @param string $post_type The Type of post - in our case: 'staffmember'.
+	 * @param int    $post The dentifier of the post - the number.
 	 *
 	 * @link https://generatewp.com/managing-content-easily-quick-edit/
+	 * @link https://github.com/CMB2/CMB2/wiki/Field-Types
 	 * @link https://ducdoan.com/add-custom-field-to-quick-edit-screen-in-wordpress/
 	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
 	 */
-	public function new_quickedit_field_management( $column ) {
-		global $current_screen;
+	public function add_metabox_to_staffmembers( $post_type, $post ) {
+		$id       = 'staffinfo-short-details';
+		$title    = 'More Staff Detail';
+		$callback = [ $this, 'display_staff_metabox_output' ];
+		$screen   = 'staffmember';
+		$context  = 'side';
+		$priority = 'high';
+		add_meta_box( $id, $title, $callback, $screen, $context, $priority );
+	}
+
+	/**
+	 * Displays additional fields within the staffmember post type, populating as needed.
+	 *
+	 * @param int $post The post ID.
+	 * @link https://developer.wordpress.org/reference
+	 */
+	public function display_staff_metabox_output( $post ) {
+
 		$html = '';
-		$posttype = $current_screen->post_type;
-		// if ( 'staffManagement' !== $column ) return;
-		if ( 'staffManagement' === $column ) {
-			$html .= '<fieldset class="inline-edit-col-left clear">';
-			$html .= '<div class="inline-edit-group wp-clearfix">';
-			$html .= '<label class="alignleft" for="staffManagement">';
-			$html .= '<input type="checkbox" name="staffManagement" id="staffManagement" value="yes"/>';
-			$html .= '<span class="checkbox-title">Is Management</span></label>';
-			$html .= '</div>';
-			$html .= '</fieldset>';
+		wp_nonce_field( 'post_metadata', 'post_metadata_field' );
 
+		$staff_info       = get_post_meta( $post->ID, 'staffInfo', true );
+		$full_title       = $staff_info['full_title'] ?? '';
+		$short_title      = $staff_info['short_title'] ?? '';
+		$staff_current    = $staff_info['staff_current'] ?? 'off';
+		$staff_management = $staff_info['staff_management'] ?? 'off';
+		$staff_id         = $staff_info['staff_id'] ?? '';
+		$desired_value    = 'on';
+
+		$html .= '<div class="inline-edit-group wp-clearfix toggle_checkbox">';
+
+		$html .= '<div class="njm flex row-nowrap justify-space-between">';
+		$html .= '<label class"on-your-left" for="staffInfo[staff_management]">Management?</label>';
+		$html .= '<input name="staffInfo[staff_management]" type="checkbox" id="staffInfo[staff_management]" value="on" ' . checked( $staff_management, 'on', false ) . ' />';
+		$html .= '</div>';
+
+		$html .= '<div class="njm flex row-nowrap justify-space-between">';
+		$html .= '<label class"on-your-left" for="staffInfo[staff_current]">Current?</label>';
+		$html .= '<input name="staffInfo[staff_current]" type="checkbox" id="staffInfo[staff_current]" value="on" ' . checked( $staff_current, 'on', false ) . '/>';
+		$html .= '</div>';
+
+		$html .= '<div>';
+		$html .= '<label for="staffInfo[full_title]" class="alignleft" >Full Title</label>';
+		$html .= '<input class="widefat" type="text" name="staffInfo[full_title]" id="staffInfo[full_title]" value="' . $full_title . '"/>';
+		$html .= '</div>';
+		$html .= '<div>';
+		$html .= '<label for="staffInfo[short_title]" class="alignleft" >Title (Shortened)</label>';
+		$html .= '<input class="widefat" type="text" class="text_small" name="staffInfo[short_title]" id="staffInfo[short_title]" value="' . $short_title . '"/>';
+		$html .= '</div>';
+		$html .= '<div>';
+		$html .= '<label for="staffInfo[staff_id]" class="alignleft" >Staff ID</label>';
+		$html .= '<input class="widefat" type="text" class="text_small" name="staffInfo[staff_id]" id="staffInfo[staff_id]" value="' . $staff_id . '"/>';
+		$html .= '</div>';
+
+		$html .= '</div>';
+
+		echo $html;
+	}
+
+	/**
+	 * Set a checkbox efault value if we don't have a post ID (in the 'post' query variable).
+	 *
+	 * @param bool $default On/Off (true/false).
+	 * @return mixed        Returns true or '', the blank default
+	 */
+	private function default_for_staff_current_checkbox_field( $default ) {
+		return isset ( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
+	}
+
+	/**
+	 * Displays our custom content on the quick-edit interface, no values can be pre-populated (all done in JS)
+	 *
+	 * @param string $column Name of column.
+	 *
+	 * @link https://developer.wordpress.org/reference
+	 */
+	public function display_quick_edit_custom( $column ) {
+		$html = '';
+		wp_nonce_field( 'post_metadata', 'post_metadata_field' );
+		switch ( $column ) {
+			// Output checkbox with name attribute staff_management.
+			case 'staff_management':
+				$html .= '<fieldset class="inline-edit-col-left clear">';
+				$html .= '<div class="toggle_checkbox">';
+				$html .= '<label for="staffInfo[staff_management]">Management?</label>';
+				$html .= '<input name="staffInfo[staff_management]" type="checkbox" id="staff_management" value="on"/>';
+				$html .= '</div>';
+				break;
+			// Output checkbox with name attribute staff_current.
+			case 'staff_current':
+				$html .= '<div class="toggle_checkbox">';
+				$html .= '<label for="staffInfo[staff_current]">Current?</label>';
+				$html .= '<input name="staffInfo[staff_current]" type="checkbox" id="staff_current" value="on"/>';
+				$html .= '</div>';
+				break;
+			case 'staff_id':
+				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
+				$html .= '<label for="staffInfo[staff_id]" class="alignleft" >Staff ID</label>';
+				$html .= '<input type="text" class="text_small" name="staffInfo[staff_id]" id="staff_id"/>';
+				$html .= '</div>';
+				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
+				$html .= '<label for="staffInfo[full_title]" class="alignleft" >Full Title</label>';
+				$html .= '<input type="text" name="staffInfo[full_title]" id="full_title"/>';
+				$html .= '</div>';
+				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
+				$html .= '<label for="staffInfo[short_title]" class="alignleft" >Short Title</label>';
+				$html .= '<input type="text" name="staffInfo[short_title]" id="short_title"/>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
+				break;
+			default:
+				$html = '';
+		} // End switch.
+		echo $html;
+	}
+
+	/**
+	 * Saving meta info (used for both traditional and quick-edit saves)
+	 *
+	 * @param int $post_id The id of the post.
+	 */
+	public function save_post( $post_id ) {
+
+		$post_type = get_post_type( $post_id );
+
+		if ( 'staffmember' === $post_type ) {
+
+			// check nonce set.
+			if ( ! isset( $_POST['post_metadata_field'] ) ) return false;
+
+			// verify nonce.
+			if ( ! wp_verify_nonce( $_POST['post_metadata_field'], 'post_metadata' ) ) return false;
+
+			// If not autosaving.
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return false;
+
+			$staff_info = $_POST['staffInfo'];
+
+			$staff_id         = isset ( $staff_info['staff_id'] ) ? sanitize_text_field( $staff_info['staff_id'] ) : '';
+			$full_title       = isset ( $staff_info['full_title'] ) ? sanitize_text_field( $staff_info['full_title'] ) : '';
+			$short_title      = isset ( $staff_info['short_title'] ) ? sanitize_text_field( $staff_info['short_title'] ) : '';
+			$staff_current    = isset ( $staff_info['staff_current'] ) ? $staff_info['staff_current'] : 'off';
+			$staff_management = isset ( $staff_info['staff_management'] ) ? $staff_info['staff_management'] : 'off';
+
+			$newdata = [
+				'staff_id'         => $staff_id,
+				'full_title'       => $full_title,
+				'short_title'      => $short_title,
+				'staff_management' => $staff_management,
+				'staff_current'    => $staff_current,
+			];
+
+			// This field is saved as serialized data, so I need to use wp_parse_args to get to it.
+			update_post_meta( $post_id, 'staffInfo', wp_parse_args( $newdata, get_post_meta( $post_id, 'staffInfo', true ) ) );
 		}
 
-	}
+	}//end save_post()
 
 	/**
-	 * Only return default value if we don't have a post ID (in the 'post' query variable)
-	 *
-	 * @param  bool  $default On/Off (true/false)
-	 * @return mixed          Returns true or '', the blank default
-	 * @link https://github.com/CMB2/CMB2/wiki/Tips-&-Tricks#setting-a-default-value-for-a-checkbox
+	 * Enqueue admin js to pre-populate the quick-edit fields.
 	 */
-	private function set_checkbox_default( $default ) {
-		return isset( $_GET['post'] ) ? '' : ( $default ? (string) $default : '' );
+	public function enqueue_admin_scripts_and_styles() {
+		global $post_type;
+
+		if ( is_admin () && 'staffmember' === $post_type ) :
+		// Only use the minified script if we are in a production environment.
+		$script_uri   = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/staffmember_quickedit.js' ) : get_theme_file_uri( '/assets/js/staffmember_quickedit.min.js' );
+		$version      = '20';
+		$dependencies = [ 'jquery', 'inline-edit-post' ]; // location: wp-admin/js/inline-edit-post.js.
+		$in_footer    = true; // True if we want to load the script in footer, false to load within header.
+		// Enqueue the navigation script.
+		wp_enqueue_script( 'staffmember-quickedit', $script_uri, $dependencies, $version, $in_footer );
+		endif;
 	}
 
 	/**
-	 * Handle saving of the Quick Edit Data When added.
+	 * Render fields specifically for the staffmember post type. Saves all as serialized data.
 	 *
-	 * Capture what is entered in the quickedit and save into the posts postmeta field.
-	 *
-	 * @param int $post_id   Post ID.
-	 * @param $post The post.
-	*/
-	public function save_quickedit_data( $post_id ) {
-		// Return if it is called by Autosave -- no need at that point.
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return $post_id;
-		// Check if user has permission to do this. If not, bail out.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) return $post_id;
-
-		$data = empty( $_POST['staffManagement'] ) ? 0 : 1;
-		update_post_meta( $post_id, 'staffManagement', $data );
-	}
-
-	/**
-	 * A little javascript to help populate the live data.
+	 * @see Previous field names are
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type         The `CMB2_Types` object.
 	 */
-	public function quickedit_javascript() {
-		global $current_screen;
-		if ( 'staffmember' !== $current_screen->post_type ) return;
+	public function render_staffmember_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+
+		// Keys are field names (ids as well), values are the default value of the field.
+		$new_values = [
+			'desk_phone'   => '',
+			'desk_ext'     => '',
+			'mobile_phone' => '',
+			'staff_email'  => '',
+			'is_sales'     => '',
+			'experience'   => '',
+			'date_hired'   => '',
+		];
+		$value      = wp_parse_args( $value, $new_values );
 		?>
-		<script type="text/javascript">
-
-		function checked_staffManagement( fieldValue ) {
-			inlineEditPost.revert();
-			if ( 'on' === fieldValue ) {
-				document.getElementById( 'isManagement' ).checked = true;
-			}
-		}
 
 
-		</script>
-		<?php
+		<section class="staffmember-info-fields" style="background:var(--blue-100);">
+
+
+			<!-- desk phone-->
+			<div class="field-div" data-fieldid="desk_phone">
+				<span>
+					<label for="<?= $field_type->_id( '_desk_phone' ); ?>'">Desk Phone</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[desk_phone]' ),
+						'id'    => $field_type->_id( '_desk_phone' ),
+						'value' => $value['desk_phone'],
+						'type'  => 'text_small',
+						'class' => '',
+					]
+				);
+				?>
+			</div>
+			<!-- /desk phone -->
+
+			<!-- extension -->
+			<div class="field-div" data-fieldid="desk_ext">
+				<span>
+					<label for="<?= $field_type->_id( '_desk_ext' ); ?>'">ext</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[desk_ext]' ),
+						'id'    => $field_type->_id( '_desk_ext' ),
+						'value' => $value['desk_ext'],
+						'type'  => 'text_small',
+						'class' => '',
+					]
+				);
+				?>
+			</div><!-- /extension -->
+
+			<!-- mobile -->
+			<div class="field-div" data-fieldid="mobile_phone">
+				<span>
+					<label for="<?= $field_type->_id( '_mobile_phone' ); ?>'">Mobile</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[mobile_phone]' ),
+						'id'    => $field_type->_id( '_mobile_phone' ),
+						'value' => $value['mobile_phone'],
+						'type'  => 'text_small',
+						'class' => '',
+					]
+				);
+				?>
+			</div><!-- /mobile-->
+
+			<!-- email -->
+			<div class="field-div" data-fieldid="staff_email">
+				<span>
+					<label for="<?= $field_type->_id( '_staff_email' ); ?>'">Email</label>
+				</span>
+				<?= $field_type->input(
+					[
+						'name'    => $field_type->_name( '[staff_email]' ),
+						'id'      => $field_type->_id( '_staff_email' ),
+						'value'   => $value['staff_email'],
+						'type'    => 'text_email',
+						'default' => '',
+						'class'   => '',
+					]
+				);
+				?>
+			</div><!-- /email-->
+
+		</section>
+	<?php
 	}
-	/**
-	 * Pass headline news value to checked_headline_news javascript function
-	 *
-	 * @param array $actions
-	 * @param array $post
-	 *
-	 * @return array
-	 */
-	function expand_quick_edit_link( $actions, $post ) {
-		global $current_screen;
-
-		if ( 'staffmember' !== $current_screen->post_type ) {
-			return $actions;
-		}
-
-		$data                               = get_post_meta( $post->ID, 'staffManagement', true );
-		$data                               = empty( $data ) ? '' : 'on';
-		$actions['inline hide-if-no-js']    = '<a href="#" class="editinline" title="';
-		$actions['inline hide-if-no-js']    .= esc_attr( 'Edit this item inline' ) . '"';
-		$actions['inline hide-if-no-js']    .= " onclick=\"checked_staffManagement('on')\" >";
-		$actions['inline hide-if-no-js']    .= 'QuickEdit';
-		$actions['inline hide-if-no-js']    .= '</a>';
-
-		return $actions;
-	}
-
-	/**
-	 * Set the data withinthe quick edit fields I have created.
-	 *
-	 * @param string $actions Don't know.
-	 * @param object $post The post object.
-	 */
-	public function quickedit_set_data( $actions, $post ) {
-		$management = get_post_meta( $post->ID, 'staffManagement', true );
-		$current    = get_post_meta( $post->ID, 'staffCurrent', true );
 
 
-	}
-
-
-}//end class definition.
+}//end class

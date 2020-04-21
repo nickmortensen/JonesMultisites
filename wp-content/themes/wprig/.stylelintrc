@@ -13,7 +13,7 @@
 		],
 		"no-descending-specificity": null,
 		"no-duplicate-selectors": null,
-		"max-line-length": [ 120, {
+		"max-line-length": [ 180, {
 			"ignore": "comments",
 			"ignorePattern": ["/(https?://[0-9,a-z]*.*)|(^description\\:.+)|(^tags\\:.+)/i"]
 		} ],
