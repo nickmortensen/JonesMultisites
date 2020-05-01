@@ -21,14 +21,10 @@ namespace WP_Rig\WP_Rig;
 
 get_header();
 
-$term = get_queried_object();
 $termid = get_queried_object()->term_id;
 wp_rig()->print_styles( 'wp-rig-content' );
 $body = get_body_class();
-echo '<pre>';
-print_r(get_queried_object());
-echo '<br>';
-echo '</pre>';
+
 ?>
 
 

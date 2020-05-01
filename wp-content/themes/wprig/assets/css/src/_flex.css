@@ -1,40 +1,64 @@
-/* last update 23_March_2020 */
+/* last update 29_April_2020 */
 .flex {
 	display: flex;
 }
 
 /* flex flow displays the direction and the wrap styles, but this is just the plain old flex direction styles*/
-.direction-column {
+.direction-column,
+.column,
+.col {
 	flex-direction: column;
 }
 
-.direction-row {
+.direction-column-reverse,
+.column-reverse,
+.col-reverse {
+	flex-direction: column-reverse;
+}
+
+.direction-row,
+.row {
 	flex-direction: row;
 }
 
+.direction-row-reverse,
+.row-reverse {
+	flex-direction: row-reverse;
+}
+
 /*---------- MAIN AXIS ROW= X-Axis aligned, COLUMN = Y Axis Aligned----------*/
-.row-nw {
+.row-nw,
+.row-nowrap {
 	flex-flow: row nowrap;
 }
 
-.col-nw {
+.col-nw,
+.col-nowrap {
 	flex-flow: column nowrap;
-}
-
-.col-wrap {
-	flex-flow: column wrap;
 }
 
 .row-wrap {
 	flex-flow: row wrap;
 }
 
-.row-nowrap {
-	flex-flow: row nowrap;
+.col-wrap {
+	flex-flow: column wrap;
 }
 
-.col-nowrap {
-	flex-flow: column nowrap;
+.col-reverse-wrap {
+	flex-flow: column-reverse wrap;
+}
+
+.col-reverse-nowrap {
+	flex-flow: column-reverse nowrap;
+}
+
+.row-reverse-wrap {
+	flex-flow: row-reverse wrap;
+}
+
+.row-reverse-nowrap {
+	flex-flow: row-reverse nowrap;
 }
 
 

@@ -130,6 +130,10 @@ global $wpdb;
 <h2>Capability: <?= count( $capability ); ?></h2>
 
 		<?php
+
+		echo '<pre>';
+		print_r( wp_rig()->get_structured_project_address(66) );
+		echo '</pre>';
 		//phpcs:disable
 		// get_template_part( 'template-parts/header/custom_header' );
 		// get_template_part( 'template-parts/header/branding' );

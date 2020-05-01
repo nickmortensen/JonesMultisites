@@ -1,27 +1,26 @@
 <?php
 /**
- * WP_Rig\WP_Rig\Projects\Component class
+ * WP_Rig\WP_Rig\Projects\ProjectPost\Component class
  *
  * @package wp_rig
  */
 
-namespace WP_Rig\WP_Rig\Projects\ProjectPost;
+namespace WP_Rig\WP_Rig\ProjectPost;
 
 use WP_Rig\WP_Rig\Component_Interface;
-use WP_Rig\WP_Rig\Templating_Component_Interface;
 use WP_Rig\WP_Rig\AdditionalFields\Component as AdditionalFields;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function get_current_screen;
 use function wp_enqueue_script;
 use function get_post_meta;
-use function wp_localize_script;
+
 use function register_post_type;
 
 /**
  * Class for improving accessibility among various core features.
  */
-class ProjectPost {
+class Component implements Component_Interface,Templating_Component_Interface {
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -33,6 +32,27 @@ class ProjectPost {
 	}
 
 	/**
+	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
+	 *
+	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
+	 *               a callable or an array with key 'callable'. This approach is used to reserve the possibility of
+	 *               adding support for further arguments in the future.
+	 */
+	public function template_tags() : array {
+		return [
+			'get_project_nothing' => [ $this, 'get_project_nothing' ],
+		];
+	}
+
+	/**
+	 * Adds the action and filter hooks to integrate with WordPress.
+	 */
+	public function initialize() {
+		add_action( 'init', [ $this, 'create_project_posttype' ] );
+		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
+	}
+
+	/**
 	 * Gets the unique identifier for the theme component.
 	 *
 	 * @return string Component slug.
@@ -41,6 +61,16 @@ class ProjectPost {
 		return 'frontend display of a project post';
 	}
 
+
+
+	/**
+	 * Get the label for the project address field;
+	 *
+	 * @return string HTML for the label on the address field within the project post type.
+	 */
+	public function get_project_nothing() {
+		return '';
+	}
 	/**
 	 * The job completion statuses
 	 *
@@ -54,29 +84,13 @@ class ProjectPost {
 		'upcoming' => 'Upcoming',
 	];
 
-
-
-	/**
-	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
-	 *
-	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
-	 *               a callable or an array with key 'callable'. This approach is used to reserve the possibility of
-	 *               adding support for further arguments in the future.
-	 */
-	public function template_tags() : array {
-		return [
-			'get_project_post' => [ $this, 'get_project_post' ],
-
-		];
-	}
-
 	/**
 	 * Get the label for the project address field;
 	 *
 	 * @return string HTML for the label on the address field within the project post type.
 	 */
 	private function get_project_posttype_additional_info_label_cb() {
-		return '<span class="indigo" style="font-size: 2.5rem;">Project Location Data </span><hr>';
+				return '<span class="indigo" style="font-size: 2.5rem;">Project Location Data </span><hr>';
 	}
 
 	/**
@@ -92,9 +106,8 @@ class ProjectPost {
 	 * Creates the custom post type: 'Project'.
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/register_post_type/
-
 	 */
-	public static function create_posttype() {
+	public function create_project_posttype() {
 		$icon_for_posttype   = 'dashicons-admin-multisite';
 		$taxonomies_to_apply = [ 'expertise', 'signtype', 'services', 'location' ];
 		$singular            = 'project';
@@ -159,7 +172,7 @@ class ProjectPost {
 			'rest_controller_class' => 'WP_REST_Client_Controller',
 		];
 		register_post_type( 'project', $args );
-	} // Project post type is created.
+	}
 
 
 	/**
@@ -170,8 +183,7 @@ class ProjectPost {
 	 * @since    1.0.0
 	 */
 	public static function additional_fields() {
-		$after        = '<hr>';
-		$prefix       = 'project_';
+
 		$metabox_args = [
 			'context'      => 'normal',
 			'classes'      => $prefix . 'meta',
@@ -369,160 +381,161 @@ class ProjectPost {
 			'longitude'     =>  '',
 		];
 		$value      = wp_parse_args( $value, $new_values );
-	?>
+		return $value;
+		?>
 
-	<section class="project_data">
-		<!-- tease line -->
-		<div>
-			<label for="<?= $field_type->_id( '_tease', false ); ?>">Tease</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[tease]' ),
-					'id'    => $field_type->_id( '_tease' ),
-					'value' => $value['tease'],
-					'desc'  => '7-12 word sentence to get a person interested',
-				]
-			);
-			?>
-		</div><!-- /tease line -->
-		<!-- job number -->
-		<div>
-			<label for="<?= $field_type->_id( '_job_id', false ); ?>">Job Number</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[job_id]' ),
-					'id'    => $field_type->_id( '_job_id' ),
-					'value' => $value['job_id'],
-					'desc'  => '',
-				]
-			);
-			?>
-		</div><!-- /job number -->
-		<!-- localfolder -->
-		<div>
-			<label for="<?= $field_type->_id( '_local_folder', false ); ?>">Local Folder</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[local_folder]' ),
-					'id'    => $field_type->_id( '_local_folder' ),
-					'value' => $value['local_folder'],
-					'desc'  => 'Drive Containing Information on the job',
-				]
-			);
-			?>
-		</div><!-- /localfolder -->
-		<!-- status -->
-
-		<div class="radio_group">
-
-		<label for="<?= $field_type->_id( '_status', false ); ?>">Job Status</label>
-			<?= $field_type->input(
-				[
-					// 'name'    => $field_type->_name( '[status]'),
-					'id'      => $field_type->_id( '_status' ),
-					'value'   => $value['status'],
-					'type'    => 'radio',
-					'options_cb' => $this->get_job_completion_status_options(),
-				]
-			); ?>
-
-
-			<label for="<?= $field_type->_id( '_year_complete', false ); ?>">Year</label>
-			<?= $field_type->input(
-				[
-					'name' => $field_type->_name( '[year_complete]'),
-					'id'   => $field_type->_id( '_year_complete' ),
-					'value' => $value['year_complete'],
-				]
-			); ?>
-		</div>
-		<!-- /status -->
-		<!-- streetaddress -->
-		<div>
-			<label for="<?= $field_type->_id( '_streetaddress', false ); ?>">Address</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[streetaddress]' ),
-					'id'    => $field_type->_id( '_streetaddress' ),
-					'value' => $value['streetaddress'],
-					'desc'  => '',
-				]
-			);
-			?>
-		</div><!-- /streetaddress -->
-		<div>
-				<label for="<?= $field_type->_id( '_city' ); ?>'">City</label>
+		<section class="project_data">
+			<!-- tease line -->
+			<div>
+				<label for="<?= $field_type->_id( '_tease', false ); ?>">Tease</label>
 				<?= $field_type->input(
 					[
-						'name'  => $field_type->_name( '[city]' ),
-						'id'    => $field_type->_id( '_city' ),
-						'value' => $value['city'],
+						'name'  => $field_type->_name( '[tease]' ),
+						'id'    => $field_type->_id( '_tease' ),
+						'value' => $value['tease'],
+						'desc'  => '7-12 word sentence to get a person interested',
+					]
+				);
+				?>
+			</div><!-- /tease line -->
+			<!-- job number -->
+			<div>
+				<label for="<?= $field_type->_id( '_job_id', false ); ?>">Job Number</label>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[job_id]' ),
+						'id'    => $field_type->_id( '_job_id' ),
+						'value' => $value['job_id'],
 						'desc'  => '',
 					]
 				);
 				?>
-		</div><!-- /city -->
+			</div><!-- /job number -->
+			<!-- localfolder -->
+			<div>
+				<label for="<?= $field_type->_id( '_local_folder', false ); ?>">Local Folder</label>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[local_folder]' ),
+						'id'    => $field_type->_id( '_local_folder' ),
+						'value' => $value['local_folder'],
+						'desc'  => 'Drive Containing Information on the job',
+					]
+				);
+				?>
+			</div><!-- /localfolder -->
+			<!-- status -->
 
-		<!-- state -->
-		<div id="state">
-			<label for="<?= $field_type->_id( '_state' ); ?>'">State</label>
-			<?= $field_type->select(
-				[
-					'name'    => $field_type->_name( '[state]' ),
-					'id'      => $field_type->_id( '_state' ),
-					'options' => AdditionalFields::get_state_options( $value['state'] ),
-					'desc'    => '',
-				]
-			);
-			?>
-		</div><!-- /state -->
+			<div class="radio_group">
 
-		<!-- /zip -->
-		<div>
-			<label for="<?= $field_type->_id( '_zip' ); ?>'">Zip</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[zip]' ),
-					'id'    => $field_type->_id( '_zip' ),
-					'value' => $value['zip'],
-					'desc'  => '',
-				]
-			);
-			?>
-		</div><!-- /zip -->
-
-		<!-- coordinates -->
-		<div data-fieldid="latitude">
-			<label for="<?=$field_type->_id( '_latitude' ); ?>'">Latitude</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[latitude]' ),
-					'id'    => $field_type->_id( '_latitude' ),
-					'value' => $value['latitude'],
-					'desc'  => '',
-					'class' => 'double-barrel-daryl',
-				]
-			);
-			?>
-		</div><!-- /latitude -->
-		<div data-fieldid="longitude">
-			<label for="<?= $field_type->_id( '_longitude' ); ?>'">Longitude</label>
-			<?= $field_type->input(
-				[
-					'name'  => $field_type->_name( '[longitude]' ),
-					'id'    => $field_type->_id( '_longitude' ),
-					'value' => $value['longitude'],
-					'desc'  => '',
-					'class' => 'double-barrel-daryl',
-				]
-			);
-			?>
-		</div><!-- /longitude -->
+			<label for="<?= $field_type->_id( '_status', false ); ?>">Job Status</label>
+				<?= $field_type->input(
+					[
+						// 'name'    => $field_type->_name( '[status]'),
+						'id'      => $field_type->_id( '_status' ),
+						'value'   => $value['status'],
+						'type'    => 'radio',
+						'options_cb' => $this->get_job_completion_status_options(),
+					]
+				); ?>
 
 
-	</section><!-- end section.projectaddressfields -->
-	<?php
-	}//end render_address_field_callback()
+				<label for="<?= $field_type->_id( '_year_complete', false ); ?>">Year</label>
+				<?= $field_type->input(
+					[
+						'name' => $field_type->_name( '[year_complete]'),
+						'id'   => $field_type->_id( '_year_complete' ),
+						'value' => $value['year_complete'],
+					]
+				); ?>
+			</div>
+			<!-- /status -->
+			<!-- streetaddress -->
+			<div>
+				<label for="<?= $field_type->_id( '_streetaddress', false ); ?>">Address</label>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[streetaddress]' ),
+						'id'    => $field_type->_id( '_streetaddress' ),
+						'value' => $value['streetaddress'],
+						'desc'  => '',
+					]
+				);
+				?>
+			</div><!-- /streetaddress -->
+			<div>
+					<label for="<?= $field_type->_id( '_city' ); ?>'">City</label>
+					<?= $field_type->input(
+						[
+							'name'  => $field_type->_name( '[city]' ),
+							'id'    => $field_type->_id( '_city' ),
+							'value' => $value['city'],
+							'desc'  => '',
+						]
+					);
+					?>
+			</div><!-- /city -->
+
+			<!-- state -->
+			<div id="state">
+				<label for="<?= $field_type->_id( '_state' ); ?>'">State</label>
+				<?= $field_type->select(
+					[
+						'name'    => $field_type->_name( '[state]' ),
+						'id'      => $field_type->_id( '_state' ),
+						'options' => AdditionalFields::get_state_options( $value['state'] ),
+						'desc'    => '',
+					]
+				);
+				?>
+			</div><!-- /state -->
+
+			<!-- /zip -->
+			<div>
+				<label for="<?= $field_type->_id( '_zip' ); ?>'">Zip</label>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[zip]' ),
+						'id'    => $field_type->_id( '_zip' ),
+						'value' => $value['zip'],
+						'desc'  => '',
+					]
+				);
+				?>
+			</div><!-- /zip -->
+
+			<!-- coordinates -->
+			<div data-fieldid="latitude">
+				<label for="<?=$field_type->_id( '_latitude' ); ?>'">Latitude</label>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[latitude]' ),
+						'id'    => $field_type->_id( '_latitude' ),
+						'value' => $value['latitude'],
+						'desc'  => '',
+						'class' => 'double-barrel-daryl',
+					]
+				);
+				?>
+			</div><!-- /latitude -->
+			<div data-fieldid="longitude">
+				<label for="<?= $field_type->_id( '_longitude' ); ?>'">Longitude</label>
+				<?= $field_type->input(
+					[
+						'name'  => $field_type->_name( '[longitude]' ),
+						'id'    => $field_type->_id( '_longitude' ),
+						'value' => $value['longitude'],
+						'desc'  => '',
+						'class' => 'double-barrel-daryl',
+					]
+				);
+				?>
+			</div><!-- /longitude -->
+
+
+		</section><!-- end section.projectaddressfields -->
+		<?php
+		}//end render_address_field_callback()
 
 	/**
 	 * Enqueues javascript that will allow me to access project posts.
@@ -545,7 +558,7 @@ class ProjectPost {
 			false
 		);
 
-
+	}
 
 
 

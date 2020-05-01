@@ -467,29 +467,29 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$staff_id         = $staff_info['staff_id'] ?? '';
 		$desired_value    = 'on';
 
-		$html .= '<div class="inline-edit-group wp-clearfix toggle_checkbox">';
+		$html .= '<div class="box-side-context toggle_checkbox flex col-nowrap justify-around align-start">';
 
-		$html .= '<div class="njm flex row-nowrap justify-space-between">';
-		$html .= '<label class"on-your-left" for="staffInfo[staff_management]">Management?</label>';
+		$html .= '<div class="flex row-reverse-nowrap justify-end">';
+		$html .= '<label class="checkbox-left" for="staffInfo[staff_management]">Management?</label>';
 		$html .= '<input name="staffInfo[staff_management]" type="checkbox" id="staffInfo[staff_management]" value="on" ' . checked( $staff_management, 'on', false ) . ' />';
 		$html .= '</div>';
 
-		$html .= '<div class="njm flex row-nowrap justify-space-between">';
-		$html .= '<label class"on-your-left" for="staffInfo[staff_current]">Current?</label>';
+		$html .= '<div class="flex row-reverse-nowrap justify-end">';
+		$html .= '<label class="checkbox-left" for="staffInfo[staff_current]">Current?</label>';
 		$html .= '<input name="staffInfo[staff_current]" type="checkbox" id="staffInfo[staff_current]" value="on" ' . checked( $staff_current, 'on', false ) . '/>';
 		$html .= '</div>';
 
-		$html .= '<div>';
-		$html .= '<label for="staffInfo[full_title]" class="alignleft" >Full Title</label>';
-		$html .= '<input class="widefat" type="text" name="staffInfo[full_title]" id="staffInfo[full_title]" value="' . $full_title . '"/>';
+		$html .= '<div class="side-context-field flex col-nowrap align-start justify-center">';
+		$html .= '<label for="staffInfo[full_title]">Full Title</label>';
+		$html .= '<input type="text" name="staffInfo[full_title]" id="staffInfo[full_title]" value="' . $full_title . '"/>';
 		$html .= '</div>';
-		$html .= '<div>';
-		$html .= '<label for="staffInfo[short_title]" class="alignleft" >Title (Shortened)</label>';
-		$html .= '<input class="widefat" type="text" class="text_small" name="staffInfo[short_title]" id="staffInfo[short_title]" value="' . $short_title . '"/>';
+		$html .= '<div class="side-context-field flex col-nowrap align-start justify-center">';
+		$html .= '<label for="staffInfo[short_title]">Title (Shortened)</label>';
+		$html .= '<input type="text" name="staffInfo[short_title]" id="staffInfo[short_title]" value="' . $short_title . '"/>';
 		$html .= '</div>';
-		$html .= '<div>';
-		$html .= '<label for="staffInfo[staff_id]" class="alignleft" >Staff ID</label>';
-		$html .= '<input class="widefat" type="text" class="text_small" name="staffInfo[staff_id]" id="staffInfo[staff_id]" value="' . $staff_id . '"/>';
+		$html .= '<div class="side-context-field flex col-nowrap align-start justify-center">';
+		$html .= '<label for="staffInfo[staff_id]">Staff ID</label>';
+		$html .= '<input type="text" name="staffInfo[staff_id]" id="staffInfo[staff_id]" value="' . $staff_id . '"/>';
 		$html .= '</div>';
 
 		$html .= '</div>';

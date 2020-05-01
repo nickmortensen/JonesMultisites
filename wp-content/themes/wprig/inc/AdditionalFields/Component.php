@@ -158,12 +158,9 @@ class Component implements Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-		// add_filter( 'cmb2_render_address', [ $this, 'render_address_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
-		// add_filter( 'cmb2_render_staffmember', [ $this, 'render_staffmember_field_callback' ], 10, 5 );
 	}
-
 
 	/**
 	 * Render 'STAR RATING' custom field type

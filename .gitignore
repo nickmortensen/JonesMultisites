@@ -2,6 +2,7 @@
 /*
 !.gitignore
 !wp-content/
+!_ignore/wp_cli_notes_jonessign_io_multisite.md
 
 # Ignore everything in the "wp-content" directory, except the "plugins"
 # and "themes" directories.

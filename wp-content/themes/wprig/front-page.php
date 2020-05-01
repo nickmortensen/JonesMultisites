@@ -30,4 +30,11 @@ if ( is_home() ) {
 </main><!-- #primary -->
 
 <?php
+
+echo '<pre>';
+echo $_SERVER['HTTP_USER_AGENT'];
+echo '<br>';
+$agentmatch = wp_rig()->user_agent_matches( [ 'opera' ] );
+
+echo '</pre>';
 get_footer();

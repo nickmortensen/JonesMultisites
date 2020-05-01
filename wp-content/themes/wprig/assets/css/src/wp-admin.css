@@ -22,4 +22,6 @@
 /* @import url(./admin_partials/_ie.css); */
 /* @import url(./admin_partials/_install.css); */
 @import url(./admin_partials/_list-tables.css);
+@import url(./admin_partials/_star-rating.css);
+@import url(./admin_partials/_toggle-checkbox.css);
 @import url(./admin_partials/_common.css);

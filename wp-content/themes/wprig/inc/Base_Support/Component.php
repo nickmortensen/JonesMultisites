@@ -60,6 +60,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function initialize() {
 		add_action( 'after_setup_theme', [ $this, 'action_essential_theme_support' ] );
 		add_action( 'wp_head', [ $this, 'action_add_pingback_header' ] );
+		add_action( 'wp_head', [ $this, 'add_icons_to_header' ] );
 		add_filter( 'body_class', [ $this, 'filter_body_classes_add_hfeed' ] );
 		add_filter( 'embed_defaults', [ $this, 'filter_embed_dimensions' ] );
 		add_filter( 'theme_scandir_exclusions', [ $this, 'filter_scandir_exclusions_for_optional_templates' ] );
@@ -119,6 +120,55 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		if ( is_singular() && pings_open() ) {
 			echo '<link rel="pingback" href="', esc_url( get_bloginfo( 'pingback_url' ) ), '">';
 		}
+	}
+
+	/**
+	 * Determine whether the user agent is among one of the devices inputted into the function
+	 *
+	 * @param array $devices Devices to check.
+	 *
+	 * @return true If any of the devices are a match. False otherwise.
+	 */
+	private function user_agent_matches( $devices = [] ) {
+		$user_agent       = strtolower( $_SERVER['HTTP_USER_AGENT'] );
+		$user_agent_match = false;
+		foreach ( $devices as $device ) {
+			if ( false !== stripos( $user_agent, $device ) ) {
+				$user_agent_match = true;
+				break;
+			}
+		}
+		return $user_agent_match;
+	}
+
+	/**
+	 * Add a site manifest file to the header.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/wp_head/
+	 */
+	private function add_site_manifest() {
+		return '<link rel="manifest" href="/site.webmanifest">';
+	}
+
+	/**
+	 * Outputs the favicon to any public facing page load and the icons for Android and IOS only on the homepage
+	 */
+	public function add_icons_to_header() {
+		$html = '';
+		foreach ( [ '32x32', '16x16' ] as $favicon ) {
+				$html .= '<link rel="icon" type="image/png" sizes="' . $favicon . '" href="/favicon-' . $favicon . '.png">';
+		}
+
+		if ( $this->user_agent_matches( [ 'iphone', 'ipod', 'ipad' ] ) ) {
+			$html .= '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
+		}
+		if ( $this->user_agent_matches( [ 'android' ] ) ) {
+			$html .= '<link rel="icon" type="image/png" sizes="192x192" href="/android-chome-192x192.png">';
+		}
+
+		$html .= $this->add_site_manifest();
+
+		echo $html;
 	}
 
 	/**

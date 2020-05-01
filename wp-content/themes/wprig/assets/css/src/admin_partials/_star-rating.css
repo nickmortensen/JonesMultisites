@@ -1,0 +1,104 @@
+/* Star Rating Styles */
+div#cmb2-metabox-media_rating {
+	display: flex;
+	justify-content: center;
+}
+
+div#media_rating {
+	background: var(--gray-400);
+}
+
+/* star rating custom field for media properties */
+#cmb2-star-rating-metabox .star-cb-group {
+	/* remove inline-block whitespace */
+	font-size: 0;
+
+	/* flip the order so we can use the + and ~ combinators */
+	unicode-bidi: bidi-override;
+	direction: rtl;	/* the hidden clearer */
+}
+
+#cmb2-star-rating-metabox .star-cb-group * {
+	font-size: 1.9rem;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input {
+	display: none;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input + label {
+	/* only enough room for the star */
+	display: inline-block;
+	overflow: hidden;
+	text-indent: 9999px;
+	width: 1.75em;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input + label::before {
+	display: inline-block;
+	text-indent: -9999px;
+	content: "\f154";
+	font-family: dashicons, serif;
+	color: var(--gray-700);
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > input:checked ~ label::before,
+#cmb2-star-rating-metabox  .star-cb-group > input + label:hover ~ label::before,
+#cmb2-star-rating-metabox .star-cb-group > input + label:hover::before {
+	content: "\f155";
+	font-family: dashicons, serif;
+	color: var(--yellow-600);
+	text-shadow: 0 0 1px var(--gray-800);
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label {
+	text-indent: -9999px;
+	width: 0.5em;
+	margin-left: -0.5em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label::before {
+	width: 0.5em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group:hover > input + label::before {
+	content: "\f154";
+	font-family: dashicons, serif;
+	color: var(--gray-700);
+	text-shadow: none;
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover ~ label::before,
+#cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover::before {
+	content: "\f155";
+	font-family: dashicons, serif;
+	color: var(--yellow-600);
+	text-shadow: 0 0 1px var(--gray-800);
+	font-size: 1.75em;
+}
+
+#cmb2-star-rating-metabox fieldset {
+	border: 0;
+	background: transparent;
+	border-radius: 1px;
+}
+
+.dashicons-star-filled::before {
+	color: var(--yellow-500);
+	text-shadow:
+		1px 1px 1px var(--gray-700),
+		-1px -1px 1px var(--gray-700),
+		1px -1px 1px var(--gray-700),
+		-1px 1px 1px var(--gray-700);
+}
+
+.dashicons-star-empty::before,
+.dashicons-star-filled::before {
+	font-size: 0.9rem;
+	font-size: 0.4rem;
+}
