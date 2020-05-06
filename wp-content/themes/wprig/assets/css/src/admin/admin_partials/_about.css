@@ -380,7 +380,6 @@
 	.about__container h1 {
 		font-size: 3.2em;
 	}
-
 	.about__section.is-feature {
 		font-size: 1.4em;
 		font-weight: 500;
@@ -524,7 +523,6 @@
 		max-height: unset;
 		height: auto;
 	}
-
 	.about__header-badge {
 		justify-content: flex-start;
 	}
@@ -544,7 +542,6 @@
 		border-left-width: 3px;
 		border-bottom: none;
 	}
-
 	.about__header-navigation .nav-tab-active {
 		border-bottom: none;
 		border-left-width: 3px;

@@ -82,16 +82,29 @@ const paths = {
 			`${ assetsDir }/css/src/editor/**/*.css`,
 			// Ignore partial files.
 			`!${ assetsDir }/css/src/**/_*.css`,
+			`!${ assetsDir }/css/src/admin/admin_partials/_*.css`,
+			`!${ assetsDir }/css/src/admin/admin.css`,
+			`!${ assetsDir }/css/admin/admin.min.css`,
+
 		],
 		editorSrcDir: `${ assetsDir }/css/src/editor`,
 		editorDest  : `${ assetsDir }/css/editor`,
+		adminSrc: [
+			`${ assetsDir }/css/src/admin/admin_partials/_*.css`,
+		],
+		adminSrcDir: `${ assetsDir }/css/src/admin`,
+		adminSkip: [ `${ assetsDir }/css/src/admin/admin.css`, `${ assetsDir }/css/src/admin/admin_partials/_*.css` ],
+		adminDest  : `${ assetsDir }/css/admin`,
 		src         : [
 			`${ assetsDir }/css/src/**/*.css`,
 			// Ignore partial files.
 			`!${ assetsDir }/css/src/**/_*.css`,
-			`!${ assetsDir }/css/src/admin_partials/_*.css`,
+			`!${ assetsDir }/css/src/admin/admin_partials/_*.css`,
 			// Ignore editor source css.
 			`!${ assetsDir }/css/src/editor/**/*.css`,
+			// Ignore admin source css.
+			`!${ assetsDir }/css/src/admin/admin.css`,
+			`!${ assetsDir }/css/admin/admin.min.css`,
 			// ignore tailwindcss
 			`!${ assetsDir }/css/src/tailwind/tailwind.css`,
 		],
@@ -142,6 +155,7 @@ if ( isProd ) {
 	paths.php.dest          = `${ prodThemePath }/`;
 	paths.styles.dest       = `${ prodAssetsDir }/css/`;
 	paths.styles.editorDest = `${ prodAssetsDir }/css/editor/`;
+	paths.styles.adminDest = `${ prodAssetsDir }/css/admin/`;
 	paths.scripts.dest      = `${ prodAssetsDir }/js/`;
 	paths.images.dest       = `${ prodAssetsDir }/images/`;
 	paths.languages         = {

@@ -561,5 +561,23 @@ class Component implements Component_Interface,Templating_Component_Interface {
 	}
 
 
+// ADD QUICK EDIT OPTION
+// Add to our admin_init function
+
+
+function posttype_add_quick_edit($column_name, $post_type) {
+	if (!isset($_GET['post_type']) || (isset($_GET['post_type']) && $_GET['post_type'] != $post_type) || 'custom_post_meta_column' != $column_name) return;
+	static $printNonce = TRUE;
+	if ( $printNonce ) { $printNonce = FALSE; wp_nonce_field( plugin_basename( __FILE__ ), 'posttype_edit_nonce' ); } ?>
+	<fieldset class="inline-edit-col-right inline-edit-custom">
+		<div class="inline-edit-col inline-edit-<?php echo $column_name ?>">
+		<?php switch ( $column_name ) {
+			case 'custom_post_meta_column': ?>
+			<legend>My Custom Post Meta</legend>
+			<input name="meta_key_name" class="meta_key_name" type="checkbox" /> <?php break; } ?>
+			 </div>
+			  </fieldset> <?php }
+
+
 
 }//end class definition.

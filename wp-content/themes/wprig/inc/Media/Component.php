@@ -55,7 +55,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
 		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] );
 		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 );
-		add_action( 'upload_mimes', [ $this, 'additional_mime_types' ], 10, 1 );
+		add_filter( 'upload_mimes', [ $this, 'allow_svg_uploads' ], 10, 1 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_media_scripts' ] );
 		add_action( 'wp_ajax_svg_get_attachment_url', [ $this, 'get_attachment_url_media_library' ] );
 	}
@@ -63,13 +63,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Allow SVG to be uploaded.
 	 *
-	 * @param array $mimes The mime types that are already a part of WordPress.
-	 * @return array $mimes The mime types plus what has been added via the function.
+	 * @param array $allowed The mime types that are already a part of WordPress.
+	 * @return array $allowed The mime types plus what has been added via the function.
+	 *
 	 * @link https://developer.wordpress.org/reference/hooks/upload_mimes/
 	 */
-	public function additional_mime_types( $mimes ) {
-		$mimes['svg'] = 'image/svg+xml';
-		return $mimes;
+	public function allow_svg_uploads( $allowed ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return $allowed;
+		}
+		$allowed['svg'] = 'image/svg'; // not image/xml as originally thought.
+		return $allowed;
 	}
 
 	/**

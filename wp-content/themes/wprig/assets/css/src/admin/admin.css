@@ -1,7 +1,5 @@
-/* stylelint-disable */
-
-@import url(./_custom-properties.css);
-@import url(./_flex.css);
+@import url(../_custom-properties.css);
+@import url(../_flex.css);
 @import url(./admin_partials/_admin-menu.css);
 @import url(./admin_partials/_dashboard.css);
 @import url(./admin_partials/_edit.css);
@@ -25,3 +23,4 @@
 @import url(./admin_partials/_star-rating.css);
 @import url(./admin_partials/_toggle-checkbox.css);
 @import url(./admin_partials/_common.css);
+@import url(./admin_partials/_quick_edit.css);

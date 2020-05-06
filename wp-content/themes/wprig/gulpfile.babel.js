@@ -13,6 +13,7 @@ import {serve} from './gulp/browserSync';
 import scripts from './gulp/scripts';
 import styles from './gulp/styles';
 import editorStyles from './gulp/editorStyles';
+// import adminStyles from './gulp/adminStyles';
 import translate from './gulp/translate';
 import watch from './gulp/watch';
 import prodPrep from './gulp/prodPrep';
@@ -32,6 +33,9 @@ export default firstRun;
 /**
  * Build theme for development without BrowserSync or watching
  */
+// export const buildDev = parallel(
+//     php, images, series( styles, editorStyles, adminStyles ), scripts, translate
+// );
 export const buildDev = parallel(
     php, images, series( styles, editorStyles ), scripts, translate
 );

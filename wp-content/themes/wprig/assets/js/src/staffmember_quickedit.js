@@ -6,7 +6,7 @@
  */
 
 document.addEventListener( 'DOMContentLoaded', function() {
-
+	console.log( 'on staffmembers!');
 	//Prepopulating our quick-edit post info
 	var inline_editor   = inlineEditPost.edit;
 	inlineEditPost.edit = function(id) {

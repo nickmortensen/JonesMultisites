@@ -6,8 +6,7 @@
  */
 
 document.addEventListener( 'DOMContentLoaded', function() {
-
-	//Prepopulating our quick-edit post info -- set the original from WordPresses 'inline-edit-post' script to a variable prior to altering it in my own way.
+	// Prepopulating our quick-edit post info -- set the original from WordPresses 'inline-edit-post' script to a variable prior to altering it in my own way.
 	const inline_editor   = inlineEditPost.edit;
 	inlineEditPost.edit = function(id) {
 
@@ -28,43 +27,40 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
 			// This projects additional field -must also be a column.
 
-			let isManagement = document.querySelector( `#staff_management_${post_id}` ).dataset.state;
-			if ( 'on' === isManagement ) {
-				let managerCheckbox = row.querySelector( '#staff_management' );
-				managerCheckbox.checked = true;
+			// // Project ID Field
+			let jobID = document.querySelector( `#job_id_${post_id}` ).textContent;
+			if ( '' !== jobID ) {
+				let jobID_quickedit = row.querySelector( '#job_id' );
+				jobID_quickedit.value = jobID;
 			}
 
-			// This staffmembers data-status resolves to 'on' if the staffmember is current, 'off' if the staffmember isn't current.
-			let isCurrent = document.querySelector( `#staff_current_${post_id}` ).dataset.state;
-			if ( 'on' === isCurrent ) {
-				let currentCheckbox = row.querySelector( '#staff_current' );
-				currentCheckbox.checked = true;
-			}
-			// jones sign company staff id number.
-			let jonesID = document.getElementById( `staff_id_${post_id}`).textContent;
-			if ( '' !== jonesID ) {
-				let jonesID_quickedit = row.querySelector( '#staff_id' );
-				jonesID_quickedit.value = jonesID;
-			}
-			// Full title for the staffmember.
-			let fullTitle = document.getElementById( `full_title_${post_id}`).textContent;
-			if ( '' !== fullTitle ) {
-				let fullTitleQuickedit = row.querySelector( '#full_title' );
-				fullTitleQuickedit.value = fullTitle;
-				fullTitleQuickedit.setAttribute( 'default', fullTitle );
-				fullTitleQuickedit.setAttribute( 'value', fullTitle );
-			}
-			// Shortened Title for Staffmember
-			let shortTitle = document.getElementById( `short_title_${post_id}` ).textContent;
-			if ( '' !== shortTitle ) {
-				let shortTitleQuickEdit = row.querySelector( '#short_title' );
-				shortTitleQuickEdit.value = shortTitle;
-				shortTitleQuickEdit.setAttribute( 'default', shortTitle );
-				shortTitleQuickEdit.setAttribute( 'value', shortTitle );
+			// // The client for this project
+			let client = document.querySelector( `#client_${post_id}` ).textContent;
+			if ( '' !== client ) {
+				let client_quickedit   = row.querySelector( '#client' );
+				client_quickedit.value = client;
 			}
 
+			// // The locally hosted directory that contains more information on this project.
+			let localDir = document.getElementById( `local_folder_${post_id}`).dataset.folder;
+			if ( '' !== localDir ) {
+				let localDir_quickedit   = row.querySelector( '#local_folder' );
+				localDir_quickedit.value = localDir;
+			}
 
+			// TEaser text
+			let tease = document.getElementById( `tease_${post_id}`).textContent;
+			if ( '' !== tease ) {
+				let teaseQuickedit = row.querySelector( '#tease' );
+				teaseQuickedit.value = tease;
+			}
 
+			// Year Completed
+			let year_complete = document.getElementById( `year_complete_${post_id}`).textContent;
+			if ( '' !== year_complete ) {
+				let year_completeQuickedit = row.querySelector( '#year_complete' );
+				year_completeQuickedit.value = year_complete;
+			}
 
 		}
 

@@ -66,9 +66,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return [
 			'get_additional_project_info'    => [ $this, 'get_additional_project_info' ],
 			'get_project_address'            => [ $this, 'get_project_address' ],
+			'get_footer_project_address'     => [ $this, 'get_footer_project_address' ],
 			'get_project_tease'              => [ $this, 'get_project_tease' ],
 			'get_project_id'                 => [ $this, 'get_project_id' ],
 			'get_structured_project_address' => [ $this, 'get_structured_project_address' ],
+			'get_project_svg'                => [ $this, 'get_project_svg' ],
+			'the_svg'                        => [ $this, 'the_svg' ],
+			'get_project_detail'             => [ $this, 'get_project_detail' ],
 		];
 	}
 	/**
@@ -77,7 +81,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function initialize() {
 		add_filter( 'cmb2_render_projectlocation', [ $this, 'render_projectlocation_field_callback' ], 10, 5 );
 		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
-		add_action( 'init', [ $this, 'create_project_posttype' ] );
+		add_action( 'init', [ $this, 'create_posttype' ] );
 		// CMB2 field specifically for a project address.
 		// Enqueue a frontend script to utilize for project post types.
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_projects_script' ] );
@@ -89,7 +93,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'manage_project_posts_custom_column', [ $this, 'manage_new_admin_columns' ], 10, 2 );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 1 ); // call on save, to update metainfo attached to our metabox.
 		// Load the javascript admin script for prepopulating project quickedit fields on the admin end.
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_project_post_admin_javascript' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts_and_styles' ] );
 	}
 
 
@@ -125,9 +129,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		wp_nonce_field( 'post_metadata', 'project_metadata_field' );
 		$project_info = $this->get_additional_project_info( $post->ID );
 		$job_id       = $project_info['job_id'] ?? '';
+		$client       = $project_info['client'] ?? '';
 		$local_folder = $project_info['local_folder'] ?? '';
 		$complete     = $project_info['year_complete'] ?? '2020';
-		$alt_name     = $project_info['alt_name'] ?? 'Default Alternative Name';
+		$tease        = $project_info['tease'] ?? '7 word teaser';
 
 		$html .= '<style>
 			#project-side-metadata {
@@ -147,6 +152,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$html .= '<div id="project-side-metadata" class="inline-edit-group wp-clearfix">';
 
 		$html .= '<div>';
+		$html .= sprintf( '<label for="projectInfo[client]">%s</label>', 'Client' );
+		$html .= sprintf( '<input type="text" class="regular_text" name="projectInfo[client]" id="projectInfo[client]" value="%s"/>', $client );
+		$html .= '</div>';
+		$html .= '<div>';
 		$html .= sprintf( '<label for="projectInfo[job_id]">%s</label>', 'Job Number' );
 		$html .= sprintf( '<input type="text" class="regular_text" name="projectInfo[job_id]" id="projectInfo[job_id]" value="%s"/>', $job_id );
 		$html .= '</div>';
@@ -155,8 +164,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$html .= sprintf( '<input type="text" class="text_small" name="projectInfo[year_complete]" id="projectInfo[year_complete]" value="%s"/>', $complete );
 		$html .= '</div>';
 		$html .= '<div>';
-		$html .= sprintf( '<label for="projectInfo[alt_name]">%s</label>', 'Alternative Name' );
-		$html .= sprintf( '<input type="text" class="text_small" name="projectInfo[alt_name]" id="projectInfo[alt_name]" value="%s"/>', $alt_name );
+		$html .= sprintf( '<label for="projectInfo[tease]">%s</label>', 'Tease' );
+		$html .= sprintf( '<input type="text" class="text_small" name="projectInfo[tease]" id="projectInfo[tease]" value="%s"/>', $tease );
 		$html .= '</div>';
 		$html .= '<div>';
 		$html .= sprintf( '<label for="projectInfo[local_folder]">%s</label>', 'Local Folder' );
@@ -189,16 +198,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 			$project_info = $_POST['projectInfo'];
 
+			$client        = isset ( $project_info['client'] ) ? sanitize_text_field( $project_info['client'] ) : '';
 			$job_id        = isset ( $project_info['job_id'] ) ? sanitize_text_field( $project_info['job_id'] ) : '';
 			$local_folder  = isset ( $project_info['local_folder'] ) ? sanitize_text_field( $project_info['local_folder'] ) : '';
 			$year_complete = isset ( $project_info['year_complete'] ) ? sanitize_text_field( $project_info['year_complete'] ) : '';
-			$alt_name      = isset ( $project_info['alt_name'] ) ? $project_info['alt_name'] : '';
+			$tease         = isset ( $project_info['tease'] ) ? $project_info['tease'] : '';
 
 			$newdata = [
+				'client'        => $client,
 				'job_id'        => $job_id,
 				'local_folder'  => $local_folder,
 				'year_complete' => $year_complete,
-				'alt_name'      => $alt_name,
+				'tease'         => $tease,
 			];
 
 			// This field is saved as serialized data, so I need to use wp_parse_args to get to it.
@@ -214,38 +225,63 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @link https://developer.wordpress.org/reference
 	 */
-	public function display_quick_edit_custom( $column ) {
+	public function display_quick_edit_custom( $column, $post_type ) {
 		$html = '';
 		wp_nonce_field( 'post_metadata', 'project_metadata_field' );
+		// $html .= '<legend class="inline-edit-legend">Additional Details</legend>';
 		switch ( $column ) {
 			case 'year_complete':
-				$html .= '<fieldset class="inline-edit-col-left clear">';
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="jobInfo[year_complete]" class="alignleft">Year Complete?</label>';
-				$html .= '<input type="text" name="jobInfo[year_complete]" class="text_small" id="year_complete" />';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-project clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="jobInfo[year_complete]">';
+				$html .= '<span class="title">Completion</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="jobInfo[year_complete]" class="ptitle" id="year_complete"/><span>';
+				$html .= '</label>';
 				$html .= '</div>';
+				$html .= '</fieldset>';
 				break;
-			case 'local_folder':
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="jobInfo[local_folder]" class="alignleft">local folder</label>';
-				$html .= '<input type="text" name="jobInfo[local_folder]" class="text_small" id="local_folder"/>';
+			case 'client':
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-project clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="jobInfo[client]">';
+				$html .= '<span class="title">Client</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="jobInfo[client]" class="ptitle" id="client"/><span>';
+				$html .= '</label>';
 				$html .= '</div>';
+				$html .= '</fieldset>';
+			break;
+			case 'local_folder':
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-project clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="jobInfo[local_folder]">';
+				$html .= '<span class="title">Directory</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="jobInfo[local_folder]" class="ptitle" id="local_folder"/></span>';
+				$html .= '</label>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
 				break;
 			case 'job_id':
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="projectInfo[job_id]" class="alignleft">Job ID</label>';
-				$html .= '<input type="text" name="projectInfo[job_id]" class="text_small" id="job_id"/>';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-project clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="projectInfo[job_id]">';
+				$html .= '<span class="title">Job ID</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="projectInfo[job_id]" class="ptitle" id="job_id"/></span>';
+				$html .= '</label>';
 				$html .= '</div>';
+				$html .= '</fieldset>';
 				break;
-			case 'alt_name':
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="jobInfo[alt_name]" class="alignleft" >Alternate Name</label>';
-				$html .= '<input type="text" name="jobInfo[alt_name]" id="alt_name"/>';
+			case 'tease':
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-project clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="jobInfo[tease]">';
+				$html .= '<span class="title">Tease</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="jobInfo[tease]" class="ptitle" id="tease"/></span>';
+				$html .= '</label>';
 				$html .= '</div>';
 				$html .= '</fieldset>';
 				break;
 			default:
-				$html = '';
+				$html .= '';
 		} // End switch.
 		echo $html;
 	}
@@ -291,22 +327,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Get the label for the project address field;
 		 */
 		function get_label_cb() {
-			return '<span class="indigo" style="color: var(--indigo-600);font-size: 2.5rem;">Project Location Data </span><hr>';
+			return '<div style="color:white; font-weight: 600;background: var(--indigo-600);font-size: 2.5rem;">Project Data </div>';
 		}
 
 		/**
 		 * Location of the project - address plus latitude and longitude.
 		 */
 		$args = [
-			'name'                => 'Project',
-			'id'                  => 'projectLocation', // Name of the custom field type we setup.
-			'type'                => 'projectlocation',
+			'name'       => 'Project',
+			'id'         => 'projectLocation', // Name of the custom field type we setup.
+			'type'       => 'projectlocation',
 			'label_cb'   => get_label_cb(),
 			'show_names' => false, // false removes the left cell of the table -- this is worth understanding.
 			'classes'    => [ 'project_fields' ],
 			'after_row'  => '<hr>',
 		];
 		$metabox->add_field( $args );
+
 		/**
 		 * SVG Image or Logo of the Client
 		 */
@@ -326,20 +363,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Images 4x3 for slideshow.
 		 */
 		$args = [
-			'id' => 'projectImagesSlideshow',
-			'name' => 'slideshow',
-			'type' => 'file_list',
+			'id'           => 'projectImagesSlideshow',
+			'name'         => 'slideshow',
+			'type'         => 'file_list',
 			'preview_size' => [ 200, 150 ],
-			'query_args' => [
+			'query_args'   => [
 				'type' => 'image',
 				// figure out a way you only get images that have a size ration of 4x3
 			],
-			'text' => [
+			'text'         => [
 				'add_upload_files_text' => 'add images (4x3)',
-				'remove_image_text' => 'remove',
-				'file_text' => 'image',
-				'file_download_text' => 'download',
-				'remove_text' => 'standard',
+				'remove_image_text'     => 'remove',
+				'file_text'             => 'image',
+				'file_download_text'    => 'download',
+				'remove_text'           => 'standard',
 			],
 		];
 		$metabox->add_field( $args );
@@ -377,12 +414,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'cb'       => array_slice( $columns, 0, 1 ),
 			'id'       => 'ID',
 			'job_id'   => 'Job #',
-			'alt_name' => 'Alt Name',
+			'client'   => 'Client',
+			'tease'    => 'Tease',
 			'title'    => array_slice( $columns, 0, 1 ),
 		];
 
-		$new_columns['completed']    = 'Completed?';
-		$new_columns['local_folder'] = 'local folder?';
+		$new_columns['year_complete']    = '<span title="Year Completed?" class="material-icons">calendar_today</span>';
+		$new_columns['local_folder'] = '<span title="Local Folder" class="material-icons">apps</span>';
 
 		return array_merge( $new, $columns, $new_columns );
 	}
@@ -398,9 +436,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$html         = '';
 		$project_info = $this->get_additional_project_info( $post_id );
 		$job_id       = $project_info['job_id'] ?? '';
+		$client       = $project_info['client'] ?? '';
 		$local_folder = $project_info['local_folder'] ?? '';
-		$complete     = $project_info['year_complete'] ?? '';
-		$alt_name     = $project_info['alt_name'] ?? '';
+		$complete     = $project_info['year_complete'] ?? '2016';
+		$tease     = $project_info['tease'] ?? '';
 
 
 		switch ( $column_name ) {
@@ -411,25 +450,30 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				$id = 'job_id_' . $post_id;
 				$html .= sprintf( '<div id="%s">%s</div>', $id, $job_id );
 				break;
-			case 'alt_name':
-				$id = 'alt_name_' . $post_id;
-				$html .= sprintf( '<div id="%s">%s</div>', $id, $alt_name );
+			case 'client':
+				$id = 'client_' . $post_id;
+				$html .= sprintf( '<div id="%s">%s</div>', $id, $client );
 				break;
-			case 'completed':
+			case 'tease':
+				$id = 'tease_' . $post_id;
+				$html .= sprintf( '<div id="%s">%s</div>', $id, $tease );
+				break;
+			case 'year_complete':
 				$id = 'year_complete_' . $post_id;
 				$html .= sprintf( '<div id="%s">%s</div>', $id, $complete );
 				break;
 			case 'local_folder':
-				$id = 'local_folder_' . $post_id;
+				$id         = 'local_folder_' . $post_id;
 				$icon_color = '' !== $local_folder ? 'var(--green-500)' : 'var(--gray-500)';
-				$icon_text = '' !== $local_folder ? 'work' : 'work_off';
-				$icon = sprintf( '<span style="color:%s" class="material-icons">%s</span>', $icon_color, $icon_text );
+				$icon_text  = '' !== $local_folder ? 'work' : 'work_off';
+				$icon       = sprintf( '<span style="color:%s" class="material-icons">%s</span>', $icon_color, $icon_text );
 				$html .= sprintf( '<div id="%s" data-folder="%s">%s</div>', $id, $local_folder, $icon );
 				break;
 			default:
 				$html .= '';
 		}
 		echo $html;
+		// print_r( $project_info );
 	}
 
 	/**
@@ -453,198 +497,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Create & Render a Project Address Field to use with CMB2
+	 * Retrieve the postmeta from the projectInfo postmeta array - by field.
 	 *
-	 * @param array  $field              The passed in `CMB2_Field` .
-	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
-	 * @param int    $object_id          The ID of the current object.
-	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
-	 * @param object $field_type         The `CMB2_Types` object.
+	 * @param int $post_id Project post type id.
+	 * @param string $field which field from projectInfo - choose among job_id|tease|client|year_complete|local_folder.
+	 * @return string 4 digit year that the post either completes, was started, or begins.
 	 */
-	public function old_render_projectinfo_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
-		$new_values = [
-			'tease'         => '',
-			'address' => '',
-			'city'          => '',
-			'state'         => '',
-			'zip'           => '',
-			'latitude'      => '',
-			'longitude'     =>  '',
-		];
-
-		$value = wp_parse_args( $value, $new_values );
-		?>
-		<style>
-			#new-projectinfo-fields {
-
-				background: var(--blue-300);
-			}
-			span.label-outer {
-				width: 25%;
-				min-width: 140px;
-				font-weight: var(--strong);
-				font-size: 1.6rem;
-			}
-			#new-projectinfo-fields > div {
-				padding-top: 15px;
-				display: flex;
-				flex-flow: row nowrap;
-				justify-content: flex-start;
-			}
-			#new-projectinfo-fields > div input {
-				background: var(--orange-200);
-				min-width: 60%;
-			}
-			.makerow {
-				display: flex;
-				flex-flow: row wrap;
-				justify-content: space-around;
-				align-items: flex-start;
-				align-content: center;
-				background: var(--green-500);
-			}
-
-			.makerow > div {
-				background: var(--yellow-600);
-				min-width: 40%;
-			}
-		</style>
-
-		<section id="new-projectinfo-fields">
-
-		<div>
-			<span class="label-outer">
-				<label for="tease">Tease</label>
-			</span>
-			<textarea name="tease" id="projectInfo[tease]" autocapitalize="sentences" rows="6" cols="160" autofocus spellcheck="true"></textarea>
-		</div>
-		<div>
-			<span class="label-outer">
-				<label for="address">Street Address</label>
-			</span>
-			<input name="address" id="projectInfo[address]" type="text"/>
-		</div>
-		<div>
-			<span class="label-outer">
-				<label for="city">City</label>
-			</span>
-			<input name="city" id="projectInfo[city]" type="text"/>
-		</div>
-		<div>
-			<span class="label-outer">
-				<label for="state">State</label>
-			</span>
-			<input name="state" id="projectInfo[state]" type="text"/>
-		</div>
-		<div>
-			<span class="label-outer">
-				<label for="zip">Zip</label>
-			</span>
-			<input name="zip" id="projectInfo[zip]" type="text"/>
-		</div>
-		<div class="makerow">
-			<div>
-				<span class="label-outer">
-					<label for="latitude">Latitude</label>
-				</span>
-				<input name="latitude" id="projectInfo[latitude]" type="text"/>
-			</div>
-			<div>
-				<span class="label-outer">
-					<label for="latitude">Latitude</label>
-				</span>
-				<input name="latitude" id="projectInfo[latitude]" type="text"/>
-			</div>
-		</div>
-
-		</section>
-
-		<?php
+	public function get_project_detail( $post_id, $field = 'all' ) {
+		$info = $this->get_additional_project_info( $post_id );
+		if ( 'all' === $field ) {
+			return $info;
+		} else {
+			return $info[$field];
+		}
 	}
-	public function render_projectlocation_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
-		$new_values = [
-			'address'   => '',
-			'city'      => '',
-			'state'     => '',
-			'zip'       => '',
-			'latitude'  => '',
-			'longitude' => '',
-		];
-		$value = wp_parse_args( $value, $new_values );
-		?>
-		<div>
-				<p>
-					<label for="<?php echo $field_type->_id( '_address' ); ?>">Address</label>
-				</p>
-			<?php echo $field_type->input( [
-				'name'  => $field_type->_name( '[address]' ),
-				'id'    => $field_type->_id( '_address' ),
-				'value' => $value['address'],
-				'desc'  => '',
-			] ); ?>
-		</div>
-		<div class="alignleft">
-			<p>
-				<label for="<?php echo $field_type->_id( '_city' ); ?>'">City</label>
-			</p>
-			<?php echo $field_type->input( [
-				'class' => 'cmb_text_small',
-				'name'  => $field_type->_name( '[city]' ),
-				'id'    => $field_type->_id( '_city' ),
-				'value' => $value['city'],
-				'desc'  => '',
-			] ); ?>
-		</div>
-		<div class="alignleft">
-			<p>
-				<label for="<?php echo $field_type->_id( '_state' ); ?>'">State</label>
-			</p>
-			<?php echo $field_type->select( [
-				'name'    => $field_type->_name( '[state]' ),
-				'id'      => $field_type->_id( '_state' ),
-				'options' => AdditionalFields::get_state_options(),
-				'desc'    => '',
-			] ); ?>
-		</div>
-		<div class="alignleft">
-			<p>
-				<label for="<?php echo $field_type->_id( '_zip' ); ?>'">Zip</label>
-			</p>
-			<?php echo $field_type->input( [
-				'class' => 'cmb_text_small',
-				'name'  => $field_type->_name( '[zip]' ),
-				'id'    => $field_type->_id( '_zip' ),
-				'value' => $value['zip'],
-				'type'  => 'number',
-				'desc'  => '',
-				] ); ?>
-		</div>
-		<br class="clear">
-		<div class="alignleft">
-			<p>
-				<label for="<?php echo $field_type->_id( '_latitude' ); ?>'">Latitude</label>
-			</p>
-			<?php echo $field_type->input( [
-						'class' => 'cmb_text_small',
-						'name'  => $field_type->_name( '[latitude]' ),
-						'id'    => $field_type->_id( '_latitude' ),
-						'value' => $value['latitude'],
-						'desc'  => '',
-			] ); ?>
-		</div>
-		<div class="alignleft">
-			<p><label for="<?php echo $field_type->_id( '_longitude' ); ?>'">Longitude</label></p>
-			<?php echo $field_type->input( array(
-				'class' => 'cmb_text_small',
-				'name'  => $field_type->_name( '[longitude]' ),
-				'id'    => $field_type->_id( '_longitude' ),
-				'value' => $value['longitude'],
-				'desc'  => '',
-			) ); ?>
-		</div>
-		<br class="clear">
-	<?= $field_type->_desc( true );
-	}//end render_address_field_callback()
 
 	/**
 	 * Enqueues javascript that will allow me to access project posts.
@@ -686,20 +552,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Enqueue the javascript to populate the project post type's quickedit fields.
 	 */
-	public function enqueue_project_post_admin_javascript() {
+	public function enqueue_admin_scripts_and_styles() {
 		global $post_type;
 		// Ensure that we don't bother using this javascript unless we are in the project post type on the admin end.
-		if ( ! ( is_admin() && 'project' === $post_type ) ) {
-			return;
-		}
+		if ( is_admin() && 'project' === $post_type ) :
 		// Within the development environment, use the non-minified version.
 		$script_uri = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/project_quickedit.js' ) : get_theme_file_uri( '/assets/js/project_quickedit.min.js' );
-		$handle     = 'projects-quickedit-script';
-		$depend     = [ 'jQuery', 'inline-edit-post' ];
+		$dependencies = [ 'jquery', 'inline-edit-post' ]; // location: wp-admin/js/inline-edit-post.js.
 		$version    = '19';
 		$footer     = true;
-
-		wp_enqueue_script( $handle, $script_uri, $depend, $version, $footer );
+		wp_enqueue_script( 'project-quickedit', $script_uri, $dependencies, $version, $footer );
+		endif;
 	}
 
 	/**
@@ -707,7 +570,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/register_post_type/
 	 */
-	public function create_project_posttype() {
+	public function create_posttype() {
 		$icon_for_posttype   = 'dashicons-admin-multisite';
 		$taxonomies_to_apply = [ 'expertise', 'signtype', 'services', 'location' ];
 		$singular            = 'project';
@@ -775,6 +638,38 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Get the svg logo from the project.
+	 *
+	 * @param int $post_id Identifier of the post.
+	 * @param string $type Should output the image id or the image url - default is url.
+	 * @return string HTML for the label on the address field within the project post type.
+	 */
+	public function get_project_svg( $post_id, $type = 'url' ) {
+		$metafield = 'projectSVGLogo';
+		if ( 'id' === $type ) {
+			$metafield .= '_id';
+		}
+		return get_post_meta( $post_id, $metafield, true );
+	}
+
+	/**
+	 * Output the svg logo from the project.
+	 *
+	 * @param int $post_id Identifier of the post.
+	 * @param string $type Should output the image id or the image url - default is url.
+	 * @return string HTML for the label on the address field within the project post type.
+	 */
+	public function the_svg( $url, $echo = true, $width = 30 ) {
+		$output = "<img src=\"$url\"/ style=\"max-width:{$width}vmin;\">";
+		if ( $echo ) {
+			echo $output;
+		} else {
+			return $output;
+		}
+
+	}
+
+	/**
 	 * Get the tease field from project info.
 	 *
 	 * @param int $post_id Identifier of the post.
@@ -839,12 +734,107 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$structured .= sprintf( '<span itemprop="name">%s</span><br>', get_the_title( $post_id ) );
 		$structured .= sprintf( '<span itemprop="streetAddress">%s</span><br>', $info['address'] );
 		$structured .= sprintf( '<span itemprop="addressLocality">%s</span>,', $info['city'] );
-		$structured .= sprintf( '<span itemprop="addressRegion">%</span>', $info['state'] );
-		$structured .= sprintf( '<span itemprop="postalCode">%</span><br>', $info['zip'] );
+		$structured .= sprintf( '<span itemprop="addressRegion">%s</span>', $info['state'] );
+		$structured .= sprintf( '<span itemprop="postalCode">%s</span><br>', $info['zip'] );
 		$structured .= '<span itemprop="addressCountry">United States</span>';
 		$structured .= '</div>';
 
 		return $structured;
 	}
+
+	/**
+	 * Create & Render a Project Address Field to use with CMB2
+	 *
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type         The `CMB2_Types` object.
+	 */
+	public function render_projectlocation_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+		$new_values = [
+			'address'   => '',
+			'city'      => '',
+			'state'     => '',
+			'zip'       => '',
+			'latitude'  => '',
+			'longitude' => '',
+		];
+		$value = wp_parse_args( $value, $new_values );
+		?>
+		<div>
+			<p>
+				<label for="<?php echo $field_type->_id( '_address' ); ?>">Address</label>
+			</p>
+			<?php echo $field_type->input( [
+				'name'  => $field_type->_name( '[address]' ),
+				'id'    => $field_type->_id( '_address' ),
+				'value' => $value['address'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft">
+			<p>
+				<label for="<?php echo $field_type->_id( '_city' ); ?>'">City</label>
+			</p>
+			<?php echo $field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[city]' ),
+				'id'    => $field_type->_id( '_city' ),
+				'value' => $value['city'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft">
+			<p>
+				<label for="<?php echo $field_type->_id( '_state' ); ?>'">State</label>
+			</p>
+			<?php echo $field_type->select( [
+				'name'    => $field_type->_name( '[state]' ),
+				'id'      => $field_type->_id( '_state' ),
+				'options' => AdditionalFields::get_state_options( $value['state'] ),
+				'desc'    => '',
+			] ); ?>
+		</div>
+		<div class="alignleft">
+			<p>
+				<label for="<?php echo $field_type->_id( '_zip' ); ?>'">Zip</label>
+			</p>
+			<?php echo $field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[zip]' ),
+				'id'    => $field_type->_id( '_zip' ),
+				'value' => $value['zip'],
+				'type'  => 'number',
+				'desc'  => '',
+				] ); ?>
+		</div>
+		<br class="clear">
+		<div class="alignleft">
+			<p>
+				<label for="<?php echo $field_type->_id( '_latitude' ); ?>'">Latitude</label>
+			</p>
+			<?php echo $field_type->input( [
+						'class' => 'cmb_text_small',
+						'name'  => $field_type->_name( '[latitude]' ),
+						'id'    => $field_type->_id( '_latitude' ),
+						'value' => $value['latitude'],
+						'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft">
+			<p><label for="<?php echo $field_type->_id( '_longitude' ); ?>'">Longitude</label></p>
+			<?php echo $field_type->input( array(
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[longitude]' ),
+				'id'    => $field_type->_id( '_longitude' ),
+				'value' => $value['longitude'],
+				'desc'  => '',
+			) ); ?>
+		</div>
+		<br class="clear">
+	<?= $field_type->_desc( true );
+	}//end render_address_field_callback()
+
 
 }//end class definition.

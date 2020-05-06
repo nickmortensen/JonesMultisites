@@ -511,40 +511,59 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Displays our custom content on the quick-edit interface, no values can be pre-populated (all done in JS)
 	 *
 	 * @param string $column Name of column.
+	 * @param string $post_type Type of post.
 	 *
 	 * @link https://developer.wordpress.org/reference
 	 */
-	public function display_quick_edit_custom( $column ) {
+	public function display_quick_edit_custom( $column, $post_type ) {
 		$html = '';
 		wp_nonce_field( 'post_metadata', 'post_metadata_field' );
 		switch ( $column ) {
 			// Output checkbox with name attribute staff_management.
 			case 'staff_management':
-				$html .= '<fieldset class="inline-edit-col-left clear">';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
 				$html .= '<div class="toggle_checkbox">';
-				$html .= '<label for="staffInfo[staff_management]">Management?</label>';
+				$html .= '<label class="alignleft" for="staffInfo[staff_management]">Management?</label>';
 				$html .= '<input name="staffInfo[staff_management]" type="checkbox" id="staff_management" value="on"/>';
 				$html .= '</div>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
 				break;
 			// Output checkbox with name attribute staff_current.
 			case 'staff_current':
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
 				$html .= '<div class="toggle_checkbox">';
 				$html .= '<label for="staffInfo[staff_current]">Current?</label>';
 				$html .= '<input name="staffInfo[staff_current]" type="checkbox" id="staff_current" value="on"/>';
 				$html .= '</div>';
+				$html .= '</div>';
+				$html .= '</fieldset>';
 				break;
 			case 'staff_id':
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="staffInfo[staff_id]" class="alignleft" >Staff ID</label>';
-				$html .= '<input type="text" class="text_small" name="staffInfo[staff_id]" id="staff_id"/>';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="staffInfo[staff_id]">';
+				$html .= '<span class="title">Staff ID</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" class="ptitle" name="staffInfo[staff_id]" id="staff_id"/></span>';
+				$html .= '</label>';
 				$html .= '</div>';
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="staffInfo[full_title]" class="alignleft" >Full Title</label>';
-				$html .= '<input type="text" name="staffInfo[full_title]" id="full_title"/>';
+				$html .= '</fieldset>';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="staffInfo[full_title]">';
+				$html .= '<span class="title">Full Title</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="staffInfo[full_title]" id="full_title" class="ptitle"/></span>';
+				$html .= '</label>';
 				$html .= '</div>';
-				$html .= '<div class="inline-edit-group wp-clearfix njm flex row-nw justify-start align-center">';
-				$html .= '<label for="staffInfo[short_title]" class="alignleft" >Short Title</label>';
-				$html .= '<input type="text" name="staffInfo[short_title]" id="short_title"/>';
+				$html .= '</fieldset>';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
+				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
+				$html .= '<label for="staffInfo[short_title]">';
+				$html .= '<span class="title">Short Title</span>';
+				$html .= '<span class="input-text-wrap"><input type="text" name="staffInfo[short_title]" id="short_title" class="ptitle"/></span>';
+				$html .= '</label>';
 				$html .= '</div>';
 				$html .= '</fieldset>';
 				break;

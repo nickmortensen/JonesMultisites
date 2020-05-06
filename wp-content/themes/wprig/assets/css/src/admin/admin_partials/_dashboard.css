@@ -70,7 +70,7 @@
 	min-height: 100px;
 }
 
-/* @todo: this was originally in this section, but likely belongs elsewhere */
+/* todo: this was originally in this section, but likely belongs elsewhere */
 #the-comment-list td.comment p.comment-author {
 	margin-top: 0;
 	margin-left: 0;
@@ -806,8 +806,7 @@ body #dashboard-widgets .postbox form .submit {
 	color: var(--gray-100);
 }
 
-/* Dashboard activity widget - Comments */
-/* @todo: needs serious de-duplication */
+/* Dashboard activity widget - Comments todo: needs serious de-duplication */
 
 #activity-widget #the-comment-list tr.undo,
 #activity-widget #the-comment-list div.undo {
@@ -1106,6 +1105,7 @@ a.rsswidget {
 -------------------------------------------------------------- */
 
 /* one column on the dash */
+
 @media only screen and (max-width: 799px) {
 	#wpbody-content #dashboard-widgets .postbox-container {
 		width: 100%;

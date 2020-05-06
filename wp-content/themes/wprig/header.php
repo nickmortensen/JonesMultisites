@@ -28,7 +28,7 @@ namespace WP_Rig\WP_Rig;
 	?>
 
 	<?php wp_head(); ?>
-	<?php $blog  = get_current_blog_id(); ?>
+	<?php $blog = get_current_blog_id(); ?>
 </head>
 
 
@@ -131,10 +131,10 @@ global $wpdb;
 
 		<?php
 
+//phpcs:disable
 		echo '<pre>';
-		print_r( wp_rig()->get_structured_project_address(66) );
+		 print_r( wp_rig()->get_structured_project_address( 66 ) );
 		echo '</pre>';
-		//phpcs:disable
 		// get_template_part( 'template-parts/header/custom_header' );
 		// get_template_part( 'template-parts/header/branding' );
 		// get_template_part( 'template-parts/header/navigation' );

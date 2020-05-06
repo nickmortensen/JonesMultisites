@@ -8,6 +8,18 @@
 	margin-right: 8px;
 }
 
+
+.post-type-project #id {
+		width: 5%;
+}
+
+.post-type-project #title {
+	width: 35%;
+}
+.post-type-project th#completed, th#local_folder {
+	width: 5%;
+}
+
 #identifier,
 #users,
 #id {

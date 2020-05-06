@@ -1,0 +1,4 @@
+/* lose the password OR field from the quickedit screen*/
+/* fieldset.inline-edit-col-left:first-of-type >div.inline-edit-col >div.inline-edit-group:first-of-type {
+	display: none;
+} */

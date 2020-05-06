@@ -24,6 +24,7 @@ h6 {
 	font-family: var(--highlight-font-family), sans-serif;
 	font-stretch: condensed;
 	clear: both;
+	font-weight: var(--semibold);
 }
 
 .entry-header h1.entry-title,

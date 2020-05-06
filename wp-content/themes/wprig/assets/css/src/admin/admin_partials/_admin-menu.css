@@ -656,6 +656,7 @@ li#wp-admin-bar-menu-toggle {
 }
 
 /* Auto-folding of the admin menu */
+
 @media only screen and (max-width: 960px) {
 	.auto-fold #wpcontent,
 	.auto-fold #wpfooter {
@@ -939,6 +940,7 @@ li#wp-admin-bar-menu-toggle {
 }
 
 /* Smartphone */
+
 @media screen and (max-width: 600px) {
 	#adminmenuwrap,
 	#adminmenuback {
