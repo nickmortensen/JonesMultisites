@@ -104,10 +104,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'is_management'        => [ $this, 'is_management' ],
 			'is_current'           => [ $this, 'is_current' ],
 			'get_date_of_hire'     => [ $this, 'get_date_of_hire' ],
+			'get_all_staffmembers' => [ $this, 'get_all_staffmembers' ],
 		];
 	}
 
+	/**
+	 * Get all the published staffmembers.
+	 */
+	public function get_all_staffmembers() {
 
+		$args = [
+			'post_type'   => 'staffmember',
+			'post_status' => 'publish',
+		];
+
+		return new \WP_QUERY( $args );
+	}
 
 	/**
 	 * Enqueues a script that improves navigation menu accessibility.
@@ -239,6 +251,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'show_names'   => true,
 			'title'        => 'Staffmember Information',
 			'show_title'   => false,
+			'cmb_styles'   => false,
 		];
 		// Create the metabox to add fields to.
 		$metabox = new_cmb2_box( $metabox_args );

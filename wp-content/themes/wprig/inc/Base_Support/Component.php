@@ -80,6 +80,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_asset_version'  => [ $this, 'get_asset_version' ],
 			'seconds_from_epoch' => [ $this, 'seconds_from_epoch' ],
 			'pr'                 => [ $this, 'pr' ],
+			'user_agent_matches' => [ $this, 'user_agent_matches' ],
 		];
 	}
 
@@ -129,7 +130,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @return true If any of the devices are a match. False otherwise.
 	 */
-	private function user_agent_matches( $devices = [] ) {
+	public function user_agent_matches( $devices = [] ) {
 		$user_agent       = strtolower( $_SERVER['HTTP_USER_AGENT'] );
 		$user_agent_match = false;
 		foreach ( $devices as $device ) {

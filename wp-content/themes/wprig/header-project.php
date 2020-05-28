@@ -31,20 +31,20 @@ namespace WP_Rig\WP_Rig;
 
 </head>
 
-
+<?php
+get_template_part( 'template-parts/header/navigation/navigation-project' );
+?>
 
 <?php
+$blog        = get_current_blog_id();
+wp_rig()->print_styles( 'project' );
+
+
 $project = [
-	'address'   => wp_rig()->get_structured_project_address( $post->ID ),
-	'thumbnail' => get_the_post_thumbnail_url( $post->ID, 'featured' ),
+	'address'    => wp_rig()->get_footer_project_address( $post->ID ),
+	'structured' => wp_rig()->get_structured_project_address( $post->ID ),
+	'thumbnail'  => get_the_post_thumbnail_url( $post->ID, 'featured' ),
 ];
-$slides = get_post_meta( $post->ID, 'projectImagesSlideshow', true );
-$address = wp_rig()->get_footer_project_address( $post->ID );
-$logo_url = wp_rig()->get_project_svg( $post->ID );
-$svg      = wp_rig()->the_svg( $logo_url, false, 25 );
-
-$blog               = get_current_blog_id();
-
 
 ?>
 
@@ -55,8 +55,7 @@ $blog               = get_current_blog_id();
 	#project-header {
 		padding: 3vw;
 		min-height: 50vw;
-		background-image: url( <?= $project['thumbnail']; ?>);
-		background-color: var(--yellow-600);
+		background: url( <?= $project['thumbnail']; ?>), linear-gradient(#e66465 0%, #9198e5 61%);;
 		background-blend-mode: multiply;
 		background-size: cover;
 	}
@@ -64,8 +63,6 @@ $blog               = get_current_blog_id();
 
 
 <?php if ( 'project' === get_post_type() ) : ?>
-<?php wp_rig()->print_styles( 'project' ); ?>
-
 <div style="display:none;" id="controls" class="flex row-nw justify-around align-center" hidden>
 	<div id="blendmodeselect">
 		<label for="blends" class="bg-white">background blendmode</label>
@@ -86,65 +83,35 @@ $blog               = get_current_blog_id();
 <body <?php body_class( 'w-screen ml-0 bg-blue-100' ); ?>>
 <?php wp_body_open(); ?>
 
+<?php
+
+
+//phpcs:disable
+// get_template_part( 'template-parts/header/project_header' );
+// get_template_part( 'template-parts/header/branding' );
+// get_template_part( 'template-parts/header/navigation' );
+
+?>
+
 <div id="page" class="site">
 
 	<header id="masthead" class="site-header">
+
 		<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
-	<div id="project-header" class="w-screen flex col-nw justify-end align-center">
-		<div id="project-title"> <h2 class="project-title"><?= the_title(); ?></h2></div>
-	</div><!-- end div#project-header -->
-
-
-
+		<div id="project-header" class="w-screen flex col-nw justify-end align-center">
+			<div id="project-title">
+				<h2 class="project-title"><?= the_title(); ?></h2>
+			</div><!-- end div#project-title -->
+		</div><!-- end div#project-header -->
 
 	</header><!-- #masthead -->
 
-	<main id="primary" class="w-screen project-profile flex row-nw justify-end align-center">
-		<div>
-			<?= $address['state']; ?>
-		</div>
-<div id="slideshow" class="p-2 flex row-wrap justify-start align-items-start">
-
-<style>
-	img.ss-samp {
-		max-width: 300px;
-	}
-</style>
-<?php
-$slides = get_post_meta( $post->ID, 'projectImagesSlideshow', true );
-foreach ( $slides as $id => $url ) {
-echo "<img class=\"ss-samp\" src=\"$url\" />";
-	echo '<br>';
-}
-echo $project['address'];
-?>
-
-</div>
-
-		<div class="client-information flex col-nw justify-start align-start p-8 bg-gray-500 text-white text-4xl">
-			<div class="align-self-center"> <?= $svg; ?> </div>
-			<div> <?= wp_rig()->get_project_detail( $post->ID, 'client' ); ?> </div>
-			<div> <?= wp_rig()->get_project_detail( $post->ID, 'tease' ); ?> </div>
-			<div> <?= wp_rig()->get_project_detail( $post->ID, 'job_id' ); ?> </div>
-			<div> <?= wp_rig()->get_project_detail( $post->ID, 'year_complete' ); ?> </div>
-		</div>
-
-	</main><!-- #primary -->
 
 
 
+</div><!-- end div#page -->
 
-
-		<?php
-
-
-		//phpcs:disable
-		// get_template_part( 'template-parts/header/project_header' );
-		// get_template_part( 'template-parts/header/branding' );
-		// get_template_part( 'template-parts/header/navigation' );
-
-		?>
 
 <script>
 	const projectHeader = document.getElementById( 'project-header' );

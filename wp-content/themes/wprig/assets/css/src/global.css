@@ -8,6 +8,7 @@
 	# Typography
 	# Elements
 	# Links
+# Utility Classes
 # Accessibility
 # Layout
 # Forms
@@ -28,6 +29,15 @@
 @import "_typography.css";
 @import "_elements.css";
 @import "_links.css";
+/*--------------------------------------------------------------
+# Utility Classes
+--------------------------------------------------------------*/
+@import "_margin.css";
+@import "_padding.css";
+@import "_lists.css";
+@import "_leading.css";
+@import "_width.css";
+
 
 /*--------------------------------------------------------------
 # Accessibility
@@ -599,7 +609,16 @@ were hidden (via .neverending) before. */
 pre {
 	display: block;
 	min-width: 100vw;
-	background: #0273b9;
-	color: #fff;
+	background: var(--blue-700);
+	color: var(--color-theme-white);
 	padding-left: 8vw;
 }
+
+p {
+	font-size: calc(var(--global-font-size) * 1.4px );
+	margin-top: 1.9rem;
+	font-weight: var(--hairline);
+	color: var(--paragraph-color);
+	line-height: 1.4;
+}
+

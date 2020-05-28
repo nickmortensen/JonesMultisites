@@ -1,11 +1,11 @@
 <?php
 /**
- * WP_Rig\WP_Rig\SignType\Component class
+ * WP_Rig\WP_Rig\SignType_Taxonomy\Component class
  *
  * @package wp_rig
  */
 
-namespace WP_Rig\WP_Rig\SignType;
+namespace WP_Rig\WP_Rig\SignType_Taxonomy;
 
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
@@ -52,7 +52,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-
+		add_action( 'wp_head', [ $this, 'add_signtype_rich_snippet_to_head' ] );
 		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
 		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_' . $this->slug . '_admin_columns' ], 10, 1 );
@@ -70,29 +70,32 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'get_use_cases'       => [ $this, 'get_use_cases' ],
-			'get_aliases'         => [ $this, 'get_aliases' ],
-			'get_all_info'        => [ $this, 'get_all_info' ],
-			'get_one_by_one'      => [ $this, 'get_one_by_one' ],
-			'get_four_by_three'   => [ $this, 'get_four_by_three' ],
-			'get_sixteen_by_nine' => [ $this, 'get_sixteen_by_nine' ],
+			'get_use_cases'             => [ $this, 'get_use_cases' ],
+			'get_aliases'               => [ $this, 'get_aliases' ],
+			'get_all_info'              => [ $this, 'get_all_info' ],
+			'get_one_by_one'            => [ $this, 'get_one_by_one' ],
+			'get_four_by_three'         => [ $this, 'get_four_by_three' ],
+			'get_sixteen_by_nine'       => [ $this, 'get_sixteen_by_nine' ],
+			'get_signtype_indepth'      => [ $this, 'get_signtype_indepth' ],
 		];
 	}
 
 	/**
 	 * Query for all the data and metadata assigned to any of the taxonomy.
 	 *
-	 * @param int $term_id The id for the taxonomy term.
+	 * @param int $term The id for the taxonomy term.
 	 * @return array $info An associative array of all the data and metadata assigned to thie taxonomy item.
 	 */
-	public function get_all_info( $term_id ) : array {
+	public function get_all_info( $term = '' ) : array {
+		$term_id                 = $term;
 		$info                    = [];
 		$signtype                = get_term( $term_id, 'signtype' );
 		$uses                    = $this->get_use_cases( $term_id );
 		$info['name']            = $signtype->name;
+		$info['tax']             = $signtype->taxonomy;
 		$info['term_id']         = $term_id;
 		$info['description']     = $signtype->description;
-		$info['uses']            = $this->get_use_cases( $term_id );
+		$info['uses']            = $this->get_use_cases( $term_id )[0];
 		$info['aliases']         = $this->get_aliases( $term_id );
 		$info['image_primary']   = $this->get_sixteen_by_nine( $term_id, true );
 		$info['image_secondary'] = $this->get_four_by_three( $term_id, true );
@@ -153,13 +156,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'title'        => 'Sign Type Additional Info',
 			'object_types' => [ 'term' ],
 			'taxonomies'   => [ 'signtype' ],
-			'cmb_styles'   => true,
+			'cmb_styles'   => false,
 			'show_in_rest' => \WP_REST_Server::ALLMETHODS, // WP_REST_Server::READABLE|WP_REST_Server::EDITABLE, // Determines which HTTP methods the box is visible in.
 		];
 		$metabox = new_cmb2_box( $args );
 
 		// Uses List.
 		$args = [
+			'classes'    => [ 'align-button-right' ],
 			'name'       => 'Instance',
 			'desc'       => 'Scenario Wherein this type of sign is best.',
 			'default'    => '',
@@ -176,57 +180,122 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		/* Alternative Names */
 		$args = [
+			'classes'     => [ 'align-button-right' ],
 			'name'        => 'Alternate Names',
 			'description' => 'is this sign type sometimes referred to by a different name?',
 			'id'          => 'signtypeAltNames',
-			'type'        => 'text_small',
+			'type'        => 'text',
 			'show_names'  => true,
 			'repeatable'  => true,
 			'attributes'  => [],
 			'text'        => [
-				'add_row_text' => 'Add Use Case',
+				'add_row_text' => 'Add Alternate Name',
 			],
 		];
 		$metabox->add_field( $args );
+
 		/* Sixteen By Nine Image */
 		$args = [
-			'name'         => 'Best Images: 16x9',
-			'desc'         => '16x9 aspect ratio image',
+			'classes'      => [ 'align-button-right' ],
+			'name'         => 'Cinematic Image',
+			'desc'         => 'aspect:16x9',
 			'id'           => 'signtypeImageSixteenNine',
 			'type'         => 'file',
 			'preview_size' => [ 320, 180 ],
+			'text'         => [
+				'add_upload_file_text' => 'add',
+			],
 			'query_args'   => [ 'type' => 'image/jpeg' ], // Only jpeg.
 		];
 		$metabox->add_field( $args );
 
 		/* Four By Three Image */
 		$args = [
-			'name'         => 'Best Images: 4x3',
-			'desc'         => '4x3 aspect ratio',
+			'classes'      => [ 'align-button-right' ],
+			'name'         => 'Rectangular Image',
+			'desc'         => 'aspect:4x3',
 			'id'           => 'signtypeImageFourThree',
 			'type'         => 'file',
 			'preview_size' => [ 300, 225 ],
+			'text'         => [
+				'add_upload_file_text' => 'add',
+			],
 			'query_args'   => [ 'type' => 'image/jpeg' ], // Only jpeg.
 		];
 		$metabox->add_field( $args );
 
 		/* Square Image */
 		$args = [
-			'name'         => 'Best Images: 1x1',
-			'desc'         => '1x1 aspect ratio',
+			'classes'      => [ 'align-button-right' ],
+			'name'         => 'Square Image',
+			'desc'         => 'aspect:1x1',
 			'id'           => 'signtypeImageSquare',
 			'type'         => 'file',
 			'preview_size' => [ 300, 300 ],
+			'text'         => [
+				'add_upload_file_text' => 'add',
+			],
 			'query_args'   => [ 'type' => 'image/jpeg' ], // Only images attachment.
 		];
 		$metabox->add_field( $args );
 
+		/* Vertical image */
+		$args = [
+			'classes'      => [ 'align-button-right' ],
+			'name'         => 'Vertical Image',
+			'desc'         => 'aspect:3x4',
+			'id'           => 'signtypeImageVertical',
+			'type'         => 'file',
+			'preview_size' => [ 300, 400 ],
+			'text'         => [
+				'add_upload_file_text' => 'add',
+			],
+			'query_args'   => [ 'type' => 'image/jpeg' ], // Only images attachment.
+		];
+		$metabox->add_field( $args );
+
+		/**
+		 * Projects With This Type of Sign.
+		 *
+		 * @link https://github.com/polupraneeth/cmb2-extension/wiki/Field-Types
+		 * @see plugins/cmb2-extensions
+		 */
+		$args = [
+			'name'       => 'Example Projects',
+			'desc'       => '(Start typing project title)',
+			'id'         => 'signtypeProject',
+			'type'       => 'ajax_search',
+			'tab'        => 'search',
+			'multiple'   => true,
+			'limit'      => 10,
+			'sortable'   => true, // Allow selected items to be sortable (default false).
+			'search'     => 'post',
+			'query_args' => [
+				'post_type'   => [ 'project' ],
+				'post_status' => [ 'publish', 'pending' ],
+			],
+
+		];
+		// $metabox->add_field( $args );
+
+		/**
+		 * Allow to be used.
+		 */
+		$args = [
+			'name'    => 'Allow',
+			'desc'    => 'Allow',
+			'id'      => 'signtypeAllow',
+			'type'    => 'switch_button',
+			'default' => 'on', // If it's checked by default.
+		];
+		// $metabox->add_field( $args );
+
 		/* Longer Description */
 		$args = [
 			'name'       => 'longer description',
-			'desc'       => 'a longer, keyword-laden description',
+			'desc'       => 'a longer, keyword-laden description -- may use html markup',
 			'id'         => 'signtypeIndepth',
-			'type'       => 'textarea_small',
+			'type'       => 'textarea_code',
 			'attributes' => [
 				'data-richsnippet' => 'long-description',
 			],
@@ -397,7 +466,71 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 	}
 
+	/**
+	 * Output JSONLD Data for this project type to have Rich Text from Google in the header of a page.
+	 *
+	 * @link https://developers.google.com/search/docs/data-types/product
+	 */
+	public function get_signtype_rich_snippet() {
+		$taxonomy = 'signtype';
+		$term_id  = get_queried_object()->term_id;
+		$term     = get_term( $term_id, $taxonomy );
+		$slug     = $term->slug;
+		$desc     = $term->description;
+		$name     = $term->name;
+		$info     = $this->get_all_info( $term_id );
+		$square   = wp_get_attachment_image_src( $info['image_primary'], 'medium' )[0];
+		$sixteen  = wp_get_attachment_image_src( $info['image_primary'], 'wp-rig-featured' )[0];
+		$four     = wp_get_attachment_image_src( $info['image_secondary'], 'four-three' )[0];
+		$output   = ' <script type = "application/ld+json">';
+		$output  .= <<<JSONLD
+		{
+			"@context": "https://schema.org/",
+			"@type": "Product",
+			"name": "$name",
+			"image": [
+			  "$square",
+			  "$four",
+			  "$sixteen"
+			 ],
+			"description": "$desc",
+			"sku": "$slug",
+			"mpn": "signtype-$slug",
+			"brand": {
+			  "@type": "Brand",
+			  "name": "$name"
+			},
+			"review": {
+			  "@type": "Review",
+			  "reviewRating": {
+				"@type": "Rating",
+				"ratingValue": "4",
+				"bestRating": "5"
+			  },
+			  "author": {
+				"@type": "Person",
+				"name": "Lazlo Holyfeld"
+			  }
+			},
+			"aggregateRating": {
+			  "@type": "AggregateRating",
+			  "ratingValue": "4.9",
+			  "reviewCount": "89"
+			}
+		}
+JSONLD;
+		$output .= '</script>';
+		return $output;
+	}
 
+	/**
+	 * Put Rich Snippet for the signtype in the head.
+	 */
+	public function add_signtype_rich_snippet_to_head() {
+		if ( is_tax( 'signtype' ) ) {
+			echo $this->get_signtype_rich_snippet();
+		}
+	}
 
 
 

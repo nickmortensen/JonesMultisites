@@ -27,6 +27,7 @@ use function wp_nav_menu;
 class Component implements Component_Interface, Templating_Component_Interface {
 
 	const PRIMARY_NAV_MENU_SLUG = 'primary';
+	const PROJECT_MENU_SLUG     = 'project';
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -55,7 +56,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function template_tags() : array {
 		return [
 			'is_primary_nav_menu_active' => [ $this, 'is_primary_nav_menu_active' ],
+			'is_project_nav_menu_active' => [ $this, 'is_project_nav_menu_active' ],
 			'display_primary_nav_menu'   => [ $this, 'display_primary_nav_menu' ],
+			'display_project_nav_menu'   => [ $this, 'display_project_nav_menu' ],
 		];
 	}
 
@@ -66,6 +69,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		register_nav_menus(
 			[
 				static::PRIMARY_NAV_MENU_SLUG => esc_html__( 'Primary', 'wp-rig' ),
+				static::PROJECT_MENU_SLUG     => esc_html__( 'Project', 'wp-rig' ),
 			]
 		);
 	}
@@ -115,6 +119,15 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Checks whether the project navigation menu is active.
+	 *
+	 * @return bool True if the primary navigation menu is active, false otherwise.
+	 */
+	public function is_project_nav_menu_active() : bool {
+		return (bool) has_nav_menu( static::PROJECT_MENU_SLUG );
+	}
+
+	/**
 	 * Displays the primary navigation menu.
 	 *
 	 * @param array $args Optional. Array of arguments. See `wp_nav_menu()` documentation for a list of supported
@@ -126,6 +139,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$args['theme_location'] = static::PRIMARY_NAV_MENU_SLUG;
+
+
+		wp_nav_menu( $args );
+	}
+
+	/**
+	 * Displays the project navigation menu.
+	 *
+	 * @param array $args Optional. Array of arguments. See `wp_nav_menu()` documentation for a list of arguments.
+	 * @link https://developer.wordpress.org/reference/functions/wp_nav_menu/
+	 */
+	public function display_project_nav_menu( array $args = [] ) {
+		if ( ! isset( $args['container'] ) ) {
+			$args['container']    = 'ul';
+		}
+		$args['theme_location'] = static::PROJECT_MENU_SLUG;
 
 		wp_nav_menu( $args );
 	}

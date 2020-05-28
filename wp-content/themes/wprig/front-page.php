@@ -29,12 +29,21 @@ if ( is_home() ) {
 	?>
 </main><!-- #primary -->
 
+<pre>
 <?php
 
-echo '<pre>';
-echo $_SERVER['HTTP_USER_AGENT'];
-echo '<br>';
-$agentmatch = wp_rig()->user_agent_matches( [ 'opera' ] );
+$args = [
+	'post_type' => 'project',
+	'post_status' => 'publish',
+];
 
-echo '</pre>';
+$projects = new \WP_QUERY( $args );
+
+
+print_r( $projects->posts );
+?>
+</pre>
+
+
+<?php
 get_footer();

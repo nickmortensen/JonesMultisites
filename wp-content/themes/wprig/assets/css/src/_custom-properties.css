@@ -14,7 +14,7 @@
 	--semibold: 600;
 	--bold: 700;
 	--extrabold: 800;
-	--superbold: 800;
+	--superbold: 900;
 
 	/* Tailwind Colors */
 	--indigo-100: #ebf4ff;
@@ -28,14 +28,14 @@
 	--indigo-900: #3c366b;
 
 	--gray-100: #f7fafc;
-	--gray-200: #edf2f7;
-	--gray-300: #e2e8f0;
-	--gray-400: #cbd5e0;
-	--gray-500: #a0aec0;
-	--gray-600: #718096;
-	--gray-700: #515153;
-	--gray-800: #2d3748;
-	--gray-900: #1a202c;
+	--gray-200: #a0aec0;
+	--gray-300: #94a4b8;
+	--gray-400: #8597ae;
+	--gray-500: #768aa4;
+	--gray-600: #677d9a;
+	--gray-700: #5c718b;
+	--gray-800: #52657c;
+	--gray-900: #515153;
 
 	--red-100: #fff5f5;
 	--red-200: #fed7d7;
@@ -120,10 +120,10 @@
 	/* END Tailwind Colors */
 
 	--global-font-color: var(--gray-700);
-	--global-font-family: ubuntu, serif;
+	--global-font-family: -apple-system, ubuntu, serif;
 	--global-font-size: 20;
 	--global-font-line-height: 1.4;
-	--highlight-font-family: inter, -apple-system, system-ui, blinkmacsystemfont, sans-serif;
+	--highlight-font-family: inter, system-ui, blinkmacsystemfont, sans-serif;
 	--content-width: 45rem;
 	--dropdown-symbol-width: 0.7em;
 
@@ -133,22 +133,21 @@
 	--color-theme-red: var(--red-600);
 	--color-theme-green: var(--green-600);
 	--color-theme-blue: var(--blue-600);
-	--color-theme-yellow: var(--yellow-500);
-	--color-theme-black: var(--gray-800);
+	--color-theme-yellow: var(--yellow-600);
+	--color-theme-black: var(--gray-900);
 	--color-theme-grey: var(--gray-500);
 	--color-theme-white: #ecf0f1;
 	--color-custom-daylight: var(--teal-300);
 	--color-custom-sun: var(--yellow-200);
 
-	--color-link: var(--indigo-600);
+	--color-link: var(--color-theme-primary);
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
 
 	--color-quote-border: var(--gray-800);
-	--color-quote-citation: #6c7781;
-
-	/* prefered timing function */
+	--color-quote-citation: var(--gray-600);
 	--transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	--reverse-timing-function: cubic-bezier(.53,-1.09,.44,1.18);
 
 	/* Custom editor font sizes */
 	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
@@ -163,17 +162,19 @@
 	--fontWeight: 300;
 
 	--admin-font: serif;
-	--admin-heading-color: var(--gray-700);
-	--admin-bg-color: var(--indigo-600);
-	--admin-bg-darker: var(--indigo-800);
+	--admin-heading-color: var(--global-font-color);
+	--admin-bg-color: var(--color-theme-primary);
+	--admin-bg-darker: var(--color-link-visited);
 	--admin-bg-lighter: var(--indigo-400);
 
 	--admin-light-links: var(--color-theme-white);
-	--admin-dark-links: var(--gray-700);
+	--admin-dark-links: var(--global-font-color);
 	--admin-table-bg: var(--indigo-100);
 
-	--admin-link: var(--indigo-600);
+	--admin-link: var(--admin-bg-color);
 	--admin-link-hover: var(--indigo-900);
 	--submenu-width: 180px;
+
+	--paragraph-color: var(--global-font-color);
 }
 /* stylelint-enable */

@@ -95,8 +95,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'use_tailwind_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ], 30 );
+		add_action( 'login_enqueue_scripts', [ $this, 'custom_login_stylesheet' ], 30 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'custom_admin_style' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_material_icons' ] );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
@@ -307,9 +307,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$css_files = [
-			'project' => [
+			'project'           => [
 				'file'             => 'project.min.css',
-				'preload_callback' => '__return_true',
+				'preload_callback' => function() {
+					return 'project' === get_post_type();
+				},
+			],
+			'client'            => [
+				'file'             => 'client.min.css',
+				'preload_callback' => function() {
+					return 'client' === get_post_type();
+				},
+			],
+			'flickity'          => [
+				'file'             => 'flickity.min.css',
+				'preload_callback' => function() {
+					return 'project' === get_post_type();
+				},
 			],
 			'wp-rig-global'     => [
 				'file'   => 'global.min.css',
@@ -479,6 +493,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$dir       = trailingslashit( get_theme_file_path() ) . 'assets/css/src';
 		$version   = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/src/admin/admin.css' );
 		wp_enqueue_style( 'admincss', get_theme_file_uri( '/assets/css/src/admin/admin.css' ), [], $version, 'all' );
+	}
+
+	/**
+	 * Custom login Style.
+	 */
+	public function custom_login_stylesheet() {
+		$version   = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/login.min.css' );
+		wp_enqueue_style( 'logincss', get_theme_file_uri( '/assets/css/login.min.css' ), [], $version, 'all' );
 	}
 
 	/**

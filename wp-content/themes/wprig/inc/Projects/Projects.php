@@ -193,7 +193,7 @@ class Component implements Component_Interface,Templating_Component_Interface {
 			'show_names'   => true,
 			'title'        => 'Project Overview',
 			'show_title'   => false,
-			'cmb_styles'   => true, // Disable cmb2 stylesheet by setting to false.
+			'cmb_styles'   => false, // Disable cmb2 stylesheet by setting to false.
 		];
 		// Create the metabox to add fields to.
 		$metabox = new_cmb2_box( $metabox_args );

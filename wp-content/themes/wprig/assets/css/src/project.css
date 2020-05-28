@@ -1,15 +1,17 @@
+.project-template-default {
+	--project-headline-color: var(--orange-500)
+}
+
 h2.project-title {
-		font-size: 10vw;
-		line-height: 1.1;
+		font-size: 3vw;
 		font-weight: var(--superbold);
 		mix-blend-mode: multiply;
-		color: var(--orange-500);
+		color: var(--project-headline-color);
 }
 
 #project-title {
 	background: rgba(255, 255, 255, 0.3);
-	padding: 1.7rem;
-	backdrop-filter: blur(8px);
+	padding: 0.6rem;
 }
 
 .client-information {

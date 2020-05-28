@@ -1,11 +1,11 @@
 <?php
 /**
- * WP_Rig\WP_Rig\Editor\Component class
+ * WP_Rig\WP_Rig\Corona\Component class
  *
  * @package wp_rig
  */
 
-namespace WP_Rig\WP_Rig\Editor;
+namespace WP_Rig\WP_Rig\Corona;
 
 use WP_Rig\WP_Rig\Component_Interface;
 use function add_action;
@@ -15,6 +15,7 @@ use function wp_localize_script;
 
 /**
  * Class for integrating with the block editor.
+ * https://services1.arcgis.com/ISZ89Z51ft1G16OK/ArcGIS/rest/services/COVID19_WI/FeatureServer/10/query?where=GEOID%20%3D%20%2755009%27&outFields=OBJECTID,GEOID,GEO,NAME,LoadDttm,NEGATIVE,POSITIVE,DEATHS&outSR=4326&f=json
  *
  * @link https://wordpress.org/gutenberg/handbook/extensibility/theme-support/
  */
@@ -65,10 +66,10 @@ class Component implements Component_Interface {
 		wp_script_add_data( 'wp-rig-corona', 'precache', true );
 		wp_localize_script(
 			'wp-rig-corona',
-			'setup',
+			'coronaInfo',
 			[
-				'geoId'   => '55009',
-				'url' => 'https://coronavirus.data.json', // obviously wrong, but this is just for the purpose.
+				'geoId' => '55009',
+				'url'   => 'https://coronavirus.data.json', // obviously wrong, but this is just for the purpose.
 			]
 		);
 	}

@@ -1,11 +1,11 @@
 <?php
 /**
- * WP_Rig\WP_Rig\Locations\Component class
+ * WP_Rig\WP_Rig\Location_Taxonomy\Component class
  *
  * @package wp_rig
  */
 
-namespace WP_Rig\WP_Rig\Locations;
+namespace WP_Rig\WP_Rig\Location_Taxonomy;
 
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
@@ -20,7 +20,7 @@ use function wp_enqueue_script;
 use function wp_localize_script;
 
 /**
- * Class to utilize the locations taxonomy.
+ * Class to utilize the location taxonomy.
  *
  * @see WP_Rig\Wp_Rig\Global_taxonomies\Component to find where the taxonomy is created and added to WordPress.
  *
@@ -405,7 +405,7 @@ JSONLD;
 	}
 
 	/**
-	 * Create the extra fields for the post type.
+	 * Create the extra fields for the taxonomy type.
 	 *
 	 * Use CMB2 to create additional fields for the client post type.
 	 *
@@ -420,7 +420,7 @@ JSONLD;
 			'title'        => 'Location Taxonomy Extra Info',
 			'object_types' => [ 'term' ],
 			'taxonomies'   => [ 'location' ],
-			'cmb_styles'   => true,
+			'cmb_styles'   => false,
 			'show_in_rest' => \WP_REST_Server::ALLMETHODS, // WP_REST_Server::READABLE|WP_REST_Server::EDITABLE, // Determines which HTTP methods the box is visible in.
 		];
 		$metabox = new_cmb2_box( $args );

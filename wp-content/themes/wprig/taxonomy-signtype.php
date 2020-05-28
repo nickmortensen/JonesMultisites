@@ -19,7 +19,7 @@
 
 namespace WP_Rig\WP_Rig;
 
-get_header();
+get_header( 'signtype' );
 
 $termid = get_queried_object()->term_id;
 wp_rig()->print_styles( 'wp-rig-content' );
@@ -27,8 +27,20 @@ $body = get_body_class();
 
 ?>
 
+<section class="flex col-nw justify-center align-center">
+	<div id="signtype-in-depth" class="w-3/5 p-6">
+		<?= wp_rig()->get_signtype_indepth( get_queried_object()->term_id ); ?>
+	</div>
+</section>
 
+<section id="signtype-links" class="flex-row nw justify-between align-center">
+	<pre>
+		<?php print_r( get_queried_object() ); ?>
+	</pre>
+<a title="link to the previous sign type" href=""></a>
+<a title="link to the next sign type" href=""></a>
 
+</section><!-- end section#signtype-links -->
 <div id="signtype-primary" class="w-screen flex col-nw justify-around">
 <style>
 	div#signtype-primary {

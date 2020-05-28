@@ -1,0 +1,19 @@
+.w-full {
+	width: 100%;
+}
+
+.w-screen {
+	width: 100vw;
+}
+
+.w-quarter {
+	width: 25%;
+}
+
+.w-half {
+	width: 50%;
+}
+
+.w-three-quarters {
+	width: 75%;
+}

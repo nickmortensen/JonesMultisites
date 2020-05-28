@@ -10,7 +10,7 @@ optgroup,
 textarea {
 	color: var(--global-font-color);
 	font-family: var(--global-font-family);
-	font-size: var(--font-size-regular);
+	font-size: var(--global-font-size);
 	line-height: var(--global-font-line-height);
 }
 /* stylelint-enable */
@@ -112,3 +112,4 @@ ins {
 big {
 	font-size: 125%;
 }
+

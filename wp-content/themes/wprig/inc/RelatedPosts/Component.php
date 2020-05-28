@@ -18,7 +18,7 @@ use function get_theme_file_path;
 use function get_the_category;
 use function wp_enqueue_script;
 use function wp_localize_script;
-use function add_image_size;
+
 
 
 
@@ -46,14 +46,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_related_posts_script' ] );
-		add_action( 'after_setup_theme', [ $this, 'action_add_image_sizes' ] );
-	}
-
-	/**
-	 * Adds a custom image size to use with the related posts.
-	 */
-	public function action_add_image_sizes() {
-		add_image_size( 'wpRigRelated', 720, 460, true ); // phpcs:disable line
 	}
 
 	/**

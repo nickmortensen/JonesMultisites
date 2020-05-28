@@ -29,6 +29,10 @@ wp_rig()->print_styles( 'wp-rig-content' );
 
 	</main><!-- #primary -->
 
+<?php
+
+get_template_part( 'template-parts/content/project/entry' );
+?>
 
 <?php
 get_footer();
