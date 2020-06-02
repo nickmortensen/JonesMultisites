@@ -331,14 +331,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Get the label for the project address field;
 		 */
 		function get_label_cb() {
-			return '<div style="color:white; font-weight: 600;background: var(--indigo-600);font-size: 2.5rem; padding-left: 1ch; margin-bottom: 1ch;">Project Information</div>';
+			$html  = '<style>.label_callback {color:white; font-weight: 600;background: var(--indigo-600);font-size: 2.5rem; padding-left: 1ch; margin-bottom: 1ch;}</style>';
+			$html .= '<div class="label_callback">Project Information</div>';
+			return $html;
 		}
 
 		/**
-		 * Get the label for the project address field;
+		 * Get general label for the project address field;
 		 */
-		function get_rectangular_slideshow_label_cb() {
-			return '<div style="color:white; font-weight: 600;background: var(--indigo-600);font-size: 2.5rem; padding-left: 1ch; margin-bottom: 1ch;">Rectangular Images</div>';
+		function get_general_label_cb( $text ) {
+			return '<div class="label_callback">' . ucwords( $text ) . '</div>';
 		}
 
 		/**
@@ -360,7 +362,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * The alternative name for this project.
 		 */
 		$args = [
-			'class'        => 'input-full-width',
+			'classes'        => ['input-full-width'],
 			'name'         => 'Alt',
 			'desc'         => 'Is there an alternate name or client for this project?',
 			'default'      => '',
@@ -426,7 +428,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$args = [
 			'show_names'   => false,
 			'classes'      => [ 'make-button-centered' ],
-			'before'       => get_rectangular_slideshow_label_cb(),
+			'before'       => get_general_label_cb( 'rectangular images' ),
 			'id'           => 'projectImagesSlideshow',
 			'name'         => 'slideshow',
 			'type'         => 'file_list',
@@ -437,6 +439,31 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			],
 			'text'         => [
 				'add_upload_files_text' => 'add images (4x3)',
+				'remove_image_text'     => 'remove',
+				'file_text'             => 'image',
+				'file_download_text'    => 'download',
+				'remove_text'           => 'standard',
+			],
+		];
+		$metabox->add_field( $args );
+		/**
+		 * Vertical 3x4 image for tablet display;
+		 */
+		$args = [
+			'show_names'   => false,
+			'classes'      => [ 'make-button-centered' ],
+			'before'       => get_general_label_cb( 'vertical image ' ),
+			'id'           => 'projectVerticalImage',
+			'name'         => 'slideshow',
+			'button_side'  => 'right',
+			'type'         => 'file',
+			'preview_size' => [ 150, 200 ],
+			'query_args'   => [
+				'type' => 'image',
+				// figure out a way you only get images that have a size ration of 4x3
+			],
+			'text'         => [
+				'add_upload_file_text' => 'add vertical image',
 				'remove_image_text'     => 'remove',
 				'file_text'             => 'image',
 				'file_download_text'    => 'download',
@@ -512,11 +539,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				$html .= sprintf( '<div id="%s">%s</div>', $id, $complete );
 				break;
 			case 'local_folder':
+
+				$color      = 'var(--gray-500)';
+				$icon       = 'image_not_suppported';
+				if ( has_post_thumbnail( $post_id ) ) {
+					$color = 'var(--green-500)';
+					$icon  = 'image';
+				}
+				$has_img    = sprintf( '<span style="color:%s" class="material-icons">%s</span>', $color, $icon );
 				$id         = 'local_folder_' . $post_id;
 				$icon_color = '' !== $local_folder ? 'var(--green-500)' : 'var(--gray-500)';
 				$icon_text  = '' !== $local_folder ? 'work' : 'work_off';
 				$icon       = sprintf( '<span style="color:%s" class="material-icons">%s</span>', $icon_color, $icon_text );
-				$html .= sprintf( '<div id="%s" data-folder="%s">%s</div>', $id, $local_folder, $icon );
+				$html .= sprintf( '<div id="%s" data-folder="%s">%s%s</div>', $id, $local_folder, $icon, $has_img );
 				break;
 			default:
 				$html .= '';
@@ -529,7 +564,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Retrieve the postmeta for the year this project completed, started, or is expected to complete.
 	 *
 	 * @param int $post_id Project post type id.
-	 * @return string 4 digit year that the post either completes, was started, or begins.
+	 * @return string 4 digit year cmb_styles that the post either completes, was started, or begins.
 	 */
 	public function get_project_slideshow( $post_id ) {
 		return get_post_meta( $post_id, 'projectImagesSlideshow', true ); // false is default, true if I want only the first value within the array.
@@ -828,6 +863,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'zip'       => '',
 			'latitude'  => '',
 			'longitude' => '',
+			'alternate' => '',
 		];
 		$value = wp_parse_args( $value, $new_values );
 		?>
@@ -907,6 +943,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'name'  => $field_type->_name( '[longitude]' ),
 				'id'    => $field_type->_id( '_longitude' ),
 				'value' => $value['longitude'],
+				'desc'  => '',
+			) ); ?>
+		</div>
+		<div class="alignleft" style="padding-left: 12px;">
+			<p><label for="<?php echo $field_type->_id( '_alternate' ); ?>'">Project Alt Name</label></p>
+			<?php echo $field_type->input( array(
+				'class' => 'cmb_text_medium',
+				'name'  => $field_type->_name( '[alternate]' ),
+				'id'    => $field_type->_id( '_alternate' ),
+				'value' => $value['alternate'],
 				'desc'  => '',
 			) ); ?>
 		</div>

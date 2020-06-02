@@ -140,6 +140,7 @@
 	--color-custom-daylight: var(--teal-300);
 	--color-custom-sun: var(--yellow-200);
 
+	--nav-ul-bg: var(--color-theme-white);
 	--color-link: var(--color-theme-primary);
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
@@ -150,10 +151,10 @@
 	--reverse-timing-function: cubic-bezier(.53,-1.09,.44,1.18);
 
 	/* Custom editor font sizes */
-	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
-	--font-size-regular: calc(var(--global-font-size) / 16 * 1rem);
-	--font-size-large: calc(36 / var(--global-font-size) * 1rem);
-	--font-size-larger: calc(48 / var(--global-font-size) * 1rem);
+	--font-size-small: clamp( 14px, calc(16 / var(--global-font-size) * 1rem), 24px );
+	--font-size-regular: clamp( 18px, calc(var(--global-font-size) / 16 * 1rem), 28px );
+	--font-size-large: clamp( 28px, calc(36 / var(--global-font-size) * 1rem), 44px );
+	--font-size-larger: clamp( 40px, calc(48 / var(--global-font-size) * 1rem), 60px );
 
 	/* @link https://www.fluiditype.com */
 	--fontSize: calc(12px + 0.698vw);

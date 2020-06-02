@@ -3,10 +3,10 @@
 }
 
 h2.project-title {
-		font-size: 3vw;
-		font-weight: var(--superbold);
-		mix-blend-mode: multiply;
-		color: var(--project-headline-color);
+	font-size: 3vw;
+	font-weight: var(--superbold);
+	mix-blend-mode: multiply;
+	color: var(--project-headline-color);
 }
 
 #project-title {
@@ -18,5 +18,5 @@ h2.project-title {
 	max-width: 25vw;
 	min-height: 70vh;
 	margin-right: 3vw;
-	border: 2px solid var( --indigo-600);
+	border: 2px solid var(--indigo-600);
 }

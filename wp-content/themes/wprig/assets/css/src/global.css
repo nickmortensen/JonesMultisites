@@ -177,7 +177,7 @@ input[type="datetime"],
 input[type="datetime-local"],
 input[type="color"],
 textarea {
-	color: #666;
+	color: var(--gray-800);
 	border: 1px solid var(--gray-500);
 	border-radius: 3px;
 	padding: 3px;
@@ -199,7 +199,7 @@ input[type="datetime"]:focus,
 input[type="datetime-local"]:focus,
 input[type="color"]:focus,
 textarea:focus {
-	color: #111;
+	color: var(--gray-900);
 }
 
 select {
@@ -237,10 +237,10 @@ select {
 	margin: 0 1em;
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
-	font-size: 38px;
-	font-weight: 700;
+	font-size: var(--font-size-larger);
+	font-weight: var(--bold);
 	line-height: 1.2;
-	color: #333332;
+	color: var(--gray-900);
 }
 
 .site-title a {
@@ -252,11 +252,11 @@ select {
 	margin: 0.4375em 0 0;
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
-	font-size: 17px;
+	font-size: var(--font-size-regular);
 	font-weight: inherit;
 	line-height: 1.4;
 	word-wrap: break-word;
-	color: #757575;
+	color: var(--gray-700);
 }
 
 /*--------------------------------------------------------------
@@ -270,7 +270,7 @@ select {
 	font-stretch: condensed;
 	font-size: 80%;
 	text-transform: uppercase;
-	border: 2px solid #000;
+	border: 2px solid var(--gray-900);
 	border-radius: 0;
 	background: transparent;
 }
@@ -338,7 +338,7 @@ select {
 		top: 35%;
 		width: 60%;
 		height: 60%;
-		border: solid #000;
+		border: solid var(--color-theme-black);
 		border-width: 0 2px 2px 0;
 		transform: translateY(-50%) rotate(45deg);
 	}
@@ -406,7 +406,7 @@ select {
 	width: 100%;
 	padding: 0.5em 1em 0.5em 0;
 	text-decoration: none;
-	color: #000;
+	color: var(--color-theme-black);
 }
 
 .main-navigation a:hover,
@@ -475,7 +475,7 @@ select {
 .site-main .posts-navigation,
 .site-main .post-navigation,
 .site-main .pagination {
-	border-bottom: 1px solid #111;
+	border-bottom: 1px solid var(--color-theme-black);
 	margin: 0 auto 2em;
 	max-width: var(--content-width);
 	overflow: hidden;
@@ -606,19 +606,4 @@ were hidden (via .neverending) before. */
 	display: block;
 }
 
-pre {
-	display: block;
-	min-width: 100vw;
-	background: var(--blue-700);
-	color: var(--color-theme-white);
-	padding-left: 8vw;
-}
-
-p {
-	font-size: calc(var(--global-font-size) * 1.4px );
-	margin-top: 1.9rem;
-	font-weight: var(--hairline);
-	color: var(--paragraph-color);
-	line-height: 1.4;
-}
 

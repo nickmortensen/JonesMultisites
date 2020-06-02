@@ -40,7 +40,8 @@ $args = [
 $projects = new \WP_QUERY( $args );
 
 
-print_r( $projects->posts );
+// print_r( $projects->posts );
+print_r( rest_url( 'wp/v2/' ) );
 ?>
 </pre>
 
