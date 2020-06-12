@@ -160,7 +160,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		$metabox = new_cmb2_box( $args );
 
-
 		/* Alternative Names */
 		$args = [
 			'name'        => 'Alternate Names',
@@ -237,7 +236,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		$metabox->add_field( $args );
 
-
 		/**
 		 * Projects With This Type of Sign.
 		 *
@@ -258,9 +256,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'post_type'   => [ 'project' ],
 				'post_status' => [ 'publish', 'pending' ],
 			],
-
 		];
-		// $metabox->add_field( $args );
 
 		/**
 		 * Allow to be used.
@@ -270,9 +266,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'desc'    => 'Allow',
 			'id'      => $prefix . 'Allow',
 			'type'    => 'switch_button',
-			'default' => 'on' //If it's checked by default.
+			'default' => 'on', // If it's checked by default.
 		];
-		// $metabox->add_field( $args );
 
 		/* Longer Description */
 		$args = [
@@ -432,7 +427,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $output;
 	}
 
-
 	/**
 	 * Retrieve the taxonomy meta for taxonomyInDepth field.
 	 * This is always an string.
@@ -451,18 +445,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Output JSONLD Data for this taxonomy. type to have Rich Text from Google in the header of a page.
 	 *
-	 * @param int $term_id The term id for this taxonomy.
+	 * @param string $taxonomy The term id for this taxonomy.
 	 * @link https://developers.google.com/search/docs/data-types/product
 	 */
 	private function get_rich_snippet( $taxonomy = 'industry' ) {
-		$term_id  = get_queried_object()->term_id;
-		$term     = get_term( $term_id, $taxonomy );
-		$slug     = $term->slug;
-		$desc     = $term->description;
-		$name     = $term->name;
-		$info     = $this->get_all_industry_info( $term_id );
-		$output   = ' <script type = "application/ld+json">';
-		$output  .= <<<JSONLD
+		$term_id = get_queried_object()->term_id;
+		$term    = get_term( $term_id, $taxonomy );
+		$slug    = $term->slug;
+		$desc    = $term->description;
+		$name    = $term->name;
+		$info    = $this->get_all_industry_info( $term_id );
+		$output  = ' <script type = "application/ld+json">';
+		$output .= <<<JSONLD
 		{
 			"@context": "https://schema.org/",
 
@@ -480,5 +474,4 @@ JSONLD;
 		}
 	}
 
-
-}//end class Industry_Taxonomy
+} //end class Industry_Taxonomy

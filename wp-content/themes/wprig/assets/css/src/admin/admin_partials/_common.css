@@ -3,6 +3,10 @@
 	font-size: 15px;
 }
 
+a.row-title {
+	text-transform: capitalize;
+}
+
 .inline-edit-row fieldset label span.title.added_fields {
 	width: unset;
 	margin-right: 8px;
@@ -10,13 +14,15 @@
 
 
 .post-type-project #id {
-		width: 5%;
+	width: 5%;
 }
 
 .post-type-project #title {
 	width: 35%;
 }
-.post-type-project th#completed, th#local_folder {
+
+.post-type-project th#completed,
+th#local_folder {
 	width: 5%;
 }
 

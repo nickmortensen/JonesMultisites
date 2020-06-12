@@ -31,22 +31,13 @@ namespace WP_Rig\WP_Rig;
 
 </head>
 
-<?php
-get_template_part( 'template-parts/header/navigation/navigation-project' );
-?>
+
 
 <?php
 $blog        = get_current_blog_id();
 wp_rig()->print_styles( 'client' );
 
-
-
-
 ?>
-
-
-
-
 
 
 

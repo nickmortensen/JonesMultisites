@@ -55,6 +55,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
 		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] );
 		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 );
+		add_filter( 'manage_upload_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
 		add_filter( 'upload_mimes', [ $this, 'allow_svg_uploads' ], 10, 1 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_media_scripts' ] );
 		add_action( 'wp_ajax_svg_get_attachment_url', [ $this, 'get_attachment_url_media_library' ] );
@@ -114,7 +115,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'add_tag_column' => [ $this, 'add_tag_column' ],
+			'add_tag_column'   => [ $this, 'add_tag_column' ],
+			'get_image_rating' => [ $this, 'get_image_rating' ],
 		];
 	}
 
@@ -134,6 +136,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$directory['url']     = $directory['baseurl'] . $directory['subdir'];
 		return $directory;
 	}
+
+	/**
+	 * Gets the image Rating - a number from 1-5. Defaults to one.
+	 *
+	 * @param integer $id the ID of the image.
+	 */
+	public function get_image_rating( $id ) : int {
+		$field = 'imageRating';
+		return (int) get_post_meta( $id, $field, true );
+	}
+
 	/**
 	 * Remove certain default columns on the admin end for the media post type
 	 *
@@ -153,40 +166,47 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$new['cb']     = '<input type="checkbox">';
 		$new['id']     = 'ID';
 		$new['rating'] = '<i style="color:var(--yellow-500)" class="material-icons">stars</i>';
-		// phpcs:ignore
-		// $new['star_rating'] = '<i class = "text-red-600 material-icons">stars</i>';
 		$columns = array_merge( $new, $columns );
 		return $columns;
 	}
 
-/**
- * Template tag for returning a star rating from the CMB2 star rating field type (on the front-end)
- *
- * @since  0.1.0
- *
- * @param  string  $metakey The 'id' of the 'star rating' field (the metakey for get_post_meta).
- * @param  integer $post_id (optional) post ID. If using in the loop, it is not necessary.
- */
-protected function get_star_rating_field( $metakey, $post_id = 0 ) {
-	$post_id         = $post_id ? $post_id : get_the_ID();
-	$rating          = get_post_meta( $post_id, $metakey, 1 );
-	$stars_container = '<section class = "cmb2-star-container">';
-	$x               = 1;
-	$total           = 5;
-		while ( $x <= $rating ) {
-			$stars_container .= '<span class="dashicons dashicons-star-filled"></span>';
-			$x++;
+	/**
+	 * Template tag for returning a star rating from the CMB2 star rating field type (on the front-end)
+	 *
+	 * @since  0.1.0
+	 *
+	 * @param  integer $post_id (optional) post ID. If using in the loop, it is not necessary.
+	 * @param  integer $total (optional) Highest rating option.
+	 */
+	protected function get_star_rating_field( $post_id = 0, $total = 5 ) {
+		$post_id = $post_id ? $post_id : get_the_ID();
+		$rating  = $this->get_image_rating( $post_id );
+		$x       = 1;
+		$empty   = '<span class="dashicons dashicons-star-empty"></span>';
+		$filled  = '<span class="dashicons dashicons-star-filled"></span>';
+		$stars   = '<section data-id="' . $post_id . '" id="admin-upload-star-rating" class = "cmb2-star-container" data-rating="' . $rating . '">';
+		if ( $x <= $rating ) {
+			$stars .= str_repeat( $filled, $rating );
 		}
 		if ( $rating < $total ) {
-			while ( $rating < $total ) {
-				$stars_container .= '<span class="dashicons dashicons-star-empty"></span>';
-				$rating++;
+			$repeat = $total - $rating;
+			$stars .= str_repeat( $empty, $repeat );
 			}
-		}
-	$stars_container .= '</section>';
-	return $stars_container;
-}
+		$stars .= '</section>';
+		return $stars;
+	}
 
+	/**
+	 * Output a material icon star
+	 *
+	 * @param int $quantity How many? Default is 5;
+	 * @param bool $filled Whether the star should be filled or not - default is false.
+	 */
+	public function get_star( $quantity = 5, $filled = false ) {
+		$fill  = $filled ? 'var(--yellow-600)' : 'var(--gray-200)';
+		$style = "color: $fill; -webkit-text-stroke:1px var(--gray-900); text-stroke:1px var(--gray-900); font-size: 1.4rem;";
+		return str_repeat( '<span class="material-icons" style="' . $style . '"> star_rate </span>', $quantity );
+	}
 
 	/**
 	 * Remove certain default columns on the admin end for the media post type
@@ -201,7 +221,16 @@ protected function get_star_rating_field( $metakey, $post_id = 0 ) {
 				$output = $id;
 				break;
 			case 'rating':
-				$output = $this->get_star_rating_field( 'imageRating', $id );
+				$total = 5;
+				$rating = $this->get_image_rating( $id );
+				$filled  = '<span class="dashicons dashicons-star-filled"></span>';
+				$empty   = '<span class="dashicons dashicons-star-empty"></span>';
+				$output = '<section style="padding-top: 1rem;" data-id="' . $id . '" id="admin-upload-star-rating" data-rating="' . $rating . '">';
+				// $output .= str_repeat( $filled, $rating );
+				$output .= $this->get_star( $rating, true );
+				// $output .= str_repeat( $empty, $total - $rating );
+				$output .= $this->get_star( $total - $rating, false );
+				$output .= '</section>';
 				break;
 			default:
 				$output = '';
@@ -209,6 +238,19 @@ protected function get_star_rating_field( $metakey, $post_id = 0 ) {
 		echo $output;
 	}
 
+	/**
+	 * Make new column sortable within the admin area.
+	 *
+	 * @param array $columns The new columns to make sortable.
+	 * @return array $columns All the columns you want sortable.
+	 *
+	 * @link https://developer.wordpress.org/reference/hooks/manage_this-screen-id_sortable_columns/
+	 */
+	public function make_columns_sortable( $columns ) {
+		$columns['id']     = 'ID';
+		$columns['rating'] = '<span class="dashicons dashicons-star-filled"></span>';
+		return $columns;
+	}
 	/**
 	 * Create the extra fields for the post type.
 	 *
@@ -238,6 +280,14 @@ protected function get_star_rating_field( $metakey, $post_id = 0 ) {
 			'type'    => 'rating',
 		];
 		$metabox->add_field( $args );
+	}
+
+
+	/**
+	 * Create quickedit star rating field
+	 */
+	public function create_quickedit_star_rating_field() {
+		return '';
 	}
 
 }

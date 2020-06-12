@@ -33,18 +33,44 @@ if ( is_home() ) {
 <?php
 
 $args = [
-	'post_type' => 'project',
+	'post_type'   => 'project',
 	'post_status' => 'publish',
 ];
 
 $projects = new \WP_QUERY( $args );
-
-
-// print_r( $projects->posts );
+$image = 406;
+$image = 7;
+print_r( wp_rig()->get_image_rating( $image ));
+echo "<br>";
 print_r( rest_url( 'wp/v2/' ) );
+echo "<br>";
+$termid = 17;
+// print_r( wp_rig()->check_signtype_images( $termid ) );
+
+$sizes = [ 'cinematic', 'vertical', 'square', 'rectangular' ];
+$needs = [];
+// foreach ( $sizes as $size ) {
+	print_r( wp_rig()->check_signtype_images( $termid ) );
+// 	if( get_term_meta( $termid, 'signtype' . ucfirst( $size ), true ) ) {
+// 		continue;
+// 	};
+// 	$needs[] = $size;
+// }
+
+// if ( $needs ) {
+// 	print_r( ' we need to attach the following image types: ' . implode( ',', $needs ) );
+// } else {
+// 	print_r ('nothing to attach' );
+// }
 ?>
 </pre>
 
 
 <?php
 get_footer();
+
+/**
+ * LCA ARENA PHOTO https://commons.wikimedia.org/wiki/User:Adam_Bishop
+ * evening
+ * https://commons.wikimedia.org/wiki/User:Michael_Barera
+ */

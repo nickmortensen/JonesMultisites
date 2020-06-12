@@ -167,7 +167,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'classes'      => [ 'align-button-right' ],
 			'name'         => 'Cinematic Image',
 			'desc'         => 'aspect:16x9',
-			'id'           => $prefix . 'ImageCinematic',
+			'id'           => 'expertiseCinematic',
 			'type'         => 'file',
 			'preview_size' => [ 320, 180 ],
 			'text'         => [
@@ -182,7 +182,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'classes'      => [ 'align-button-right' ],
 			'name'         => 'Rectangular Image',
 			'desc'         => 'aspect:4x3',
-			'id'           => $prefix . 'ImageRectangular',
+			'id'           => 'expertiseRectangular',
 			'type'         => 'file',
 			'preview_size' => [ 300, 225 ],
 			'text'         => [
@@ -197,7 +197,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'classes'      => [ 'align-button-right' ],
 			'name'         => 'Square Image',
 			'desc'         => 'aspect:1x1',
-			'id'           => $prefix . 'ImageSquare',
+			'id'           => 'expertiseSquare',
 			'type'         => 'file',
 			'preview_size' => [ 300, 300 ],
 			'text'         => [
@@ -212,7 +212,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'classes'      => [ 'align-button-right' ],
 			'name'         => 'Vertical Image',
 			'desc'         => 'aspect:3x4',
-			'id'           => $prefix . 'ImageVertical',
+			'id'           => 'expertiseVertical',
 			'type'         => 'file',
 			'preview_size' => [ 300, 400 ],
 			'text'         => [
@@ -247,18 +247,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		// $metabox->add_field( $args );
 
-		/**
-		 * Allow to be used.
-		 */
-		$args = [
-			'name'    => 'Allow',
-			'desc'    => 'Allow',
-			'id'      => $prefix . 'Allow',
-			'type'    => 'switch_button',
-			'default' => 'on' //If it's checked by default.
-		];
-		// $metabox->add_field( $args );
-
 		/* Longer Description */
 		$args = [
 			'name'       => 'longer description',
@@ -272,6 +260,30 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$metabox->add_field( $args );
 	}//end create_extra_fields()
 
+
+	/**
+	 * Check to see whether there is a expertise image of a certain dimension.
+	 *
+	 * @param string $type Could be 'vertical', 'cinematic', 'rectangular', or 'square'.
+	 */
+	public function check_expertise_images( $term_id ) {
+		$options = [ 'vertical', 'cinematic', 'rectangular', 'square' ];
+		$needs   = [];
+		$return_ = [];
+		foreach ( $options as $size ) {
+			if ( ! get_term_meta( $term_id, 'expertise' . ucfirst( $size ), true ) ) {
+				$needs[] = $size;
+			}
+		}
+		$return['color']   = '--indigo-600';
+		$return['message'] = 'has all photos';
+		if ( $needs ) {
+			$return['color']   = '--gray-400';
+			$return['message'] = 'need image types: ' . implode( ' | ', $needs );
+		}
+		return $return;
+	}
+
 	/**
 	 * Set up some new columns in the admin screen for the location taxonomy.
 	 *
@@ -283,9 +295,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		unset( $columns['cb'] );
 		unset( $columns['description'] );
 		// Add the checkbox back in so it can be before the ID column.
-		$new['cb']    = '<input type = "checkbox" />';
-		$new['id']    = 'ID';
-		$new['allow'] = 'Allow?';
+		$new['cb']     = '<input type = "checkbox" />';
+		$new['id']     = 'ID';
+		$new['images'] = '<span style="color:var(--yellow-600);" title="has all photos?" class="material-icons">view_carousel</span>';
 		return array_merge( $new, $columns );
 	}//end set_set_capability_admin_columns()
 
@@ -304,8 +316,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			case 'id':
 				$output = $term_id;
 				break;
-			case 'allow':
-				$output = '<span class="material-icons">pan_tool</span>';
+			case 'images':
+				$data   = $this->check_expertise_images( $term_id );
+				$output = '<span style="color:var(' . $data['color'] . ');" title="' . $data['message'] . '" class="material-icons">view_carousel</span>';
 				break;
 			default:
 				$output = $term_id;
@@ -332,7 +345,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param int $term_id Taxonomy term Id.
 	 * @return array The sudomain of this location's homepage.
 	 */
-	private function get_industry_aliases( $term_id ) {
+	private function get_expertise_aliases( $term_id ) {
 		$prefix = $this->get_slug();
 		$key    = $prefix . 'AltNames';
 		$single = false;
@@ -410,7 +423,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
 	 */
 	public function get_all_expertise_images( $term_id, $id = true ) : array {
-		$output = [];
+		$output                = [];
 		$output['square']      = self::get_square_image( $term_id, $id );
 		$output['vertical']    = self::get_vertical_image( $term_id, $id );
 		$output['cinematic']   = self::get_cinematic_image( $term_id, $id );
@@ -440,15 +453,15 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param int $term_id The term id for this taxonomy.
 	 * @link https://developers.google.com/search/docs/data-types/product
 	 */
-	private function get_rich_snippet() {
-		$term_id  = get_queried_object()->term_id;
-		$term     = get_term( $term_id, $taxonomy );
-		$slug     = $term->slug;
-		$desc     = $term->description;
-		$name     = $term->name;
-		$info     = $this->get_all_industry_info( $term_id );
-		$output   = ' <script type = "application/ld+json">';
-		$output  .= <<<JSONLD
+	private function get_rich_snippet( $taxonomy = 'expertise' ) {
+		$term_id = get_queried_object()->term_id;
+		$term    = get_term( $term_id, $taxonomy );
+		$slug    = $term->slug;
+		$desc    = $term->description;
+		$name    = $term->name;
+		$info    = $this->get_all_expertise_info( $term_id );
+		$output  = ' <script type = "application/ld+json">';
+		$output .= <<<JSONLD
 		{
 			"@context": "https://schema.org/",
 

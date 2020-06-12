@@ -3,6 +3,10 @@ ol {
 	margin: 0 0 1.5em 3em;
 }
 
+li {
+	font-size: calc(var(--font-size-regular) * 2);
+}
+
 ul {
 	list-style: disc;
 }

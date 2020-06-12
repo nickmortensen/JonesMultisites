@@ -84,7 +84,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_filter( 'cmb2_render_projectlocation', [ $this, 'render_projectlocation_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_partner', [ $this, 'render_partner_field_callback' ], 10, 5 );
 		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
-		add_action( 'init', [ $this, 'create_posttype' ] );
+		add_action( 'init', [ $this, 'create_posttype' ], 11 );
 		// CMB2 field specifically for a project address.
 		// Enqueue a frontend script to utilize for project post types.
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_projects_script' ] );
@@ -203,7 +203,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 			$client        = isset ( $project_info['client'] ) ? sanitize_text_field( $project_info['client'] ) : '';
 			$job_id        = isset ( $project_info['job_id'] ) ? sanitize_text_field( $project_info['job_id'] ) : '';
-			$local_folder  = isset ( $project_info['local_folder'] ) ? sanitize_text_field( $project_info['local_folder'] ) : '';
+			$local_folder  = isset ( $project_info['local_folder'] ) ? wp_kses_normalize_entities( $project_info['local_folder'] ) : '';
 			$year_complete = isset ( $project_info['year_complete'] ) ? sanitize_text_field( $project_info['year_complete'] ) : '';
 			$tease         = isset ( $project_info['tease'] ) ? $project_info['tease'] : '';
 
@@ -354,6 +354,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'show_names' => false, // false removes the left cell of the table -- this is worth understanding.
 			'classes'    => [ 'project_fields' ],
 			'after_row'  => '<hr>',
+			'priority'   => 'high',
 		];
 		$metabox->add_field( $args );
 
@@ -454,7 +455,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'classes'      => [ 'make-button-centered' ],
 			'before'       => get_general_label_cb( 'vertical image ' ),
 			'id'           => 'projectVerticalImage',
-			'name'         => 'slideshow',
+			'name'         => 'Vertical Img',
 			'button_side'  => 'right',
 			'type'         => 'file',
 			'preview_size' => [ 150, 200 ],
@@ -464,6 +465,33 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			],
 			'text'         => [
 				'add_upload_file_text' => 'add vertical image',
+				'remove_image_text'     => 'remove',
+				'file_text'             => 'image',
+				'file_download_text'    => 'download',
+				'remove_text'           => 'standard',
+			],
+		];
+		$metabox->add_field( $args );
+
+		/**
+		 * Square 1x1 image for use within the open graph tags.
+		 */
+		$args = [
+			'show_names'   => false,
+			'classes'      => [ 'make-button-centered' ],
+			'before'       => get_general_label_cb( 'Square Images' ),
+			'id'           => 'projectSquareImages',
+			'name'         => 'Square Images',
+			'desc'         => 'needs at least one',
+			'button_side'  => 'right',
+			'type'         => 'file_list',
+			'preview_size' => [ 150, 150 ],
+			'query_args'   => [
+				'type' => 'image',
+				// figure out a way you only get images that have a size ration of 4x3
+			],
+			'text'         => [
+				'add_upload_files_text' => 'add image(s)',
 				'remove_image_text'     => 'remove',
 				'file_text'             => 'image',
 				'file_download_text'    => 'download',
@@ -716,7 +744,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'label'                 => ucfirst( $singular ),
 			'description'           => 'Jones Sign ' . ucfirst( $plural ) . ' and Details',
 			'labels'                => $labels,
-			'supports'              => [ 'title', 'thumbnail', 'excerpt', 'post-formats', 'page-attributes' ],
+			'supports'              => [ 'title', 'thumbnail', 'excerpt', 'editor' ],
 			'taxonomies'            => $taxonomies_to_apply,
 			'hierarchical'          => false,
 			'public'                => true,
@@ -734,7 +762,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'capability_type'       => 'post',
 			'show_in_rest'          => true,
 			'rest_base'             => 'project',
-			'rest_controller_class' => 'WP_REST_Client_Controller',
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		];
 		register_post_type( 'project', $args );
 	}

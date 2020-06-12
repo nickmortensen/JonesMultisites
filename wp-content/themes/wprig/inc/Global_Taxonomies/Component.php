@@ -337,9 +337,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
 	 */
 	public function create_expertise_taxonomy() {
-		$singular       = 'expertise';
-		$plural         = 'expertises';
-		$labels         = [
+		$singular = 'expertise';
+		$plural   = 'expertises';
+		$labels   = [
 			'name'                       => ucfirst( $plural ),
 			'singular_name'              => $singular,
 			'menu_name'                  => ucfirst( $singular ),
@@ -362,12 +362,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'items_list_navigation'      => $plural . ' list navigation',
 			'back_to_terms'              => 'Back to ' . $singular . ' Tags',
 		];
-		$rewrite       = [
+		$rewrite = [
 			'slug'         => $singular,
 			'with_front'   => true,
 			'hierarchical' => false,
 		];
-		$args          = [
+		$args    = [
 			'labels'             => $labels,
 			'public'             => true,
 			'description'        => ucfirst( $singular ),
@@ -381,13 +381,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'rest_base'          => $singular,
 			'query_var'          => $singular,
 		];
-		$objects_array = [
+		$objects = [
 			'post',
 			'page',
 			'attachment',
 			'project',
 		];
-		register_taxonomy( 'expertise', $objects_array, $args );
+		register_taxonomy( 'expertise', $objects, $args );
 	} //end create_expertisetaxonomy()
 
 	/**

@@ -499,7 +499,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Custom login Style.
 	 */
 	public function custom_login_stylesheet() {
-		$version   = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/login.min.css' );
+		$version = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/login.min.css' );
 		wp_enqueue_style( 'logincss', get_theme_file_uri( '/assets/css/login.min.css' ), [], $version, 'all' );
 	}
 

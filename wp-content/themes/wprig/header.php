@@ -28,7 +28,10 @@ namespace WP_Rig\WP_Rig;
 	?>
 
 	<?php wp_head(); ?>
-	<?php $blog = get_current_blog_id(); ?>
+	<?php
+	$blog = get_current_blog_id();
+	$type = get_post_type();
+	?>
 </head>
 
 
@@ -51,100 +54,78 @@ global $wpdb;
 
 ?>
 
-<style>
-	.location-header{
-		display: flex;
-		justify-content: space-around;
-		align-items: space-around;
-		position: relative;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		min-height: 70vh;
-		overflow-y: hidden;
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: 60%;
-		margin-top: 0;
-		padding: 120px 50px 170px;
-		background-image: linear-gradient(rgba(40, 80, 120, 0.8), rgba(2, 155, 185, 0.9)), url('<?= $city_image; ?>');
-		background-blend-mode: <?= $headerblend; ?>;
-		background-size: cover;
-		min-width: 100%;
-	}
 
-	.checkout {
-		position: absolute;
-		padding-left: 4vw;
-		top: 0;
-		right: 0;
-		min-width:100%;
-		min-height: 100%;
-		background: rgba(2,115,185,0.4);
-		backdrop-filter: blur(2px) hue-rotate(60%);
-	}
-
-	.location-header .bigtext {
-		text-transform: uppercase;
-		max-width: 40vw;
-		font-size: 12rem;
-		font-weight: 900;
-		color: <?= $headertext; ?>;
-		padding: 0;
-		margin: 0;
-		line-height: 1.08;
-		mix-blend-mode: <?= $textblend; ?>;
-		-webkit-mix-blend-mode: <?= $textblend; ?>;
-		/* mix-blend-mode: overlay; */
-	}
-
-</style>
 
 
 <body <?php body_class( 'w-screen ml-0 bg-blue-100' ); ?>>
 <?php wp_body_open(); ?>
+<style type="text/css">
+	:root {
+		--header-blend-mode: <?= $headerblend; ?>;
+		--textblend: <?= $textblend; ?>;
+		--textblend: screen;
+		--header-text-color: <?= $headertext; ?>;
+	}
+	#masthead {
+		background-image: linear-gradient(rgba(40, 80, 120, 0.8), rgba(2, 155, 185, 0.9)), url('<?= $city_image; ?>');
+		background-blend-mode: var(--header-blend-mode);
+		background-size: cover;
+	}
+	.location-header{
+	}
 
+	.location-header .bigtext {
+		color: var(--header-text-color);
+		mix-blend-mode: var(--textblend);
+	}
+
+	#page-topper {
+		min-height: 18vh;
+		min-width: 100vw;
+		border-bottom: 4px solid var(--color-theme-white);
+		display: flex;
+		flex-flow: row nowrap;
+	}
+	#page-topper > div {
+		border: 2px solid #fff;
+		min-width: 20vw;
+		padding: 1vw;
+	}
+
+</style>
 <div id="page" class="site">
 
+
+
+
+	<!-- #masthead -->
 	<header id="masthead" class="site-header">
 		<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
+		<section id="page-topper">
+			<?php get_template_part( 'template-parts/header/branding' ); ?>
+			<?php get_template_part( 'template-parts/header/custom_header' ); ?>
+			<?php get_template_part( 'template-parts/header/navigation' ); ?>
+		</section>
 
-		<!-- #masthead -->
 
-		<section class="location-header">
+
+
+
+
+
+<?php if ( is_front_page() ) : ?>
+	<section class="location-header">
 			<div class="checkout"></div>
 			<span class="bigtext">JONES <?= $common_name; ?> </span>
 		</section>
 
-	</header>
-
-
-<?php if ( is_front_page() ) : ?>
 	<section class="flex justify-center align-middle">
 		<h1> This is the front page!! </h1>
 	</section>
 <?php endif; ?>
 
+</header>
 
-<h2>Capability: <?= count( $capability ); ?></h2>
 
-		<?php
-
-//phpcs:disable
-		echo '<pre>';
-		 print_r( wp_rig()->get_structured_project_address( 66 ) );
-		echo '</pre>';
-		// get_template_part( 'template-parts/header/custom_header' );
-		// get_template_part( 'template-parts/header/branding' );
-		// get_template_part( 'template-parts/header/navigation' );
-
-		?>
-
-<div itemprop="location" itemscope itemtype="http://schema.org/Place">
-	<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-		<span itemprop="addressLocality">Philadelphia</span>,
-		<span itemprop="addressRegion">PA</span>
-	</div>
-</div>
 

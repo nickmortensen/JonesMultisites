@@ -1,0 +1,35 @@
+a.row-title {
+	text-transform: capitalize;
+}
+
+div.align-button-right p.cmb-add-row > button.cmb-add-row-button.button-secondary:active,
+div.align-button-right p.cmb-add-row > button.cmb-add-row-button.button-secondary:focus {
+	border: 3px solid var(--indigo-600);
+}
+
+div.align-button-right p.cmb-add-row > button.cmb-add-row-button.button-secondary:hover {
+	color: var(--indigo-600);
+	background: var(--color-theme-white);
+	transform: scale(1.1);
+	border: 1px solid var(--indigo-600);
+}
+
+div.align-button-right p.cmb-add-row > button.cmb-add-row-button.button-secondary {
+	float: right;
+	margin-right: 10px;
+	background: var(--indigo-600);
+	color: var(--color-theme-white);
+	transition: all 0.4s var(--transition-timing-function);
+}
+
+.button-secondary {
+	background: var(--indigo-600);
+	color: var(--color-theme-white);
+	transition: all 0.4s var(--transition-timing-function);
+}
+
+.button-secondary:hover {
+	color: var(--indigo-600);
+	background: var(--color-theme-white);
+	transform: scale(1.1);
+}

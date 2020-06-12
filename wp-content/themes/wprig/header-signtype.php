@@ -35,14 +35,12 @@ namespace WP_Rig\WP_Rig;
 
 <?php
 global $wp_query;
-$term = get_queried_object();
-$term = wp_rig()->get_all_info( get_queried_object()->term_id );
-$short_desc = ( substr( $term['description'], -1 ) === '.') ? $term['description'] : $term['description'] . '.';
-$long_desc = ( substr( $term['indepth'], -1 ) === '.') ? $term['indepth'] : $term['description'] . '.';
-
-$uses = wp_rig()->get_all_info( get_queried_object()->term_id )['uses'];
-$uses = $term['uses'];
-$header_image = wp_rig()->get_sixteen_by_nine( $term['term_id'], false );
+$signtype     = wp_rig()->get_all_info( get_queried_object()->term_id );
+$short_desc   = ( substr( $signtype['description'], -1 ) === '.' ) ? $signtype['description'] : $signtype['description'] . '.';
+$long_desc    = ( substr( $signtype['indepth'], -1 ) === '.' ) ? $signtype['indepth'] : $signtype['description'] . '.';
+$uses         = wp_rig()->get_all_info( get_queried_object()->term_id )['uses'];
+$uses         = $signtype['uses'];
+$header_image = wp_rig()->get_sixteen_by_nine( $signtype['term_id'], false );
 ?>
 
 
@@ -51,35 +49,45 @@ $header_image = wp_rig()->get_sixteen_by_nine( $term['term_id'], false );
 <body <?php body_class( 'w-screen ml-0 bg-blue-100' ); ?>>
 
 <style>
-section.pre {
-	min-width: 100vw;
-	min-height: 25vw;
-	background: var(--yellow-700);
-}
-
 
 #masthead {
-	background: url(<?= $header_image; ?>), linear-gradient( -45deg, rgba(0, 0, 0, 0.15) 30%, rgba(0, 0, 0, 0.85) 65% );
+	background: url(<?= $header_image; ?>), linear-gradient( -45deg, rgba(0, 0, 0, 0.15) 30%, rgba(0, 0, 0, 0.65) 65% );
 	background-blend-mode: multiply;
 	background-size: cover;
 	background-repeat: no-repeat;
 	min-height: 60vw;
 }
 #masthead > div:first-of-type {
+	min-height: 100%;
 	padding: 6vw;
 	max-width: 60vw;
 	/* background: rgba(255,255,255,0.6);
 	backdrop-filter: drop-shadow(4px 4px 10px blue); */
+	background: rgba(255, 255, 255, 0.6 );
+	backdrop-filter: blur(2px) invert(100%);
+	-webkit-backdrop-filter: blur(2px) multiply(90%);
+
 }
 
 #masthead div:first-of-type h1 {
+
 	font: var(--highlight-font-family);
 	font-size: calc( var(--global-font-size) * 0.4vw );
 	font-weight: var(--extrabold);
-	color: var(--gray-300);
+	color: var(--gray-800);
 	/* mix-blend-mode: difference; */
 }
 
+li.header {
+	font-size: clamp(1.9rem, 1vw + 0.6rem, 30px);
+	color: var(--gray-800);
+}
+
+
+p {
+	color: var(--gray-800);
+	font-size: clamp(1.1rem, 2vw + 0.2rem, 3.6rem);
+}
 
 </style>
 
@@ -93,13 +101,14 @@ section.pre {
 
 		<div>
 			<h1> <?= get_queried_object()->name; ?> </h1>
-			<span class=" text-3xl"><?= $short_desc ?></span>
+			<p><?= $short_desc ?></p>
 			<div class="text-4xl mt-6 border-white"> Uses: </div>
 			<ul style="list-style-type: circle;" class="ml-16 pt-2">
 			<?php
-			for ( $i=0; $i < count( $uses ); $i++ ) {
-				$use = ( substr( $uses[$i], -1 ) === '.' ) ? $uses[$i] : $uses[$i] . '.';
-				echo "<li class='pt-4 text-2xl'>$use</li>";
+			$cases = count( $uses );
+			for ( $i = 0; $i < $cases; $i++ ) {
+				$use = ( substr( $uses[ $i ], -1 ) === '.' ) ? $uses[ $i ] : $uses[ $i ] . '.';
+				echo "<li class=\"header\">$use</li>";
 			}
 			?>
 			</ul>

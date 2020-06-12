@@ -31,19 +31,20 @@ namespace WP_Rig\WP_Rig;
 
 </head>
 
-<?php
-get_template_part( 'template-parts/header/navigation/navigation-project' );
-?>
+
 
 <?php
 $blog        = get_current_blog_id();
 wp_rig()->print_styles( 'project' );
+
+$post_type = get_post_type();
 
 
 $project = [
 	'address'    => wp_rig()->get_footer_project_address( $post->ID ),
 	'structured' => wp_rig()->get_structured_project_address( $post->ID ),
 	'thumbnail'  => get_the_post_thumbnail_url( $post->ID, 'featured' ),
+	'vertical'   => get_post_meta( $post->ID, 'projectVerticalImage' ),
 ];
 
 ?>
@@ -52,13 +53,7 @@ $project = [
 	#controls {
 		min-height: 12vw;
 	}
-	#project-header {
-		padding: 3vw;
-		min-height: 50vw;
-		background: url( <?= $project['thumbnail']; ?>), linear-gradient(#e66465 0%, #9198e5 61%);;
-		background-blend-mode: multiply;
-		background-size: cover;
-	}
+
 </style>
 
 
@@ -83,35 +78,71 @@ $project = [
 <body <?php body_class( 'w-screen ml-0 bg-blue-100' ); ?>>
 <?php wp_body_open(); ?>
 
-<?php
 
-
-//phpcs:disable
-// get_template_part( 'template-parts/header/project_header' );
-// get_template_part( 'template-parts/header/branding' );
-// get_template_part( 'template-parts/header/navigation' );
-
-?>
 
 <div id="page" class="site">
 
+<!-- masthead should look considerably different on screens wider than 1000 px -->
+	<!-- header should include a menu, logo, search -->
 	<header id="masthead" class="site-header">
-
 		<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
+	</header><!-- #masthead -->
 
-		<div id="project-header" class="w-screen flex col-nw justify-end align-center">
+
+
+
+	<style>
+		#wide-header > div {
+			min-height: 80vw;
+			height: 100%;
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+
+		#wide-header > div:first-of-type {
+			background: url( <?= $project['vertical'][0]; ?>), linear-gradient(#e66465 0%, #9198e5 61%);
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+		#normal-header {
+			background: url( <?= $project['thumbnail']; ?>), linear-gradient(#e66465 0%, #9198e5 61%);
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+	</style>
+	<section class="header" id="project-head">
+		<!-- for screens smaller than 1300px -->
+		<div id="normal-header" class="normal-width w-screen flex col-nw justify-end align-center">
 			<div id="project-title">
 				<h2 class="project-title"><?= the_title(); ?></h2>
 			</div><!-- end div#project-title -->
-		</div><!-- end div#project-header -->
+		</div><!-- end div#project-header.normal-width-->
 
-	</header><!-- #masthead -->
+
+		<!-- for screens larger than 1300px -->
+		<div id="wide-header" class="particularly-wide">
+			<div></div>
+			<div>
+				<h2 class="project-title"><?= the_title(); ?></h2>
+			</div>
+		</div>
+	</section>
 
 
 
 
 </div><!-- end div#page -->
 
+<section>
+	<pre>
+		<?php
+
+		print_r( get_post_custom_keys( $post->ID ) );
+		echo $post_type;
+
+		?>
+	</pre>
+</section>
 
 <script>
 	const projectHeader = document.getElementById( 'project-header' );
@@ -147,3 +178,12 @@ $project = [
 	console.log( result );
 </script>
 
+<?php
+
+
+//phpcs:disable
+// get_template_part( 'template-parts/header/project_header' );
+// get_template_part( 'template-parts/header/branding' );
+// get_template_part( 'template-parts/header/navigation' );
+
+?>

@@ -319,7 +319,7 @@ JSONLD;
 	 * @return mixed Either the id of the image or the url of the image -- depending on the $return_as_url parameter.
 	 */
 	public function get_city_image_by_blog( $blog = 1, $return_as_url = false ) {
-		$key = false === $return_as_url ? 'cityImage_id' : 'cityImage';
+		$key = false === $return_as_url ? 'locationCityImage_id' : 'locationCityImage';
 		$id  = $this->get_term_by_blog( $blog );
 		return get_term_meta( $id, $key, true );
 	}
@@ -448,7 +448,7 @@ JSONLD;
 		$args = [
 			'name'        => 'Subdomain Website URL',
 			'description' => 'subdomain website url',
-			'id'          => 'subdomainURL',
+			'id'          => 'locationSubdomain',
 			'type'        => 'text_url',
 			'show_names'  => true,
 			'protocols'   => [ 'http', 'https' ],
@@ -459,7 +459,7 @@ JSONLD;
 		$args = [
 			'name'        => 'Website URL',
 			'description' => 'nimble website url',
-			'id'          => 'locationURL',
+			'id'          => 'locationNimbleURL',
 			'type'        => 'text_url',
 			'show_names'  => true,
 			'protocols'   => [ 'http', 'https' ],
@@ -502,7 +502,7 @@ JSONLD;
 		$args = [
 			'name'         => 'City Image',
 			'show_names'   => true,
-			'id'           => 'cityImage',
+			'id'           => 'locationCityImage',
 			'type'         => 'file',
 			'options'      => [ 'url' => false ],
 			'text'         => [ 'add_upload_file_text' => 'Upload or Find City Image' ],
@@ -516,7 +516,7 @@ JSONLD;
 		/* JONES LOCATION DATA */
 		$args = [
 			'name'       => 'Location',
-			'id'         => 'jonesLocationInfo', // Name of the custom field type we setup.
+			'id'         => 'locationAddress', // Name of the custom field type we setup.
 			'type'       => 'jonesaddress',
 			'show_names' => false, // false removes the left cell of the table -- this is worth understanding.
 			'after_row'  => '<hr>',
@@ -559,7 +559,7 @@ JSONLD;
 				break;
 			case 'blog_id':
 				$blogid     = (int) get_term_meta( $term_id, 'locationBlogID', true );
-				$admin_link = preg_replace( '/^http: /i', 'https: ', get_term_meta( $term_id, 'subdomainURL', true ) ) . '/wp-admin/';
+				$admin_link = preg_replace( '/^http: /i', 'https: ', get_term_meta( $term_id, 'locationSubdomain', true ) ) . '/wp-admin/';
 				$output     = '<a href = "' . $admin_link . '" >' . $blogid . '<span class="dashicons dashicons-external"></span></a>';
 				break;
 			default:
@@ -584,39 +584,39 @@ JSONLD;
 	/** RETRIEVE LOCATION INFORMATION  */
 
 	/**
-	 * Retrieve the taxonomy meta for 'jonesLocationInfo' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationAddress' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
 	 * @return array $output The text of the directory of the project in our Jobs server. - not for public consumption.
 	 */
 	public function get_location_information( $term_id ) {
-		$key    = 'jonesLocationInfo';
+		$key    = 'locationAddress';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
 
 	/**
-	 * Retrieve the taxonomy meta for 'locationURL' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationNimbleURL' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
 	 * @return string $output The domain that nimble gave this website.
 	 */
 	public function get_location_url( $term_id ) {
-		$key    = 'locationURL';
+		$key    = 'locationNimbleURL';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
 
 	/**
-	 * Retrieve the taxonomy meta for 'subdomainURL' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationSubdomain' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
 	 * @return string $output The sudomain of this location's homepage.
 	 */
 	public function get_location_subdomain( $term_id ) {
-		$key    = 'subdomainURL';
+		$key    = 'locationSubdomain';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
@@ -671,20 +671,20 @@ JSONLD;
 	}
 
 	/**
-	 * Retrieve the taxonomy meta for 'cityImage' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationCityImage' for this jones sign location.
 	 *
 	 * @param int $term_id Location Taxonomy id.
 	 * @return int $output The id of the location's city photo.
 	 */
 	public function get_location_city_photo( $term_id ) {
-		$key    = 'cityImage_id';
+		$key    = 'locationCityImage_id';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
 
 	/**
-	 * Retrieve the taxonomy meta for 'cityImage' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationCityImage' for this jones sign location.
 	 *
 	 * @param int $blog_identifier Blog id.
 	 * @return array $output The data for the location's city photo.
@@ -729,13 +729,13 @@ JSONLD;
 			unset ( $base_info->$item );
 		}
 //phpcs:disable
-		$base_info->jonesLocationInfo    = get_term_meta( $term_id, 'jonesLocationInfo', true );
-		$base_info->cityImage            = get_term_meta( $term_id, 'cityImage_id', true );
+		$base_info->locationAddress      = get_term_meta( $term_id, 'locationAddress', true );
+		$base_info->locationCityImage    = get_term_meta( $term_id, 'locationCityImage_id', true );
 		$base_info->locationImage        = get_term_meta( $term_id, 'locationImage_id', true );
 		$base_info->locationCapabilities = get_term_meta( $term_id, 'locationCapabilities', true );
 		$base_info->locationCommonName   = get_term_meta( $term_id, 'locationCommonName', true );
-		$base_info->locationURL          = get_term_meta( $term_id, 'locationURL', true );
-		$base_info->subdomainURL         = get_term_meta( $term_id, 'subdomainURL', true );
+		$base_info->locationNimbleURL    = get_term_meta( $term_id, 'locationNimbleURL', true );
+		$base_info->locationSubdomain    = get_term_meta( $term_id, 'locationSubdomain', true );
 //phpcs:enable
 
 		return $base_info;
