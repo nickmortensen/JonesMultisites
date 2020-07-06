@@ -165,7 +165,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		// Add a new column.
 		$new['cb']     = '<input type="checkbox">';
 		$new['id']     = 'ID';
-		$new['rating'] = '<i style="color:var(--yellow-500)" class="material-icons">stars</i>';
+		$new['rating'] = '<i style="color:var(--yellow-500)" class="material-icons star-rating">stars</i>';
 		$columns = array_merge( $new, $columns );
 		return $columns;
 	}
@@ -199,13 +199,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Output a material icon star
 	 *
-	 * @param int $quantity How many? Default is 5;
+	 * @param int  $quantity How many? Default is 5;
 	 * @param bool $filled Whether the star should be filled or not - default is false.
 	 */
 	public function get_star( $quantity = 5, $filled = false ) {
 		$fill  = $filled ? 'var(--yellow-600)' : 'var(--gray-200)';
-		$style = "color: $fill; -webkit-text-stroke:1px var(--gray-900); text-stroke:1px var(--gray-900); font-size: 1.4rem;";
-		return str_repeat( '<span class="material-icons" style="' . $style . '"> star_rate </span>', $quantity );
+		$style = "color: $fill;";
+		return str_repeat( '<span class="material-icons star-rating" style="' . $style . '"> star_rate </span>', $quantity );
 	}
 
 	/**
@@ -221,14 +221,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				$output = $id;
 				break;
 			case 'rating':
-				$total = 5;
-				$rating = $this->get_image_rating( $id );
+				$total   = 5;
+				$rating  = $this->get_image_rating( $id );
 				$filled  = '<span class="dashicons dashicons-star-filled"></span>';
 				$empty   = '<span class="dashicons dashicons-star-empty"></span>';
-				$output = '<section style="padding-top: 1rem;" data-id="' . $id . '" id="admin-upload-star-rating" data-rating="' . $rating . '">';
-				// $output .= str_repeat( $filled, $rating );
+				$output  = '<section style="padding-top: 1rem;" data-id="' . $id . '" id="admin-upload-star-rating" data-rating="' . $rating . '">';
 				$output .= $this->get_star( $rating, true );
-				// $output .= str_repeat( $empty, $total - $rating );
 				$output .= $this->get_star( $total - $rating, false );
 				$output .= '</section>';
 				break;

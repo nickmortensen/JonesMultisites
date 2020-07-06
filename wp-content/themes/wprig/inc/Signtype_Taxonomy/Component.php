@@ -70,14 +70,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'get_use_cases'         => [ $this, 'get_use_cases' ],
-			'get_aliases'           => [ $this, 'get_aliases' ],
-			'get_all_info'          => [ $this, 'get_all_info' ],
-			'get_one_by_one'        => [ $this, 'get_one_by_one' ],
-			'get_four_by_three'     => [ $this, 'get_four_by_three' ],
-			'get_sixteen_by_nine'   => [ $this, 'get_sixteen_by_nine' ],
-			'get_signtype_indepth'  => [ $this, 'get_signtype_indepth' ],
-			'check_signtype_images' => [ $this, 'check_signtype_images' ],
+			'get_use_cases'          => [ $this, 'get_use_cases' ],
+			'get_aliases'            => [ $this, 'get_aliases' ],
+			'get_all_info'           => [ $this, 'get_all_info' ],
+			'get_square'             => [ $this, 'get_square' ],
+			'get_rectangular'        => [ $this, 'get_rectangular' ],
+			'get_cinematic'          => [ $this, 'get_cinematic' ],
+			'get_vertical'           => [ $this, 'get_vertical' ],
+			'get_signtype_indepth'   => [ $this, 'get_signtype_indepth' ],
+			'check_signtype_images'  => [ $this, 'check_signtype_images' ],
+			'get_signtype_image_ids' => [ $this, 'get_signtype_image_ids' ],
+			'get_header_backgrounds' => [ $this, 'get_header_backgrounds' ],
 		];
 	}
 
@@ -88,20 +91,21 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return array $info An associative array of all the data and metadata assigned to thie taxonomy item.
 	 */
 	public function get_all_info( $term = '' ) : array {
-		$term_id                 = $term;
-		$info                    = [];
-		$signtype                = get_term( $term_id, 'signtype' );
-		$uses                    = $this->get_use_cases( $term_id );
-		$info['name']            = $signtype->name;
-		$info['tax']             = $signtype->taxonomy;
-		$info['term_id']         = $term_id;
-		$info['description']     = $signtype->description;
-		$info['uses']            = $this->get_use_cases( $term_id )[0];
-		$info['aliases']         = $this->get_aliases( $term_id );
-		$info['image_primary']   = $this->get_sixteen_by_nine( $term_id, true );
-		$info['image_secondary'] = $this->get_four_by_three( $term_id, true );
-		$info['image_square']    = $this->get_one_by_one( $term_id, true );
-		$info['indepth']         = $this->get_signtype_indepth( $term_id );
+		$term_id             = $term;
+		$info                = [];
+		$signtype            = get_term( $term_id, 'signtype' );
+		$uses                = $this->get_use_cases( $term_id );
+		$info['name']        = $signtype->name;
+		$info['tax']         = $signtype->taxonomy;
+		$info['term_id']     = $term_id;
+		$info['description'] = $signtype->description;
+		$info['uses']        = $this->get_use_cases( $term_id )[0];
+		$info['aliases']     = $this->get_aliases( $term_id );
+		$info['cinematic']   = $this->get_cinematic( $term_id, true );
+		$info['rectangular'] = $this->get_rectangular( $term_id, true );
+		$info['square']      = $this->get_square( $term_id, true );
+		$info['vertical']    = $this->get_vertical( $term_id, true );
+		$info['indepth']     = $this->get_signtype_indepth( $term_id );
 		return $info;
 	}
 
@@ -292,24 +296,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$metabox->add_field( $args );
 	}//end create_extra_fields()
 
-
-
-	/**
-	 * signtypeAltNames
-	 * signtypeCinematic
-	 * signtypeRectangular
-	 * signtypeSquare
-	 * signtypeVertical
-	 * signtypeIndepth
-	 * @param [type] $columns
-	 *
-	 *
-	 */
-
 	/**
 	 * Check to see whether there is a sign image of a certain dimension.
 	 *
-	 * @param string $type Could be 'vertical', 'cinematic', 'rectangular', or 'vertical'.
+	 * @param string $type Could be 'vertical', 'cinematic', 'rectangular', or 'square'.
 	 */
 	public function check_signtype_images( $term_id ) {
 		$options = [ 'vertical', 'cinematic', 'rectangular', 'square' ];
@@ -429,7 +419,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param bool $id Should we get the image id. Default true.
 	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
 	 */
-	public function get_sixteen_by_nine( $term_id, $id = true ) {
+	public function get_cinematic( $term_id, $id = true ) {
 		$key    = $id ? 'signtypeCinematic_id' : 'signtypeCinematic';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
@@ -443,7 +433,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param bool $id Should we get the image id. Default true.
 	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
 	 */
-	public function get_four_by_three( $term_id, $id = true ) {
+	public function get_rectangular( $term_id, $id = true ) {
 		$key    = $id ? 'signtypeRectangular_id' : 'signtypeRectangular';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
@@ -457,8 +447,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param bool $id Should we get the image id. Default true.
 	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
 	 */
-	public function get_one_by_one( $term_id, $id = true ) {
+	public function get_square( $term_id, $id = true ) {
 		$key    = $id ? 'signtypeSquare_id' : 'signtypeSquare';
+		$single = true;
+		$output = get_term_meta( $term_id, $key, $single );
+		return $output;
+	}
+
+	/**
+	 * Retrieve the taxonomy meta for 3 x 4 aspect image for the given sign type.
+	 *
+	 * @param int  $term_id Signtype Taxonomy Id.
+	 * @param bool $id Should we get the image id. Default true.
+	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
+	 */
+	public function get_vertical( $term_id, $id = true ) {
+		$key    = $id ? 'signtypeVertical_id' : 'signtypeVertical';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
@@ -498,32 +502,48 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Output 2 item array that has the cinematic and the vertical images for a given term.
+	 *
+	 * @param int $term_id The id for a particular term.
+	 *
+	 * @return array $ids An array of the ids for the photos assigned to this signtype.
+	 */
+	public function get_header_backgrounds( $term_id ) : array {
+		$output = [
+			'horizontal' => (int) $this->get_rectangular( $term_id ),
+			'vertical'   => (int) $this->get_vertical( $term_id ),
+			'cinematic'  => (int) $this->get_cinematic( $term_id ),
+		];
+		return $output;
+	}
+
+	/**
 	 * Output JSONLD Data for this project type to have Rich Text from Google in the header of a page.
 	 *
 	 * @link https://developers.google.com/search/docs/data-types/product
 	 */
 	public function get_signtype_rich_snippet() {
-		$taxonomy = 'signtype';
-		$term_id  = get_queried_object()->term_id;
-		$term     = get_term( $term_id, $taxonomy );
-		$slug     = $term->slug;
-		$desc     = $term->description;
-		$name     = $term->name;
-		$info     = $this->get_all_info( $term_id );
-		$square   = wp_get_attachment_image_src( $info['image_primary'], 'medium' )[0];
-		$sixteen  = wp_get_attachment_image_src( $info['image_primary'], 'wp-rig-featured' )[0];
-		$four     = wp_get_attachment_image_src( $info['image_secondary'], 'four-three' )[0];
-		$output   = ' <script type = "application/ld+json">';
-		$output  .= <<<JSONLD
+		$taxonomy    = 'signtype';
+		$term_id     = get_queried_object()->term_id;
+		$term        = get_term( $term_id, $taxonomy );
+		$slug        = $term->slug;
+		$desc        = $term->description;
+		$name        = $term->name;
+		$info        = $this->get_all_info( $term_id );
+		$square      = wp_get_attachment_image_src( $info['square'], 'medium' )[0];
+		$cinematic   = wp_get_attachment_image_src( $info['cinematic'], 'wp-rig-featured' )[0];
+		$rectangular = wp_get_attachment_image_src( $info['rectangular'], 'four-three' )[0];
+		$output      = ' <script type = "application/ld+json">';
+		$output     .= <<<JSONLD
 		{
 			"@context": "https://schema.org/",
 			"@type": "Product",
 			"name": "$name",
 			"image": [
-			  "$square",
-			  "$four",
-			  "$sixteen"
-			 ],
+				"$square",
+				"$rectangular",
+				"$cinematic"
+			],
 			"description": "$desc",
 			"sku": "$slug",
 			"mpn": "signtype-$slug",
@@ -550,7 +570,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			}
 		}
 JSONLD;
-		$output  .= '</script>';
+		$output     .= '</script>';
 		return $output;
 	}
 

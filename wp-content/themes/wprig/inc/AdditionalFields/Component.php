@@ -160,6 +160,24 @@ class Component implements Component_Interface {
 	public function initialize() {
 		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
+		// add_action( 'cmb2_admin_init', [ $this, 'register_dynamic_fields_box' ] );
+	}
+
+	/**
+	 * Adding new fields dynamically.
+	 *
+	 * @link https://geek.hellyer.kiwi/2018/08/11/dynamically-controlling-cmb2-metaboxes/
+	 */
+	public function register_fields_dynamically() {}
+
+	/**
+	 * Adding fields dynamically to box.
+	 *
+	 * @param obj $cmb Object containing the fields.
+	 * @link https://geek.hellyer.kiwi/2018/08/11/dynamically-controlling-cmb2-metaboxes/
+	 */
+	public function add_fields_dynamically_to_box( $cmb ) {
+
 	}
 
 	/**
@@ -531,42 +549,3 @@ class Component implements Component_Interface {
 	}//end render_jonesaddress_field_callback()
 
 }//end class
-
-
-/*
-CHANGE THESE IN DATABASE
-locationAddress = address
-locationCity = city
-locationState = state
-locationZip = zip
-locationLatitude = latitude
-locationLongitude = longitude
-locationGoogleCID = googleCID
-*/
-/**
- * Start Here.
- * staffDOH
- * staffEmail
- * staffShortTitle
- * staffIsManagement
- * staffExperience
- * staffPhoneMobile
- * staffPhoneDesk
- * staffPhoneExt
- * staffID
- * staff_user_link
- * staffBio
- * staffHighlights
- * staff_highlights_0_staff_highlight
- * staff_full_title
- * staff_birthday
- * staff_is_sales
- * staff_sales_subcategory
- * staff_highlights_1_staff_highlight
- * staff_highlights_2_staff_highlight
- * staff_highlights_3_staff_highlight
- * staff_background_highlights_0_staff_background_highlight
- * staff_background_highlights_1_staff_background_highlight
- * staff_background_highlights_2_staff_background_highlight
- * staff_background_highlights
- */

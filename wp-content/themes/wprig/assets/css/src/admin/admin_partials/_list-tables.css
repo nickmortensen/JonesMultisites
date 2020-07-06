@@ -86,14 +86,14 @@
 .column-response .post-com-count-approved:focus .comment-count-approved,
 .column-comments .post-com-count-approved:hover .comment-count-approved,
 .column-comments .post-com-count-approved:focus .comment-count-approved {
-	background: var(--indigo-600);
+	background: var(--color-theme-primary);
 }
 
 .column-response .post-com-count-approved:hover::after,
 .column-response .post-com-count-approved:focus::after,
 .column-comments .post-com-count-approved:hover::after,
 .column-comments .post-com-count-approved:focus::after {
-	border-top-color: var(--indigo-600);
+	border-top-color: var(--color-theme-primary);
 }
 
 /* @todo: consider to use a single rule for these counters and the admin menu counters. */
@@ -285,7 +285,7 @@ th .comment-grey-bubble::before {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-decoration: none !important;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 /*------------------------------------------------------------------------------
@@ -480,7 +480,7 @@ th.asc a:focus span.sorting-indicator::before {
 	border-radius: 50%;
 	display: block;
 	padding: 1px 2px 1px 0;
-	color: var(--gray-700); /* same as table headers sort arrows */
+	color: var(--global-font-color); /* same as table headers sort arrows */
 	content: "\f140";
 	font: var(--normal) 20px/1 dashicons, serif;
 	line-height: 1;
@@ -681,11 +681,11 @@ th.asc a:focus span.sorting-indicator {
 
 .view-switch a:hover::before,
 .view-switch a:focus::before {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .view-switch a.current::before {
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 .view-switch .view-list::before {
@@ -739,8 +739,7 @@ p.pagenav {
 }
 
 .row-title {
-	/* font-size: 14px !important; */
-	font-size: 1.4rem !important;
+	font-size: var(--admin-font-size) !important;
 	font-weight: var(--semibold);
 }
 
@@ -758,7 +757,7 @@ p.pagenav {
 
 .row-actions {
 	color: var(--gray-100);
-	font-size: 13px;
+	font-size: var(--admin-row-actions-font-size);
 	padding: 2px 0 0;
 	position: relative;
 	left: -9999em;
@@ -771,7 +770,7 @@ p.pagenav {
 
 .row-actions .network_only,
 .row-actions .network_active {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .no-js .row-actions,
@@ -1102,7 +1101,7 @@ ul.cat-checklist {
 .plugins,
 .plugins th,
 .plugins td {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .plugins tr {
@@ -1510,7 +1509,7 @@ div.action-links,
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-decoration: none !important;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .plugin-card .column-compatibility .compatibility-incompatible::before {

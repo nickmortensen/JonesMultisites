@@ -78,7 +78,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Query for all the data and metadata assigned to any of the taxonomy.
 	 *
-	 * @param int $term_id The id for the taxonomy term.
+	 * @param int    $term The id for the taxonomy term.
+	 * @param string $taxonomy The taxonomy - default is 'expertise'.
 	 * @return array $info An associative array of all the data and metadata assigned to thie taxonomy item.
 	 */
 	public function get_all_expertise_info( $term = '', $taxonomy = 'expertise' ) : array {
@@ -118,9 +119,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$links = [];
 		foreach ( $items as $item ) {
 			if ( $except === $item ) continue;
-			$name        = $item->name;
-			$description = $item->description;
-			$links[]     = "<a href=\"#\" title=\"$description\">$name</a>";
+			/**
+			 * $name        = $item->name;
+			 * $description = $item->description;
+			 * $links[]     = "<a href=\"#\" title=\"$description\">$name</a>";
+			*/
+			$links[] = sprintf( '<a href="#" title="%s">%s</a>', $item->description, $item->name );
 		}
 		return implode( '', $links );
 	}
@@ -264,7 +268,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Check to see whether there is a expertise image of a certain dimension.
 	 *
-	 * @param string $type Could be 'vertical', 'cinematic', 'rectangular', or 'square'.
+	 * @param string $term_id The ID of the term you'd like to check on the image needs of.
 	 */
 	public function check_expertise_images( $term_id ) {
 		$options = [ 'vertical', 'cinematic', 'rectangular', 'square' ];
@@ -294,12 +298,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		// Remove the checkbox that comes with $columns.
 		unset( $columns['cb'] );
 		unset( $columns['description'] );
+		unset( $columns['posts'] );
 		// Add the checkbox back in so it can be before the ID column.
 		$new['cb']     = '<input type = "checkbox" />';
 		$new['id']     = 'ID';
 		$new['images'] = '<span style="color:var(--yellow-600);" title="has all photos?" class="material-icons">view_carousel</span>';
 		return array_merge( $new, $columns );
-	}//end set_set_capability_admin_columns()
+	}//end set_expertise_admin_columns()
 
 	/**
 	 * Add the correct data to the custom columns.
@@ -317,8 +322,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				$output = $term_id;
 				break;
 			case 'images':
-				$data   = $this->check_expertise_images( $term_id );
-				$output = '<span style="color:var(' . $data['color'] . ');" title="' . $data['message'] . '" class="material-icons">view_carousel</span>';
+				$data    = $this->check_expertise_images( $term_id );
+				$color   = str_word_count( term_description( $term_id ), 0 ) > 10 ? 'var(--indigo-600)' : 'var(--gray-500)';
+				$output  = '<span style="color:var(' . $data['color'] . ');" title="' . $data['message'] . '" class="material-icons">view_carousel</span>';
+				$output .= sprintf( '<br><span style="color:%s;" class="material-icons"> local_library </span>', $color );
 				break;
 			default:
 				$output = $term_id;

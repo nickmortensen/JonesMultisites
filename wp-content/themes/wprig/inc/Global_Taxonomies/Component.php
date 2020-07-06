@@ -124,22 +124,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'hierarchical' => false,
 		];
 		$args          = [
-			'labels'             => $labels,
-			'public'             => true,
-			'description'        => 'Types of Signage',
-			'hierarchical'       => false,
-			'show_ui'            => true,
-			'show_in_quick_edit' => true,
-			'show_admin_column'  => true,
-			'show_tagcloud'      => true,
-			'rewrite'            => $rewrite,
-			'show_in_rest'       => true,
-			'rest_base'          => $singular,
-			'query_var'          => $singular,
+			'labels'                => $labels,
+			'public'                => true,
+			'description'           => 'Types of Signage',
+			'hierarchical'          => false,
+			'show_ui'               => true,
+			'show_in_quick_edit'    => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => true,
+			'rewrite'               => $rewrite,
+			'show_in_rest'          => true,
+			'rest_base'             => $singular,
+			'query_var'             => $singular,
+			'update_count_callback' => '_update_generic_term_count',
 		];
 		$objects_array = [
 			'post',
-			'page',
 			'attachment',
 			'project',
 		];
@@ -183,26 +183,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'hierarchical' => false,
 		];
 		$args          = [
-			'labels'             => $labels,
-			'description'        => 'Covers Various Jones Sign Company Locations around North America',
-			'hierarchical'       => false,
-			'public'             => true,
-			'show_ui'            => true,
-			'show_in_quick_edit' => true,
-			'show_in_menu'       => true,
-			'show_admin_column'  => true,
-			'show_in_nav_menus'  => true,
-			'show_tagcloud'      => true,
-			'query_var'          => $singular,
-			'rewrite'            => $rewrite,
-			'show_in_rest'       => true,
-			'rest_base'          => $singular,
+			'labels'                => $labels,
+			'description'           => 'Covers Various Jones Sign Company Locations around North America',
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_quick_edit'    => true,
+			'show_in_menu'          => true,
+			'show_admin_column'     => true,
+			'show_in_nav_menus'     => true,
+			'show_tagcloud'         => true,
+			'query_var'             => $singular,
+			'rewrite'               => $rewrite,
+			'show_in_rest'          => true,
+			'rest_base'             => $singular,
+			'update_count_callback' => '_update_generic_term_count',
 		];
 		$objects_array = [
-			'post',
-			'page',
-			'attachment',
-			'nav_menu_item',
 			'staffmember',
 		];
 		register_taxonomy( 'location', $objects_array, $args );
@@ -247,22 +244,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'hierarchical' => false,
 		];
 		$args          = [
-			'labels'             => $labels,
-			'public'             => true,
-			'description'        => 'Types of Sign Projects',
-			'hierarchical'       => false,
-			'show_ui'            => true,
-			'show_in_quick_edit' => true,
-			'show_admin_column'  => true,
-			'show_tagcloud'      => true,
-			'rewrite'            => $rewrite,
-			'show_in_rest'       => true,
-			'rest_base'          => $singular,
-			'query_var'          => $singular,
+			'labels'                => $labels,
+			'public'                => true,
+			'description'           => 'Types of Sign Projects',
+			'hierarchical'          => false,
+			'show_ui'               => true,
+			'show_in_quick_edit'    => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => true,
+			'rewrite'               => $rewrite,
+			'show_in_rest'          => true,
+			'rest_base'             => $singular,
+			'query_var'             => $singular,
+			'update_count_callback' => '_update_generic_term_count',
 		];
 		$objects_array = [
-			'post',
-			'page',
+			'clientele',
 			'attachment',
 			'project',
 		];
@@ -277,9 +274,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @link https://developer.wordpress.org/reference/functions/register_taxonomy/
 	 */
 	public function create_industry_taxonomy() {
-		$singular       = 'industry';
-		$plural         = 'industries';
-		$labels         = [
+		$singular      = 'industry';
+		$plural        = 'industries';
+		$labels        = [
 			'name'                       => ucfirst( $plural ),
 			'singular_name'              => $singular,
 			'menu_name'                  => ucfirst( $plural ),
@@ -308,28 +305,29 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'hierarchical' => false,
 		];
 		$args          = [
-			'labels'             => $labels,
-			'public'             => true,
-			'description'        => 'Industries',
-			'hierarchical'       => false,
-			'show_ui'            => true,
-			'show_in_quick_edit' => true,
-			'show_admin_column'  => true,
-			'show_tagcloud'      => true,
-			'rewrite'            => $rewrite,
-			'show_in_rest'       => true,
-			'rest_base'          => 'industry',
-			'query_var'          => 'industry',
+			'labels'                => $labels,
+			'public'                => true,
+			'description'           => 'Industries',
+			'hierarchical'          => false,
+			'show_ui'               => true,
+			'show_in_quick_edit'    => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => true,
+			'rewrite'               => $rewrite,
+			'show_in_rest'          => true,
+			'rest_base'             => 'industry',
+			'query_var'             => 'industry',
+			'update_count_callback' => '_update_generic_term_count',
 		];
 		$objects_array = [
-			'post',
-			'page',
+			'client',
 			'attachment',
 			'project',
 		];
 		register_taxonomy( 'industry', $objects_array, $args );
 	} //end create_service_taxonomy()
-		/**
+
+	/**
 	 * Creates the custom taxonomy: 'service'.
 	 *
 	 * @note: is it better to create it here than in a different module entirely dedicated to the signtype taxonomy?
@@ -368,18 +366,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'hierarchical' => false,
 		];
 		$args    = [
-			'labels'             => $labels,
-			'public'             => true,
-			'description'        => ucfirst( $singular ),
-			'hierarchical'       => false,
-			'show_ui'            => true,
-			'show_in_quick_edit' => true,
-			'show_admin_column'  => true,
-			'show_tagcloud'      => true,
-			'rewrite'            => $rewrite,
-			'show_in_rest'       => true,
-			'rest_base'          => $singular,
-			'query_var'          => $singular,
+			'labels'                => $labels,
+			'public'                => true,
+			'description'           => ucfirst( $singular ),
+			'hierarchical'          => false,
+			'show_ui'               => true,
+			'show_in_quick_edit'    => true,
+			'show_admin_column'     => true,
+			'show_tagcloud'         => true,
+			'rewrite'               => $rewrite,
+			'show_in_rest'          => true,
+			'rest_base'             => $singular,
+			'query_var'             => $singular,
+			'update_count_callback' => '_update_generic_term_count',
 		];
 		$objects = [
 			'post',

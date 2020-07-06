@@ -707,7 +707,7 @@ body.menu-max-depth-11 {
 	height: auto;
 	margin: 12px -10px 12px 0;
 	padding: 0;
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 	text-decoration: underline;
 	font-size: 12px;
 	line-height: 1.5;

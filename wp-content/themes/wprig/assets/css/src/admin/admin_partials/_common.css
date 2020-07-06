@@ -208,7 +208,7 @@ th#title {
 	font-weight: var(--semibold);
 	padding: 15px 23px 14px;
 	background: var(--color-theme-white);
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 	z-index: 100000;
 	line-height: normal;
 	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
@@ -267,14 +267,14 @@ td.blog.column-blog {
 }
 
 td.blog.column-blog > a {
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 
 /* table.widefat th#id, */
 table.wp-list-table thead,
 tfoot {
-	background: var(--indigo-600);
+	background: var(--color-theme-primary);
 	color: var(--yellow-600);
 }
 
@@ -308,7 +308,7 @@ body {
 
 body {
 	background: var(--color-theme-white);
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-family: serif, var(--admin-font);
 	font-size: 13px;
 	line-height: 1.4;
@@ -365,7 +365,7 @@ a:active {
 a:focus,
 a:focus .media-icon img,
 .wp-person a:focus .gravatar {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	box-shadow:
 		0 0 0 1px var(--indigo-400),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
@@ -430,14 +430,14 @@ h6 {
 }
 
 h1 {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	font-size: 2em;
 	margin: 0.67em 0;
 }
 
 h2,
 h3 {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	font-size: 1.3em;
 	margin: 1em 0;
 }
@@ -540,7 +540,7 @@ code {
 
 .subsubsub a .count,
 .subsubsub a.current .count {
-	color: var(--gray-700); /* var(--color-theme-white) background */
+	color: var(--global-font-color); /* var(--color-theme-white) background */
 	font-weight: var(--normal);
 }
 
@@ -704,7 +704,7 @@ code {
 .subtitle {
 	margin: 0;
 	padding-left: 25px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-size: 14px;
 	font-weight: var(--normal);
 	line-height: 1;
@@ -801,11 +801,11 @@ div#widgets-right .widget-top:hover,
 
 .wp-ui-primary {
 	color: var(--color-theme-white);
-	background-color: var(--gray-700);
+	background-color: var(--global-font-color);
 }
 
 .wp-ui-text-primary {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .wp-ui-highlight {
@@ -868,7 +868,7 @@ img.emoji {
 .widget .widget-top,
 .menu-item-handle {
 	background: var(--color-theme-white);
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .postbox .hndle,
@@ -893,7 +893,7 @@ img.emoji {
 #bulk-titles div a::before,
 .notice-dismiss::before {
 	background: none;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	content: "\f153";
 	display: block;
 	font: 400 16px/1.8 dashicons, serif;
@@ -916,7 +916,7 @@ img.emoji {
 .tagchecklist .ntdelbutton .remove-tag-icon::before {
 	margin-left: 2px;
 	border-radius: 50%;
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 
 	/* vertically center the icon cross browsers */
 	line-height: 1.28;
@@ -1108,7 +1108,7 @@ th.action-links {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	border: 1px solid var(--gray-300);
 	background: var(--color-theme-white);
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-size: 13px;
 }
 
@@ -1129,7 +1129,7 @@ th.action-links {
 	top: -1px;
 	padding: 4px 10px;
 	border-radius: 30px;
-	background: var(--gray-700);
+	background: var(--global-font-color);
 	color: var(--color-theme-white);
 	font-size: 14px;
 	font-weight: var(--semibold);
@@ -1169,7 +1169,7 @@ th.action-links {
 .filter-links .current {
 	box-shadow: none;
 	border-bottom: 4px solid var(--gray-600);
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .filter-links li > a:hover,
@@ -1266,7 +1266,7 @@ th.action-links {
 
 .show-filters .wp-filter .button.drawer-toggle {
 	border-radius: 2px;
-	background: var(--gray-700);
+	background: var(--global-font-color);
 	color: var(--color-theme-white);
 }
 
@@ -1502,7 +1502,7 @@ div.error p,
 
 .notice-title {
 	display: inline-block;
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	font-size: 18px;
 }
 
@@ -1519,7 +1519,7 @@ div.error p,
 	margin: 0;
 	padding: 9px;
 	background: none;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	cursor: pointer;
 }
 
@@ -1716,7 +1716,7 @@ form.upgrade .hint {
 }
 
 .button-primary.updated-message::before {
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 .button.updated-message {
@@ -1796,7 +1796,7 @@ form.upgrade .hint {
 	padding: 3px 6px 3px 16px;
 	background: var(--color-theme-white);
 	border-radius: 0 0 4px 4px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	line-height: 1.7;
 	box-shadow: 0 0 0 transparent;
 	transition: box-shadow 0.1s linear;
@@ -1805,7 +1805,7 @@ form.upgrade .hint {
 #screen-meta-links .show-settings:hover,
 #screen-meta-links .show-settings:active,
 #screen-meta-links .show-settings:focus {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 #screen-meta-links .show-settings:focus {
@@ -1830,7 +1830,7 @@ form.upgrade .hint {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-decoration: none !important;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 #screen-meta-links .screen-meta-active::after {
@@ -1979,7 +1979,7 @@ form.upgrade .hint {
 }
 
 .contextual-help-tabs a:hover {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .contextual-help-tabs .active {
@@ -1992,7 +1992,7 @@ form.upgrade .hint {
 
 .contextual-help-tabs .active a {
 	border-color: var(--gray-300);
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .contextual-help-tabs-wrap {
@@ -2033,7 +2033,7 @@ html.wp-toolbar {
 
 .widefat th,
 .widefat td {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .widefat th,
@@ -2057,7 +2057,7 @@ html.wp-toolbar {
 .widefat p,
 .widefat ol,
 .widefat ul {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .widefat .column-comment p {
@@ -2257,7 +2257,7 @@ html.wp-toolbar {
 ------------------------------------------------------------------------------*/
 
 #wpfooter {
-	border-left: 8px solid var(--gray-700);
+	border-left: 8px solid var(--global-font-color);
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -2295,7 +2295,7 @@ html.wp-toolbar {
 	line-height: 1.71428571;
 	font-weight: var(--semibold);
 	background: var(--color-theme-white);
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	text-decoration: none;
 	white-space: nowrap;
 }
@@ -2310,7 +2310,7 @@ h3 .nav-tab, /* Back-compat for pre-4.4 */
 .nav-tab:hover,
 .nav-tab:focus {
 	background-color: var(--color-theme-white);
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .nav-tab-active,
@@ -2320,7 +2320,7 @@ h3 .nav-tab, /* Back-compat for pre-4.4 */
 
 .nav-tab-active {
 	margin-bottom: -1px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .nav-tab-active,
@@ -2498,7 +2498,7 @@ body.iframe {
 
 .importer-action {
 	line-height: 1.55; /* Same as with .updating-message */
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	margin-bottom: 1em;
 }
 
@@ -2508,7 +2508,7 @@ body.iframe {
 }
 
 .edit-comment-author {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	border-bottom: 1px solid var(--color-theme-white);
 }
 
@@ -2740,7 +2740,7 @@ div.action-links {
 	border: 1px solid var(--color-theme-white);
 	border-bottom-color: var(--color-theme-white);
 	padding-top: 8px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 #plugin-information-tabs.with-banner a.current {
@@ -2807,7 +2807,7 @@ div.action-links {
 }
 
 #plugin-information .fyi strong {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 #plugin-information .fyi h3 {
@@ -3099,7 +3099,7 @@ img {
 .bulk-action-notice .toggle-indicator::before {
 	line-height: 16px;
 	vertical-align: top;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .js .postbox .handlediv:focus {
@@ -3202,7 +3202,7 @@ img {
 }
 
 [role="treeitem"] .folder-label.focus {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	box-shadow:
 		0 0 0 1px var(--indigo-400),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
@@ -3422,12 +3422,12 @@ img {
 .item-edit,
 .toggle-indicator,
 .accordion-section-title::after {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .widget-action {
 	/* var(--color-theme-white) background in the Widgets screen */
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .widget-top:hover .widget-action,
@@ -3440,7 +3440,7 @@ img {
 .item-edit:focus,
 .sidebar-name:hover .toggle-indicator,
 .accordion-section-title:hover::after {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .widget-top .widget-action:focus .toggle-indicator::before {
@@ -3528,7 +3528,7 @@ img {
 
 .accordion-section-title:hover::after,
 .accordion-section-title:focus::after {
-	border-color: #var(--gray-700) transparent;
+	border-color: var(--global-font-color) transparent;
 }
 
 .cannot-expand .accordion-section-title {
@@ -3557,7 +3557,7 @@ img {
 .js .control-section .accordion-section-title:hover,
 .js .control-section.open .accordion-section-title,
 .js .control-section .accordion-section-title:focus {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	background: var(--color-theme-white);
 }
 

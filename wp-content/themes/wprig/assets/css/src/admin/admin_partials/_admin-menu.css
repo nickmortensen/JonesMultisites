@@ -1,5 +1,5 @@
 #wpadminbar {
-	background: var(--indigo-600);
+	background: var(--admin-bg-color);
 	font-family: serif;
 	padding: 1vh 2vw;
 	border-bottom: 2px solid var(--yellow-500);
@@ -20,7 +20,7 @@
 #adminmenu,
 #adminmenu .wp-submenu {
 	width: var(--submenu-width);
-	background-color: var(--indigo-600);
+	background-color: var(--admin-bg-color);
 }
 
 #adminmenuback {
@@ -55,7 +55,7 @@
 /* New Menu icons */
 
 .icon16::before {
-	color: var(--gray-700); /* same as new icons */
+	color: var(--global-font-color); /* same as new icons */
 	font: 500 20px/1 dashicons, sans-serif;
 	speak: none;
 	padding: 6px 0;
@@ -272,7 +272,7 @@
 #adminmenu .wp-menu-arrow,
 #adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head,
 #adminmenu .wp-menu-arrow div {
-	background: var(--indigo-600);
+	background: var(--admin-bg-color);
 	color: var(--color-theme-white);
 }
 
@@ -499,7 +499,7 @@ ul#adminmenu > li.current > a.current::after {
 }
 
 #adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover::after {
-	border-right-color: var(--gray-700);
+	border-right-color: var(--global-font-color);
 }
 
 #adminmenu li.menu-top:hover .wp-menu-image img,
@@ -904,7 +904,7 @@ li#wp-admin-bar-menu-toggle {
 	}
 
 	.wp-responsive-open #wpadminbar #wp-admin-bar-menu-toggle a {
-		background: var(--gray-700);
+		background: var(--global-font-color);
 	}
 
 	li#wp-admin-bar-menu-toggle {

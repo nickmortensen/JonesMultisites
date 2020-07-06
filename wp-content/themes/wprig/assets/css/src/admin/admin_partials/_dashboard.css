@@ -194,7 +194,7 @@
 
 .welcome-panel-column p {
 	margin-top: 7px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 .welcome-panel .welcome-widgets-menus {
@@ -405,7 +405,7 @@
 .community-events li {
 	margin: 0;
 	padding: 8px 12px;
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .community-events li:first-child {
@@ -702,7 +702,7 @@ body #dashboard-widgets .postbox form .submit {
 	padding: 0;
 	font-size: 14px;
 	font-weight: 400;
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 #dashboard_quick_press .drafts h2 {

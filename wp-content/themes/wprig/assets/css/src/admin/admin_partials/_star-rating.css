@@ -41,7 +41,7 @@ div#media_rating {
 	text-indent: -9999px;
 	content: "\f154";
 	font-family: dashicons, serif;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-size: 1.75em;
 }
 
@@ -51,7 +51,7 @@ div#media_rating {
 	content: "\f155";
 	font-family: dashicons, serif;
 	color: var(--yellow-600);
-	text-shadow: 0 0 1px var(--gray-800);
+	text-shadow: 0 0 1px var(--global-font-color);
 	font-size: 1.75em;
 }
 
@@ -68,7 +68,7 @@ div#media_rating {
 #cmb2-star-rating-metabox .star-cb-group:hover > input + label::before {
 	content: "\f154";
 	font-family: dashicons, serif;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	text-shadow: none;
 	font-size: 1.75em;
 }
@@ -78,7 +78,7 @@ div#media_rating {
 	content: "\f155";
 	font-family: dashicons, serif;
 	color: var(--yellow-600);
-	text-shadow: 0 0 1px var(--gray-800);
+	text-shadow: 0 0 1px var(--global-font-color);
 	font-size: 1.75em;
 }
 
@@ -91,10 +91,10 @@ div#media_rating {
 .dashicons-star-filled::before {
 	color: var(--yellow-500);
 	text-shadow:
-		1px 1px 1px var(--gray-700),
-		-1px -1px 1px var(--gray-700),
-		1px -1px 1px var(--gray-700),
-		-1px 1px 1px var(--gray-700);
+		1px 1px 1px var(--global-font-color),
+		-1px -1px 1px var(--global-font-color),
+		1px -1px 1px var(--global-font-color),
+		-1px 1px 1px var(--global-font-color);
 }
 
 .dashicons-star-empty::before,

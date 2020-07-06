@@ -29,6 +29,8 @@
 @import "_typography.css";
 @import "_elements.css";
 @import "_links.css";
+@import "_svg.css";
+
 /*--------------------------------------------------------------
 # Utility Classes
 --------------------------------------------------------------*/
@@ -228,6 +230,7 @@ select {
 	margin: 0 auto 1em;
 }
 
+
 .site-branding {
 	text-align: center;
 	padding: 60px 0 1.75em;
@@ -392,6 +395,7 @@ select {
 ## Main navigation menu
 --------------------------------------------------------------*/
 .main-navigation {
+	background: var(--gray-300);
 	clear: both;
 	display: block;
 	margin: 0 auto 2em;
@@ -406,16 +410,17 @@ select {
 	width: 100%;
 	padding: 0.5em 1em 0.5em 0;
 	text-decoration: none;
-	color: var(--color-theme-black);
+	color: var(--color-theme-white);
+	font-weight: var(--semibold);
 }
 
 .main-navigation a:hover,
 .main-navigation a:focus {
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 .main-navigation ul {
-	display: block;
+	display: flex;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -423,6 +428,11 @@ select {
 
 .main-navigation ul ul li {
 	padding-left: 1em;
+}
+
+.main-navigation ul li a {
+	font-size: 0.8rem;
+	letter-spacing: 0.1rem;
 }
 
 @media (--wide-menu-query) {

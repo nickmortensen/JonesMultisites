@@ -1,5 +1,5 @@
 .project-template-default {
-	--project-headline-color: var(--gray-700);
+	--project-headline-color: var(--global-font-color);
 }
 
 h2.project-title {
@@ -36,7 +36,7 @@ div[id$="-header"] {
 }
 
 .project-title {
-	border: 4px solid var(--gray-600);
+	border: 4px solid var(--global-font-color);
 	margin: 0 auto;
 }
 

@@ -1,0 +1,13 @@
+.taxonomy-expertise th#images {
+	width: 2em;
+}
+
+.post-type-attachment span.material-icons.star-rating {
+	--star-outline: var(--gray-500);
+	font-size: 0.9rem;
+	-webkit-text-stroke: 1px var(--star-outline);
+}
+
+th#id {
+	width: 3.5rem;
+}

@@ -40,7 +40,10 @@ $short_desc   = ( substr( $signtype['description'], -1 ) === '.' ) ? $signtype['
 $long_desc    = ( substr( $signtype['indepth'], -1 ) === '.' ) ? $signtype['indepth'] : $signtype['description'] . '.';
 $uses         = wp_rig()->get_all_info( get_queried_object()->term_id )['uses'];
 $uses         = $signtype['uses'];
-$header_image = wp_rig()->get_sixteen_by_nine( $signtype['term_id'], false );
+$backgrounds  = wp_rig()->get_header_backgrounds( get_queried_object()->term_id );
+$horizontal   = wp_get_attachment_image_src( $backgrounds['horizontal'], 'rectangular-mid' )[0];
+$vertical     = wp_get_attachment_image_src( $backgrounds['vertical'], 'vertical-mid' )[0];
+$cinematic    = wp_get_attachment_image_src( $backgrounds['cinematic'], 'cinematic-mid' )[0];
 ?>
 
 
@@ -51,73 +54,143 @@ $header_image = wp_rig()->get_sixteen_by_nine( $signtype['term_id'], false );
 <style>
 
 #masthead {
-	background: url(<?= $header_image; ?>), linear-gradient( -45deg, rgba(0, 0, 0, 0.15) 30%, rgba(0, 0, 0, 0.65) 65% );
-	background-blend-mode: multiply;
+	padding-bottom: unset;
+	position: relative;
+	width: 100vw;
+	height: 60vw;
+	color: var(--color-theme-white);
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+#masthead > div.masthead {
+	z-index: 20;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	min-width: 100vw;
+	height: 100%;
+	background: url(<?= $cinematic; ?>) 10% 40% / cover no-repeat, linear-gradient( -90deg, rgba(157, 31, 90, 0.45) 30%, rgba(98, 31, 157, 0.65) 65% );
+	background-blend-mode: exclusion;
 	background-size: cover;
-	background-repeat: no-repeat;
-	min-height: 60vw;
 }
-#masthead > div:first-of-type {
-	min-height: 100%;
-	padding: 6vw;
-	max-width: 60vw;
-	/* background: rgba(255,255,255,0.6);
-	backdrop-filter: drop-shadow(4px 4px 10px blue); */
-	background: rgba(255, 255, 255, 0.6 );
-	backdrop-filter: blur(2px) invert(100%);
-	-webkit-backdrop-filter: blur(2px) multiply(90%);
+
+#masthead > div.masthead.wide {
+	visibility: hidden;
 
 }
 
-#masthead div:first-of-type h1 {
+@media all and ( min-width: 1299px ) {
+.wide {
+	display: flex;
+	flex-flow: row nowrap;
+	justify: end;
+	min-width: unset;
+	width: 100%;
 
-	font: var(--highlight-font-family);
-	font-size: calc( var(--global-font-size) * 0.4vw );
-	font-weight: var(--extrabold);
-	color: var(--gray-800);
-	/* mix-blend-mode: difference; */
+}
+.wide_image {
+	width: 80vmax;
+	max-width: 900px;
+	min-height: 800px;
+	height: 100%;
+	background: url(<?= $vertical; ?>) 10% 40% / cover no-repeat, linear-gradient( -90deg, rgba(157, 31, 90, 0.45) 30%, rgba(98, 31, 157, 0.65) 65% );
+	background-blend-mode: hard-light;
 }
 
-li.header {
-	font-size: clamp(1.9rem, 1vw + 0.6rem, 30px);
-	color: var(--gray-800);
+.wide_info {
+	color: var(--gray-600);
+	padding: 4vmin;
 }
 
-
-p {
-	color: var(--gray-800);
-	font-size: clamp(1.1rem, 2vw + 0.2rem, 3.6rem);
+.wide_info p {
+	font-size: clamp(24px, 2.3rem, 60px);
 }
+.wide_info h1 {
+	font-size: clamp(34px, 4rem, 80px);
+
+}
+
+	#masthead > div.masthead {
+		visibility: hidden;
+	}
+
+
+
+}
+
 
 </style>
 
 
 <?php wp_body_open(); ?>
 
+<?php
+
+/**
+ * Output a list of uses with periods at the end.
+ *
+ * @param $array $uses The usage scenarios for this sign type.
+ *
+ *
+ */
+function uses_list( $uses ) {
+	$output = '';
+	$list   = [];
+	if ( $uses ) {
+		foreach ( $uses as $key => $use ) {
+			$use    = substr( $use, -1 ) === '.' ? $use : $use . '.';
+			$list[] = "<li class=\"header\">$use</li>";
+		}
+		$output  = '<ul style="list-style-type: circle;" class="ml-16 pt-2">';
+		$output .= implode( '', $list );
+		$output .= '</ul>';
+	}
+	return $output;
+}
+
+?>
+
+<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 <div id="page" class="site">
 
-	<header id="masthead" class="text-white site-header flex col-nw justify-end align-start">
-		<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
-
-		<div>
-			<h1> <?= get_queried_object()->name; ?> </h1>
-			<p><?= $short_desc ?></p>
-			<div class="text-4xl mt-6 border-white"> Uses: </div>
-			<ul style="list-style-type: circle;" class="ml-16 pt-2">
-			<?php
-			$cases = count( $uses );
-			for ( $i = 0; $i < $cases; $i++ ) {
-				$use = ( substr( $uses[ $i ], -1 ) === '.' ) ? $uses[ $i ] : $uses[ $i ] . '.';
-				echo "<li class=\"header\">$use</li>";
-			}
-			?>
-			</ul>
+	<header id="masthead" class="site-header">
+		<div class="masthead">
+			<div>
+				<h1> <?= ucwords( get_queried_object()->name ); ?> </h1>
+				<p><?= $short_desc ?></p>
+				<div class="text-4xl mt-6 border-white"><?= uses_list( $uses ); ?> </div>
+			</div>
 		</div>
 
+		<div class="wide">
+			<div class="wide_image">
+
+			</div>
+			<div class="wide_info">
+			<h1> <?= ucwords( get_queried_object()->name ); ?> </h1>
+				<p><?= $short_desc ?></p>
+				<div class="text-4xl"><?= uses_list( $uses ); ?> </div>
+			</div>
+		</div>
 
 	</header>
 
+		<div class="only-on-large">
+			<h2>This should be here</h2>
+		</div>
 
+
+
+	<pre>
+		<?php print_r( get_queried_object() ); ?>
+		<?php print_r( get_body_class() ); ?>
+		<?php print_r( $backgrounds ); ?>
+		<?php print_r( $horizontal ); ?>
+		<?php print_r( $vertical ); ?>
+		<?php print_r( $cinematic ); ?>
+	</pre>
 
 
 		<?php

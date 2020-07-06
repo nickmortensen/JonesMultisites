@@ -488,6 +488,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Custom Admin Style.
 	 */
 	public function custom_admin_style() {
+		global $pagenow;
+		global $post_type;
 		$css_files = [ 'about', 'admin-menu', 'code-editor', 'color-picker', 'common', 'customize-controls', 'customize-nav-menus' ];
 		$uri       = trailingslashit( get_theme_file_uri() ) . 'assets/css/src';
 		$dir       = trailingslashit( get_theme_file_path() ) . 'assets/css/src';

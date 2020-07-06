@@ -713,7 +713,7 @@ div#widgets-right .widget-top:hover,
 }
 
 .widgets-chooser .widgets-chooser-selected .widgets-chooser-button {
-	background: var(--indigo-600);
+	background: var(--color-theme-primary);
 	color: var(--gray-100);
 }
 

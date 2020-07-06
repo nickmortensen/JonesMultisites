@@ -37,7 +37,7 @@
 
 /* Archive and Categories widgets */
 .widget_archive li {
-	color: #7d7d7d;
+	color: var(--global-font-color);
 }
 
 .widget_categories .children {
@@ -163,7 +163,7 @@
 	font-size: 0.8em;
 	text-align: center;
 	background: #fff;
-	border: 1px solid var(--gray-500);
+	border: 1px solid var(--global-font-color);
 }
 
 .widget_calendar .pad {

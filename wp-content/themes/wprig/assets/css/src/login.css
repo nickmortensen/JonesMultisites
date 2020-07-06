@@ -10,9 +10,9 @@ body {
 }
 
 body {
-	background: linear-gradient(45deg, var(--indigo-400) 0%, var(--indigo-600) 50%, var(--indigo-800) 100%);
+	background: var(--admin-gradient);
 	min-width: 0;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-family: var(--highlight-font-family);
 	font-size: 13px;
 	line-height: 1.4;
@@ -29,7 +29,8 @@ a {
 	transition-duration: 0.05s;
 	transition-timing-function: ease-in-out;
 
-	&:hover, &:active {
+	&:hover,
+	&:active {
 		color: var(--indigo-500);
 	}
 
@@ -133,7 +134,7 @@ p {
 		background-size: 84px;
 		background-position: center top;
 		background-repeat: no-repeat;
-		color: var(--gray-700);
+		color: var(--global-font-color);
 		height: 84px;
 		font-size: 20px;
 		font-weight: 400;
@@ -293,7 +294,7 @@ p {
 .login #nav a,
 .login #backtoblog a {
 	text-decoration: none;
-	color: var(--gray-600);
+	color: var(--global-font-color);
 }
 
 .login #nav a:hover,
@@ -389,7 +390,6 @@ input::-ms-reveal {
 		padding: 20px 0;
 	}
 }
-
 @media screen and (max-width: 782px) {
 	.interim-login input[type="checkbox"] {
 		width: 1rem;

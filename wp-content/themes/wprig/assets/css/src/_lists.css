@@ -4,7 +4,7 @@ ol {
 }
 
 li {
-	font-size: calc(var(--font-size-regular) * 2);
+	font-size: calc(var(--font-size-regular) * 1.6);
 }
 
 ul {
@@ -22,7 +22,7 @@ li > ol {
 }
 
 dt {
-	font-weight: 700;
+	font-weight: var(--bold);
 }
 
 dd {

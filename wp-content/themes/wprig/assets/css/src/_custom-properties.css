@@ -123,7 +123,7 @@
 	--global-font-family: -apple-system, ubuntu, serif;
 	--global-font-size: 20;
 	--global-font-line-height: 1.4;
-	--highlight-font-family: inter, system-ui, blinkmacsystemfont, sans-serif;
+	--highlight-font-family: ubuntu, system-ui, blinkmacsystemfont, sans-serif;
 	--content-width: 45rem;
 	--dropdown-symbol-width: 0.7em;
 
@@ -145,6 +145,7 @@
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
 
+	/* QUOTES */
 	--color-quote-border: var(--gray-800);
 	--color-quote-citation: var(--gray-600);
 	--transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -163,6 +164,8 @@
 	--fontWeight: 300;
 
 	--admin-font: serif;
+	--admin-font-size: 1.15rem;
+	--admin-row-actions-font-size: 8px;
 	--admin-heading-color: var(--global-font-color);
 	--admin-bg-color: var(--color-theme-primary);
 	--admin-bg-darker: var(--color-link-visited);
@@ -176,5 +179,23 @@
 	--admin-link-hover: var(--indigo-900);
 	--submenu-width: 180px;
 	--paragraph-color: var(--global-font-color);
+
+	/* Jones SVG Textcolor */
+	--logotype-textfill: var(--color-theme-white);
+	--logotype-tagline-display: none;
+	--jonessign-text-svg-tagline-fill: var(--gray-500);
+
+	/* General */
+	--body-bg-color: #fff;
+
+	/* PRE */
+	--pre-bg: var(--blue-700);
+	--pre-color: var(--color-theme-white);
+
+	/* Flickity */
+	--flickity-button-color: var(--gray-900);
+
+	/* Gradient */
+	--admin-gradient: linear-gradient(45deg, var(--indigo-400) 0%, var(--indigo-600) 50%, var(--indigo-800) 100%);
 }
 

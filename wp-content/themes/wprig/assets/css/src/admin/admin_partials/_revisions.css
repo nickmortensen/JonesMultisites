@@ -510,7 +510,7 @@ div.revisions-controls > .wp-slider > .ui-slider-handle {
 
 .wp-slider .ui-slider-handle:hover::before,
 .wp-slider .ui-slider-handle.ui-state-hover::before {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .wp-slider .ui-slider-handle.from-handle::before,

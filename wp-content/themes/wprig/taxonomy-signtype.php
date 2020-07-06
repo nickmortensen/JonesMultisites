@@ -20,10 +20,15 @@
 namespace WP_Rig\WP_Rig;
 
 get_header( 'signtype' );
-
+global $wp_query;
 $termid = get_queried_object()->term_id;
 wp_rig()->print_styles( 'wp-rig-content' );
-$body = get_body_class();
+
+$signtype     = wp_rig()->get_all_info( get_queried_object()->term_id );
+$short_desc   = ( substr( $signtype['description'], -1 ) === '.' ) ? $signtype['description'] : $signtype['description'] . '.';
+$long_desc    = ( substr( $signtype['indepth'], -1 ) === '.' ) ? $signtype['indepth'] : $signtype['description'] . '.';
+$uses         = wp_rig()->get_all_info( get_queried_object()->term_id )['uses'];
+$uses         = $signtype['uses'];
 
 ?>
 
@@ -34,11 +39,6 @@ $body = get_body_class();
 </section>
 
 <section id="signtype-links" class="flex-row nw justify-between align-center">
-	<pre>
-		<?php print_r( get_queried_object() ); ?>
-	</pre>
-<a title="link to the previous sign type" href=""></a>
-<a title="link to the next sign type" href=""></a>
 
 </section><!-- end section#signtype-links -->
 <div id="signtype-primary" class="w-screen flex col-nw justify-around">
@@ -46,8 +46,7 @@ $body = get_body_class();
 	div#signtype-primary {
 		height: 1900px;
 	}
-	section[id^="signtype"] {
-		background: var(--orange-200);
+	section[id^="term"] {
 		min-height: 20%;
 		min-width: 100vw;
 		border-bottom: 18px solid var(--purple-600);
@@ -61,41 +60,34 @@ $body = get_body_class();
 </style>
 
 
-<section id="signtype-header">
+	<section id="term-header">
 
-</section><!-- end section#signtype-header -->
+	</section><!-- end section#signtype-header -->
 
-<section id="signtype-description">
-	<h2>description of the sign type</h2>
-</section><!-- end section#signtype-description -->
+	<section id="term-description">
+		<h2>description of the sign type</h2>
+	</section><!-- end section#signtype-description -->
 
-<section id="signtype-gallery"> <div>images of this sign type</div> </section><!-- end section#signtype-gallery -->
 
-<section id="signtype-project-links"></section><!-- end section#signtype-project-links -->
+	<!-- gallery of this term -->
+	<section id="type-gallery">
+		<h2> gallery with images of this sign type<
+	</section><!-- end section#signtype-gallery -->
+
+	<!-- projects that feature this term -->
+	<section id="project-links">
+		<h2> here you will put links to projects that have this term attached</h2>
+	</section><!-- end section#signtype-project-links -->
+
+	<!-- links to other terms in the same taxonomy -->
+	<section id="other-terms">
+		<a title="link to the previous sign type" href=""></a>
+		<a title="link to the next sign type" href=""></a>
+	</section><!-- end section#other-terms -->
 
 </div><!-- end div.signtype-primary -->
 
-<h2>taxonomy signtype page first edit</h2>
-	<main id="primary" class="site-main">
-		<?php
-		if ( have_posts() ) {
 
-			get_template_part( 'template-parts/content/page_header' );
-
-			while ( have_posts() ) {
-				the_post();
-
-				get_template_part( 'template-parts/content/entry', get_post_type() );
-			}
-
-			if ( ! is_singular() ) {
-				get_template_part( 'template-parts/content/pagination' );
-			}
-		} else {
-			get_template_part( 'template-parts/content/error' );
-		}
-		?>
-	</main><!-- #primary -->
 <?php
 get_sidebar();
 get_footer();

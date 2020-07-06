@@ -295,7 +295,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		// Add the checkbox back in so it can be before the ID column.
 		$new['cb']    = '<input type = "checkbox" />';
 		$new['id']    = 'ID';
-		$new['allow'] = 'Allow?';
+		$new['desc']  = '<span style="color:var(--yellow-600);" class="material-icons">pan_tool</span>';
 		return array_merge( $new, $columns );
 	}//end set_industry_admin_columns()
 
@@ -308,14 +308,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @echo   string $output The content for the columns.
 	 */
 	public function set_data_for_custom_admin_columns( $content, $column_name, $term_id ) {
-		$taxonomy = $this->get_slug();
-
+		$taxonomy  = $this->get_slug();
+		$$taxonomy = get_term( $term_id, $taxonomy, ARRAY_A );
+		$title     = 'no description yet for this term';
+		$color     = 'gray';
 		switch ( $column_name ) {
 			case 'id':
 				$output = $term_id;
 				break;
-			case 'allow':
-				$output = '<span class="material-icons">pan_tool</span>';
+			case 'desc':
+				if ( $$taxonomy['description'] ) {
+					$title = 'term has description';
+					$color = 'indigo';
+				}
+				$output = '<span title="' . $title . '" style="color:var(--' . $color . '-600);" class="material-icons">pan_tool</span>';
 				break;
 			default:
 				$output = $term_id;

@@ -29,8 +29,8 @@ namespace WP_Rig\WP_Rig;
 
 	<?php wp_head(); ?>
 	<?php
-	$blog = get_current_blog_id();
-	$type = get_post_type();
+	$blog      = get_current_blog_id();
+	$posttype = get_post_type();
 	?>
 </head>
 
@@ -52,6 +52,15 @@ $info        = wp_rig()->get_location_info( $location_id );
 $capability = wp_rig()->get_location_capability( $term_id );
 global $wpdb;
 
+switch ( $posttype ) {
+	case 'client':
+	case 'project':
+		$bg_image = get_the_post_thumbnail_url( $post->ID, 'featured' );
+		break;
+	default:
+		$bg_image = $city_image;
+}
+
 ?>
 
 
@@ -67,7 +76,7 @@ global $wpdb;
 		--header-text-color: <?= $headertext; ?>;
 	}
 	#masthead {
-		background-image: linear-gradient(rgba(40, 80, 120, 0.8), rgba(2, 155, 185, 0.9)), url('<?= $city_image; ?>');
+		background-image: linear-gradient(rgba(40, 80, 120, 0.8), rgba(2, 155, 185, 0.9)), url('<?= $bg_image; ?>');
 		background-blend-mode: var(--header-blend-mode);
 		background-size: cover;
 	}

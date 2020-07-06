@@ -55,7 +55,7 @@ textarea {
 	border-radius: 4px;
 	border: 1px solid var(--gray-500);
 	background-color: var(--gray-100);
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 input[type="text"],
@@ -310,7 +310,7 @@ input[type="radio"].disabled:checked::before {
 .wp-core-ui select {
 	font-size: 14px;
 	line-height: 2; /* 28px */
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	border-color: var(--gray-500);
 	box-shadow: none;
 	border-radius: 3px;
@@ -530,7 +530,7 @@ fieldset label,
 #pass-strength-result {
 	background-color: var(--gray-100);
 	border: 1px solid var(--gray-100);
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	margin: -1px 1px 5px;
 	padding: 3px 5px;
 	text-align: center;
@@ -680,7 +680,7 @@ ul#add-to-blog-users {
 
 /* Colors for the tags autocomplete. */
 .wp-tags-autocomplete .ui-state-focus {
-	background-color: var(--indigo-600);
+	background-color: var(--color-theme-primary);
 	color: var(--gray-100);
 }
 
@@ -711,7 +711,7 @@ ul#add-to-blog-users {
 
 .form-table th,
 .form-wrap label {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	font-weight: 400;
 	text-shadow: none;
 	vertical-align: baseline;
@@ -899,7 +899,7 @@ table.form-table td .updated p {
 	display: inline-block;
 	position: relative;
 	cursor: move;
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	background: var(--gray-100);
 	border-radius: 5px;
 	border: 1px solid var(--gray-500);

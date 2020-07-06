@@ -5,7 +5,7 @@ html {
 
 body {
 	background: var(--gray-100);
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-family: var(--highlight-font-family);
 	margin: 140px auto 25px;
 	padding: 20px 20px 10px 20px;
@@ -15,7 +15,7 @@ body {
 }
 
 a {
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 a:hover,
@@ -99,7 +99,7 @@ label {
 	background-size: 84px;
 	background-position: center top;
 	background-repeat: no-repeat;
-	color: var(--gray-700); /* same as login.css */
+	color: var(--global-font-color); /* same as login.css */
 	height: 84px;
 	font-size: 20px;
 	font-weight: 400;
@@ -334,14 +334,14 @@ body.language-chooser {
 	display: block;
 	border: 1px solid var(--gray-100);
 	background: var(--gray-100);
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	font-size: 16px;
 	font-family: Arial, sans-serif;
 	font-weight: 400;
 }
 
 .language-chooser select:focus {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .language-chooser select option:hover,

@@ -32,7 +32,7 @@
 
 .customize-control .widget-top:hover .widget-action,
 .customize-control .widget-action:focus {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 .customize-control-widget_form:not(.widget-rendered) .widget-top {
@@ -167,7 +167,7 @@
 	position: relative;
 	margin: 0;
 	padding: 13px 15px 15px 42px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	border-top: 1px solid var(--gray-100);
 	cursor: pointer;
 	-webkit-user-select: none;
@@ -255,8 +255,8 @@
 #available-widgets .widget-tpl.selected {
 	background: #f3f3f5;
 	border-bottom-color: var(--gray-500);
-	color: var(--indigo-600);
-	border-left: 4px solid var(--indigo-600);
+	color: var(--color-theme-primary);
+	border-left: 4px solid var(--color-theme-primary);
 }
 
 #customize-controls .widget-title h3 {
@@ -309,7 +309,7 @@ body.adding-widget #customize-preview {
 	margin-right: 20px;
 	width: 20px;
 	height: 20px;
-	color: var(--gray-800);
+	color: var(--global-font-color);
 	font: 500 20px/1 dashicons, sans-serif;
 	text-align: center;
 	box-sizing: border-box;

@@ -17,6 +17,7 @@ use function wp_enqueue_script;
 use function get_post_meta;
 use function wp_localize_script;
 use function register_post_type;
+use function get_posts;
 
 /**
  * Class for improving accessibility among various core features.
@@ -103,14 +104,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Get all the published projects.
 	 */
-	public function get_all_projects() {
+	public static function get_all_projects() {
 
 		$args = [
 			'post_type'   => 'project',
-			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'orderby'     => 'title',
+			'order'       => 'ASC',
+			'suppress_filters' => true,
 		];
 
-		return new \WP_QUERY( $args );
+		return get_posts( $args );
 	}
 
 	/**
@@ -790,8 +794,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return string HTML for the label on the address field within the project post type.
 	 */
 	public function the_svg( $url, $echo = true, $width = 30 ) {
-		$max = (int) $width + 5;
-		$output = "<img class=\"svg_logo\" src=\"$url\"/ style=\"min-width: {$width}vmin;max-width: {$max}vw;\">";
+		$max    = (int) $width + 5;
+		$output = <<<SVG
+			<img class="svg_logo" src="$url" style="min-width: {$width}vmin; max-width: {$max}vw;" >
+SVG;
+// <<important that "SVG;" is tight to the margin - using the heredoc syntax.
 		if ( $echo ) {
 			echo $output;
 		} else {

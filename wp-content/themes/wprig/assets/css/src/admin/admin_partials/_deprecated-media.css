@@ -51,7 +51,7 @@ div#media-upload-header {
 	border: 1px solid var(--gray-100);
 	border-bottom-color: var(--gray-100);
 	background-color: var(--gray-100);
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 #media-upload::after { /* clearfix */
@@ -166,9 +166,6 @@ span.required {
 	padding: 2px 8px;
 }
 
-.describe td.A1 {
-	width: 132px;
-}
 
 .describe input[type="text"],
 .describe textarea {
@@ -344,7 +341,7 @@ h4.media-sub-title {
 #gallery-settings label,
 #gallery-settings legend {
 	font-size: 13px;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	margin-right: 15px;
 }
 

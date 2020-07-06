@@ -44,7 +44,7 @@ html {
  */
 
 body {
-	background: #fff;
+	background: var(--body-bg-color, #fff);
 	margin: 0;
 	max-width: 100%;
 	overflow-x: hidden;
@@ -96,8 +96,8 @@ pre {
 	padding: 1.5em;
 	display: block;
 	min-width: 100vw;
-	background: var(--blue-700);
-	color: var(--color-theme-white);
+	background: var(--pre-bg);
+	color: var(--pre-color);
 }
 
 /* Text-level semantics

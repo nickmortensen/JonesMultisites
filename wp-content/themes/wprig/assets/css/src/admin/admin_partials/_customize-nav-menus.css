@@ -29,7 +29,7 @@
 #customize-controls .theme-location-set,
 #customize-controls .control-section .accordion-section-title:focus .menu-in-location,
 #customize-controls .control-section .accordion-section-title:hover .menu-in-location {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 /* The `edit-menu` and `create-menu` buttons also use the `button-link` class. */
@@ -233,14 +233,14 @@
 }
 
 #customize-controls .customize-info.open.active-menu-screen-options .customize-help-toggle {
-	color: var(--gray-700);
+	color: var(--global-font-color);
 }
 
 /* Screen Options */
 .customize-screen-options-toggle {
 	background: none;
 	border: none;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	cursor: pointer;
 	margin: 0;
 	padding: 20px;
@@ -264,7 +264,7 @@
 #customize-controls .customize-info.open.active-menu-screen-options .customize-help-toggle:hover,
 #customize-controls .customize-info.open.active-menu-screen-options .customize-help-toggle:active,
 #customize-controls .customize-info.open.active-menu-screen-options .customize-help-toggle:focus {
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 .customize-screen-options-toggle:focus,
@@ -708,12 +708,12 @@
 #available-menu-items .accordion-section-title:hover .toggle-indicator::before,
 #available-menu-items .button-link:hover .toggle-indicator::before,
 #available-menu-items .button-link:focus .toggle-indicator::before {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 #available-menu-items .open .accordion-section-title .toggle-indicator::before {
 	content: "\f142";
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 #available-menu-items .available-menu-items-list {
@@ -747,7 +747,7 @@
 
 #available-menu-items .cannot-expand .accordion-section-title .no-items {
 	float: right;
-	color: var(--gray-700);
+	color: var(--global-font-color);
 	font-weight: 400;
 	margin-left: 5px;
 }
@@ -828,7 +828,7 @@
 }
 
 #available-menu-items .menu-item-handle .item-add:focus {
-	color: var(--gray-800);
+	color: var(--global-font-color);
 }
 
 #available-menu-items .item-add::before {
@@ -1010,13 +1010,13 @@ li.assigned-to-menu-location .add-new-menu-item {
 .menu-item-handle:hover {
 	position: relative;
 	z-index: 10;
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 .menu-item-handle:hover .item-type,
 .menu-item-handle:hover .item-edit,
 #available-menu-items .menu-item-handle:hover .item-add {
-	color: var(--indigo-600);
+	color: var(--color-theme-primary);
 }
 
 .menu-item-edit-active .menu-item-handle {

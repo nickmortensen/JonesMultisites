@@ -62,11 +62,11 @@ label.checkbox-left {
 }
 
 #staffinfo-short-details {
-	border-bottom: 1rem solid var(--indigo-600);
+	border-bottom: 1rem solid var(--color-theme-primary);
 }
 
 #staffinfo-short-details h2.hndle.ui-sortable-handle {
-	background: var(--indigo-600);
+	background: var(--color-theme-primary);
 	font-size: 1.3rem;
 	color: var(--color-theme-white);
 	letter-spacing: 0.1rem;

@@ -50,6 +50,12 @@ if ( ! wp_rig()->is_primary_nav_menu_active() ) {
 	</button>
 
 	<div class="primary-menu-container">
-		<?php wp_rig()->display_primary_nav_menu( [ 'menu_id' => 'primary-menu' ] ); ?>
+		<?php
+			$menu_arguments = [
+				'menu_id'      => 'primary-menu',
+				'container_id' => 'example',
+			];
+			wp_rig()->display_primary_nav_menu( $menu_arguments );
+		?>
 	</div>
 </nav><!-- #site-navigation -->
