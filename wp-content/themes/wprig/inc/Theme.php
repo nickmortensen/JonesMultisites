@@ -170,6 +170,9 @@ class Theme {
 			new Expertise_Taxonomy\Component(),
 			new MultiSites\Component(),
 			new Extend_Quickedit\Component(),
+			new GooglePhotos\Component(),
+			new Forms\Component(),
+			new RelatedImages\Component(),
 		];
 
 		if ( defined( 'JETPACK__VERSION' ) ) {

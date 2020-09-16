@@ -1,11 +1,10 @@
-/* eslint-env 2018 */
+/* eslint-env es6 */
 'use strict';
 
 /**
  * External dependencies
  */
 import { src, dest } from 'gulp';
-import tailwindcss from 'tailwindcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import AtImport from 'postcss-import';
 import pump from 'pump';
@@ -18,7 +17,7 @@ import { pipeline } from 'mississippi';
 /**
  * Internal dependencies
  */
-import { rootPath, paths, gulpPlugins, isProd, userPath } from './constants';
+import { rootPath, paths, gulpPlugins, isProd } from './constants';
 import {
 	getThemeConfig,
 	getStringReplacementTasks,
@@ -34,12 +33,12 @@ export function stylesBeforeReplacementStream() {
 	return pipeline.obj( [
 		logError( 'CSS' ),
 		gulpPlugins.newer( {
-			dest : paths.styles.dest,
+			dest: paths.styles.dest,
 			extra: [ paths.config.themeConfig ],
 		} ),
 		gulpPlugins.phpcs( {
-			bin            : `${userPath}/.composer/vendor/bin/phpcs`,
-			standard       : 'mortensen',
+			bin: `${ rootPath }/vendor/bin/phpcs`,
+			standard: 'WordPress',
 			warningSeverity: 0,
 		} ),
 		// Log all problems that were found.
@@ -47,32 +46,30 @@ export function stylesBeforeReplacementStream() {
 	] );
 }
 
-
-
 export function stylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		// stylelint( { configFile: `${userPath}/.stylelintrc` }),
+		stylelint(),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
-					appendBaseToFilePathArray( config.dev.styles.importFrom, paths.styles.srcDir ):
+					appendBaseToFilePathArray( config.dev.styles.importFrom, paths.styles.srcDir ) :
 					[]
 			),
 			stage: (
 				configValueDefined( 'config.dev.styles.stage' ) ?
-					config.dev.styles.stage:
+					config.dev.styles.stage :
 					3
 			),
 			autoprefixer: (
 				configValueDefined( 'config.dev.styles.autoprefixer' ) ?
-					config.dev.styles.autoprefixer:
+					config.dev.styles.autoprefixer :
 					{}
 			),
 			features: (
 				configValueDefined( 'config.dev.styles.features' ) ?
-					config.dev.styles.features:
+					config.dev.styles.features :
 					{
 						'custom-media-queries': {
 							preserve: false,
@@ -87,7 +84,6 @@ export function stylesAfterReplacementStream() {
 		calc( {
 			preserve: false,
 		} ),
-		tailwindcss(`${rootPath}/gulp/tailwind.js`),
 		cssnano(),
 	];
 
@@ -107,9 +103,9 @@ export function stylesAfterReplacementStream() {
 	return pipeline.obj( [
 		gulpPlugins.postcss( [
 			AtImport( {
-				path   : [ paths.styles.srcDir ],
+				path: [ paths.styles.srcDir ],
 				plugins: [
-					stylelint( { configFile: `${userPath}/.stylelintrc` } ),
+					stylelint(),
 				],
 			} ),
 		] ),

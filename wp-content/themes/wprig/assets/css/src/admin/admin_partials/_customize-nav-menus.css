@@ -1052,6 +1052,7 @@ li.assigned-to-menu-location .add-new-menu-item {
 		0 0 0 1px var(--indigo-500),
 		0 0 2px 1px rgba(30, 140, 190, 0.8);
 }
+
 @media screen and (max-width: 782px) {
 	#available-menu-items #available-menu-items-search .accordion-section-content {
 		top: 63px;

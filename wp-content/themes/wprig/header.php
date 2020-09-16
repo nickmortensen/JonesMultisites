@@ -91,12 +91,10 @@ switch ( $posttype ) {
 	#page-topper {
 		min-height: 18vh;
 		min-width: 100vw;
-		border-bottom: 4px solid var(--color-theme-white);
 		display: flex;
 		flex-flow: row nowrap;
 	}
 	#page-topper > div {
-		border: 2px solid #fff;
 		min-width: 20vw;
 		padding: 1vw;
 	}

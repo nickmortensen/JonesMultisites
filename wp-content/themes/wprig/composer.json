@@ -35,5 +35,8 @@
     ],
     "phpunit-dev": "\"vendor/bin/phpunit\"",
     "phpunit-integration-dev": "\"vendor/bin/phpunit\" -c \"phpunit.integration.xml.dist\""
+  },
+  "require": {
+    "google/photos-library": "^1.6"
   }
 }

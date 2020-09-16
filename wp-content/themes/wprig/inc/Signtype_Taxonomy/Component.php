@@ -9,6 +9,7 @@ namespace WP_Rig\WP_Rig\SignType_Taxonomy;
 
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
+use WP_Rig\WP_Rig\Global_Taxonomies\Component as Taxonomies;
 use WP_Query;
 use function add_action;
 use function get_terms;
@@ -21,6 +22,21 @@ use function register_taxonomy;
  * NOTE: See description on the google rich snippet for product.
  *
  * @link https://developers.google.com/search/docs/data-types/product
+ */
+/**
+ * TABLE OF CONTENTS
+ * initialize()                        - Instantiate the class.
+ * template_tags()                     - Expose functions to the rest of the site.
+ * get_all_info()                      - Gets all the info from the extra fields assigned to this taxonomy.
+ * get_all_signtypes()                 - List all the signtypes that have been added as an array.
+ * get_signtype_ids()                  - Get all signtype term identifiers.
+ * get_links()                         - Get links to all signtypes.
+ * create_extra_fields()               - Create the extra fields for the post type.
+ * set_signtype_admin_columns()        - Determine columns in the admin screen for the signtype taxonomy.
+ * set_data_for_custom_admin_columns() - Output data into the ccustom admin columns for this taxonomy.
+ * make_signtype_columns_sortable()    - Make admin columns specified sortable.
+ * get_use_cases()                     - Get post meta_field 'signtypeUseCases' as an array.
+ * get_aliases()                       - Get post meta_field 'signtypeAltNames' as an array.
  */
 
 /**
@@ -37,7 +53,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @var      string    $slug The slug of this taxonomy..
 	 */
 	private $slug = 'signtype';
-
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -60,7 +75,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
 	}
 
-	// EXPOSE TEMPLATE TAGS.
 	/**
 	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
 	 *
@@ -73,57 +87,46 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_use_cases'          => [ $this, 'get_use_cases' ],
 			'get_aliases'            => [ $this, 'get_aliases' ],
 			'get_all_info'           => [ $this, 'get_all_info' ],
-			'get_square'             => [ $this, 'get_square' ],
-			'get_rectangular'        => [ $this, 'get_rectangular' ],
-			'get_cinematic'          => [ $this, 'get_cinematic' ],
-			'get_vertical'           => [ $this, 'get_vertical' ],
 			'get_signtype_indepth'   => [ $this, 'get_signtype_indepth' ],
-			'check_signtype_images'  => [ $this, 'check_signtype_images' ],
 			'get_signtype_image_ids' => [ $this, 'get_signtype_image_ids' ],
-			'get_header_backgrounds' => [ $this, 'get_header_backgrounds' ],
+			'get_signtype_images'    => [ $this, 'get_signtype_images' ],
+			'count_term_entries'     => [ $this, 'count_term_entries' ],
 		];
 	}
 
 	/**
 	 * Query for all the data and metadata assigned to any of the taxonomy.
 	 *
-	 * @param int $term The id for the taxonomy term.
+	 * @param int $term_id The id for the taxonomy term.
 	 * @return array $info An associative array of all the data and metadata assigned to thie taxonomy item.
 	 */
-	public function get_all_info( $term = '' ) : array {
-		$term_id             = $term;
+	public function get_all_info( $term_id = '' ) : array {
 		$info                = [];
-		$signtype            = get_term( $term_id, 'signtype' );
-		$uses                = $this->get_use_cases( $term_id );
-		$info['name']        = $signtype->name;
-		$info['tax']         = $signtype->taxonomy;
+		$info['name']        = get_term( $term_id )->name;
+		$info['tax']         = get_term( $term_id )->taxonomy;
 		$info['term_id']     = $term_id;
-		$info['description'] = $signtype->description;
-		$info['uses']        = $this->get_use_cases( $term_id )[0];
-		$info['aliases']     = $this->get_aliases( $term_id );
-		$info['cinematic']   = $this->get_cinematic( $term_id, true );
-		$info['rectangular'] = $this->get_rectangular( $term_id, true );
-		$info['square']      = $this->get_square( $term_id, true );
-		$info['vertical']    = $this->get_vertical( $term_id, true );
+		$info['description'] = get_term( $term_id )->description;
 		$info['indepth']     = $this->get_signtype_indepth( $term_id );
+		$info['uses']        = $this->get_use_cases( $term_id, false )[0];
+		$info['aliases']     = $this->get_aliases( $term_id )[0];
+		$info['images']      = $this->get_signtype_images( $term_id );
 		return $info;
 	}
 
 	/**
-	 * Output the signtype term array.
+	 * Output all of the entries in the signtype taxonomy as an array.
 	 */
 	public function get_all_signtypes() : array {
-		$terms = get_terms( 'signtype', [ 'hide_empty' => false ] );
-		return $terms;
+		return get_terms( 'signtype', [ 'hide_empty' => false ] );
 	}
 
 	/**
-	 * Get all signtype term identifiers.
+	 * Get all term entries within the signtype taxonomy as an array of id numbers.
 	 */
 	public function get_signtype_ids() : array {
 		$ids       = [];
 		$signtypes = $this->get_all_signtypes();
-		foreach ( $signtypes as $signtype ) {
+		foreach ( $this->get_all_signtypes() as $signtype ) {
 			$ids[] = $signtype->term_id;
 		}
 		return $ids;
@@ -137,7 +140,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_links( $except = [] ) {
 		$types = $this->get_signtype_ids();
 		$links = [];
-		foreach ( $types as $type ) {
+		foreach ( $this->get_signtype_ids() as $type ) {
 			if ( $except === $type ) continue;
 			$name        = $type->name;
 			$description = $type->description;
@@ -279,13 +282,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'post_type'   => [ 'project' ],
 				'post_status' => [ 'publish', 'pending' ],
 			],
-
 		];
-
 
 		/* Longer Description */
 		$args = [
-			'name'       => 'longer description',
+			'name'       => 'Sales Description',
 			'desc'       => 'a longer, keyword-laden description -- may use html markup',
 			'id'         => 'signtypeIndepth',
 			'type'       => 'textarea_code',
@@ -297,30 +298,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}//end create_extra_fields()
 
 	/**
-	 * Check to see whether there is a sign image of a certain dimension.
-	 *
-	 * @param string $type Could be 'vertical', 'cinematic', 'rectangular', or 'square'.
-	 */
-	public function check_signtype_images( $term_id ) {
-		$options = [ 'vertical', 'cinematic', 'rectangular', 'square' ];
-		$needs   = [];
-		$return_ = [];
-		foreach ( $options as $size ) {
-			if ( ! get_term_meta( $term_id, 'signtype' . ucfirst( $size ), true ) ) {
-				$needs[] = $size;
-			}
-		}
-		$return['color']   = '--indigo-600';
-		$return['message'] = 'has all photos';
-		if ( $needs ) {
-			$return['color']   = '--gray-400';
-			$return['message'] = 'need image types: ' . implode( ' | ', $needs );
-		}
-		return $return;
-	}
-
-	/**
-	 * Set up some new columns in the admin screen for the location taxonomy.
+	 * Set up some new columns in the admin screen for the signtype taxonomy.
 	 *
 	 * @param array $columns The existing columns before I monkeyed with them.
 	 * @link https://shibashake.com/wordpress-theme/modify-custom-taxonomy-columns
@@ -329,13 +307,38 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		// Remove the checkbox that comes with $columns.
 		unset( $columns['cb'] );
 		unset( $columns['description'] );
+		unset( $columns['posts'] );
 		// Add the checkbox back in so it can be before the ID column.
-		$new['cb']     = '<input type="checkbox" />';
-		$new['id']     = 'ID';
-		$new['images'] = '<span style="color:var(--yellow-600);" title="has all photos?" class="material-icons">view_carousel</span>';
+		$new['cb']           = '<input type="checkbox" />';
+		$new['id']           = 'ID';
+		$new['images']       = '<span style="color:var(--table-header-color);" title="has all photos?" class="material-icons">view_carousel</span>';
+		$new['total_photos'] = '<span style="color:var(--table-header-color);" title="tagged photos" class="material-icons">camera_enhance</span>';
 		return array_merge( $new, $columns );
 	}//end set_signtype_admin_columns()
 
+
+	/**
+	 * Count the photos that have this signtype tag attached.
+	 *
+	 * @param int    $term_id The term id.
+	 * @param string $post_type The post type. Defaults to 'attachment', but could be 'project', 'client', 'page', 'post', 'staffmember', 'nav_menu_item'.
+	 */
+	public function count_term_entries( $term_id, $post_type = 'attachment' ) {
+		global $wpdb;
+		$count = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT COUNT(*)
+				FROM $wpdb->posts
+				WHERE `post_type` = %s
+				AND ID IN (
+					SELECT object_id
+					FROM $wpdb->term_relationships
+					WHERE `term_taxonomy_id` = %d
+					)
+				", $post_type, $term_id ) );
+		return $count;
+	}
 	/**
 	 * Add the correct data to the custom columns.
 	 *
@@ -345,20 +348,55 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @echo   string $output The content for the columns.
 	 */
 	public function set_data_for_custom_admin_columns( $content, $column_name, $term_id ) {
-		$taxonomy = $this->get_slug();
+		$query_args      = [
+			'taxonomy' => 'signtype',
+			'term'     => get_term( $term_id )->name,
+		];
+		$wordcount       = str_word_count( $this->get_signtype_indepth( $term_id ) );
+		$icon_color      = 'gray-500';
+		$wordcount_title = 'Please input a longer secondary description';
+		if ( 14 < $wordcount ) {
+			$icon_color      = 'indigo-600';
+			$wordcount_title = 'Secondary description is > 14 words';
+		}
+		$sales_description_icon = wp_sprintf( '<span title="%s" class="material-icons" style="color:var(--%s);">description</span>', $wordcount_title, $icon_color );
+		$icon_properties        = Taxonomies::is_description_long_enough( $term_id, $this->get_slug(), 40 );
+		$icon                   = wp_sprintf( '<span title="%s" class="material-icons" style="color: var(%s);">%s</span>', ucfirst( $icon_properties['title'] ), $icon_properties['color'], $icon_properties['icon'] );
 
 		switch ( $column_name ) {
 			case 'id':
 				$output = $term_id;
 				break;
 			case 'images':
-				$data   = $this->check_signtype_images( $term_id );
-				$output = '<span style="color:var(' . $data['color'] . ');" title="' . $data['message'] . '" class="material-icons">view_carousel</span>';
+				$data    = Taxonomies::check_tag_images( $term_id, $this->get_slug() );
+				$output  = wp_sprintf( '<span style="color:var(%s);" title="%s" class="material-icons">view_carousel</span>', $data['color'], $data['message'] );
+				$output .= $icon;
+				$output .= $sales_description_icon;
+				break;
+			case 'total_photos':
+				// should be a number that is also a link to the upload.php page of any photo with this attachment.
+				$output = $this->get_link_to_images( $term_id );
 				break;
 			default:
 				$output = $term_id;
 		}
 		echo $output;
+	}
+
+
+	/**
+	 * Link to the media attachments of this term.
+	 *
+	 * @param int    $term_id The term id.
+	 * @param string $taxonomy The taxonomy - defaults to 'signtype'.
+	 */
+	public function get_link_to_images( $term_id, $taxonomy = 'signtype' ) {
+		$query['taxonomy'] = $taxonomy;
+		$query['term']     = get_term( $term_id )->name;
+		$link              = add_query_arg( $query, admin_url( 'upload.php' ) );
+		$total_entries     = $this->count_term_entries( $term_id, $post_type = 'attachment' );
+		$output            = wp_sprintf( '<a href="%s" title="link to all photos with the term %s attached">%d</a>', $link, $query['term'], $total_entries );
+		return $output;
 	}
 
 	/**
@@ -370,18 +408,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function make_signtype_columns_sortable( $columns ) {
 		$columns['id']   = 'ID';
 		$columns['slug'] = 'Slug';
+
 		return $columns;
 	}
 
-/**
- * This.
- * signtypeUseCases(group or multiple)
- * signtypeAltNames(group or multiple)
- * signtypeCinematic
- * signtypeRectangular
- * signtypeSquare
- * signtypeIndepth
- */
 
 	/**
 	 * Retrieve the taxonomy meta for 'signtypeUseCases' for the given sign type.
@@ -411,60 +441,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $output;
 	}
 
-
 	/**
-	 * Retrieve the taxonomy meta for the 16 x 9 aspect image for the given sign type.
+	 * Retrieve all the images for a given signtype.
 	 *
 	 * @param int  $term_id Signtype Taxonomy Id.
 	 * @param bool $id Should we get the image id. Default true.
 	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
 	 */
-	public function get_cinematic( $term_id, $id = true ) {
-		$key    = $id ? 'signtypeCinematic_id' : 'signtypeCinematic';
-		$single = true;
-		$output = get_term_meta( $term_id, $key, $single );
-		return $output;
-	}
-
-	/**
-	 * Retrieve the taxonomy meta for 4 x 3 aspect image for the given sign type.
-	 *
-	 * @param int  $term_id Signtype Taxonomy Id.
-	 * @param bool $id Should we get the image id. Default true.
-	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
-	 */
-	public function get_rectangular( $term_id, $id = true ) {
-		$key    = $id ? 'signtypeRectangular_id' : 'signtypeRectangular';
-		$single = true;
-		$output = get_term_meta( $term_id, $key, $single );
-		return $output;
-	}
-
-	/**
-	 * Retrieve the taxonomy meta for 1 x 1 aspect image for the given sign type.
-	 *
-	 * @param int  $term_id Signtype Taxonomy Id.
-	 * @param bool $id Should we get the image id. Default true.
-	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
-	 */
-	public function get_square( $term_id, $id = true ) {
-		$key    = $id ? 'signtypeSquare_id' : 'signtypeSquare';
-		$single = true;
-		$output = get_term_meta( $term_id, $key, $single );
-		return $output;
-	}
-
-	/**
-	 * Retrieve the taxonomy meta for 3 x 4 aspect image for the given sign type.
-	 *
-	 * @param int  $term_id Signtype Taxonomy Id.
-	 * @param bool $id Should we get the image id. Default true.
-	 * @return mixed if $id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
-	 */
-	public function get_vertical( $term_id, $id = true ) {
-		$key    = $id ? 'signtypeVertical_id' : 'signtypeVertical';
-		$single = true;
-		$output = get_term_meta( $term_id, $key, $single );
+	public function get_signtype_images( $term_id, $id = true ) : array {
+		$image_types = [ 'square', 'vertical', 'rectangular', 'cinematic' ];
+		$ouput       = [];
+		foreach ( $image_types as $type ) {
+			$key             = $id ? 'signtype' . ucfirst( $type ) . '_id' : 'signtype' . ucfirst( $type );
+			$output[ $type ] = get_term_meta( $term_id, $key, $id );
+		}
 		return $output;
 	}
 
@@ -497,24 +487,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'tag'       => $term,
 			'post_type' => 'attachment',
 		];
-		return $ids;
+		$images          = new WP_Query( $query_arguments );
+		return $images;
 
-	}
-
-	/**
-	 * Output 2 item array that has the cinematic and the vertical images for a given term.
-	 *
-	 * @param int $term_id The id for a particular term.
-	 *
-	 * @return array $ids An array of the ids for the photos assigned to this signtype.
-	 */
-	public function get_header_backgrounds( $term_id ) : array {
-		$output = [
-			'horizontal' => (int) $this->get_rectangular( $term_id ),
-			'vertical'   => (int) $this->get_vertical( $term_id ),
-			'cinematic'  => (int) $this->get_cinematic( $term_id ),
-		];
-		return $output;
 	}
 
 	/**
@@ -530,9 +505,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$desc        = $term->description;
 		$name        = $term->name;
 		$info        = $this->get_all_info( $term_id );
-		$square      = wp_get_attachment_image_src( $info['square'], 'medium' )[0];
-		$cinematic   = wp_get_attachment_image_src( $info['cinematic'], 'wp-rig-featured' )[0];
-		$rectangular = wp_get_attachment_image_src( $info['rectangular'], 'four-three' )[0];
+		$square      = wp_get_attachment_image_src( $info['images']['square'], 'medium' )[0];
+		$cinematic   = wp_get_attachment_image_src( $info['images']['cinematic'], 'wp-rig-featured' )[0];
+		$rectangular = wp_get_attachment_image_src( $info['images']['rectangular'], 'four-three' )[0];
 		$output      = ' <script type = "application/ld+json">';
 		$output     .= <<<JSONLD
 		{
@@ -582,7 +557,5 @@ JSONLD;
 			echo $this->get_signtype_rich_snippet();
 		}
 	}
-
-
 
 }//end class

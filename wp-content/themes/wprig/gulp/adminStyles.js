@@ -1,4 +1,4 @@
-/* eslint-env 2018 */
+/* eslint-env es6 */
 'use strict';
 
 /**
@@ -17,7 +17,7 @@ import { pipeline } from 'mississippi';
 /**
  * Internal dependencies
  */
-import { rootPath, paths, gulpPlugins, isProd, userPath } from './constants';
+import { rootPath, paths, gulpPlugins, isProd } from './constants';
 import {
 	getThemeConfig,
 	getStringReplacementTasks,
@@ -27,18 +27,18 @@ import {
 } from './utils';
 import { server } from './browserSync';
 
-export function adminStylesBeforeReplacementStream() {
+export function stylesBeforeReplacementStream() {
 	// Return a single stream containing all the
 	// before replacement functionality
 	return pipeline.obj( [
-		logError( 'admin CSS' ),
+		logError( 'Admin CSS' ),
 		gulpPlugins.newer( {
-			dest: paths.styles.dest,
+			dest: paths.styles.adminDest,
 			extra: [ paths.config.themeConfig ],
 		} ),
 		gulpPlugins.phpcs( {
-			bin: `${userPath}/.composer/vendor/bin/phpcs`,
-			standard: `${userPath}/utilities/mortensen/ruleset.xml`,
+			bin: `${ rootPath }/vendor/bin/phpcs`,
+			standard: 'Mortensen',
 			warningSeverity: 0,
 		} ),
 		// Log all problems that were found.
@@ -46,14 +46,14 @@ export function adminStylesBeforeReplacementStream() {
 	] );
 }
 
-export function adminStylesAfterReplacementStream() {
+export function stylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		stylelint( {
+		stylelint({
 			configFile: '/Users/nickmortensen/.stylelintrc',
-
-		} ),
+			ignoreFile: '/Users/nickmortensen/.stylelintignore'
+		}),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
@@ -70,7 +70,6 @@ export function adminStylesAfterReplacementStream() {
 					config.dev.styles.autoprefixer :
 					{}
 			),
-			preserve: false,
 			features: (
 				configValueDefined( 'config.dev.styles.features' ) ?
 					config.dev.styles.features :
@@ -79,8 +78,7 @@ export function adminStylesAfterReplacementStream() {
 							preserve: false,
 						},
 						'custom-properties': {
-						// Preserve must always be false for the admin
-							preserve: false,
+							preserve: true,
 						},
 						'nesting-rules': true,
 					}
@@ -110,9 +108,7 @@ export function adminStylesAfterReplacementStream() {
 			AtImport( {
 				path: [ paths.styles.srcDir ],
 				plugins: [
-					stylelint( {
-						configFile: '/Users/nickmortensen/.stylelintrc',
-					} ),
+					stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' } ),
 				],
 			} ),
 		] ),
@@ -127,18 +123,22 @@ export function adminStylesAfterReplacementStream() {
 		server.stream( { match: '**/*.css' } ),
 	] );
 }
+
 /**
 * CSS via PostCSS + CSSNext (includes Autoprefixer by default).
 * @param {function} done function to call when async processes finish
 * @return {Stream} single stream
 */
-export default function adminStyles( done ) {
+export default function styles( done ) {
 	return pump( [
-		src( paths.styles.adminSrc, { sourcemaps: ! isProd } ),
-		adminStylesBeforeReplacementStream(),
+		src( paths.styles.src, { sourcemaps: ! isProd } ),
+		stylesBeforeReplacementStream(),
 		// Only do string replacements when building for production
-		gulpPlugins.if( isProd, getStringReplacementTasks() ),
-		adminStylesAfterReplacementStream(),
-		dest( paths.styles.adminDest, { sourcemaps: ! isProd } ),
+		gulpPlugins.if(
+			isProd,
+			getStringReplacementTasks()
+		),
+		stylesAfterReplacementStream(),
+		dest( paths.styles.dest, { sourcemaps: ! isProd } ),
 	], done );
 }

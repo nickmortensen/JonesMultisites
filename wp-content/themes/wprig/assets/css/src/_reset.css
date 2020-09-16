@@ -29,6 +29,7 @@ html {
  * components that leverage other behavior; see
  * http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
  */
+
 *,
 *::before,
 *::after {
@@ -394,6 +395,7 @@ template {
  * Hide lazy load placeholders when browser does not have JS enabled.
  * Should override everything, therefore !important.
  */
+
 .no-js .lazy {
 	display: none !important;
 }

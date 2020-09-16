@@ -33,20 +33,17 @@ if ( is_home() ) {
 <?php
 
 $args = [
-	'post_type'   => 'project',
+	'post_type'      => 'project',
 	'posts_per_page' => -1,
-	'orderby'     => 'title',
-	'order'       => 'ASC',
+	'orderby'        => 'title',
+	'order'          => 'ASC',
 ];
 
 
-$projects = wp_rig()->get_project_details();
+$projects  = wp_rig()->get_project_details();
 $id_labels = [];
-$total = count( $projects );
+$total     = count( $projects );
 for ( $i = 0; $i < $total; $i++ ) {
-	// $id_labels[] = [ 'id' => $projects[ $i ]->ID, 'project' => $projects[ $i ]->post_title ];
-	// $id_labels[] = [ 'project' => explode( ' ', $projects[ $i ]->post_title, 3 ) ];
-	// $project = explode( ' ', $projects[ $i ]->post_title, 3 )[1];
 	$project = explode( ' ', $projects[ $i ]->post_title, 3 )[0];
 	if ( isset( explode( ' ', $projects[ $i ]->post_title, 3 )[1] ) ) {
 		$project .= ' ' . explode( ' ', $projects[ $i ]->post_title, 3 )[1];
@@ -54,13 +51,6 @@ for ( $i = 0; $i < $total; $i++ ) {
 	$id_labels[] = $project;
 
 }
-// print_r( $id_labels );
-
-
-$project = 358;
-$metakey = 'clientProjectHidden';
-
-print_r( get_post_meta( $project, $metakey, true ) );
 
 ?>
 </pre>
@@ -130,10 +120,9 @@ print_r( get_post_meta( $project, $metakey, true ) );
 
 	}
 </style> -->
-<section id="select-container" class="w-half">
+<section id="select-container" class="w-100">
 
-
-<?= $projects; ?>
+<?= wp_rig()->personal_finances_form(); ?>
 
 </section>
 

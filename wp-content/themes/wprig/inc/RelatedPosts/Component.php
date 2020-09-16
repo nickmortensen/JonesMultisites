@@ -66,13 +66,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function display_related_posts() {
 
-	printf(
-		'<h2 class="tracking-wider text-2xl text-center bloodymary-gradient text-yellow-400">%s</h2>
-		<aside class="related-posts alignfull">
-			<div class="related-spinner"></div>
-		</aside>',
-		esc_html( 'Related:', 'wp-rig' )
-	);
+		printf(
+			'<h2 class="tracking-wider text-2xl text-center bloodymary-gradient text-yellow-400">%s</h2>
+			<aside class="related-posts alignfull">
+				<div class="related-spinner"></div>
+			</aside>',
+			esc_html( 'Related:', 'wp-rig' )
+		);
 	}
 
 	/**

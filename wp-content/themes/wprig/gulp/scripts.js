@@ -1,4 +1,4 @@
-/* eslint-env 2018 */
+/* eslint-env es6 */
 'use strict';
 
 // External dependencies
@@ -24,8 +24,8 @@ export function scriptsBeforeReplacementStream() {
 			dest: paths.scripts.dest,
 			extra: [ paths.config.themeConfig ],
 		} ),
-		// gulpPlugins.eslint(),
-		// gulpPlugins.eslint.format(),
+		gulpPlugins.eslint(),
+		gulpPlugins.eslint.format(),
 	] );
 }
 

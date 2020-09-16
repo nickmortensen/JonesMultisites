@@ -16,7 +16,7 @@ textarea {
 /* stylelint-enable */
 
 p {
-	font-size: var(--global-font-size);
+	font-size: 1.7rem;
 	margin-top: 1.9rem;
 	font-weight: var(--hairline);
 	color: var(--paragraph-color);
@@ -31,9 +31,9 @@ h4,
 h5,
 h6 {
 	font-family: var(--highlight-font-family), sans-serif;
-	font-stretch: condensed;
+	letter-spacing: var(--h1-letter-spacing);
 	clear: both;
-	font-weight: var(--semibold);
+	font-weight: var(--medium);
 }
 
 .entry-header h1.entry-title,

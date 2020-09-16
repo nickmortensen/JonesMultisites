@@ -4,7 +4,8 @@ ol {
 }
 
 li {
-	font-size: calc(var(--font-size-regular) * 1.6);
+	font-size: calc(var(--font-size-regular) * 1.35);
+	font-weight: var(--light);
 }
 
 ul {
@@ -19,6 +20,10 @@ li > ul,
 li > ol {
 	margin-bottom: 0;
 	margin-left: 1.5em;
+
+	& > li {
+		font-style: italic;
+	}
 }
 
 dt {

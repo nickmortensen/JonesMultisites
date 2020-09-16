@@ -43,6 +43,30 @@ class Component implements Component_Interface {
 	}
 
 	/**
+	 * Output the mission statement.
+	 *
+	 * @param bool $whole_thing  Outputs the mission statement plus the writeup if true, default is false.
+	 */
+	public function mission_statement( $whole_thing = false ) {
+		$description          = 'Jones Sign Company is easy to work with because we are flexible in the way our customers can engage us. Jones Sign provides Solutions, not just products. We are consultants for our customers. Our SSP process makes it easy for our customers to ensure their vision is documented before they start construction. Jones Sign delivers the Design/Build process as a menu of services with clear deliverables. Individual steps of the planning process can be purchased one at a time so there are no big commitments up front.';
+		$jones['mission']     = 'Be the Easy-to-Work-With Solution Provider';
+		$jones['description'] = $whole_thing ? $description : '';
+		return $jones;
+	}
+
+	/**
+	 * Output the tagline.
+	 *
+	 * @param bool $whole_thing  Outputs the tagline plus the writeup if true, default is false.
+	 */
+	public function tagline( $whole_thing = false ) {
+		$description          = 'Jones Sign Company reps listen to & understand client goals. Our entire team\'s expertise & resources can then create, document, and execute the client vision. There are many ways to bring a project to life and Jones Sign Company knows them all';
+		$jones['tagline']     = 'Your Vision. Accomplished';
+		$jones['description'] = $whole_thing ? $description : '';
+		return $jones;
+	}
+
+	/**
 	 * Adds a column to the multisites admin table for blog_id.
 	 *
 	 * @param string $column_name Name of the column.
@@ -81,8 +105,8 @@ class Component implements Component_Interface {
 	 * @return array $columns Existing columns + any new columns you want to be sortable.
 	 */
 	public function make_columns_sortable( $columns ) {
-		$columns['blog_id']  = 'ID';
-		$columns['users']    = 'Users';
+		$columns['blog_id'] = 'ID';
+		$columns['users']   = 'Users';
 		return $columns;
 	}
 

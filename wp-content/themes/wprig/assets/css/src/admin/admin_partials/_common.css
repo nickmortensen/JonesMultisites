@@ -1,6 +1,7 @@
 /* Quick Edit fields */
 #wpbody-content .inline-edit-row fieldset {
-	font-size: 15px;
+	font-size: 0.8rem;
+	font-weight: var(--font-heavy);
 }
 
 a.row-title {
@@ -13,8 +14,8 @@ a.row-title {
 }
 
 
-.post-type-project #id {
-	width: 5%;
+th#id {
+	width: 2em;
 }
 
 .post-type-project #title {

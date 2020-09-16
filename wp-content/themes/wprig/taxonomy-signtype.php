@@ -22,26 +22,93 @@ namespace WP_Rig\WP_Rig;
 get_header( 'signtype' );
 global $wp_query;
 $termid = get_queried_object()->term_id;
-wp_rig()->print_styles( 'wp-rig-content' );
+$slug   = get_queried_object()->slug;
 
-$signtype     = wp_rig()->get_all_info( get_queried_object()->term_id );
-$short_desc   = ( substr( $signtype['description'], -1 ) === '.' ) ? $signtype['description'] : $signtype['description'] . '.';
-$long_desc    = ( substr( $signtype['indepth'], -1 ) === '.' ) ? $signtype['indepth'] : $signtype['description'] . '.';
-$uses         = wp_rig()->get_all_info( get_queried_object()->term_id )['uses'];
-$uses         = $signtype['uses'];
+// Destructuring the array that returns from the get_all_info() function call.
+[
+	'uses'        => $uses,
+	'name'        => $signtype,
+	'description' => $description,
+	'indepth'     => $long_desc,
+] = wp_rig()->get_all_info( get_queried_object()->term_id );
+[
+	'vertical'    => $vertical,
+	'cinematic'   => $cinematic,
+	'rectangular' => $rectangular,
+	'square'      => $square,
+] = wp_rig()->get_signtype_images( get_queried_object()->term_id );
+
+$related = [
+	'images'   => wp_rig()->get_related( get_queried_object()->term_id, 'attachment' ),
+	'projects' => wp_rig()->get_related( get_queried_object()->term_id ),
+];
+
+
+
+$projects = wp_rig()->get_related( get_queried_object()->term_id, 'project' );
+
+
+
+wp_rig()->print_styles( 'wp-rig-content', 'signtype' );
+
+/**
+ * Output a list of uses with periods at the end.
+ *
+ * @param $array $uses The usage scenarios for this sign type.
+ */
+function uses_list( $uses ) {
+	$output = '';
+	$list   = [];
+	if ( $uses ) {
+		foreach ( $uses as $key => $use ) {
+			$use    = substr( $use, -1 ) === '.' ? $use : $use . '.';
+			$list[] = wp_sprintf( '<li class="header">%s</li>', $use );
+		}
+		$output  = '<ul style="list-style-type: circle;">';
+		$output .= implode( '', $list );
+		$output .= '</ul>';
+	}
+	return $output;
+}
+
 
 ?>
 
-<section class="flex col-nw justify-center align-center">
-	<div id="signtype-in-depth" class="w-3/5 p-6">
-		<?= wp_rig()->get_signtype_indepth( get_queried_object()->term_id ); ?>
+<section id="masthead">
+	<div>
+		<h1><?= ucwords( get_queried_object()->name ); ?> </h1>
+		<p><?= $description ?></p>
+		<?= uses_list( $uses ); ?>
 	</div>
-</section>
 
-<section id="signtype-links" class="flex-row nw justify-between align-center">
+	<div>
+		<picture>
+			<source srcset="<?= wp_get_attachment_image_srcset( $vertical, 'medium' ); ?> ">
+			<img>
+		</picture>
+	</div>
+</section><!-- end section#masthead -->
 
-</section><!-- end section#signtype-links -->
-<div id="signtype-primary" class="w-screen flex col-nw justify-around">
+
+
+
+
+
+
+
+
+	<section id="signtype-links" class="flex-row nw justify-between align-center" style="min-height: 440px; background: var(--yellow-700);">
+	<h2>links to projects with this signtype</h2>
+	</section><!-- end section#signtype-links -->
+
+
+	<!-- GALLERY of images using this term -->
+	<section class="related_images">
+		<h2> <?= ucwords( get_queried_object()->name ); ?> Image Gallery</h2>
+		<div id="signtype-gallery"></div><!-- end section#signtype-gallery -->
+	</section>
+
+
 <style>
 	div#signtype-primary {
 		height: 1900px;
@@ -59,20 +126,14 @@ $uses         = $signtype['uses'];
 
 </style>
 
-
-	<section id="term-header">
-
-	</section><!-- end section#signtype-header -->
+<div id="signtype-primary" class="w-screen flex col-nw justify-around">
 
 	<section id="term-description">
 		<h2>description of the sign type</h2>
 	</section><!-- end section#signtype-description -->
 
 
-	<!-- gallery of this term -->
-	<section id="type-gallery">
-		<h2> gallery with images of this sign type<
-	</section><!-- end section#signtype-gallery -->
+
 
 	<!-- projects that feature this term -->
 	<section id="project-links">

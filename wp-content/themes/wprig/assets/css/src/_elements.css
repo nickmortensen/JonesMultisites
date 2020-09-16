@@ -1,4 +1,14 @@
-/* stylelint-disable */
+.entry {
+	margin-bottom: 1rem;
 
-/* stylelint-enable */
+	&-meta,
+	&-footer {
+		font-family: var(--highlight-font-family);
+		font-stretch: condensed;
+		font-size: 80%;
+	}
 
+	&-meta {
+		margin: 1em 0;
+	}
+}

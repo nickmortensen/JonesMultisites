@@ -1,4 +1,4 @@
-/* eslint-env 2018 */
+/* eslint-env es6 */
 'use strict';
 
 /**
@@ -17,7 +17,6 @@ import images from './images';
 import scripts from './scripts';
 import styles from './styles';
 import editorStyles from './editorStyles';
-// import adminStyles from './adminStyles';
 
 /**
  * Watch everything
@@ -43,9 +42,6 @@ export default function watch() {
 			] );
 		} );
 	}
-
-
-	// gulpWatch( backslashToForwardSlash( paths.styles.adminSrc[ 0 ] ), adminStyles );
 
 	gulpWatch( backslashToForwardSlash( paths.styles.src[ 0 ] ), series( styles, editorStyles ) );
 

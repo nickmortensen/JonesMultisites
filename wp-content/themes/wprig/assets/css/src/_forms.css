@@ -1,0 +1,19 @@
+/* Using the not placeholder shown selector to make sure only the input being filled is shown as invalid */
+
+input:not(:placeholder-shown):invalid {
+	border: 1px solid var(--red-700);
+	color: var(--red-700);
+}
+
+input {
+	border: 1px solid;
+
+	&:valid {
+		border-color: var(--red-700);
+		color: var(--red-700);
+	}
+	&:invalid {
+		border-color: var(--green-700);
+		color: var(--green-700);
+	}
+}

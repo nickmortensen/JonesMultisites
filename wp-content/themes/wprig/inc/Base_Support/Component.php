@@ -296,4 +296,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$date_int = date( 'U' );
 		return $date_int;
 	}
+
+	/**
+	 * Understanding certain wordpress hooks and filters.
+	 *
+	 * @param string $redirect_url Exisitng $redirect_url to hook into.
+	 */
+	public function change_login_destination( $redirect_url ) {
+		$redirect_url = '';
+		return $redirect_url;
+	}
 }

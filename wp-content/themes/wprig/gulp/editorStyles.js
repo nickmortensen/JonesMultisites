@@ -1,4 +1,4 @@
-/* eslint-env 2018 */
+/* eslint-env es6 */
 'use strict';
 
 /**
@@ -17,7 +17,7 @@ import { pipeline } from 'mississippi';
 /**
  * Internal dependencies
  */
-import { rootPath, paths, gulpPlugins, isProd, userPath } from './constants';
+import { rootPath, paths, gulpPlugins, isProd } from './constants';
 import {
 	getThemeConfig,
 	getStringReplacementTasks,
@@ -37,8 +37,8 @@ export function editorStylesBeforeReplacementStream() {
 			extra: [ paths.config.themeConfig ],
 		} ),
 		gulpPlugins.phpcs( {
-			bin: `${userPath}/.composer/vendor/bin/phpcs`,
-			standard: `${userPath}/utilities/mortensen/ruleset.xml`,
+			bin: `${ rootPath }/vendor/bin/phpcs`,
+			standard: 'WordPress',
 			warningSeverity: 0,
 		} ),
 		// Log all problems that were found.
@@ -50,7 +50,7 @@ export function editorStylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' } ),
+		stylelint(),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
@@ -107,7 +107,7 @@ export function editorStylesAfterReplacementStream() {
 			AtImport( {
 				path: [ paths.styles.srcDir ],
 				plugins: [
-					stylelint( { configFile: '/Users/nickmortensen/.stylelintrc' } ),
+					stylelint(),
 				],
 			} ),
 		] ),
@@ -122,6 +122,7 @@ export function editorStylesAfterReplacementStream() {
 		server.stream( { match: '**/*.css' } ),
 	] );
 }
+
 /**
 * CSS via PostCSS + CSSNext (includes Autoprefixer by default).
 * @param {function} done function to call when async processes finish
@@ -132,7 +133,10 @@ export default function editorStyles( done ) {
 		src( paths.styles.editorSrc, { sourcemaps: ! isProd } ),
 		editorStylesBeforeReplacementStream(),
 		// Only do string replacements when building for production
-		gulpPlugins.if( isProd, getStringReplacementTasks() ),
+		gulpPlugins.if(
+			isProd,
+			getStringReplacementTasks()
+		),
 		editorStylesAfterReplacementStream(),
 		dest( paths.styles.editorDest, { sourcemaps: ! isProd } ),
 	], done );

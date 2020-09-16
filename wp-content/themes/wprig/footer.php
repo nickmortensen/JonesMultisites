@@ -13,15 +13,15 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-	<?php get_template_part( 'template-parts/footer/info' ); ?>
-	<footer id="colophon" class="site-footer flex col-nowrap justify-around">
+			<?php get_template_part( 'template-parts/footer/info' ); ?>
+			<footer id="colophon" class="site-footer flex col-nowrap justify-around">
 
-		<div class="location_links flex row-nw justify-around align-start"> <?= wp_rig()->get_location_links(); ?> </div>
+				<div class="location_links flex row-nw justify-around align-start"> <?= wp_rig()->get_location_links(); ?> </div><!-- end div.location_links -->
 
-	</footer><!-- #colophon -->
-</div><!-- #page -->
+			</footer><!-- /footer#colophon -->
+		</div><!-- #page -->
 
-<?php wp_footer(); ?>
+	<?php wp_footer(); ?>
 
-</body>
+	</body>
 </html>

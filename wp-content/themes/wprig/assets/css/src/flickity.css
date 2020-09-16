@@ -23,7 +23,6 @@ https://flickity.metafizzy.co
 }
 
 /* draggable */
-
 .flickity-enabled.is-draggable {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-user-select: none;
@@ -44,7 +43,6 @@ https://flickity.metafizzy.co
 }
 
 /* ---- flickity-button ---- */
-
 .flickity-button {
 	position: absolute;
 	background: hsla(0, 0%, 100%, 0.75);
@@ -79,7 +77,6 @@ https://flickity.metafizzy.co
 }
 
 /* ---- previous/next buttons ---- */
-
 .flickity-prev-next-button {
 	top: 50%;
 	width: 44px;
@@ -118,7 +115,6 @@ https://flickity.metafizzy.co
 }
 
 /* ---- page dots ---- */
-
 .flickity-page-dots {
 	position: absolute;
 	width: 100%;

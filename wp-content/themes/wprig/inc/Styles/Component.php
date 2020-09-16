@@ -319,6 +319,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 					return 'client' === get_post_type();
 				},
 			],
+			'signtype' => [
+				'file'             => 'signtype.min.css',
+				'preload_callback' => function() {
+					return is_tax( 'signtype' );
+				},
+			],
 			'flickity'          => [
 				'file'             => 'flickity.min.css',
 				'preload_callback' => function() {
@@ -329,11 +335,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'   => 'global.min.css',
 				'global' => true,
 			],
-			'wp-rig-comments'   => [
-				'file'             => 'comments.min.css',
-				'preload_callback' => function() {
-					return ! post_password_required() && is_singular() && ( comments_open() || get_comments_number() );
-				},
+			'wp-rig-flex'       => [
+				'file'   => 'flex.min.css',
+				'global' => true,
 			],
 			'wp-rig-content'    => [
 				'file'             => 'content.min.css',
@@ -405,9 +409,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$google_fonts = [
-			'Inter'  => [ '300', '500', '700' ],
-			'Roboto' => [ '300', '400', '400i', '500', '700' ],
-			'Ubuntu' => [ '300', '400', '400i', '500', '700' ],
+			'Yellowtail' => [],
+			'Tillana'    => [ '400' ],
+			'Oswald'     => [ '700' ],
+			'Roboto'     => [ '300', '400', '400i', '500', '700' ],
+			'Ubuntu'     => [ '300', '400', '400i', '500', '700' ],
 		];
 
 		/**
@@ -490,19 +496,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function custom_admin_style() {
 		global $pagenow;
 		global $post_type;
-		$css_files = [ 'about', 'admin-menu', 'code-editor', 'color-picker', 'common', 'customize-controls', 'customize-nav-menus' ];
-		$uri       = trailingslashit( get_theme_file_uri() ) . 'assets/css/src';
-		$dir       = trailingslashit( get_theme_file_path() ) . 'assets/css/src';
-		$version   = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/src/admin/admin.css' );
-		wp_enqueue_style( 'admincss', get_theme_file_uri( '/assets/css/src/admin/admin.css' ), [], $version, 'all' );
+		$admin_css = get_theme_file_path( '/assets/css/admin.min.css' ); // outputs a path --needed for asset version.
+		$version   = wp_rig()->get_asset_version( $admin_css );
+		wp_enqueue_style( 'admincss', get_theme_file_uri( '/assets/css/admin.min.css' ), [], $version, 'all' );
 	}
 
 	/**
 	 * Custom login Style.
 	 */
 	public function custom_login_stylesheet() {
-		$version = wp_rig()->get_asset_version( trailingslashit( get_theme_file_path() ) . 'assets/css/login.min.css' );
-		wp_enqueue_style( 'logincss', get_theme_file_uri( '/assets/css/login.min.css' ), [], $version, 'all' );
+		$login_css = get_theme_file_path( '/assets/css/src/_login.css' );
+		$version   = wp_rig()->get_asset_version( $login_css );
+		wp_enqueue_style( 'logincss', get_theme_file_uri( '/assets/css/src/_login.css' ), [], $version, 'all' );
 	}
 
 	/**

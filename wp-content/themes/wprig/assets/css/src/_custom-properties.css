@@ -124,8 +124,9 @@
 	--global-font-size: 20;
 	--global-font-line-height: 1.4;
 	--highlight-font-family: ubuntu, system-ui, blinkmacsystemfont, sans-serif;
-	--content-width: 45rem;
+	--content-width: 60vw;
 	--dropdown-symbol-width: 0.7em;
+	--h1-letter-spacing: 0.08em;
 
 	/* Custom editor colors */
 	--color-theme-primary: var(--indigo-600);
@@ -163,19 +164,21 @@
 	--letterSpacing: calc(var(--fontSize) * 0.0015);
 	--fontWeight: 300;
 
+	/* ADMIN VARIABLES */
+	--admin-theme-primary: var(--color-theme-primary);
+	--table-header-color: var(--yellow-600);
+	--table-header-bg: var(--admin-theme-primary);
 	--admin-font: serif;
 	--admin-font-size: 1.15rem;
 	--admin-row-actions-font-size: 8px;
 	--admin-heading-color: var(--global-font-color);
-	--admin-bg-color: var(--color-theme-primary);
+	--admin-bg-color: var(--admin-theme-primary);
 	--admin-bg-darker: var(--color-link-visited);
 	--admin-bg-lighter: var(--indigo-400);
-
 	--admin-light-links: var(--color-theme-white);
 	--admin-dark-links: var(--global-font-color);
 	--admin-table-bg: var(--indigo-100);
-
-	--admin-link: var(--admin-bg-color);
+	--admin-link: var(--admin-theme-primary);
 	--admin-link-hover: var(--indigo-900);
 	--submenu-width: 180px;
 	--paragraph-color: var(--global-font-color);

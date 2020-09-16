@@ -6,6 +6,7 @@
  */
 
 namespace WP_Rig\WP_Rig;
+
 $site_icon_svg     = wp_get_attachment_image_src( 272 )[0];
 $site_icon_letters = wp_get_attachment_image_src( 434 )[0];
 ?>
@@ -16,7 +17,8 @@ $site_icon_letters = wp_get_attachment_image_src( 434 )[0];
 }
 </style>
 <div class="site-branding">
-	<img style="width:5vw;" src="<?= $site_icon_svg; ?>" alt="">
+	<img style="width:5vw;" src="<?= $site_icon_svg; ?>" alt="jones sign company logo">
+	<!-- Jones Sign Text In Bank Gothic font as an SVG rather than including a call to a font -->
 	<svg version="1.1" id="jones_logo" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 854.527 169.727" xml:space="preserve">
 		<g id="jones_sign_text">
 			<path id="j" class="jonessign" d="M23.594 72.295h33.4V1h23.428v69.36c0 5.767-.678 13.514-4.902 17.737-4.229 4.311-12.096 4.928-17.657 4.928H22.564c-5.571 0-13.473-.606-17.712-4.928C.683 83.849 0 76.098 0 70.361V51.324h23.594v20.971z"/>
@@ -33,24 +35,17 @@ $site_icon_letters = wp_get_attachment_image_src( 434 )[0];
 	</svg>
 	<?php the_custom_logo(); ?>
 
-	<?php if ( is_front_page() && is_home() ) :	?>
-		<h1 class="site-title" hidden>
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
+	<?php if ( is_front_page() && is_home() ) : ?>
+		<h1 class="site-title" hidden> <a href="<?= esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a> </h1>
 	<?php else : ?>
-
 		<p class="site-title" hidden>
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-
+			<a href="<?= esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+		</p>
 	<?php endif; ?>
 
-	<?php
-	$wp_rig_description = get_bloginfo( 'description', 'display' );
-	if ( $wp_rig_description || is_customize_preview() ) {
-		?>
+	<?php if ( get_bloginfo( 'description', 'display' ) || is_customize_preview() ) : ?>
 		<p class="site-description" hidden>
-			<?php echo $wp_rig_description; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
+			<?= get_bloginfo( 'description', 'display' ); /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
 		</p>
-		<?php
-	}
-	?>
+	<?php endif; ?>
 </div><!-- .site-branding -->
