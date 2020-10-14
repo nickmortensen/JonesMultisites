@@ -12,44 +12,8 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.io/normalize.css/
 /* Document
    ========================================================================== */
 
-/**
- * 1. Correct the line height in all browsers.
- * 2. Prevent adjustments of font size after orientation changes in iOS.
- */
-
-
-html {
-	line-height: 1.15; /* 1 */
-	-webkit-text-size-adjust: 100%; /* 2 */
-	box-sizing: border-box;
-}
-
-/**
- * Inherit box-sizing to make it easier to change the property for
- * components that leverage other behavior; see
- * http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
- */
-
-*,
-*::before,
-*::after {
-	box-sizing: inherit;
-}
-
-
 /* Sections
    ========================================================================== */
-
-/**
- * Remove the margin in all browsers.
- */
-
-body {
-	background: var(--body-bg-color, #fff);
-	margin: 0;
-	max-width: 100%;
-	overflow-x: hidden;
-}
 
 link {
 	display: none;
@@ -61,56 +25,15 @@ link {
  */
 
 h1 {
-	font-size: clamp(2em, calc(36 / var(--global-font-size) * 1rem), 48px);
+	font-size: 2em;
 	margin: 0.67em 0;
 }
 
 /* Grouping content
    ========================================================================== */
 
-/**
- * 1. Add the correct box sizing in Firefox.
- * 2. Show the overflow in Edge and IE.
- */
-
-hr {
-	box-sizing: content-box; /* 1 */
-	overflow: visible; /* 2 */
-	background-color: var(--gray-500);
-	border: 0;
-	height: 1px;
-	margin-bottom: 1.5em;
-}
-
-/**
- * 1. Correct the inheritance and scaling of font size in all browsers.
- * 2. Correct the odd `em` font sizing in all browsers.
- */
-
-pre {
-	font-family: sans-serif, Courier, monospace;
-	font-size: 0.9375rem;
-	line-height: 1.2;
-	margin-bottom: 1.5em;
-	max-width: 100%;
-	overflow: auto;
-	padding: 1.5em;
-	display: block;
-	min-width: 100vw;
-	background: var(--pre-bg);
-	color: var(--pre-color);
-}
-
 /* Text-level semantics
    ========================================================================== */
-
-/**
- * Remove the gray background on active links in IE 10.
- */
-
-a {
-	background-color: transparent;
-}
 
 /**
  * 1. Remove the bottom border in Chrome 57-
@@ -137,13 +60,9 @@ strong {
  * 2. Correct the odd `em` font sizing in all browsers.
  */
 
-code,
-kbd,
-tt,
-var,
 samp {
 	font-family: monospace; /* 1 */
-	font-size: 0.85em; /* 2 */
+	font-size: 1em; /* 2 */
 }
 
 /**
@@ -152,11 +71,6 @@ samp {
 
 small {
 	font-size: 80%;
-}
-
-
-big {
-	font-size: 125%;
 }
 
 /**
@@ -178,17 +92,6 @@ sub {
 
 sup {
 	top: -0.5em;
-}
-
-/* Embedded content
-   ========================================================================== */
-
-/**
- * Remove the border on images inside links in IE 10.
- */
-
-img {
-	border-style: none;
 }
 
 /* Forms
@@ -230,16 +133,6 @@ select {
 	text-transform: none; /* 1 */
 }
 
-/**
- * Correct the inability to style clickable types in iOS and Safari.
- */
-
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-	-webkit-appearance: button;
-}
 
 /**
  * Remove the inner border and padding in Firefox.
@@ -294,14 +187,6 @@ legend {
 
 progress {
 	vertical-align: baseline;
-}
-
-/**
- * Remove the default vertical scrollbar in IE 10+.
- */
-
-textarea {
-	overflow: auto;
 }
 
 /**

@@ -7,11 +7,6 @@
 
 namespace WP_Rig\WP_Rig;
 
-/**
- * From php SPL.
- *
- * @link https://www.php.net/manual/en/class.invalidargumentexception
- */
 use InvalidArgumentException;
 
 /**
@@ -150,29 +145,27 @@ class Theme {
 			new PWA\Component(),
 			new Comments\Component(),
 			new Nav_Menus\Component(),
-			new Sidebars\Component(),
 			new Custom_Background\Component(),
 			new Custom_Header\Component(),
 			new Custom_Logo\Component(),
 			new Post_Thumbnails\Component(),
 			new Customizer\Component(),
 			new Styles\Component(),
-			new Staffmembers\Component(),
-			new Projects\Component(),
-			new Clientele\Component(),
+			/**
+			 * Additional Items added by me.
+			 */
 			new AdditionalFields\Component(),
+			new TaxonomyGlobal\Component(),
+			new Posttype_Global\Component(),
+			new Posttype_Client\Component(),
+			new Posttype_Staffmember\Component(),
+			new Posttype_Project\Component(),
+			new TaxonomyExpertise\Component(),
+			new TaxonomyIndustry\Component(),
+			new TaxonomySigntype\Component(),
 			new Media\Component(),
-			new Global_Taxonomies\Component(),
-			new Location_Taxonomy\Component(),
-			new Signtype_Taxonomy\Component(),
-			new Projecttype_Taxonomy\Component(),
-			new Industry_Taxonomy\Component(),
-			new Expertise_Taxonomy\Component(),
-			new MultiSites\Component(),
-			new Extend_Quickedit\Component(),
-			new GooglePhotos\Component(),
-			new Forms\Component(),
-			new RelatedImages\Component(),
+			new JonesSign\Component(),
+
 		];
 
 		if ( defined( 'JETPACK__VERSION' ) ) {

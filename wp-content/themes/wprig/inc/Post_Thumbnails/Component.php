@@ -47,10 +47,6 @@ class Component implements Component_Interface {
 	 * Adds custom image sizes.
 	 */
 	public function action_add_image_sizes() {
-		add_image_size( 'rectangular-large', 1200, 900 );
-		add_image_size( 'rectangular-mid', 720, 480, true );
-		add_image_size( 'vertical-mid', 600, 800 );
-		add_image_size( 'cinematic-large', 1280, 720, true );
-		add_image_size( 'cinematic-mid', 960, 540, true );
+		add_image_size( 'wp-rig-featured', 720, 480, true );
 	}
 }

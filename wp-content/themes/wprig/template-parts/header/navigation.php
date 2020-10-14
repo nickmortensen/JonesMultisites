@@ -13,44 +13,53 @@ if ( ! wp_rig()->is_primary_nav_menu_active() ) {
 
 ?>
 
-<nav
-	id="site-navigation"
-	class="main-navigation nav--toggle-sub nav--toggle-small"
-	aria-label="<?php esc_attr_e( 'Main menu', 'wp-rig' ); ?>"
-	<?php if ( wp_rig()->is_amp() ) : ?>
+<nav id="site-navigation" class="main-navigation nav--toggle-sub nav--toggle-small" aria-label="<?php esc_attr_e( 'Main menu', 'wp-rig' ); ?>"
+	<?php
+	if ( wp_rig()->is_amp() ) {
+		?>
 		[class]=" siteNavigationMenu.expanded ? 'main-navigation nav--toggle-sub nav--toggle-small nav--toggled-on' : 'main-navigation nav--toggle-sub nav--toggle-small' "
-	<?php endif; ?>
-> <!-- end nav opening tag -->
-	<?php if ( wp_rig()->is_amp() ) : ?>
-	<amp-state id="siteNavigationMenu">
-		<script type="application/json">
-			{
-				"expanded": false
-			}
-		</script>
-	</amp-state>
-	<?php endif; ?>
+		<?php
+	}
+	?>
+>
+	<?php
+	if ( wp_rig()->is_amp() ) {
+		?>
+		<amp-state id="siteNavigationMenu">
+			<script type="application/json">
+				{
+					"expanded": false
+				}
+			</script>
+		</amp-state>
+		<?php
+	}
+	?>
 
-	<button
-		class="menu-toggle"
-		aria-label="<?php esc_attr_e( 'Open menu', 'wp-rig' ); ?>"
-		aria-controls="primary-menu"
-		aria-expanded="false"
-		<?php if ( wp_rig()->is_amp() ) : ?>
+	<button class="menu-toggle" aria-label="<?php esc_attr_e( 'Open menu', 'wp-rig' ); ?>" aria-controls="primary-menu" aria-expanded="false"
+		<?php
+		if ( wp_rig()->is_amp() ) {
+			?>
 			on="tap:AMP.setState( { siteNavigationMenu: { expanded: ! siteNavigationMenu.expanded } } )"
 			[aria-expanded]="siteNavigationMenu.expanded ? 'true' : 'false'"
-		<?php endif; ?>
+			<?php
+		}
+		?>
 	>
 		<?php esc_html_e( 'Menu', 'wp-rig' ); ?>
 	</button>
 
 	<div class="primary-menu-container">
-		<?php
-			$menu_arguments = [
-				'menu_id'      => 'primary-menu',
-				'container_id' => 'example',
-			];
-			wp_rig()->display_primary_nav_menu( $menu_arguments );
-		?>
-	</div><!-- end div.primary-menu-container -->
-</nav><!-- end div#site-navigation -->
+		<?php wp_rig()->display_primary_nav_menu( [ 'menu_id' => 'primary-menu' ] ); ?>
+	</div>
+</nav><!-- #site-navigation -->
+
+<script>
+const nav = document.querySelector( '#site-navigation' );
+
+function affixNav( e ) {
+	console.log( e );
+}
+
+window.addEventListener( 'scroll', affixNav, true );
+</script>

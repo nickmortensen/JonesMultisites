@@ -35,12 +35,17 @@ class Component implements Component_Interface {
 
 	/**
 	 * Adds support for the Custom Background feature.
-	 *
-	 * @link https://developer.wordpress.org/reference/functions/apply_filters/
-	 * @link https://developer.wordpress.org/reference/functions/add_theme_support/
 	 */
 	public function action_add_custom_background_support() {
-		$background_args = [ 'default-color' => 'ffffff', 'default-image' => '' ]; //phpcs:ignore
-		add_theme_support( 'custom-background', apply_filters( 'wp_rig_custom_background_args', $background_args ) );
+		add_theme_support(
+			'custom-background',
+			apply_filters(
+				'wp_rig_custom_background_args',
+				[
+					'default-color' => 'ffffff',
+					'default-image' => '',
+				]
+			)
+		);
 	}
 }

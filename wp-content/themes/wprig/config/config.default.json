@@ -13,21 +13,23 @@
       "https": false
     },
     "styles": {
-      "stage": 3,
+      "stage": 0,
       "autoprefixer": {
         "grid": false
       },
-      "importFrom": [
-        "_custom-media.css"
-      ],
-      "features": {
-        "custom-media-queries": true,
-        "custom-properties": true,
-        "nesting-rules": true
-      }
+	  "importFrom": [
+		"_custom-media.css",
+		"_custom-selectors.css"
+	  ],
+	  "features": {
+		"custom-selectors": true,
+		"custom-media-queries": true,
+		"custom-properties": true,
+		"nesting-rules": true
+	  }
     },
     "debug": {
-      "styles": false,
+      "styles": true,
       "scripts": false,
       "phpcs": true
     }

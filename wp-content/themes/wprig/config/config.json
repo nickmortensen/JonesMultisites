@@ -9,7 +9,25 @@
       "live"      : true,
       "proxyURL"  : "https://jonessign.io",
       "bypassPort": "7448",
-      "https"     : true
-    }
+      "https"     : true,
+      "keyPath": "/Applications/MAMP/Library/OpenSSL/certs/jonessign.io.key",
+      "certPath": "/Applications/MAMP/Library/OpenSSL/certs/jonessign.io.cert"
+	},
+	"styles": {
+		"stage": 0,
+		"autoprefixer": {
+		  "grid": false
+		},
+		"importFrom": [
+		  "_custom-media.css",
+		  "_custom-selectors.css"
+		],
+		"features": {
+		  "custom-selectors": true,
+		  "custom-media-queries": true,
+		  "custom-properties": false,
+		  "nesting-rules": true
+		}
+	  }
   }
 }

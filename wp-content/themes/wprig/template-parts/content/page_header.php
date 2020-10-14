@@ -13,6 +13,7 @@ if ( is_404() ) {
 		<h1 class="page-title">
 			<?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'wp-rig' ); ?>
 		</h1>
+
 	</header><!-- .page-header -->
 	<?php
 } elseif ( is_home() && ! have_posts() ) {
@@ -29,6 +30,7 @@ if ( is_404() ) {
 		<h1 class="page-title">
 			<?php single_post_title(); ?>
 		</h1>
+		<span class="material_icons">picture_as_pdf</span>
 	</header><!-- .page-header -->
 	<?php
 } elseif ( is_search() ) {

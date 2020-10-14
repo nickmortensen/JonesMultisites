@@ -1,14 +1,12 @@
 /*--------------------------------------------------------------
->>> TABLE OF CONTENTS: LAST UPDATE: 29_April_2020;
+>>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Imports
 	# Custom properties
 	# Reset
-	# Flex
 	# Typography
 	# Elements
 	# Links
-# Utility Classes
 # Accessibility
 # Layout
 # Forms
@@ -22,24 +20,13 @@
 /*--------------------------------------------------------------
 # Imports
 --------------------------------------------------------------*/
-/* stylelint-disable at-rule-empty-line-before */
 @import "_custom-properties.css";
+@import "_custom-selectors.css";
 @import "_reset.css";
 @import "_typography.css";
 @import "_elements.css";
 @import "_links.css";
-@import "_svg.css";
-
-/*--------------------------------------------------------------
-# Utility Classes
---------------------------------------------------------------*/
-@import "_margin.css";
-@import "_padding.css";
-@import "_lists.css";
-@import "_leading.css";
-@import "_width.css";
-@import "_forms.css";
-
+@import "_flex.css";
 
 /*--------------------------------------------------------------
 # Accessibility
@@ -64,7 +51,7 @@
 	border-radius: 3px;
 	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
 	clip: auto !important;
-	color: var(--blue-500:);
+	color: #21759b;
 	display: block;
 	font-size: 0.875rem;
 	font-weight: 700;
@@ -88,35 +75,30 @@
 --------------------------------------------------------------*/
 .site {
 	margin: 0;
-	max-width: 100%;
+	min-width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
 }
 
+/* min-width: 60em */
 @media (--sidebar-query) {
-	/* .has-sidebar .site {
+
+	.has-sidebar .site {
 		margin: 0;
-		display: grid;
-		grid-template-columns: 3fr 1fr;
-		grid-gap: 2rem;
-		justify-content: center;
 	}
 
 	.site-header {
-		grid-column: span 2;
+		padding-bottom: 0;
 	}
 
 	.site-main {
-		grid-column: 1;
 		min-width: 0;
 	}
 
 	.primary-sidebar {
-		grid-column: 2;
 		min-width: 0;
 	}
 
-	.site-footer {
-		grid-column: span 2;
-	} */
 }
 
 /*--------------------------------------------------------------
@@ -125,16 +107,16 @@
 /* stylelint-disable */
 textarea {
 	width: 100%;
+	overflow: auto;
 }
-/* stylelint-enable */
 
-/* stylelint-disable */
 button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
+	-webkit-appearance: button;
 	border: 1px solid;
-	border-color: var(--gray-500) var(--gray-500) #bbb;
+	border-color: #ccc #ccc #bbb;
 	border-radius: 3px;
 	background: #e6e6e6;
 	color: rgba(0, 0, 0, 0.8);
@@ -149,7 +131,7 @@ button:hover,
 input[type="button"]:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover {
-	border-color: var(--gray-500) #bbb #aaa;
+	border-color: #ccc #bbb #aaa;
 }
 
 button:active,
@@ -179,8 +161,8 @@ input[type="datetime"],
 input[type="datetime-local"],
 input[type="color"],
 textarea {
-	color: var(--gray-800);
-	border: 1px solid var(--gray-500);
+	color: var(--gray-700);
+	border: 1px solid #ccc;
 	border-radius: 3px;
 	padding: 3px;
 }
@@ -201,11 +183,11 @@ input[type="datetime"]:focus,
 input[type="datetime-local"]:focus,
 input[type="color"]:focus,
 textarea:focus {
-	color: var(--gray-900);
+	color: #111;
 }
 
 select {
-	border: 1px solid var(--gray-500);
+	border: 1px solid #ccc;
 }
 
 /*--------------------------------------------------------------
@@ -213,35 +195,37 @@ select {
 --------------------------------------------------------------*/
 
 .site-header {
-	padding-bottom: 1em;
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
 }
 
 .header-image {
-	margin: 0 auto;
+	margin: 0;
 }
 
 .header-image img {
 	display: block;
-	margin: 0 auto;
+	margin: 0;
 }
 
 .custom-logo-link {
 	display: inline-block;
-	margin: 0 auto 1em;
+	margin: 0;
 }
-
 
 .site-branding {
 	text-align: center;
-	padding: 60px 0 1.75em;
 }
 
 .site-title {
-	margin: 0 1em;
+	margin: 0;
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
-	font-size: var(--font-size-larger);
-	font-weight: var(--bold);
+	font-size: 38px;
+	font-weight: 700;
 	line-height: 1.2;
 	color: var(--gray-900);
 }
@@ -251,29 +235,20 @@ select {
 	color: inherit;
 }
 
-.site-description {
-	margin: 0.4375em 0 0;
-	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-	font-size: var(--font-size-regular);
-	font-weight: inherit;
-	line-height: 1.4;
-	word-wrap: break-word;
-	color: var(--gray-700);
-}
 
 /*--------------------------------------------------------------
 ## Basic navigation menus - handles submenu and small screen toggle
 --------------------------------------------------------------*/
 .nav--toggle-small .menu-toggle {
 	display: block;
-	margin: 1.2em auto;
-	padding: 0.6em 1.2em 0.5em;
+	margin: 0;
+	padding: 0;
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
 	font-size: 80%;
 	text-transform: uppercase;
-	border: 2px solid var(--gray-900);
+	color: var(--color-theme-white);
+	border: 2px solid var(--color-theme-white);
 	border-radius: 0;
 	background: transparent;
 }
@@ -287,19 +262,29 @@ select {
 	display: none;
 }
 
+.site-icon {
+	display: block;
+}
+
+/* max-width: 37.5em */
 @media (--narrow-menu-query) {
 
-	.nav--toggle-small.nav--toggled-on .menu {
-		display: block;
+	.nav--toggle-small.nav--toggled-on .menu,
+	.jonessign-logo {
+		display: none;
 	}
 }
+
+/* min-width: 37.5em */
 @media (--wide-menu-query) {
 
-	.nav--toggle-small .menu-toggle {
+	.nav--toggle-small .menu-toggle,
+	.site-icon {
 		display: none;
 	}
 
-	.nav--toggle-small .menu {
+	.nav--toggle-small .menu,
+	.jonessign-logo {
 		display: block;
 	}
 
@@ -341,7 +326,7 @@ select {
 		top: 35%;
 		width: 60%;
 		height: 60%;
-		border: solid var(--color-theme-black);
+		border: solid #000;
 		border-width: 0 2px 2px 0;
 		transform: translateY(-50%) rotate(45deg);
 	}
@@ -395,14 +380,21 @@ select {
 ## Main navigation menu
 --------------------------------------------------------------*/
 .main-navigation {
-	background: var(--gray-300);
 	clear: both;
 	display: block;
 	margin: 0 auto 2em;
 	padding: 0 1em;
-	max-width: var(--content-width);
+	width: 100%;
+	background: var(--color-theme-primary);
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
+}
+
+/* min-width: 48em, 672px */
+@media (--content-query) {
+	.main-navigation {
+		margin: 0;
+	}
 }
 
 .main-navigation a {
@@ -411,16 +403,15 @@ select {
 	padding: 0.5em 1em 0.5em 0;
 	text-decoration: none;
 	color: var(--color-theme-white);
-	font-weight: var(--semibold);
 }
 
 .main-navigation a:hover,
 .main-navigation a:focus {
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 .main-navigation ul {
-	display: flex;
+	display: block;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -430,11 +421,7 @@ select {
 	padding-left: 1em;
 }
 
-.main-navigation ul li a {
-	font-size: 0.8rem;
-	letter-spacing: 0.1rem;
-}
-
+/* min-width:37.5em */
 @media (--wide-menu-query) {
 
 	.main-navigation ul li a {
@@ -453,12 +440,10 @@ select {
 		width: 200px;
 	}
 
-	/* stylelint-disable */
 	.main-navigation ul ul li {
 		padding-left: 0;
 		margin-left: 0;
 	}
-	/* stylelint-enable */
 
 	.main-navigation ul ul li a {
 		width: 218px;
@@ -485,7 +470,7 @@ select {
 .site-main .posts-navigation,
 .site-main .post-navigation,
 .site-main .pagination {
-	border-bottom: 1px solid var(--color-theme-black);
+	border-bottom: 1px solid #111;
 	margin: 0 auto 2em;
 	max-width: var(--content-width);
 	overflow: hidden;
@@ -494,9 +479,9 @@ select {
 	font-stretch: condensed;
 }
 
+/* min-width: 48em */
 @media (--content-query) {
 
-	.site-main .comment-navigation,
 	.site-main .posts-navigation,
 	.site-main .post-navigation,
 	.site-main .pagination {
@@ -509,14 +494,12 @@ select {
 	display: flex;
 }
 
-.comment-navigation .nav-previous,
 .posts-navigation .nav-previous,
 .post-navigation .nav-previous {
 	width: 50%;
 	flex: 1 0 50%;
 }
 
-.comment-navigation .nav-next,
 .posts-navigation .nav-next,
 .post-navigation .nav-next {
 	text-align: end;
@@ -606,6 +589,7 @@ select {
 .infinite-scroll .posts-navigation,
 .infinite-scroll .pagination,
 .infinite-scroll.neverending .site-footer {
+
 	/* Theme Footer (when set to scrolling) */
 	display: none;
 }
@@ -614,4 +598,63 @@ select {
 were hidden (via .neverending) before. */
 .infinity-end.neverending .site-footer {
 	display: block;
+}
+
+.container {
+	display: grid;
+	grid-gap: 20px;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: 1fr repeat(2, 440px) auto;
+
+	& .header {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-gap: 20px;
+		grid-template-columns: 1fr 4fr;
+	}
+
+	& .frontpage-main {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-gap: 20px;
+	}
+
+	& .frontpage-masthead {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-gap: 20px;
+	}
+
+	& .frontpage-projects {
+		grid-column: 1 / -1;
+		display: flex;
+		flex-flow: column nowrap;
+
+		& > div {
+			display: flex;
+			background: var(--green-200);
+			flex-flow: row nowrap;
+			justify-content: space-around;
+		}
+	}
+
+	& .footer {
+		grid-column: 1 / -1;
+	}
+}
+
+.item {
+
+	/* We center the contents of these items. You can also do this with flexbox too! */
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	border: 5px solid rgba(0 0 0 0.3);
+	border-radius: 3px;
+	font-size: 35px;
+	background-color: var(--yellow-600);
+
+	& p {
+		margin: 0 0 5px 0;
+	}
 }

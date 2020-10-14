@@ -10,17 +10,17 @@ namespace WP_Rig\WP_Rig\AdditionalFields;
 use WP_Rig\WP_Rig\Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
+use function wp_sprintf;
 use function add_filter;
-
 
 /**
  * TABLE OF CONTENTS.
- * 1. get_state_options()
- * 2. get_slug()
- * 3. initialize()
- * 4. cmb2_render_rating_field_callback() -- Star Rating.
- * 5. render_address_field_callback().
- * 7. render_jonesaddress_field_callback().
+ * get_state_options()
+ * get_slug()
+ * initialize()
+ * cmb2_render_rating_field_callback() -- Star Rating.
+ * render_address_field_callback().
+ * render_jonesaddress_field_callback().
  */
 
 /**
@@ -31,13 +31,37 @@ use function add_filter;
  * @property array $states
  */
 class Component implements Component_Interface {
+	/**
+	 * Adds the action and filter hooks to integrate with WordPress.
+	 */
+	public function initialize() {
+		add_filter( 'cmb2_render_testimonial', [ $this, 'render_testimonial_field_callback' ], 10, 5 );
+		add_filter( 'cmb2_render_client', [ $this, 'render_client_field_callback' ], 10, 5 );
+		add_filter( 'cmb2_render_partner', [ $this, 'render_partner_field_callback' ], 10, 5 ); // CMB2 field specifically for a project partner.
+		add_filter( 'cmb2_render_projectlocation', [ $this, 'render_projectlocation_field_callback' ], 10, 5 ); // CMB2 field specifically for a project address.
+		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
+		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
+		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
+	}
 
+	/**
+	 * The job statuses
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @var      string    $statuses The possible statuses for a project.
+	 */
+	public static $statuses = [
+		'complete' => 'Complete',
+		'ongoing'  => 'Ongoing',
+		'upcoming' => 'Upcoming',
+	];
 	/**
 	 * The 50 United States.
 	 *
 	 * @since    1.0.0
 	 * @access   public
-	 * @var      string    $type The arguments of this taxonomy..
+	 * @var      string    $states The 50states as an associative array using their abbreviations as key.
 	 */
 	public static $states = [
 		'AL' => 'Alabama',
@@ -94,8 +118,13 @@ class Component implements Component_Interface {
 	];
 
 	/**
-	 * States workaround
+	 * Gets the unique identifier for the theme component.
+	 *
+	 * @return string Component slug.
 	 */
+	public function get_slug() : string {
+		return 'additionalfields';
+	}
 
 	/**
 	 * Return state options as HTML for the select field entitled 'State' in the address CMB2 field type.
@@ -116,18 +145,6 @@ class Component implements Component_Interface {
 	}
 
 	/**
-	 * The job statuses
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @var      string    $type The arguments of this taxonomy..
-	 */
-	public static $statuses = [
-		'complete' => 'Complete',
-		'ongoing'  => 'Ongoing',
-		'upcoming' => 'Upcoming',
-	];
-	/**
 	 * Return Status options as HTML for the select field entitled 'State' in the address CMB2 field type.
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/selected/
@@ -139,28 +156,12 @@ class Component implements Component_Interface {
 		$options  = '';
 		foreach ( $statuses as $a => $b ) {
 			$selected = checked( $value, $a, false );
-			$options .= "<input type=\"radio\" name=\"status\" id=\"status_$a\" value=\"$a\" $selected><label for=\"status_$a\">$b</label>";
+			// phpcs:disable
+			// $options .= "<input type=\"radio\" name=\"status\" id=\"status_$a\" value=\"$a\" $selected><label for=\"status_$a\">$b</label>";
+			// phpcs:enable
+			$options .= wp_sprintf( '<input type="radio" name="status" id="status_%0$s" value="%0$s" %1$s><label for="status_%0$s">%2$s</label>', $a, $selected, $b );
 		}
 		return $options;
-	}
-
-
-	/**
-	 * Gets the unique identifier for the theme component.
-	 *
-	 * @return string Component slug.
-	 */
-	public function get_slug() : string {
-		return 'additionalfields';
-	}
-
-	/**
-	 * Adds the action and filter hooks to integrate with WordPress.
-	 */
-	public function initialize() {
-		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
-		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
-		// add_action( 'cmb2_admin_init', [ $this, 'register_dynamic_fields_box' ] );
 	}
 
 	/**
@@ -176,9 +177,8 @@ class Component implements Component_Interface {
 	 * @param obj $cmb Object containing the fields.
 	 * @link https://geek.hellyer.kiwi/2018/08/11/dynamically-controlling-cmb2-metaboxes/
 	 */
-	public function add_fields_dynamically_to_box( $cmb ) {
+	public function add_fields_dynamically_to_box( $cmb ) {}
 
-	}
 
 	/**
 	 * Render 'STAR RATING' custom field type
@@ -192,27 +192,22 @@ class Component implements Component_Interface {
 	 * @param object $field_type_object  The `CMB2_Types` object.
 	 */
 	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type_object ) {
-			?>
-				<section id="cmb2-star-rating-metabox">
-					<fieldset>
-						<span class="star-cb-group">
-							<?php
-								$y = 5;
-								while ( $y > 0 ) {
-									?>
-										<input type="radio" id="rating-<?php echo $y; ?>" name="<?php echo $field_type_object->_id( false ); ?>" value="<?php echo $y; ?>" <?php checked( $value, $y ); ?>/>
-										<label for="rating-<?php echo $y; ?>"><?php echo $y; ?></label>
-									<?php
-									$y--;
-								}
-							?>
-						</span>
-					</fieldset>
-				</section>
-			<?php
-			echo $field_type_object->_desc( true );
-
+		$output  = '<section id="cmb2-star-rating-metabox">';
+		$output .= '<fieldset>';
+		$output .= '<span class="star-cb-group">';
+		$y       = 5;
+		while ( $y > 0 ) {
+			$checked = checked( $value, $y, false ); // false option returns, true option echos.
+			$output .= wp_sprintf( '<input type="radio" id="rating-%1$s" name="%2$s" value="%1$s" %3$s />', $y, $field_type_object->_id( false ), $checked );
+			$output .= wp_sprintf( '<label data-wanker="yes" for="rating-%s">%s</label>', $y );
+			$y--;
 		}
+		$output .= '</span>';
+		$output .= '</fieldset>';
+		$output .= '</section>';
+		$output .= $field_type_object->_desc( true );
+		echo $output;
+	}
 
 	/**
 	 * Render Address Field
@@ -340,17 +335,6 @@ class Component implements Component_Interface {
 	</section><!-- end section.projectaddressfields -->
 	<?php
 	}//end render_address_field_callback()
-
-	/**
-	 * Use the id to get the post title - the name of the staffmember - and output a best guess for the email address.
-	 *
-	 * @param int $id The id of the post.
-	 */
-	public function get_email_default( $id ) {
-		$name    = preg_split( '#\s+#', get_the_title( $id ), 2 );
-		$default = strtolower( substr( $name[0], 0, 1 ) . str_replace( ' ', '', $name[1] ) . '@jonessign.com' );
-		return $default;
-	}
 
 	/**
 	 * Render Address Field For Jones Sign Company Location
@@ -548,4 +532,276 @@ class Component implements Component_Interface {
 	<?php
 	}//end render_jonesaddress_field_callback()
 
-}//end class
+	/**
+	 * Create & Render a Project Address Field to use with CMB2
+	 *
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type         The `CMB2_Types` object.
+	 */
+	public function render_projectlocation_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+		$new_values = [
+			'address'   => '',
+			'url'       => '',
+			'city'      => '',
+			'state'     => '',
+			'zip'       => '',
+			'latitude'  => '',
+			'longitude' => '',
+			'alternate' => '',
+		];
+
+		$value = wp_parse_args( $value, $new_values );
+		?>
+		<div class="alignleft">
+			<p><label for="<?= $field_type->_id( '_address' ); ?>">Address</label> </p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[address]' ),
+				'id'    => $field_type->_id( '_address' ),
+				'value' => $value['address'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft" style="padding-left: 12px;">
+			<p> <label for="<?= $field_type->_id( '_url' ); ?>">Website</label> </p>
+			<?=
+			$field_type->input( [
+				'name'  => $field_type->_name( '[url]' ),
+				'id'    => $field_type->_id( '_url' ),
+				'value' => $value['url'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<br class="clear">
+		<div class="alignleft">
+			<p>
+				<label for="<?= $field_type->_id( '_city' ); ?>'">City</label>
+			</p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[city]' ),
+				'id'    => $field_type->_id( '_city' ),
+				'value' => $value['city'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft" style="padding-left: 12px;">
+			<p>
+				<label for="<?= $field_type->_id( '_state' ); ?>'">State</label>
+			</p>
+			<?=
+			$field_type->select( [
+				'name'    => $field_type->_name( '[state]' ),
+				'id'      => $field_type->_id( '_state' ),
+				'options' => self::get_state_options( $value['state'] ),
+				'desc'    => '',
+			] ); ?>
+		</div>
+		<div class="alignleft" style="padding-left: 12px;">
+			<p>
+				<label for="<?= $field_type->_id( '_zip' ); ?>'">Zip</label>
+			</p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[zip]' ),
+				'id'    => $field_type->_id( '_zip' ),
+				'value' => $value['zip'],
+				'type'  => 'number',
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<br class="clear">
+		<div class="alignleft">
+			<p>
+				<label for="<?= $field_type->_id( '_latitude' ); ?>'">Latitude</label>
+			</p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[latitude]' ),
+				'id'    => $field_type->_id( '_latitude' ),
+				'value' => $value['latitude'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft" style="padding-left: 12px;">
+			<p><label for="<?= $field_type->_id( '_longitude' ); ?>'">Longitude</label></p>
+			<?=
+			$field_type->input( array(
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[longitude]' ),
+				'id'    => $field_type->_id( '_longitude' ),
+				'value' => $value['longitude'],
+				'desc'  => '',
+			) ); ?>
+		</div>
+		<div class="alignleft" style="padding-left: 12px;">
+			<p><label for="<?= $field_type->_id( '_alternate' ); ?>'">Project Alt Name</label></p>
+			<?=
+			$field_type->input( array(
+				'class' => 'cmb_text_medium',
+				'name'  => $field_type->_name( '[alternate]' ),
+				'id'    => $field_type->_id( '_alternate' ),
+				'value' => $value['alternate'],
+				'desc'  => '',
+			) ); ?>
+		</div>
+		<br class="clear">
+	<?= $field_type->_desc( true );
+	} // end render_projectlocation_field_callback()
+
+	/**
+	 * Create & Render Partner Information Fields
+	 *
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type         The `CMB2_Types` object.
+	 */
+	public function render_partner_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+		$new_values = [
+			'partner' => '',
+			'type'    => '',
+			'url'     => '',
+		];
+
+		$value = wp_parse_args( $value, $new_values );
+		?>
+		<div class="alignleft">
+			<p> <label for="<?= $field_type->_id( '_partner' ); ?>">Partner</label> </p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_medium',
+				'name'  => $field_type->_name( '[partner]' ),
+				'id'    => $field_type->_id( '_partner' ),
+				'value' => $value['partner'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft" style="margin-left: 14px;">
+			<p> <label for="<?= $field_type->_id( '_type' ); ?>'">Type</label> </p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[type]' ),
+				'id'    => $field_type->_id( '_type' ),
+				'value' => $value['type'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<div class="alignleft" style="margin-left: 14px;">
+			<p> <label for="<?= $field_type->_id( '_url' ); ?>'">URL</label> </p>
+			<?=
+			$field_type->input( [
+				'class' => 'cmb_text_small',
+				'name'  => $field_type->_name( '[url]' ),
+				'id'    => $field_type->_id( '_url' ),
+				'value' => $value['url'],
+				'desc'  => '',
+			] ); ?>
+		</div>
+		<br class="clear">
+	<?= $field_type->_desc( true );
+	} //end render_partner_field_callback
+
+	/**
+	 * Create & Render a Client Information Field for CMB2.
+	 *
+	 * @param array  $field       The passed in `CMB2_Field` .
+	 * @param mixed  $value       The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id   The ID of the current object.
+	 * @param string $object_type The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type  The `CMB2_Types` object.
+	 */
+	public function render_client_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+		$new_value = [
+			'company' => '',
+			'website' => '',
+			'since'   => '',
+		];
+
+		$value = wp_parse_args( $value, $new_value );
+		$html  = '';
+		$html .= '<style>
+		section.custom_field_section {
+			min-height: 260px;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: space-around;
+			align-items: stretch;
+		}
+		.admin-additional-field {
+			padding-bottom: 1.6rem;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: flex-start;
+			align-items: space-around;
+		}
+		.admin-additional-field > input {
+			position: absolute;
+			left: 20%;
+		}
+		</style>';
+
+		$html .= '<section class="custom_field_section">';
+
+		$field       = 'Company';
+		$label       = $field_type->_id( '_company' );
+		$name        = $field_type->_name( '[company]' );
+		$val         = $value['company'];
+		$field_array = [
+			'name'  => $name,
+			'id'    => $label,
+			'value' => $val,
+			'desc'  => '',
+		];
+
+		$html .= '<div class="admin-additional-field">';
+		$html .= '<label for="' . $label . '">' . $field . '</label>';
+		$html .= $field_type->input( $field_array );
+		$html .= '</div>';
+
+		$field       = 'Website';
+		$label       = $field_type->_id( '_website' );
+		$name        = $field_type->_name( '[website]' );
+		$val         = $value['website'];
+		$field_array = [
+			'name'  => $name,
+			'id'    => $label,
+			'value' => $val,
+			'desc'  => '',
+		];
+		$html       .= '<div class="admin-additional-field">';
+		$html       .= '<label for="' . $label . '">' . $field . '</label>';
+		$html       .= $field_type->input( $field_array );
+		$html       .= '</div>';
+
+		$field       = 'Since';
+		$label       = $field_type->_id( '_since' );
+		$name        = $field_type->_name( '[since]' );
+		$val         = $value['since'];
+		$field_array = [
+			'name'  => $name,
+			'id'    => $label,
+			'value' => $val,
+			'desc'  => '',
+		];
+		$html       .= '<div class="admin-additional-field">';
+		$html       .= '<label for="' . $label . '">' . $field . '</label>';
+		$html       .= $field_type->input( $field_array );
+		$html       .= '</div>';
+
+		$html .= '</section>';
+		echo $html;
+	} //end render_clientele_field_callback()
+
+
+
+}

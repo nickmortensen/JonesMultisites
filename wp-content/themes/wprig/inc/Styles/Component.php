@@ -11,10 +11,7 @@ use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
-use function remove_action;
-use function remove_filter;
 use function add_filter;
-use function trailingslashit;
 use function wp_enqueue_style;
 use function wp_register_style;
 use function wp_style_add_data;
@@ -33,24 +30,6 @@ use function get_comments_number;
 use function apply_filters;
 use function add_query_arg;
 
-/**
- * TOC
- * #1 get_slug()
- * #2 initialize()
- * #3 template_tags()
- * #4 action_enqueue_styles()
- * #5 action_preload_styles()
- * #6 action_add_editor_styles()
- * #7 filter_resource_hints()
- * #8 print_styles()
- * #9 preloading_styles_enabled()
- * #10 get_css_files()
- * #11 get_google_fonts()
- * #12 get_google_fonts_url()
- * #13 disable_the_goddamned_emoji()
- * #14 use_tailwind_styles()
- * #15 get_material_icon_font_url()
- */
 /**
  * Class for managing stylesheets.
  *
@@ -90,18 +69,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 *
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ], 30 );
-		add_action( 'login_enqueue_scripts', [ $this, 'custom_login_stylesheet' ], 30 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'custom_admin_style' ] );
-		add_action( 'admin_enqueue_scripts', [ $this, 'add_material_icons' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons' ], 40 );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
 		add_filter( 'wp_resource_hints', [ $this, 'filter_resource_hints' ], 10, 2 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'add_material_icons' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'add_custom_admin_style' ] );
 	}
 
 	/**
@@ -123,15 +101,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Stylesheets that are global are enqueued. All other stylesheets are only registered, to be enqueued later.
 	 */
 	public function action_enqueue_styles() {
-		$version            = wp_rig()->seconds_from_epoch();
-		$material_icons_url = $this->get_material_icon_font_url();
-		if ( ! empty( $material_icons_url ) ) {
-			wp_enqueue_style( 'wp-rig-material-icons', $material_icons_url, [], '9', 'all' ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
-		}
-		// Enqueue Google Fonts.
+
+		// Enqueue Google Fonts as well as Material icons for the pblic facing side of site.
 		$google_fonts_url = $this->get_google_fonts_url();
 		if ( ! empty( $google_fonts_url ) ) {
-			wp_enqueue_style( 'wp-rig-fonts', $google_fonts_url, [], $version, null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			wp_enqueue_style( 'wp-rig-material-icons', $this->get_material_icon_font_url(), [], '9', 'all' );
+			wp_enqueue_style( 'wp-rig-fonts', $google_fonts_url, [], null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 		}
 
 		$css_uri = get_theme_file_uri( '/assets/css/' );
@@ -307,59 +282,47 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$css_files = [
-			'project'           => [
-				'file'             => 'project.min.css',
-				'preload_callback' => function() {
-					return 'project' === get_post_type();
-				},
-			],
-			'client'            => [
-				'file'             => 'client.min.css',
-				'preload_callback' => function() {
-					return 'client' === get_post_type();
-				},
-			],
-			'signtype' => [
-				'file'             => 'signtype.min.css',
-				'preload_callback' => function() {
-					return is_tax( 'signtype' );
-				},
-			],
-			'flickity'          => [
-				'file'             => 'flickity.min.css',
-				'preload_callback' => function() {
-					return 'project' === get_post_type();
-				},
-			],
 			'wp-rig-global'     => [
 				'file'   => 'global.min.css',
 				'global' => true,
 			],
-			'wp-rig-flex'       => [
-				'file'   => 'flex.min.css',
-				'global' => true,
+			'wp-rig-comments'   => [
+				'file'             => 'comments.min.css',
+				'preload_callback' => function() {
+					return ! post_password_required() && is_singular() && ( comments_open() || get_comments_number() );
+				},
 			],
 			'wp-rig-content'    => [
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
-			],
-			'wp-rig-sidebar'    => [
-				'file'             => 'sidebar.min.css',
-				'preload_callback' => function() {
-					return wp_rig()->is_primary_sidebar_active();
-				},
-			],
-			'wp-rig-widgets'    => [
-				'file'             => 'widgets.min.css',
-				'preload_callback' => function() {
-					return wp_rig()->is_primary_sidebar_active();
-				},
 			],
 			'wp-rig-front-page' => [
 				'file'             => 'front-page.min.css',
 				'preload_callback' => function() {
 					global $template;
 					return 'front-page.php' === basename( $template );
+				},
+			],
+			'wp-rig-taxonomy'   => [
+				'file'             => 'taxonomies.min.css',
+				'preload_callback' => function() {
+					global $template;
+					return 'taxonomy-signtype.php' === basename( $template );
+				},
+			],
+			'wp-rig-project'    => [
+				'file'             => 'project.min.css',
+				'preload_callback' => function() {
+					global $template;
+					return is_singular( 'project' ) || 'front-page.php' === basename( $template );
+				},
+			],
+			// Preload only on project post types using the single-project.php template.
+			'wp-rig-flickity'   => [
+				'file'             => 'flickity.min.css',
+				'preload_callback' => function() {
+					global $template;
+					return 'project' === get_post_type() && 'single-project.php' === basename( $template );
 				},
 			],
 		];
@@ -409,11 +372,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$google_fonts = [
-			'Yellowtail' => [],
-			'Tillana'    => [ '400' ],
-			'Oswald'     => [ '700' ],
-			'Roboto'     => [ '300', '400', '400i', '500', '700' ],
-			'Ubuntu'     => [ '300', '400', '400i', '500', '700' ],
+			'Oswald'      => [ '700' ],
+			'Oxygen'      => [ '700' ],
+			'Roboto Mono' => [ '300', '400', '400i', '500', '700' ],
+			'Ubuntu'      => [ '300', '400', '400i', '500', '700' ],
 		];
 
 		/**
@@ -464,53 +426,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Disable the emoji that are built into WordPress.
-	 */
-	public function disable_the_goddamned_emoji() {
-		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-		remove_action( 'wp_print_styles', 'print_emoji_styles' );
-		remove_action( 'admin_print_styles', 'print_emoji_styles' );
-		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
-		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
-	}
-
-	/**
-	 * Use Tailwind for CSS.
-	 */
-	public function use_tailwind_styles() {
-		$uri        = trailingslashit( get_theme_file_uri( 'assets/css/src/tailwind' ) );
-		$dir        = trailingslashit( get_theme_file_path( '/assets/css/src/tailwind' ) );
-		$handle     = 'tailwind';
-		$dependency = [];
-		$src        = $uri . 'tailwind.css';
-		$media      = 'all';
-		$version    = wp_rig()->seconds_from_epoch();
-		wp_enqueue_style( $handle, $src, $dependency, $version, $media );
-	}
-
-	/**
-	 * Custom Admin Style.
-	 */
-	public function custom_admin_style() {
-		global $pagenow;
-		global $post_type;
-		$admin_css = get_theme_file_path( '/assets/css/admin.min.css' ); // outputs a path --needed for asset version.
-		$version   = wp_rig()->get_asset_version( $admin_css );
-		wp_enqueue_style( 'admincss', get_theme_file_uri( '/assets/css/admin.min.css' ), [], $version, 'all' );
-	}
-
-	/**
-	 * Custom login Style.
-	 */
-	public function custom_login_stylesheet() {
-		$login_css = get_theme_file_path( '/assets/css/src/_login.css' );
-		$version   = wp_rig()->get_asset_version( $login_css );
-		wp_enqueue_style( 'logincss', get_theme_file_uri( '/assets/css/src/_login.css' ), [], $version, 'all' );
-	}
-
-	/**
 	 * Output the url for the Material Icons.
 	 */
 	protected function get_material_icon_font_url() : string {
@@ -532,5 +447,28 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		wp_enqueue_style( 'wp-rig-material-icons', $icons_url, [], '9', 'all' );
 	}
 
+	/**
+	 * Add Admin Stylesheet to site.
+	 *
+	 * @see Use admin_enqueue_scripts hook.
+	 */
+	public function add_custom_admin_style() {
+		$filepath = get_theme_file_path( '/assets/css/admin.min.css' ); // outputs a path --needed for asset version.
+		$fileurl  = get_theme_file_uri( '/assets/css/admin.min.css' ); // outputs a path --needed for asset version.
+		$version  = wp_rig()->get_asset_version( $filepath );
+		wp_enqueue_style( 'wp-rig-admin-styles', $fileurl, [], $version, 'all' );
+	}
 
+	/**
+	 * Disable the emoji that are built into WordPress.
+	 */
+	public function disable_the_goddamned_emoji() {
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+		remove_action( 'admin_print_styles', 'print_emoji_styles' );
+		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	}
 }

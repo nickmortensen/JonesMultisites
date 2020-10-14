@@ -4,22 +4,6 @@
 # Media
 --------------------------------------------------------------*/
 
-img {
-	display: block;
-	height: auto;
-	max-width: 100%;
-}
-
-/* Extra wide images within figure tags don't overflow the content area. */
-figure {
-	margin: 0.5em 0;
-}
-
-table {
-	margin: 0 0 1.5em;
-	width: 100%;
-}
-
 .page-content .wp-smiley,
 .entry-content .wp-smiley,
 .comment-content .wp-smiley {
@@ -39,6 +23,7 @@ object {
 /*--------------------------------------------------------------
 ## Captions
 --------------------------------------------------------------*/
+
 .wp-caption {
 	margin-bottom: 1.5em;
 	max-width: 100%;
@@ -58,6 +43,8 @@ object {
 	margin: 0.8075em 0;
 }
 
+/* min-width: 48em 672px */
+
 @media (--content-query) {
 
 	.wp-caption.alignright,
@@ -75,12 +62,15 @@ object {
 /*--------------------------------------------------------------
 ## Galleries (Legacy)
 --------------------------------------------------------------*/
+
 .gallery {
 	margin-bottom: 1.5em;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 	grid-gap: 0.5em;
 }
+
+/* min width 560px */
 
 @media screen and (min-width: 40em) {
 

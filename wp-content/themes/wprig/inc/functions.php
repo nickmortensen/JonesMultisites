@@ -25,4 +25,13 @@ function wp_rig() : Template_Tags {
 	return $theme->template_tags();
 }
 
-
+/**
+ * Wrap intput in '<pre>' tags and print_r.
+ *
+ * @param mix $input Anything you want printed and wrapped in a pre tag.
+ */
+function wrap( $input ) {
+	echo '<pre>';
+	print_r( $input ); //phpcs:ignore
+	echo '</pre>';
+}

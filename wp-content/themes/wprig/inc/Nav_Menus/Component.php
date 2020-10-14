@@ -117,8 +117,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Displays the primary navigation menu.
 	 *
-	 * @param array $args Optional. Array of arguments. See `wp_nav_menu()` documentation for a list of arguments.
-	 * @link https://developer.wordpress.org/reference/functions/wp_nav_menu/
+	 * @param array $args Optional. Array of arguments. See `wp_nav_menu()` documentation for a list of supported
+	 *                    arguments.
 	 */
 	public function display_primary_nav_menu( array $args = [] ) {
 		if ( ! isset( $args['container'] ) ) {
@@ -129,4 +129,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		wp_nav_menu( $args );
 	}
+
+
+	/**
+	 * Add custom fields to $item nav object
+	 * in order to be used in custom Walker
+	 *
+	 * @access      public
+	 * @since       1.0
+	 * @return      void
+	*/
 }

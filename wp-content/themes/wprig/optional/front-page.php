@@ -32,4 +32,5 @@ if ( is_home() ) {
 		?>
 	</main><!-- #primary -->
 <?php
+wp_rig()->wrap_pre( wp_rig()->create_taxonomies() );
 get_footer();

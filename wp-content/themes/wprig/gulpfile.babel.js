@@ -34,8 +34,8 @@ export default firstRun;
  */
 export const buildDev = parallel(
     php, images, series( styles, editorStyles ), scripts, translate
-    // series( styles, editorStyles ), scripts, translate
 );
+
 /**
  * Export theme for distribution.
  */

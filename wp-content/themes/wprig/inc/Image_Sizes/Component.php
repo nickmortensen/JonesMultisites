@@ -11,7 +11,6 @@ use WP_Rig\WP_Rig\Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
 use WP_Post;
 use function add_filter;
-use function is_active_sidebar;
 
 /**
  * Class for managing responsive image sizes.
@@ -50,11 +49,6 @@ class Component implements Component_Interface {
 		if ( 740 <= $width ) {
 			$sizes = '100vw';
 		}
-
-		if ( wp_rig()->is_primary_sidebar_active() ) {
-			$sizes = '(min-width: 960px) 75vw, 100vw';
-		}
-
 		return $sizes;
 	}
 
@@ -84,11 +78,6 @@ class Component implements Component_Interface {
 	 */
 	public function filter_post_thumbnail_sizes_attr( array $attr, WP_Post $attachment, $size ) : array {
 		$attr['sizes'] = '100vw';
-
-		if ( wp_rig()->is_primary_sidebar_active() ) {
-			$attr['sizes'] = '(min-width: 960px) 75vw, 100vw';
-		}
-
 		return $attr;
 	}
 }

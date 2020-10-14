@@ -19,7 +19,6 @@ use function get_bloginfo;
 use function wp_scripts;
 use function wp_get_theme;
 use function get_template;
-
 /**
  * TOC
  * #1  get_slug()
@@ -34,6 +33,8 @@ use function get_template;
  * #10 get_asset_version( $filepath )
  * #11 pr( $input )
  * #12 seconds_from_epoch()
+ * # user_agent_matches()
+ * # change_login_destination
  */
 
 /**
@@ -60,7 +61,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function initialize() {
 		add_action( 'after_setup_theme', [ $this, 'action_essential_theme_support' ] );
 		add_action( 'wp_head', [ $this, 'action_add_pingback_header' ] );
-		add_action( 'wp_head', [ $this, 'add_icons_to_header' ] );
 		add_filter( 'body_class', [ $this, 'filter_body_classes_add_hfeed' ] );
 		add_filter( 'embed_defaults', [ $this, 'filter_embed_dimensions' ] );
 		add_filter( 'theme_scandir_exclusions', [ $this, 'filter_scandir_exclusions_for_optional_templates' ] );
@@ -79,11 +79,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_version'        => [ $this, 'get_version' ],
 			'get_asset_version'  => [ $this, 'get_asset_version' ],
 			'seconds_from_epoch' => [ $this, 'seconds_from_epoch' ],
-			'pr'                 => [ $this, 'pr' ],
+			'wrap_pre'           => [ $this, 'wrap_pre' ],
 			'user_agent_matches' => [ $this, 'user_agent_matches' ],
+			'pdf_button'         => [ $this, 'pdf_button' ],
 		];
 	}
-
 
 	/**
 	 * Adds theme support for essential features.
@@ -124,55 +124,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Determine whether the user agent is among one of the devices inputted into the function
-	 *
-	 * @param array $devices Devices to check.
-	 *
-	 * @return true If any of the devices are a match. False otherwise.
-	 */
-	public function user_agent_matches( $devices = [] ) {
-		$user_agent       = strtolower( $_SERVER['HTTP_USER_AGENT'] );
-		$user_agent_match = false;
-		foreach ( $devices as $device ) {
-			if ( false !== stripos( $user_agent, $device ) ) {
-				$user_agent_match = true;
-				break;
-			}
-		}
-		return $user_agent_match;
-	}
-
-	/**
-	 * Add a site manifest file to the header.
-	 *
-	 * @link https://developer.wordpress.org/reference/functions/wp_head/
-	 */
-	private function add_site_manifest() {
-		return '<link rel="manifest" href="/site.webmanifest">';
-	}
-
-	/**
-	 * Outputs the favicon to any public facing page load and the icons for Android and IOS only on the homepage
-	 */
-	public function add_icons_to_header() {
-		$html = '';
-		foreach ( [ '32x32', '16x16' ] as $favicon ) {
-				$html .= '<link rel="icon" type="image/png" sizes="' . $favicon . '" href="/favicon-' . $favicon . '.png">';
-		}
-
-		if ( $this->user_agent_matches( [ 'iphone', 'ipod', 'ipad' ] ) ) {
-			$html .= '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
-		}
-		if ( $this->user_agent_matches( [ 'android' ] ) ) {
-			$html .= '<link rel="icon" type="image/png" sizes="192x192" href="/android-chome-192x192.png">';
-		}
-
-		$html .= $this->add_site_manifest();
-
-		echo $html;
-	}
-
-	/**
 	 * Adds a 'hfeed' class to the array of body classes for non-singular pages.
 	 *
 	 * @param array $classes Classes for the body element.
@@ -182,6 +133,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		if ( ! is_singular() ) {
 			$classes[] = 'hfeed';
 		}
+
 		return $classes;
 	}
 
@@ -222,7 +174,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param string $handle The script handle.
 	 * @return string Script HTML string.
 	 */
-	public function filter_script_loader_tag( $tag, $handle ) : string {
+	public function filter_script_loader_tag( string $tag, string $handle ) : string {
 
 		foreach ( [ 'async', 'defer' ] as $attr ) {
 			if ( ! wp_scripts()->get_data( $handle, $attr ) ) {
@@ -240,7 +192,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		return $tag;
 	}
-
 
 	/**
 	 * Gets the theme version.
@@ -261,8 +212,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Gets the version for a given asset.
 	 *
 	 * Returns filemtime when WP_DEBUG is true, otherwise the theme version.
-
-	 * @see https://www.php.net/manual/en/function.filemtime.php
+	 *
 	 * @param string $filepath Asset file path.
 	 * @return string Asset version number.
 	 */
@@ -274,13 +224,31 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $this->get_version();
 	}
 
+	/**
+	 * Determine whether the user agent is among one of the devices inputted into the function
+	 *
+	 * @param array $devices Devices to check.
+	 *
+	 * @return true If any of the devices are a match. False otherwise.
+	 */
+	public function user_agent_matches( $devices = [] ) {
+		$user_agent       = strtolower( $_SERVER['HTTP_USER_AGENT'] );
+		$user_agent_match = false;
+		foreach ( $devices as $device ) {
+			if ( false !== stripos( $user_agent, $device ) ) {
+				$user_agent_match = true;
+				break;
+			}
+		}
+		return $user_agent_match;
+	}
 
 	/**
 	 * Helper function to get the result and output using 'print_r()' inside of '<pre>' tags.
 	 *
 	 * @param string $input What I would like to see wrapped in '<pre>' tags.
 	 */
-	public function pr( $input ) {
+	public static function wrap_pre( $input ) {
 		echo '<pre>';
 		print_r( $input ); //phpcs:ignore
 		echo '</pre>';
@@ -298,12 +266,48 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Understanding certain wordpress hooks and filters.
+	 * Understanding certain WordPress hooks and filters.
 	 *
-	 * @param string $redirect_url Exisitng $redirect_url to hook into.
+	 * @param string $redirect_url Exisitng $redirect_url to hook into. Defaults to empty string.
 	 */
-	public function change_login_destination( $redirect_url ) {
-		$redirect_url = '';
+	public function change_login_destination( $redirect_url = '' ) {
 		return $redirect_url;
+	}
+
+	/**
+	 * Output favicon to any public facing page load and the icons for Android and IOS only on the homepage
+	 */
+	public function add_icons_to_header() {
+		$html = '';
+		foreach ( [ '32x32', '16x16' ] as $favicon ) {
+				$html .= '<link rel="icon" type="image/png" sizes="' . $favicon . '" href="/favicon-' . $favicon . '.png">';
+		}
+
+		if ( $this->user_agent_matches( [ 'iphone', 'ipod', 'ipad' ] ) ) {
+			$html .= '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
+		}
+		if ( $this->user_agent_matches( [ 'android' ] ) ) {
+			$html .= '<link rel="icon" type="image/png" sizes="192x192" href="/android-chome-192x192.png">';
+		}
+
+		$html .= $this->add_site_manifest();
+
+		echo $html;
+	}
+
+	/**
+	 * Add a site manifest file to the header.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/wp_head/
+	 */
+	private function add_site_manifest() {
+		return '<link rel="manifest" href="/site.webmanifest">';
+	}
+
+	/**
+	 * Button to click and get a pdf based on the information from the page.
+	 */
+	public function pdf_button() {
+		return '<span class="material_icons">picture_as_pdf</span>';
 	}
 }

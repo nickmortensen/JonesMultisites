@@ -1,3 +1,5 @@
+@import "_custom-properties.css";
+
 /*--------------------------------------------------------------
 ## Blocks
 --------------------------------------------------------------*/
@@ -40,6 +42,8 @@
 .entry-content > .wp-block-quote.is-style-large {
 	margin-left: 1.5rem;
 }
+
+/* min-width: 48em */
 
 @media (--content-query) {
 
@@ -118,7 +122,6 @@ ul.wp-block-latest-posts.is-grid.alignfull {
 }
 
 /* Override standard ul indentation. */
-
 .entry-content .wp-block-gallery {
 	padding-right: 1.5em;
 	padding-left: 1.5em;

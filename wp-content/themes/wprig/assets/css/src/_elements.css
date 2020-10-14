@@ -1,14 +1,100 @@
-.entry {
-	margin-bottom: 1rem;
+@import "_custom-properties.css";
 
-	&-meta,
-	&-footer {
-		font-family: var(--highlight-font-family);
-		font-stretch: condensed;
-		font-size: 80%;
-	}
+/*--------------------------------------------------------------
+# Elements
+--------------------------------------------------------------*/
+/* stylelint-disable */
 
-	&-meta {
-		margin: 1em 0;
-	}
+/**
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in iOS.
+ */
+html {
+	box-sizing: border-box;
+	line-height: 1.15; /* 1 */
+	-webkit-text-size-adjust: 100%; /* 2 */
 }
+
+/**
+ * Inherit box-sizing to make it easier to change the property for
+ * components that leverage other behavior; see
+ * http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ */
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+/**
+ * Remove the margin in all browsers.
+ */
+body {
+	overflow-x: hidden;
+	background-image: linear-gradient(110deg, var(--pink-700), var(--indigo-500));
+	min-height: calc(100vh - 100px);
+	margin: 0;
+}
+
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+hr {
+	background-color: var(--gray-300);
+	border: 0;
+	height: 1px;
+	margin-bottom: 1.5em;
+	box-sizing: content-box; /* 1 */
+	height: 0; /* 1 */
+	overflow: visible; /* 2 */
+}
+
+ul,
+ol {
+	margin: 0 0 1.5em 3em;
+}
+
+ul {
+	list-style: disc;
+}
+
+ol {
+	list-style: decimal;
+}
+
+li > ul,
+li > ol {
+	margin-bottom: 0;
+	margin-left: 1.5em;
+}
+
+dt {
+	font-weight: 700;
+}
+
+dd {
+	margin: 0 1.5em 1.5em;
+}
+
+/**
+ * Remove the border on images inside links in IE 10.
+ */
+img {
+	border-style: none;
+	display: block;
+	height: auto;
+	max-width: 100%;
+}
+
+/* Extra wide images within figure tags don't overflow the content area. */
+figure {
+	margin: 0.5em 0;
+}
+
+table {
+	margin: 0 0 1.5em;
+	width: 100%;
+}
+/* stylelint-enable */

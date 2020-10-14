@@ -9,14 +9,14 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-<div class="site-info flex justify-center bg-indigo-300">
+<div class="site-info">
 
-<?php
-	if ( 'development' === ENVIRONMENT ) {
-		echo "\n";
-		echo 'blog id = ' . get_current_blog_id();
-}
-?>
+	<?php
+	$tagline = esc_html( get_bloginfo( 'description', 'display' ) );
+	echo $tagline;
+
+	if ( function_exists( 'the_privacy_policy_link' ) ) {
+		the_privacy_policy_link( '<span class="sep"> | </span>' );
+	}
+	?>
 </div><!-- .site-info -->
-
-

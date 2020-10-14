@@ -13,29 +13,9 @@ use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function add_filter;
 use network_site_url;
+
 /**
- * TOC
- * #1 get_slug()
- * #2 initialize()
- * #3 template_tags()
- * #4 action_enqueue_styles()
- * #5 action_preload_styles()
- * #6 action_add_editor_styles()
- * #7 filter_resource_hints()
- * #8 print_styles()
- * #9 preloading_styles_enabled()
- * #10 get_css_files()
- * #11 get_google_fonts()
- * #12 get_google_fonts_url()
- * #13 disable_the_goddamned_emoji()
- * #14 use_tailwind_styles()
- * #15 get_material_icon_font_url()
- */
-/**
- * Class for managing stylesheets.
- *
- * Exposes template tags:
- * * `wp_rig()->print_styles()`
+ * Class for media items -- adding media mime types, etc.
  */
 class Component implements Component_Interface, Templating_Component_Interface {
 
@@ -52,13 +32,28 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
-		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] );
-		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 );
-		add_filter( 'manage_upload_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
-		add_filter( 'upload_mimes', [ $this, 'allow_svg_uploads' ], 10, 1 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_media_scripts' ] );
+		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] ); // create extra media fields.
+		add_filter( 'manage_media_columns', [ $this, 'add_tag_column' ] ); // add administrator columns on backend.
+		add_action( 'manage_media_custom_column', [ $this, 'manage_attachment_tag_column' ], 10, 2 ); // manage the data to be included in the newly-added columns.
+		add_filter( 'manage_upload_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 ); // makes the newly added columns sortable.
+		// add_filter( 'upload_mimes', [ $this, 'allow_svg_uploads' ], 10, 1 ); // can be used to remove mime types, use 'mime types' filter to ADD.
+		add_filter( 'mime_types', [ $this, 'allow_svg_uploads' ], 10, 1 ); // adds new filetypes as mimes (SVG, Webp, etc.).
 		add_action( 'wp_ajax_svg_get_attachment_url', [ $this, 'get_attachment_url_media_library' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_media_scripts' ] );
+	}//end initialize()
+
+	/**
+	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
+	 *
+	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
+	 *               a callable or an array with key 'callable'. This approach is used to reserve the possibility of
+	 *               adding support for further arguments in the future.
+	 */
+	public function template_tags() : array {
+		return [
+			'add_tag_column'   => [ $this, 'add_tag_column' ],
+			'get_image_rating' => [ $this, 'get_image_rating' ],
+		];
 	}
 
 	/**
@@ -73,7 +68,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return $allowed;
 		}
-		$allowed['svg'] = 'image/svg'; // not image/xml as originally thought.
+		$allowed['svg']  = 'image/svg'; // not image/xml as originally thought.
+		$allowed['webp'] = 'image/webp'; // not image/xml as originally thought.
 		return $allowed;
 	}
 
@@ -86,8 +82,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$style_handle  = 'media_svg_style';
 		$script_handle = 'media_svg_script';
 		wp_enqueue_style( $style_handle, get_theme_file_uri( '/assets/css/src/_svg.css' ), [], '1', 'all' );
-
-		wp_enqueue_script( $script_handle, get_theme_file_uri( '/assets/js/src/svg.js' ), 'jQuery', '1', false );
+		wp_enqueue_script( $script_handle, get_theme_file_uri( '/assets/js/svg.min.js' ), 'jQuery', '1', false );
 		wp_localize_script( $script_handle, 'script_vars', [ 'AJAXurl' => admin_url( 'admin-ajax.php' ) ] );
 	}
 
@@ -97,27 +92,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_attachment_url_media_library() {
 		$url = '';
 		//phpcs:disable
-		$attachmentID = isset( $_REQUEST['attachmentID'] ) ?? '';
-		if ( $attachmentID ) {
-			$url = wp_get_attachment_url( $attachmentID );
+		$attachment_id = isset( $_REQUEST['attachmentID'] ) ?? '';
+		if ( $attachment_id ) {
+			$url = wp_get_attachment_url( $attachment_id );
 		}
 		//phpcs:enable
 		echo $url;
 		die();
-	}
-
-	/**
-	 * Gets template tags to expose as methods on the Template_Tags class instance, accessible through `wp_rig()`.
-	 *
-	 * @return array Associative array of $method_name => $callback_info pairs. Each $callback_info must either be
-	 *               a callable or an array with key 'callable'. This approach is used to reserve the possibility of
-	 *               adding support for further arguments in the future.
-	 */
-	public function template_tags() : array {
-		return [
-			'add_tag_column'   => [ $this, 'add_tag_column' ],
-			'get_image_rating' => [ $this, 'get_image_rating' ],
-		];
 	}
 
 	/**
@@ -154,20 +135,24 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param array $columns Existing column names within the media admin page.
 	 */
 	public function add_tag_column( $columns ) {
-		// Delete an existing column.
-		unset( $columns ['comments'] );
-		unset( $columns ['author'] );
-		unset( $columns ['tags'] );   // General Tags columnn.
-		unset( $columns ['parent'] ); // 'Uploaded to' column.
-		unset( $columns ['date'] ); // 'Data added' column.
-		unset( $columns ['taxonomy-media_category'] ); // 'Data added' column.
+		$columns_to_unset = [
+			'comments',
+			'author',
+			'tags',
+			'parent',
+			'date',
+			'taxonomy-media_category',
+		];
+		// Delete the existing columns from the above array.
+		foreach ( $columns_to_unset as $column ) {
+			unset( $columns[ $column ] );
+		}
 
 		// Add a new column.
 		$new['cb']     = '<input type="checkbox">';
 		$new['id']     = 'ID';
 		$new['rating'] = '<i style="color:var(--yellow-500)" class="material-icons star-rating">stars</i>';
-		$columns = array_merge( $new, $columns );
-		return $columns;
+		return array_merge( $new, $columns );
 	}
 
 	/**
@@ -199,7 +184,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Output a material icon star
 	 *
-	 * @param int  $quantity How many? Default is 5;
+	 * @param int  $quantity How many? Default is 5.
 	 * @param bool $filled Whether the star should be filled or not - default is false.
 	 */
 	public function get_star( $quantity = 5, $filled = false ) {
@@ -249,6 +234,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$columns['rating'] = '<span class="dashicons dashicons-star-filled"></span>';
 		return $columns;
 	}
+
 	/**
 	 * Create the extra fields for the post type.
 	 *
@@ -280,12 +266,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$metabox->add_field( $args );
 	}
 
-
 	/**
-	 * Create quickedit star rating field
+	 * Create quickedit star rating field.
+	 *
+	 * @todo Complete this function.
 	 */
 	public function create_quickedit_star_rating_field() {
 		return '';
 	}
 
-}
+
+}//end class

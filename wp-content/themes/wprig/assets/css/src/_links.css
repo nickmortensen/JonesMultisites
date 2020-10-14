@@ -1,27 +1,33 @@
+@import "_custom-properties.css";
+
 /*--------------------------------------------------------------
 # Links
 --------------------------------------------------------------*/
-/* stylelint-disable */
+
 a {
 	color: var(--color-link);
-}
-/* stylelint-enable */
 
-a:visited {
-	color: var(--color-link-visited);
-}
+	/**
+	* Remove the gray background on active links in IE 10.
+	*/
+	background-color: transparent;
 
-a:hover,
-a:focus,
-a:active {
-	color: var(--color-link-active);
-}
+	&:visited {
+		color: var(--color-link-visited);
+	}
 
-a:focus {
-	outline: thin dotted;
-}
+	&:focus {
+		outline: thin dotted;
+	}
 
-a:hover,
-a:active {
-	outline: 0;
+	&:focus,
+	&:hover,
+	&:active {
+		color: var(--color-link-active);
+	}
+
+	&:hover,
+	&:active {
+		outline: 0;
+	}
 }

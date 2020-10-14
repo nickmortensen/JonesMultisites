@@ -60,7 +60,7 @@ export function stylesAfterReplacementStream() {
 			stage: (
 				configValueDefined( 'config.dev.styles.stage' ) ?
 					config.dev.styles.stage :
-					3
+					0
 			),
 			autoprefixer: (
 				configValueDefined( 'config.dev.styles.autoprefixer' ) ?
@@ -75,7 +75,10 @@ export function stylesAfterReplacementStream() {
 							preserve: false,
 						},
 						'custom-properties': {
-							preserve: true,
+							preserve: false,
+						},
+						'custom-selectors': {
+							preserve: false,
 						},
 						'nesting-rules': true,
 					}
@@ -112,7 +115,7 @@ export function stylesAfterReplacementStream() {
 		gulpPlugins.postcss( postcssPlugins ),
 		gulpPlugins.if(
 			config.dev.debug.styles,
-			gulpPlugins.tabify( 2, true )
+			gulpPlugins.tabify( 4, true )
 		),
 		gulpPlugins.rename( {
 			suffix: '.min',

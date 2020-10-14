@@ -4,7 +4,7 @@
  *
  * @link: https://developer.mozilla.org/en-US/docs/Web/CSS/--*
  **/
-
+/* stylelint-disable */
 :root {
 	--hairline: 100;
 	--thin: 200;
@@ -26,7 +26,6 @@
 	--indigo-700: #4c51bf;
 	--indigo-800: #434190;
 	--indigo-900: #3c366b;
-
 	--gray-100: #f7fafc;
 	--gray-200: #a0aec0;
 	--gray-300: #94a4b8;
@@ -36,7 +35,6 @@
 	--gray-700: #5c718b;
 	--gray-800: #52657c;
 	--gray-900: #515153;
-
 	--red-100: #fff5f5;
 	--red-200: #fed7d7;
 	--red-300: #feb2b2;
@@ -46,7 +44,6 @@
 	--red-700: #c53030;
 	--red-800: #9b2c2c;
 	--red-900: #742a2a;
-
 	--orange-100: #fffaf0;
 	--orange-200: #feebc8;
 	--orange-300: #fbd38d;
@@ -56,7 +53,6 @@
 	--orange-700: #c05621;
 	--orange-800: #9c4221;
 	--orange-900: #7b341e;
-
 	--yellow-100: #fffff0;
 	--yellow-200: #fefcbf;
 	--yellow-300: #faf089;
@@ -66,7 +62,6 @@
 	--yellow-700: #b7791f;
 	--yellow-800: #975a16;
 	--yellow-900: #744210;
-
 	--green-100: #f0fff4;
 	--green-200: #c6f6d5;
 	--green-300: #9ae6b4;
@@ -76,7 +71,6 @@
 	--green-700: #2f855a;
 	--green-800: #276749;
 	--green-900: #22543d;
-
 	--teal-100: #e6fffa;
 	--teal-200: #b2f5ea;
 	--teal-300: #81e6d9;
@@ -86,7 +80,6 @@
 	--teal-700: #2c7a7b;
 	--teal-800: #285e61;
 	--teal-900: #234e52;
-
 	--blue-100: #ebf8ff;
 	--blue-200: #bee3f8;
 	--blue-300: #90cdf4;
@@ -96,7 +89,6 @@
 	--blue-700: #2b6cb0;
 	--blue-800: #285078;
 	--blue-900: #2a4365;
-
 	--purple-100: #faf5ff;
 	--purple-200: #e9d8fd;
 	--purple-300: #d6bcfa;
@@ -106,7 +98,6 @@
 	--purple-700: #6b46c1;
 	--purple-800: #553c9a;
 	--purple-900: #44337a;
-
 	--pink-100: #fff5f7;
 	--pink-200: #fed7e2;
 	--pink-300: #fbb6ce;
@@ -119,12 +110,13 @@
 
 	/* END Tailwind Colors */
 
-	--global-font-color: var(--gray-700);
+	--global-font-color: rgb(64, 70, 77);
 	--global-font-family: -apple-system, ubuntu, serif;
 	--global-font-size: 20;
 	--global-font-line-height: 1.4;
-	--highlight-font-family: ubuntu, system-ui, blinkmacsystemfont, sans-serif;
-	--content-width: 60vw;
+	--highlight-font-family: "Roboto Mono", ubuntu, system-ui, blinkmacsystemfont, sans-serif;
+	--content-width: 60vw; /* initially 45 rem */
+	--nav-width: 100vw; /* initially 45 rem */
 	--dropdown-symbol-width: 0.7em;
 	--h1-letter-spacing: 0.08em;
 
@@ -140,7 +132,6 @@
 	--color-theme-white: #ecf0f1;
 	--color-custom-daylight: var(--teal-300);
 	--color-custom-sun: var(--yellow-200);
-
 	--nav-ul-bg: var(--color-theme-white);
 	--color-link: var(--color-theme-primary);
 	--color-link-visited: var(--indigo-800);
@@ -153,10 +144,10 @@
 	--reverse-timing-function: cubic-bezier(0.53, -1.09, 0.44, 1.18);
 
 	/* Custom editor font sizes */
-	--font-size-small: 14px;
-	--font-size-regular: 18px;
-	--font-size-large: 28px;
-	--font-size-larger: 40px;
+	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
+	--font-size-regular: calc(var(--global-font-size) / 16 * 1rem);
+	--font-size-large: calc(36 / var(--global-font-size) * 1rem);
+	--font-size-larger: calc(48 / var(--global-font-size) * 1rem);
 
 	/* @link https://www.fluiditype.com */
 	--fontSize: calc(12px + 0.698vw);
@@ -201,4 +192,4 @@
 	/* Gradient */
 	--admin-gradient: linear-gradient(45deg, var(--indigo-400) 0%, var(--indigo-600) 50%, var(--indigo-800) 100%);
 }
-
+/* stylelint-enable */

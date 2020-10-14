@@ -32,11 +32,11 @@
 		"declaration-colon-newline-after": "always-multi-line",
 		"declaration-colon-space-after": "always-single-line",
 		"declaration-colon-space-before": "never",
-    "declaration-property-unit-allowed-list": {
-        "line-height": [],
-        "/^animation/": ["s"],
-        "font-size": [ "em", "rem", "%", "ch", "vw", "vh", "vmax", "vmin"]
-    },
+		"declaration-property-unit-allowed-list": {
+			"line-height": [],
+			"/^animation/": ["s"],
+			"font-size": [ "px", "em", "rem", "%", "ch", "vw", "vh", "vmax", "vmin"]
+		},
 		"font-family-name-quotes": "always-where-recommended",
 		"font-family-no-duplicate-names": true,
 		"font-family-no-missing-generic-family-keyword": true,
@@ -79,8 +79,9 @@
 		"property-case": "lower",
 		"property-no-unknown": true,
 		"rule-empty-line-before": [ "always", {
-		 "except": [ "after-single-line-comment" ],
-		} ],
+			"except": [ "after-single-line-comment" ],
+			"ignore": ["after-comment", "first-nested", "inside-block"]
+			} ],
 		"selector-attribute-brackets-space-inside": "never",
 		"selector-attribute-operator-space-after": "never",
 		"selector-attribute-operator-space-before": "never",

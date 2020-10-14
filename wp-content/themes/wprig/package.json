@@ -1,362 +1,352 @@
 {
-  "name": "wprig",
-  "version": "2.0.1",
-  "description": "A progressive theme development rig for WordPress.",
-  "author": "The WP Rig Contributors",
-  "license": "GPL-3.0-or-later",
-  "main": "index.php",
-  "homepage": "https://github.com/wprig/wprig#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wprig/wprig.git"
-  },
-  "bugs": {
-    "url": "https://github.com/wprig/wprig/issues"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/register": "^7.11.5",
-    "@wordpress/eslint-plugin": "^7.2.0",
-    "ajv": "^6.12.5",
-    "ansi-colors": "^4.1.1",
-    "autoprefixer": "^9.6.1",
-    "babel-jest": "^26.3.0",
-    "browser-sync": "^2.26.12",
-    "create-cert": "^1.0.6",
-    "cross-env": "^7.0.2",
-    "cssnano": "^4.1.10",
-    "deepmerge": "^4.2.2",
-    "del": "^5.1.0",
-    "eslint": "^7.9.0",
-    "eslint-config-gulp": "^5.0.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "esm": "^3.2.25",
-    "esvalidate": "^0.1.3",
-    "fancy-log": "^1.3.3",
-    "glob": "^7.1.6",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-eslint": "^6.0.0",
-    "gulp-if": "^3.0.0",
-    "gulp-imagemin": "^7.1.0",
-    "gulp-load-plugins": "^2.0.4",
-    "gulp-newer": "^1.4.0",
-    "gulp-notify": "^3.2.0",
-    "gulp-phpcs": "^3.1.0",
-    "gulp-plumber": "^1.2.1",
-    "gulp-postcss": "^8.0.0",
-    "gulp-potomo": "^1.1.0",
-    "gulp-print": "^5.0.2",
-    "gulp-rename": "^2.0.0",
-    "gulp-sort": "^2.0.0",
-    "gulp-string-replace": "^1.1.2",
-    "gulp-tabify": "0.0.2",
-    "gulp-uglify": "^3.0.2",
-    "gulp-zip": "^5.0.2",
-    "import-fresh": "^3.2.1",
-    "jest": "^26.4.2",
-    "jest-expect-message": "^1.0.2",
-    "map-stream": "0.0.7",
-    "mississippi": "^4.0.0",
-    "mkdirp": "^1.0.4",
-    "npm-run-all": "^4.1.5",
-    "postcss": "^8.0.3",
-    "postcss-calc": "^7.0.4",
-    "postcss-import": "^12.0.1",
-    "postcss-partial-import": "^4.1.0",
-    "postcss-preset-env": "^6.7.0",
-    "postcss-reporter": "^7.0.0",
-    "pump": "^3.0.0",
-    "rimraf": "^3.0.2",
-    "stylelint": "^13.7.1",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-wordpress": "^17.0.0",
-    "vinyl": "^2.2.0"
-  },
-  "babel": {
-    "presets": [
-      "@babel/env"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "plugin:@wordpress/eslint-plugin/recommended",
-    "root": true,
-    "env": {
-      "browser": true,
-      "node": true,
-      "es6": true
-    },
-    "rules": {
-      "arrow-parens": [
-        "error",
-        "as-needed"
-      ],
-      "comma-dangle": [
-        "error",
-        {
-          "arrays": "always-multiline",
-          "objects": "always-multiline"
-        }
-      ],
-      "indent": [
-        "error",
-        "tab"
-      ],
-      "no-console": 0,
-      "no-multi-spaces": "off",
-      "no-unused-vars": 1,
-      "semi": 2,
-      "space-in-parens": [
-        "error",
-        "always",
-        {
-          "exceptions": [
-            "{}",
-            "[]"
-          ]
-        }
-      ],
-      "template-curly-spacing": [
-        "error",
-        "never"
-      ],
-      "yoda": [
-        "error",
-        "always"
-      ]
-    },
-    "globals": {
-      "jQuery": "readonly",
-      "wp": "readonly"
-    }
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "jest-expect-message"
-    ]
-  },
-  "stylelint": {
-    "rules": {
-      "at-rule-empty-line-before": [
-        "always",
-        {
-          "except": [
-            "after-same-name",
-            "blockless-after-same-name-blockless",
-            "first-nested"
-          ],
-          "ignore": [
-            "after-comment",
-            "inside-block"
-          ]
-        }
-      ],
-      "at-rule-name-case": "lower",
-      "at-rule-name-space-after": "always-single-line",
-      "at-rule-no-unknown": [
-        true,
-        {
-          "ignoreAtRules": [
-            "custom-media",
-            "/^custom/",
-            "/extend/"
-          ]
-        }
-      ],
-      "at-rule-semicolon-newline-after": "always",
-      "block-closing-brace-newline-after": "always",
-      "block-closing-brace-newline-before": "always",
-      "block-no-empty": true,
-      "block-opening-brace-newline-after": "always",
-      "block-opening-brace-space-before": "always",
-      "color-hex-case": "lower",
-      "color-hex-length": "short",
-      "color-named": "never",
-      "color-no-invalid-hex": true,
-      "comment-no-empty": true,
-      "comment-empty-line-before": [
-        "always",
-        {
-          "except": [
-            "first-nested"
-          ],
-          "ignore": [
-            "after-comment",
-            "stylelint-commands"
-          ]
-        }
-      ],
-      "declaration-bang-space-after": "never",
-      "declaration-bang-space-before": "always",
-      "declaration-block-no-duplicate-properties": [
-        true,
-        {
-          "ignore": [
-            "consecutive-duplicates",
-            "consecutive-duplicates-with-different-values"
-          ]
-        }
-      ],
-      "declaration-block-no-shorthand-property-overrides": true,
-      "declaration-block-semicolon-newline-after": "always",
-      "declaration-block-semicolon-space-before": "never",
-      "declaration-block-trailing-semicolon": "always",
-      "declaration-colon-newline-after": "always-multi-line",
-      "declaration-colon-space-after": "always-single-line",
-      "declaration-colon-space-before": "never",
-      "declaration-property-unit-allowed-list": {
-        "line-height": [],
-        "/^animation/": [
-          "s"
-        ],
-        "font-size": [
-          "em",
-          "rem",
-          "%",
-          "ch",
-          "vw",
-          "vh",
-          "vmax",
-          "vmin"
-        ]
-      },
-      "font-family-name-quotes": "always-where-recommended",
-      "font-family-no-duplicate-names": true,
-      "font-family-no-missing-generic-family-keyword": true,
-      "font-weight-notation": [
-        "numeric",
-        {
-          "ignore": [
-            "relative"
-          ]
-        }
-      ],
-      "function-calc-no-unspaced-operator": true,
-      "function-linear-gradient-no-nonstandard-direction": true,
-      "function-comma-space-after": "always",
-      "function-comma-space-before": "never",
-      "function-max-empty-lines": 1,
-      "function-name-case": [
-        "lower",
-        {
-          "ignoreFunctions": [
-            "/^DXImageTransform.Microsoft.*$/"
-          ]
-        }
-      ],
-      "function-parentheses-space-inside": "never",
-      "function-url-quotes": "never",
-      "function-whitespace-after": "always",
-      "indentation": "tab",
-      "keyframe-declaration-no-important": true,
-      "length-zero-no-unit": true,
-      "max-empty-lines": 2,
-      "max-line-length": [
-        180,
-        {
-          "ignore": "comments",
-          "ignorePattern": [
-            "/(https?://[0-9,a-z]*.*)|(^description\\:.+)|(^tags\\:.+)/i"
-          ]
-        }
-      ],
-      "media-feature-colon-space-after": "always",
-      "media-feature-colon-space-before": "never",
-      "media-feature-name-no-unknown": [
-        true,
-        {
-          "ignoreMediaFeatureNames": [
-            "/^custom-/",
-            "custom"
-          ]
-        }
-      ],
-      "media-feature-range-operator-space-after": "always",
-      "media-feature-range-operator-space-before": "always",
-      "media-query-list-comma-newline-after": "always-multi-line",
-      "media-query-list-comma-space-after": "always-single-line",
-      "media-query-list-comma-space-before": "never",
-      "no-descending-specificity": null,
-      "no-eol-whitespace": true,
-      "no-missing-end-of-source-newline": true,
-      "no-duplicate-at-import-rules": true,
-      "no-duplicate-selectors": null,
-      "no-empty-source": true,
-      "no-extra-semicolons": true,
-      "no-invalid-double-slash-comments": true,
-      "number-leading-zero": "always",
-      "number-no-trailing-zeros": true,
-      "property-case": "lower",
-      "property-no-unknown": true,
-      "rule-empty-line-before": [
-        "always",
-        {
-          "except": [
-            "after-single-line-comment"
-          ]
-        }
-      ],
-      "selector-attribute-brackets-space-inside": "never",
-      "selector-attribute-operator-space-after": "never",
-      "selector-attribute-operator-space-before": "never",
-      "selector-attribute-quotes": "always",
-      "selector-class-pattern": [
-        "^[a-z]+(-[a-z]+)*",
-        {
-          "message": "Use lowercase and separate words with hyphens (selector-class-pattern)"
-        }
-      ],
-      "selector-id-pattern": [
-        "^[a-z]+(-[a-z]+)*",
-        {
-          "message": "Use lowercase and separate words with hyphens (selector-id-pattern)"
-        }
-      ],
-      "selector-combinator-space-after": "always",
-      "selector-combinator-space-before": "always",
-      "selector-list-comma-newline-after": "always",
-      "selector-list-comma-space-before": "never",
-      "selector-max-empty-lines": 0,
-      "selector-pseudo-class-case": "lower",
-      "selector-pseudo-class-no-unknown": true,
-      "selector-pseudo-class-parentheses-space-inside": "never",
-      "selector-pseudo-element-no-unknown": true,
-      "selector-pseudo-element-case": "lower",
-      "selector-pseudo-element-colon-notation": "double",
-      "selector-type-case": "lower",
-      "selector-type-no-unknown": true,
-      "string-no-newline": true,
-      "string-quotes": "double",
-      "unit-case": "lower",
-      "unit-no-unknown": true,
-      "value-keyword-case": "lower",
-      "value-list-comma-newline-after": "always-multi-line",
-      "value-list-comma-space-after": "always-single-line",
-      "value-list-comma-space-before": "never"
-    }
-  },
-  "scripts": {
-    "build": "gulp buildDev",
-    "bundle": "cross-env NODE_ENV=production gulp bundleTheme",
-    "dev": "gulp",
-    "gulp": "gulp",
-    "generateCert": "gulp generateCert",
-    "rig-init": "npm install && composer install",
-    "translate": "gulp translate",
-    "test:gulp:dev": "jest gulp/tests --testPathIgnorePatterns gulp/tests/prod-build",
-    "test:gulp:prod:setup": "NODE_ENV=production node -r esm gulp/tests/prod-build/prod-build.setup.js",
-    "test:gulp:prod:teardown": "NODE_ENV=production node -r esm gulp/tests/prod-build/prod-build.teardown.js",
-    "test:gulp:prod:run": "cross-env NODE_ENV=production jest gulp/tests/prod-build",
-    "test:gulp:prod": "run-s test:gulp:prod:setup bundle test:gulp:prod:run test:gulp:prod:teardown",
-    "test:gulp": "run-s test:gulp:dev test:gulp:prod",
-    "lint": "eslint assets/js/src/",
-    "lint:gulp": "eslint gulp/",
-    "lint:gulp:fix": "eslint --fix gulp/"
-  },
-  "dependencies": {}
+		"name": "wprig",
+		"version": "2.0.1",
+		"description": "A progressive theme development rig for WordPress.",
+		"author": "The WP Rig Contributors",
+		"license": "GPL-3.0-or-later",
+		"main": "index.php",
+		"homepage": "https://github.com/wprig/wprig#readme",
+		"repository": {
+				"type": "git",
+				"url": "git+https://github.com/wprig/wprig.git"
+		},
+		"bugs": {
+				"url": "https://github.com/wprig/wprig/issues"
+		},
+		"devDependencies": {
+				"@babel/core": "^7.5.4",
+				"@babel/preset-env": "^7.5.4",
+				"@babel/register": "^7.4.4",
+				"@wordpress/eslint-plugin": "^2.3.0",
+				"ajv": "^6.10.1",
+				"ansi-colors": "^4.1.1",
+				"autoprefixer": "^9.6.1",
+				"babel-jest": "^24.8.0",
+				"browser-sync": "^2.26.12",
+				"create-cert": "^1.0.6",
+				"cross-env": "^5.2.0",
+				"cssnano": "^4.1.10",
+				"deepmerge": "^4.0.0",
+				"del": "^5.0.0",
+				"eslint": "^6.0.1",
+				"eslint-config-gulp": "^3.0.1",
+				"eslint-config-standard": "^13.0.1",
+				"eslint-plugin-import": "^2.18.0",
+				"eslint-plugin-node": "^9.1.0",
+				"eslint-plugin-promise": "^4.2.1",
+				"eslint-plugin-standard": "^4.0.0",
+				"esm": "^3.2.25",
+				"esvalidate": "^0.1.3",
+				"fancy-log": "^1.3.3",
+				"glob": "^7.1.4",
+				"gulp": "^4.0.2",
+				"gulp-babel": "^8.0.0",
+				"gulp-eslint": "^6.0.0",
+				"gulp-if": "^2.0.2",
+				"gulp-imagemin": "^6.0.0",
+				"gulp-load-plugins": "^2.0.0",
+				"gulp-newer": "^1.4.0",
+				"gulp-notify": "^3.2.0",
+				"gulp-phpcs": "^3.0.0",
+				"gulp-plumber": "^1.2.1",
+				"gulp-postcss": "^8.0.0",
+				"gulp-potomo": "^1.1.0",
+				"gulp-print": "^5.0.2",
+				"gulp-rename": "^1.4.0",
+				"gulp-sort": "^2.0.0",
+				"gulp-string-replace": "^1.1.2",
+				"gulp-tabify": "0.0.2",
+				"gulp-uglify": "^3.0.2",
+				"gulp-wp-pot": "^2.3.5",
+				"gulp-zip": "^5.0.0",
+				"import-fresh": "^3.1.0",
+				"jest": "^24.8.0",
+				"jest-expect-message": "^1.0.2",
+				"map-stream": "0.0.7",
+				"mississippi": "^4.0.0",
+				"mkdirp": "^0.5.1",
+				"npm-run-all": "^4.1.5",
+				"postcss-calc": "^7.0.1",
+				"postcss-import": "^12.0.1",
+				"postcss-nesting": "^7.0.1",
+				"postcss-partial-import": "^4.1.0",
+				"postcss-preset-env": "^6.7.0",
+				"postcss-reporter": "^6.0.1",
+				"pump": "^3.0.0",
+				"rimraf": "^2.6.3",
+				"stylelint": "^13.7.1",
+				"stylelint-config-wordpress": "^14.0.0",
+				"vinyl": "^2.2.0"
+		},
+		"babel": {
+				"presets": [
+						"@babel/env"
+				]
+		},
+		"eslintConfig": {
+				"extends": "plugin:@wordpress/eslint-plugin/recommended",
+				"root": true,
+				"env": {
+						"browser": true,
+						"node": true,
+						"es6": true
+				},
+				"rules": {
+						"arrow-parens": [
+								"error",
+								"as-needed"
+						],
+						"comma-dangle": [
+								"error",
+								{
+										"arrays": "always-multiline",
+										"objects": "always-multiline"
+								}
+						],
+						"indent": [
+								"error",
+								"tab"
+						],
+						"no-console": 0,
+						"no-multi-spaces": "off",
+						"no-unused-vars": 1,
+						"semi": 2,
+						"space-in-parens": [
+								"error",
+								"always",
+								{
+										"exceptions": [
+												"{}",
+												"[]"
+										]
+								}
+						],
+						"template-curly-spacing": [
+								"error",
+								"never"
+						],
+						"yoda": [
+								"error",
+								"always"
+						]
+				},
+				"globals": {
+						"jQuery": "readonly",
+						"wp": "readonly"
+				}
+		},
+		"jest": {
+				"setupFilesAfterEnv": [
+						"jest-expect-message"
+				]
+		},
+		"stylelint": {
+				"rules": {
+						"at-rule-empty-line-before": "always",
+						"at-rule-name-case": "lower",
+						"at-rule-name-space-after": "always-single-line",
+						"at-rule-no-unknown": [
+								true,
+								{
+										"ignoreAtRules": [
+												"custom-media",
+												"/^custom/",
+												"/extend/",
+												"/media/"
+										]
+								}
+						],
+						"at-rule-semicolon-newline-after": "always",
+						"block-closing-brace-newline-after": "always",
+						"block-closing-brace-newline-before": "always",
+						"block-no-empty": true,
+						"block-opening-brace-newline-after": "always",
+						"block-opening-brace-space-before": "always",
+						"color-hex-case": "lower",
+						"color-hex-length": "short",
+						"color-named": "never",
+						"color-no-invalid-hex": true,
+						"comment-no-empty": true,
+						"comment-empty-line-before": [
+								"always",
+								{
+										"ignore": [
+												"after-comment",
+												"stylelint-commands"
+										]
+								}
+						],
+						"declaration-bang-space-after": "never",
+						"declaration-bang-space-before": "always",
+						"declaration-block-no-duplicate-properties": [
+								true,
+								{
+										"ignore": [
+												"consecutive-duplicates",
+												"consecutive-duplicates-with-different-values"
+										]
+								}
+						],
+						"declaration-block-no-shorthand-property-overrides": true,
+						"declaration-block-semicolon-newline-after": "always",
+						"declaration-block-semicolon-space-before": "never",
+						"declaration-block-trailing-semicolon": "always",
+						"declaration-colon-newline-after": "always-multi-line",
+						"declaration-colon-space-after": "always-single-line",
+						"declaration-colon-space-before": "never",
+						"declaration-property-unit-allowed-list": {
+								"line-height": [],
+								"/^animation/": [
+										"s"
+								],
+								"font-size": [
+										"px",
+										"em",
+										"rem",
+										"%",
+										"ch",
+										"vw",
+										"vh",
+										"vmax",
+										"vmin"
+								]
+						},
+						"font-family-name-quotes": "always-where-recommended",
+						"font-family-no-duplicate-names": true,
+						"font-family-no-missing-generic-family-keyword": true,
+						"font-weight-notation": [
+								"numeric",
+								{
+										"ignore": [
+												"relative"
+										]
+								}
+						],
+						"function-calc-no-unspaced-operator": true,
+						"function-linear-gradient-no-nonstandard-direction": true,
+						"function-comma-space-after": "always",
+						"function-comma-space-before": "never",
+						"function-max-empty-lines": 1,
+						"function-name-case": [
+								"lower",
+								{
+										"ignoreFunctions": [
+												"/^DXImageTransform.Microsoft.*$/"
+										]
+								}
+						],
+						"function-parentheses-space-inside": "never",
+						"function-url-quotes": "never",
+						"function-whitespace-after": "always",
+						"indentation": "tab",
+						"keyframe-declaration-no-important": true,
+						"length-zero-no-unit": true,
+						"max-empty-lines": 2,
+						"max-line-length": [
+								180,
+								{
+										"ignore": "comments",
+										"ignorePattern": [
+												"/(https?://[0-9,a-z]*.*)|(^description\\:.+)|(^tags\\:.+)/i"
+										]
+								}
+						],
+						"media-feature-colon-space-after": "always",
+						"media-feature-colon-space-before": "never",
+						"media-feature-name-no-unknown": [
+								true,
+								{
+										"ignoreMediaFeatureNames": [
+												"/^custom-",
+												"custom"
+										]
+								}
+						],
+						"media-feature-range-operator-space-after": "always",
+						"media-feature-range-operator-space-before": "always",
+						"media-query-list-comma-newline-after": "always-multi-line",
+						"media-query-list-comma-space-after": "always-single-line",
+						"media-query-list-comma-space-before": "never",
+						"no-descending-specificity": null,
+						"no-eol-whitespace": true,
+						"no-missing-end-of-source-newline": true,
+						"no-duplicate-at-import-rules": true,
+						"no-duplicate-selectors": null,
+						"no-empty-source": true,
+						"no-extra-semicolons": true,
+						"no-invalid-double-slash-comments": true,
+						"number-leading-zero": "always",
+						"number-no-trailing-zeros": true,
+						"property-case": "lower",
+						"property-no-unknown": true,
+						"rule-empty-line-before": [
+								"always",
+								{
+										"except": [
+												"after-single-line-comment"
+										],
+										"ignore": [
+												"after-comment",
+												"first-nested",
+												"inside-block"
+										]
+								}
+						],
+						"selector-attribute-brackets-space-inside": "never",
+						"selector-attribute-operator-space-after": "never",
+						"selector-attribute-operator-space-before": "never",
+						"selector-attribute-quotes": "always",
+						"selector-class-pattern": [
+								"^[a-z]+(-[a-z]+)*",
+								{
+										"message": "Use lowercase and separate words with hyphens (selector-class-pattern)"
+								}
+						],
+						"selector-id-pattern": [
+								"^[a-z]+(-[a-z]+)*",
+								{
+										"message": "Use lowercase and separate words with hyphens (selector-id-pattern)"
+								}
+						],
+						"selector-combinator-space-after": "always",
+						"selector-combinator-space-before": "always",
+						"selector-list-comma-newline-after": "always",
+						"selector-list-comma-space-before": "never",
+						"selector-max-empty-lines": 0,
+						"selector-pseudo-class-case": "lower",
+						"selector-pseudo-class-no-unknown": true,
+						"selector-pseudo-class-parentheses-space-inside": "never",
+						"selector-pseudo-element-no-unknown": true,
+						"selector-pseudo-element-case": "lower",
+						"selector-pseudo-element-colon-notation": "double",
+						"selector-type-case": "lower",
+						"selector-type-no-unknown": true,
+						"string-no-newline": true,
+						"string-quotes": "double",
+						"unit-case": "lower",
+						"unit-no-unknown": true,
+						"value-keyword-case": "lower",
+						"value-list-comma-newline-after": "always-multi-line",
+						"value-list-comma-space-after": "always-single-line",
+						"value-list-comma-space-before": "never"
+				}
+		},
+		"scripts": {
+				"build": "gulp buildDev",
+				"bundle": "cross-env NODE_ENV=production gulp bundleTheme",
+				"dev": "gulp",
+				"gulp": "gulp",
+				"generateCert": "gulp generateCert",
+				"rig-init": "npm install && composer install",
+				"translate": "gulp translate",
+				"test:gulp:dev": "jest gulp/tests --testPathIgnorePatterns gulp/tests/prod-build",
+				"test:gulp:prod:setup": "NODE_ENV=production node -r esm gulp/tests/prod-build/prod-build.setup.js",
+				"test:gulp:prod:teardown": "NODE_ENV=production node -r esm gulp/tests/prod-build/prod-build.teardown.js",
+				"test:gulp:prod:run": "cross-env NODE_ENV=production jest gulp/tests/prod-build",
+				"test:gulp:prod": "run-s test:gulp:prod:setup bundle test:gulp:prod:run test:gulp:prod:teardown",
+				"test:gulp": "run-s test:gulp:dev test:gulp:prod",
+				"lint": "eslint assets/js/src/",
+				"lint:gulp": "eslint gulp/",
+				"lint:gulp:fix": "eslint --fix gulp/"
+		}
 }

@@ -3,9 +3,15 @@
  * Works like Custom Properties, except for media queries.
  *
  * @link: https://drafts.csswg.org/mediaqueries-5/#custom-mq
+ * @note 1em is 14px.
+ * 37.5 em is 525px
+ * 48 em is 672px
+ * 60 em is 840px
+ * 80 em is 1200px
  **/
 
 @custom-media --narrow-menu-query screen and (max-width: 37.5em);
 @custom-media --wide-menu-query screen and (min-width: 37.5em);
 @custom-media --content-query screen and (min-width: 48em);
 @custom-media --sidebar-query screen and (min-width: 60em);
+@custom-media --vertical-query screen and (min-width: 80em);

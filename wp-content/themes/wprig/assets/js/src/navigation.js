@@ -5,10 +5,13 @@
  * Handles toggling the navigation menu for small screens and enables TAB key
  * navigation support for dropdown menus.
  */
+/* eslint-disable */
+const KEYMAP = {
+	TAB: 9,
+};
 
-const KEYMAP = { TAB: 9 };
 
-if ( document.readyState === 'loading' ) {
+if ( 'loading' === document.readyState ) {
 	// The DOM has not yet been loaded.
 	document.addEventListener( 'DOMContentLoaded', initNavigation );
 } else {
@@ -35,7 +38,7 @@ function initNavToggleSubmenus() {
 	}
 
 	for ( let i = 0; i < navTOGGLE.length; i++ ) {
-		initEachNavToggleSubmenu( navTOGGLE[ i ]);
+		initEachNavToggleSubmenu(navTOGGLE[ i ]);
 	}
 }
 
@@ -58,7 +61,7 @@ function initEachNavToggleSubmenu( nav ) {
 
 	for ( let i = 0; i < SUBMENUS.length; i++ ) {
 		const parentMenuItem = SUBMENUS[ i ].parentNode;
-		let dropdown = parentMenuItem.querySelector( '.dropdown' );
+		let dropdown         = parentMenuItem.querySelector( '.dropdown' );
 
 		// If no dropdown, create one.
 		if ( ! dropdown ) {
@@ -71,7 +74,7 @@ function initEachNavToggleSubmenu( nav ) {
 			dropdown.appendChild( dropdownSymbol );
 
 			// Add before submenu.
-			SUBMENUS[ i ].parentNode.insertBefore( dropdown, SUBMENUS[ i ]);
+			SUBMENUS[ i ].parentNode.insertBefore(dropdown, SUBMENUS[ i ]);
 		}
 
 		// Convert dropdown to button.
@@ -136,10 +139,10 @@ function initNavToggleSmall() {
 	}
 
 	for ( let i = 0; i < navTOGGLE.length; i++ ) {
-		initEachNavToggleSmall( navTOGGLE[ i ]);
+		initEachNavToggleSmall(navTOGGLE[ i ]);
 	}
 }
-
+const navIcon = document.querySelector( '#main-menu-icon' );
 /**
  * Initiate the script to process small
  * navigation toggle for a specific navigation menu.
@@ -157,8 +160,14 @@ function initEachNavToggleSmall( nav ) {
 	menuTOGGLE.setAttribute( 'aria-expanded', 'false' );
 
 	menuTOGGLE.addEventListener( 'click', e => {
+
 		nav.classList.toggle( 'nav--toggled-on' );
-		e.target.setAttribute( 'aria-expanded', e.target.getAttribute( 'aria-expanded' ) === 'false' ? 'true' : 'false' );
+		e.target.setAttribute( 'aria-expanded', 'false' === e.target.getAttribute( 'aria-expanded' ) ? 'true' : 'false' );
+		let menuButtons = document.querySelectorAll( '.main-menu-icon');
+		if ( nav.classList.contains( 'nav--toggled-on' ) ) {
+			menuButtons[0].setAttribute( 'hidden', true );
+			menuButtons[1].setAttribute( 'hidden', false );
+		}
 	}, false );
 }
 
@@ -174,7 +183,7 @@ function toggleSubMenu( parentMenuItem, forceToggle ) {
 	let parentMenuItemToggled = parentMenuItem.classList.contains( 'menu-item--toggled-on' );
 
 	// Will be true if we want to force the toggle on, false if force toggle close.
-	if ( undefined !== forceToggle && ( typeof forceToggle ) === 'boolean' ) {
+	if ( undefined !== forceToggle && 'boolean' === ( typeof forceToggle ) ) {
 		parentMenuItemToggled = ! forceToggle;
 	}
 

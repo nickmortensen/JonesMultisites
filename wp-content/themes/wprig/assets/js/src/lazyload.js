@@ -3,6 +3,7 @@
  *
  * @link https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video/
  */
+/* eslint-disable */
 document.addEventListener( 'DOMContentLoaded', function() {
 	let lazyImages = [].slice.call( document.querySelectorAll( 'img.lazy' ) );
 
