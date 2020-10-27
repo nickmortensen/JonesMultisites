@@ -21,7 +21,8 @@ $signtype = get_queried_object();
 
 ] = wp_rig()->get_all_signtype_info( get_queried_object()->term_id );
 
-$related_images = wp_rig()->get_related_images( get_queried_object()->term_id );
+$related_images   = wp_rig()->get_related_images( get_queried_object()->term_id );
+$related_projects = wp_rig()->get_related( get_queried_object()->term_id, 'project' );
 
 [
 	'square'      => $square_id,
@@ -67,20 +68,46 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-taxonomy', 'wp-rig-project' );
 
 
 		<section id="related_images">
+			<h2>Related Images</h2>
 			<?php
 				foreach ( $related_images as $index => $identifier ) {
 					$size = 'medium';
-					echo '<img src="' . wp_get_attachment_image_src( $identifier, $size )[0] . '"/>';
+					print_r( wp_get_attachment_image_src( $identifier, $size )[0] );
+					// echo '<img src="' . wp_get_attachment_image_src( $identifier, $size )[0] . '"/>'; full stop.
 				}
 			?>
 		</section>
 
-	</main><!-- #single-item -->
-<?php
 
+	</main><!-- #single-item -->
+
+<?php if ( $related_images ) : ?>
+<section id="related_images">
+	<h2>related images</h2>
+	<?php wrap( $related_images ); ?>
+</section>
+<?php endif; ?>
+
+<?php if ( $related_projects ) : ?>
+	<section id="related_projects">
+		<h2>related projects</h2>
+		<?php wrap( $related_projects ); ?>
+	</section>
+<?php endif; ?>
+
+
+<?php
+echo '<h2> get_queried_object() data -></h2>';
 wrap( get_queried_object() );
+echo '<h2> Signtype Data -></h2>';
 wrap( wp_rig()->get_all_signtype_info( get_queried_object()->term_id ) );
-wrap($related_images);
+echo '<h2> Related Images By ID</h2>';
+
+
+?>
+
+
+
 if ( is_super_admin() ) {
 	edit_tag_link();
 }

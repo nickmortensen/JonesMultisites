@@ -30,7 +30,7 @@ if ( is_singular() && 'project' === get_post_type() ) {
 
 	</div>
 	<div class="post-thumbnail">
-		<h2><?= $id ; ?></h2>
+		<h2><?= $id; ?></h2>
 		<?php the_post_thumbnail( 'wp-rig-featured', $attributes ); ?>
 	</div><!-- .post-thumbnail -->
 	<?php

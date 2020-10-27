@@ -4,19 +4,25 @@
  */
 /*eslint-disable no-undef, no-unused-vars*/
 // Variables passed by RelatedImages Component via wp_localize_script.
-const restURL         = termdata.rest_url;
-const relatedImages   = termdata.related_images;
-const relatedProjects = termdata.related_projects;
+const {
+	term_id: ID,
+	slug,
+	rest_url: restURL,
+	related_images: relatedImages,
+	related_projects: relatedProjects,
+
+} = termData;
 const includes = `${relatedImages.join()}`;
 
 const relatedImagesElement = document.querySelector( '#signtype-gallery' );
-console.log( relatedImagesElement );
-console.table( 'gallery image ids: ', relatedImages );
-console.table( 'related projects: ', relatedProjects );
+// console.log( relatedImagesElement );
+// console.table( 'gallery image ids: ', relatedImages );
+// console.table( 'related projects: ', relatedProjects );
 
 // Build query URL for the REST API. Here we will query for all the images that have the tag.
 const queryURL = `${restURL}media?include=${includes}`;
-console.log( queryURL );
+const testURL  = 'https://jonessign.io/wp-json/wp/v2/media?include=684,685,686'; // a test url to use in order to ensure things are working CAN BE DELETED
+console.log( testURL );
 
 /**
  * Create an ImageObject of of the data used.
@@ -64,42 +70,35 @@ const theFigure = imageObject => {
  * @param {Object} data Contains related posts data.
  */
 const displayGalleryImages = data => {
-	const relatedContainer = document.querySelector( '#signtype-gallery' );
+	const relatedContainer = document.querySelector( '#related_images' );
 	data.forEach( imageObject => {
 		relatedContainer.append( theFigure( imageObject ) );
 	});
 };
 
-const sendExampleQuery = () => {
-	fetch( 'https://jonessign.io/wp-json/wp/v2/media?include=492,493' )
-		.then( response => response.json() )
-		.then( data => data.forEach( entry => console.info( entry ) ) )
-		.catch( error => console.error( error.message ) );
-};
-sendExampleQuery();
-
 function sendRESTquery() {
-	fetch( queryURL )
+	fetch( testURL )
 		.then( response => response.json() )
-		.then( data => displayGalleryImages( data ) )
-		.catch( error => console.error( error.message ) );
+		// .then( data => displayGalleryImages( data ) )
+		.then( data => console.table( data ) )
+		.catch( error => console.error( error ) );
 }
 
+const when = 'load'; // When to activate the event listener.
 // Trigger event only when related posts are scrolled into view.
-window.addEventListener(
-	'load',
+window.addEventListener( when,
 	function( event ) { /* eslint-disable-line */
 		const observer = new IntersectionObserver( function( entries, self ) {
 			entries.forEach( entry => {
 				if ( entry.isIntersecting ) {
 					sendRESTquery();
-					console.log( entry );
+					// console.log( entry );
 					// disconnect after first reveal.
 					self.disconnect();
 				}
 			});
 		});
-		observer.observe( document.querySelector( '#signtype-gallery' ) );
+		observer.observe( document.querySelector( '#related_images' ) );
 	},
 	false
 );

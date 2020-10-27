@@ -33,20 +33,9 @@ namespace WP_Rig\WP_Rig;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<style>
-	.header {
-		grid-column: span 5;
-		display: grid;
-		grid-gap: 20px;
-		grid-template-columns: 1fr 4fr;
-	}
-	.item9 {
-		grid-column: span 2
-	}
-</style>
-<div id="page" class="container">
-	<header class="item header">
-		<div class="logo">Logo</div>
-		<nav class="navigation">Navigation</nav>
+<div id="page" class="site">
+	<header class="site-header">
+		<?php get_template_part( 'template-parts/header/branding' ); ?>
+		<?php get_template_part( 'template-parts/header/navigation' ); ?>
 	</header>
 

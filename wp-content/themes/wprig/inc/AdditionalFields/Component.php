@@ -230,6 +230,15 @@ class Component implements Component_Interface {
 		$value      = wp_parse_args( $value, $new_values );
 	?>
 
+<style>
+	.projectAddressFields {
+		display: grid;
+		background: var(--yellow-400);
+		grid-template-columns: 1fr, 3fr;
+		grid-template-rows: repeat( 10, 1fr );
+	}
+</style>
+
 	<section class="projectAddressFields">
 		<!-- address-1 -->
 		<div class="field-div" data-fieldid="address1">
@@ -360,6 +369,47 @@ class Component implements Component_Interface {
 		];
 		$value      = wp_parse_args( $value, $new_values );
 	?>
+	<style>
+	.jonesAddressFields {
+		display: grid;
+		grid-template-columns: repeat(10, 1fr);
+		grid-template-rows: repeat( 10, auto );
+	}
+
+	.field-div,
+	.citystatezip,
+	.phonefaxemail,
+	.coordinates {
+		grid-column: 1 / -1;
+		grid-row: span 2;
+	}
+
+	.field-div {
+		margin-top: 8px;
+		display: grid;
+		grid-template-columns: 1fr 5fr;
+	}
+
+	.field_div > span {
+		grid-column: span 2;
+	}
+
+	.field_div > input,
+	.field_div > select {
+		grid-column: 2 / -1;
+	}
+
+	.field_div > select {
+		margin-right: 24px;
+	}
+	select#locationAddress_state {
+		max-width: 54%;
+	}
+
+	label {
+		font-weight: var(--semibold);
+	}
+</style>
 
 	<section class="jonesAddressFields">
 		<!-- address -->

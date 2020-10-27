@@ -56,7 +56,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_extra_fields' ] );
 		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_' . $this->slug . '_admin_columns' ], 10, 1 );
-		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_' . $this->slug . '_columns_sortable' ], 10, 1 );
+		add_filter( 'manage_edit-signtype_sortable_columns', [ $this, 'make_signtype_columns_sortable' ] );
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
 	}
 
@@ -271,10 +271,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		unset( $columns['description'] );
 		unset( $columns['posts'] );
 		// Add the checkbox back in so it can be before the ID column.
-		$new['cb']     = '<input type = "checkbox" />';
-		$new['id']     = 'ID';
-		$new['images'] = '<span style="color:var(--table-header-color);" title="has all photos?" class="material-icons">view_carousel</span>';
-		$new['total']  = '<span style="color:var(--table-header-color);" title="count of tagged photos" class="material-icons">camera_enhance</span>';
+		$new['cb']         = '<input type = "checkbox" />';
+		$new['id']         = 'ID';
+		$new['images']     = '<span style="color: var(--table-header-color);" title="has all photos?" class="material-icons">view_carousel</span>';
+		$columns['counts'] = '<span style="color: var(--table-header-color);" title="quantities of both photos and projects with this signtype tag" class="material-icons">class</span>';
 		return array_merge( $new, $columns );
 	}//end set_signtype_admin_columns()
 
@@ -285,8 +285,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return array $columns All the columns you want sortable.
 	 */
 	public function make_signtype_columns_sortable( $columns ) {
-		$columns['id']    = 'ID';
-		$columns['total'] = '<span style="color:var(--table-header-color);" title="count of tagged photos" class="material-icons">camera_enhance</span>';
+		$columns['id'] = 'ID';
 		return $columns;
 	}
 
@@ -303,6 +302,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Count the projects that have this signtype tag attached.
+	 *
+	 * @param int $term_id The term id.
+	 *
+	 * @return int The quantity of photos that have this taxonomy term applied to them.
+	 */
+	public function count_signtype_projects( $term_id ) {
+		return Taxonomies::count_term_entries( $term_id, 'project' );
+	}
+
+	/**
 	 * Add the correct data to the newly attached custom admin columns for this taxonomy.
 	 *
 	 * @param  string $content Already existing content for the already existing rows.
@@ -311,6 +321,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @echo   string $output The content for the columns.
 	 */
 	public function set_data_for_custom_admin_columns( $content, $column_name, $term_id ) {
+
 		$taxonomy = get_term( $term_id )->taxonomy;
 		$argument = [
 			'taxonomy' => $taxonomy,
@@ -323,8 +334,15 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		$icon = wp_sprintf( '<span style="color:%s;" class="material-icons"> local_library </span>', $color );
 		switch ( $column_name ) {
-			case 'total':
-				$output = $this->count_signtype_photos( $term_id );
+			case 'counts':
+				$photos   = $this->count_signtype_photos( $term_id );
+				$projects = $this->count_signtype_projects( $term_id );
+				$style    = 'color: var(--indigo-600); font-weight: 900;';
+				$output   = wp_sprintf( '<span style="%s" title="%s has %d photos">Photos: %d</span>', $style, get_term( $term_id )->name, $photos, $photos );
+				if ( 0 < $this->count_signtype_projects( $term_id ) ) {
+					$output .= '<br>';
+					$output .= wp_sprintf( '<span style="%s" title="%s has %d projects attached">Projects: %d</span>', $style, get_term( $term_id )->name, $projects, $projects );
+				}
 				break;
 			case 'images':
 				$output = wp_sprintf( '<span style="color:var(%s);" title="%s" class="material-icons">view_carousel</span>', $color, $message );

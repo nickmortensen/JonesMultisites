@@ -322,7 +322,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'             => 'flickity.min.css',
 				'preload_callback' => function() {
 					global $template;
-					return 'project' === get_post_type() && 'single-project.php' === basename( $template );
+					return 'project' === get_post_type() && 'single-project.php' === basename( $template ) || 'front-page.php' === basename( $template );
 				},
 			],
 		];

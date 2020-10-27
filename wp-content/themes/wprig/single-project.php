@@ -61,55 +61,21 @@ get_header();
 wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project' );
 ?>
 
-<style>
-@media (max-width: 1399px ) {
-	.project-header {
-		background: var(--blue-900) center / cover no-repeat url( <?=$featured_src; ?> )
-	}
-}
-
-
-</style>
-
 	<main id="single-item" class="project">
 
-		<header class="entry-header" >
-			<?php if ( ! is_search() ) : ?>
-			<div class="single-header hide-on-wide" style="background: var(--blue-900) center / cover no-repeat url( <?=$featured_src; ?> );">
-				<h1><?= get_the_title(); ?></h1>
-				<h2><?= wp_rig()->get_city_state( $address ); ?></h2>
-				<h2><?= $tease ?></h2>
-			</div> <!--end div.single-header -->
-
-
-			<!-- only shows on a wide screen > 1200px -->
-			<div class="single-header:wide">
-				<div id="vertical" style="background: var(--blue-900) center / cover no-repeat url( <?=$vertical_src; ?> );"></div>
-				<div>
-					<h1><?= get_the_title(); ?></h1>
-					<img style="height:100px;" src="<?= $svg; ?>"/>
-					<h2><?= wp_rig()->get_city_state( $address ); ?></h2>
-					<article class="narrative"><?= wp_rig()->get_project_narrative( $post->ID ); ?></article>
-				</div>
-			</div><!-- end div.single-header:wide -->
-			<?php endif; ?>
-		</header><!-- .entry-header -->
-
-		<section class="single-item-content hide-on-wide">
-			<article class="narrative"><?= wp_rig()->get_project_narrative( $post->ID ); ?></article>
-			<aside class="additional-info">
-				<img style="height:100px;" src="<?= $svg; ?>"/>
-			</aside>
-		</section><!-- end section.single-project-content -->
+		<header class="entry-header"></header><!-- .entry-header -->
 
 	</main><!-- #single-project -->
+
+
+
 	<?php
-if ( 'development' === ENVIRONMENT ) {
+if ( 'development' !== ENVIRONMENT ) {
 	get_template_part( 'template-parts/content/admin_tweaks' );
 }
 ?>
 
-<?php if ( 'development' === ENVIRONMENT ) : ?>
+<?php if ( 'development' !== ENVIRONMENT ) : ?>
 	<script>
 	const bgBlendOptions = document.querySelector( '#blend' );
 	bgBlendOptions.addEventListener( 'change', function(e) {
@@ -125,27 +91,6 @@ if ( 'development' === ENVIRONMENT ) {
 </script>
 <?php endif; ?>
 
-<?php
-if ( 3 < count( $slideshow_images ) ) {
-	wp_rig()->print_styles( 'wp-rig-flickity' ); // Load the styles for flickity touch slider. Already preloaded.
-	get_template_part( 'template-parts/content/entry_slider' );
-}
-
-?>
-
-
-
 
 <?php
-
-echo basename( $template );
-wrap( $template );
-
-wrap( wp_rig()->get_all_project_info( $post->ID ) );
-
-
-
-
-
-
 get_footer();

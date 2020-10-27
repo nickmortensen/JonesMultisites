@@ -10,11 +10,19 @@ namespace WP_Rig\WP_Rig\TaxonomyGlobal;
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
 use WP_Query;
+use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function get_terms;
 use function get_term;
 use function get_term_meta;
+use function term_description;
 use function register_taxonomy;
+use function wp_sprintf;
+use function get_theme_file_uri;
+use function get_theme_file_path;
+use function wp_enqueue_script;
+use function wp_script_add_data;
+use function wp_localize_script;
 
 /**
  * Class to create and use custom taxonomy terms to Jones Sign Company.
@@ -67,6 +75,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'registered_taxonomy', [ $this, 'global_taxonomies' ] );
 		add_action( 'switch_blog', [ $this, 'global_taxonomies' ] );
 		add_action( 'init', [ $this, 'instantiate_the_taxonomies' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_related_images_javascript' ], 30 );
+		add_action( 'edit-tags.php', [ $this, 'edit_signtype_taxonomy_onload' ] );
 	}
 
 	/**
@@ -136,7 +146,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Output a row for the card on the frontpage in the projects area.
+	 * Output a row for a single card within the project showcase area.
 	 *
 	 * @param int $term The term id.
 	 * @link https://codepen.io/nickmortensen/pen/yLOrxbW?editors=1100.
@@ -156,7 +166,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Output a row for the card on the frontpage in the projects area.
+	 * Output a row for a single card on the project showcase component.
 	 *
 	 * @param int $terms The term id.
 	 * @link https://codepen.io/nickmortensen/pen/yLOrxbW?editors=1100.
@@ -171,9 +181,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		foreach ( $terms as $term ) {
 			$checkboxes[] = self::get_card_taxonomy_checkbox( $term );
 		}
-		$output .= wp_sprintf( '<div class="%s">', $taxonomy );
+		$output .= wp_sprintf( '<div class="project_%s">', $taxonomy );
 		$output .= implode( '', $checkboxes );
-		$output .= wp_sprintf( '</div><!-- end div.%s -->', $taxonomy );
+		$output .= wp_sprintf( '</div><!-- end div.project_%s -->', $taxonomy );
 		return $output;
 	}
 
@@ -631,6 +641,58 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			);
 		}
 		return $output;
+	} // end get_related
+
+	/**
+	 * Enqueue Janascript to get related images -- that is attachments that have been given the same tag.
+	 */
+	public function action_enqueue_related_images_javascript() {
+
+		// Just return if the AMP plugin is active -- which it most likely will not be as of 1.0.
+		if ( wp_rig()->is_amp() ) {
+			return;
+		}
+
+		if ( is_tax( 'signtype' ) ) {
+			// Once we know thether the taxonomy is signtype, we can load the related images script in the footer.
+			$handle  = 'wp-rig-related-images';
+			$deps    = [];
+			$footer  = false; // Do not include in footer - include in header.
+			$uri     = get_theme_file_uri( '/assets/js/related_images.min.js' );
+			$version = wp_rig()->get_version( get_theme_file_path( '/assets/js/related_images.min.js' ) );
+			if ( 'development' === ENVIRONMENT ) {
+				$uri     = get_theme_file_uri( '/assets/js/src/related_images.js' );
+				$version = wp_rig()->get_version( get_theme_file_path( '/assets/js/src/related_images.js' ) );
+			}
+			wp_register_script( $handle, $uri, $deps, $version, $footer );
+			wp_enqueue_script( $handle, $uri, $deps, $version, $footer );
+
+			/**
+			 * Allows us to add the js right within the module.
+			 * Setting 'precache' to true means we are loading this script in the head of the document.
+			 * By setting 'async' to true, it tells the browser to wait until it finishes loading to run the script.
+			 * 'defer' would mean wait until EVERYTHING is done loading to run the script.
+			 * We can pick 'defer' because it isn't needed until the visitor hits a scroll point using intersection observer.
+			 * No need to precache this, either.
+			 * @link https://developer.wordpress.org/reference/functions/wp_script_add_data.
+			 * @link
+			 */
+			wp_script_add_data( $handle, 'defer', true );
+			wp_localize_script(
+				$handle,
+				'termData',
+				[
+					'term_id'          => get_queried_object()->term_id,
+					'slug'             => get_queried_object()->slug,
+					'rest_url'         => rest_url( 'wp/v2/' ),
+					'related_images'   => $this->get_related_images( get_queried_object()->term_id ),
+					'related_projects' => $this->get_related( get_queried_object()->term_id, 'project' ),
+
+				]
+			);
+
+		} // end is_tax()
 	}
+
 
 }//end class

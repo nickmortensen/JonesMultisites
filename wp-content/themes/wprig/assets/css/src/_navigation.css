@@ -1,0 +1,391 @@
+/*--------------------------------------------------------------
+# Navigation Elements
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+## Basic navigation menus - handles submenu and small screen toggle
+--------------------------------------------------------------*/
+.nav--toggle-small .menu-toggle {
+	display: block;
+	margin: 0;
+	padding: 0.6em 1.2em 0.5em;
+	font-family: var(--highlight-font-family);
+	font-stretch: condensed;
+	font-size: 80%;
+	text-transform: uppercase;
+	color: var(--color-theme-white);
+	border: 2px solid var(--color-theme-white);
+	border-radius: 0;
+	background: transparent;
+}
+
+.nav--toggle-small .menu {
+	display: none;
+}
+
+.nav--toggle-sub .dropdown,
+.nav--toggle-sub .dropdown-toggle {
+	display: none;
+}
+
+.site-icon {
+	display: block;
+}
+
+/* max-width: 37.5em or 525px */
+
+@media (--narrow-menu-query) {
+
+	.nav--toggle-small.nav--toggled-on .menu {
+		display: none;
+	}
+}
+
+/* min-width: 37.5em or 525px */
+
+@media (--wide-menu-query) {
+
+	.nav--toggle-small .menu-toggle,
+	.site-icon {
+		display: none;
+	}
+
+	.nav--toggle-small .menu {
+		display: flex;
+	}
+
+	.nav--toggle-sub ul ul {
+		display: none;
+		position: absolute;
+		top: 100%;
+		flex-direction: column;
+		background: #fff;
+		margin-left: 0;
+		box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+		z-index: 1;
+	}
+
+	.nav--toggle-sub .dropdown,
+	.nav--toggle-sub .dropdown-toggle {
+		display: block;
+		background: transparent;
+		position: absolute;
+		right: 0;
+		top: 50%;
+		width: var(--dropdown-symbol-width);
+		height: var(--dropdown-symbol-width);
+		font-size: inherit;
+		line-height: inherit;
+		margin: 0;
+		padding: 0;
+		border: none;
+		border-radius: 0;
+		transform: translateY(-50%);
+		overflow: visible;
+	}
+
+	.nav--toggle-sub .dropdown-symbol {
+		display: block;
+		background: transparent;
+		position: absolute;
+		right: 20%;
+		top: 35%;
+		width: 60%;
+		height: 60%;
+		border: solid #000;
+		border-width: 0 2px 2px 0;
+		transform: translateY(-50%) rotate(45deg);
+	}
+
+	.nav--toggle-sub ul ul .dropdown,
+	.nav--toggle-sub ul ul .dropdown-toggle {
+		top: 40%;
+		right: 0.2em;
+	}
+
+	.nav--toggle-sub ul ul .dropdown-symbol {
+		transform: rotate(-45deg);
+	}
+
+	.nav--toggle-sub .dropdown-toggle:hover,
+	.nav--toggle-sub .menu-item--has-toggle:hover .dropdown-toggle {
+		pointer-events: none;
+	}
+
+	/* Need menu-item-has-children for non-JS */
+	.nav--toggle-sub li.menu-item-has-children,
+	.nav--toggle-sub li.menu-item--has-toggle {
+		position: relative;
+		padding-right: var(--dropdown-symbol-width);
+	}
+
+	/*
+	 * If the dropdown toggle is active with JS, then
+	 * we'll take care of showing the submenu with JS.
+	 */
+	.nav--toggle-sub li:hover > ul,
+	.nav--toggle-sub li.menu-item--toggled-on > ul,
+	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul {
+		display: block;
+	}
+
+	/*
+	 * "focus-within" is an alternative to focus class for
+	 * supporting browsers (all but IE/Edge) for no-JS context
+	 * (e.g. AMP) See https://caniuse.com/#feat=css-focus-within
+	 *
+	 * This selector needs to stay separated, otherwise submenus
+	 * will not be displayed with IE/Edge.
+	 */
+	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul {
+		display: block;
+	}
+}
+
+/*--------------------------------------------------------------
+## Main navigation menu
+--------------------------------------------------------------*/
+.main-navigation {
+	clear: both;
+	display: block;
+	margin: 0 auto 2em;
+	padding: 0 1em;
+	width: 100%;
+	background: var(--color-theme-primary);
+	font-family: var(--highlight-font-family);
+	font-weight: var(--bold);
+	font-stretch: condensed;
+
+	& a {
+		display: block;
+		width: 100%;
+		padding: 0.5em 1em 0.5em 0;
+		text-decoration: none;
+		color: var(--color-theme-white);
+		font-size: clamp(12px, 1.1vw, 28px);
+		border-bottom: 4px solid transparent;
+
+		&:hover,
+		&:focus,
+		&:active,
+		&:visited {
+			text-decoration: underline;
+			color: var(--gray-100);
+		}
+
+		&:hover {
+			text-decoration: none;
+			border-bottom: 4px solid var(--color-theme-white);
+			transition: border-bottom 0.5s ease;
+		}
+
+		&:focus-within {
+			border: 1px dotted var(--color-theme-white);
+		}
+
+	}
+
+	& ul {
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	& ul ul li {
+		padding-left: 1em;
+	}
+}/* end .main-navigation */
+
+/* min-width: 48em, 672px */
+
+@media (--content-query) {
+	.main-navigation {
+		margin: 0;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: flex-end;
+	}
+}
+
+
+/* min-width:37.5em */
+
+@media (--wide-menu-query) {
+
+	.main-navigation ul li a {
+		padding: 0.4em 0.5em;
+	}
+
+	.main-navigation ul li {
+		margin: 0 0 0 0.5em;
+	}
+
+	.main-navigation ul li:first-child {
+		margin-left: 0;
+	}
+
+	.main-navigation ul ul a {
+		width: 200px;
+	}
+
+	.main-navigation ul ul li {
+		padding-left: 0;
+		margin-left: 0;
+	}
+
+	.main-navigation ul ul li a {
+		width: 218px;
+		background: none;
+	}
+
+	.main-navigation ul ul ul {
+		top: 0;
+		left: 100%;
+		min-height: 100%;
+	}
+
+	.main-navigation .menu {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+
+/*--------------------------------------------------------------
+# Content navigation
+--------------------------------------------------------------*/
+.site-main .comment-navigation,
+.site-main .posts-navigation,
+.site-main .post-navigation,
+.site-main .pagination {
+	border-bottom: 1px solid #111;
+	margin: 0 auto 2em;
+	max-width: var(--content-width);
+	overflow: hidden;
+	padding: 0 1.5rem 2em;
+	font-family: var(--highlight-font-family);
+	font-stretch: condensed;
+}
+
+/* min-width: 48em 672px*/
+
+@media (--content-query) {
+
+	.site-main .posts-navigation,
+	.site-main .post-navigation,
+	.site-main .pagination {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.nav-links {
+	display: flex;
+}
+
+.posts-navigation .nav-previous,
+.post-navigation .nav-previous {
+	width: 50%;
+	flex: 1 0 50%;
+}
+
+.posts-navigation .nav-next,
+.post-navigation .nav-next {
+	text-align: end;
+	flex: 1 0 50%;
+}
+
+.post-navigation-sub span {
+	color: var(--global-font-color);
+	text-decoration: none;
+	display: inline-block;
+}
+
+.site-main .pagination {
+	margin-bottom: 1.5em;
+}
+
+.pagination .nav-links {
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.pagination .page-numbers {
+	display: inline-block;
+	margin-bottom: 0.5em;
+	margin-right: 1em;
+	border: 1px solid var(--color-link);
+	min-width: 1.75em;
+	line-height: 1.75;
+	text-align: center;
+	text-decoration: none;
+}
+
+.pagination a:visited {
+	color: var(--color-link);
+}
+
+.pagination a:hover,
+.pagination a:focus,
+.pagination a:active {
+	border-color: #00a0d2;
+}
+
+.pagination .prev,
+.pagination .next {
+	min-width: auto;
+	border-color: transparent;
+	text-decoration: underline;
+}
+
+.pagination .prev:hover,
+.pagination .prev:focus,
+.pagination .prev:active,
+.pagination .next:hover,
+.pagination .next:focus,
+.pagination .next:active {
+	border-color: transparent;
+}
+
+.pagination .dots {
+	min-width: auto;
+	border: none;
+}
+
+.pagination .current {
+	border-color: var(--global-font-color);
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.site-footer {
+	margin: 1em 0 0;
+	padding: 2em 0;
+	font-family: var(--highlight-font-family);
+	font-stretch: condensed;
+}
+
+.site-info {
+	text-align: center;
+}
+
+/*--------------------------------------------------------------
+# Infinite scroll
+--------------------------------------------------------------*/
+
+/* Globally hidden elements when Infinite Scroll is supported and in use. */
+.infinite-scroll .posts-navigation,
+.infinite-scroll .pagination,
+.infinite-scroll.neverending .site-footer {
+
+	/* Theme Footer (when set to scrolling) */
+	display: none;
+}
+
+/* When Infinite Scroll has reached its end we need to re-display elements that
+were hidden (via .neverending) before. */
+.infinity-end.neverending .site-footer {
+	display: block;
+}

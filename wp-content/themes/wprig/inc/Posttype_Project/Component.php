@@ -79,7 +79,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		// Add data to the new admin columns.
 		add_action( 'manage_project_posts_custom_column', [ $this, 'manage_new_admin_columns' ], 10, 2 );
 		add_action( 'save_post', [ $this, 'save_post' ], 10, 1 ); // call on save, to update metainfo attached to our metabox.
-		// Load the javascript admin script for prepopulating project quickedit fields on the admin end.
+		// Load the javascript admin script for pre-populating project quickedit fields on the admin end.
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_project_quickedit' ] );
 	}
 
@@ -264,23 +264,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		]       = $this->get_all_project_info( $project_id );
 		if ( str_word_count( $project_name ) === 2 ) {
 			$name         = explode( ' ', $project_name, 2 );
-			$first_word   = $name[0];
-			$rest         = ltrim( $project_name, $first_word . ' ' );
-			$project_name = $first_word . '<br />' . $name[1];
+			$rest         = ltrim( $project_name, $name[0] . ' ' );
+			$project_name = $name[0] . '<br />' . $name[1];
 		}
-		$output .= '<div class="project-card">';
-		$output .= wp_sprintf( '<h1 class="name">%s</h1>', $project_name );
-		$output .= wp_sprintf( '<div class="info">%s</div>', $tease );
-		$output .= wp_sprintf( '<div class="location">Complete: %d</div>', $year );
+		$output .= '<div data-project-id="' . $project_id . '" class="project-card">';
+		$output .= wp_sprintf( '<span class="project_name">%s</span>', $project_name );
+		$output .= wp_sprintf( '<div class="project_tease">%s</div>', $tease );
+		$output .= wp_sprintf( '<div class="project_image" style="background:center/cover no-repeat url(%s);"></div>', $featured );
 		$output .= $signtypes ? Taxonomies::get_card_taxonomy_row( $signtypes ) : '';
 		$output .= $expertise ? Taxonomies::get_card_taxonomy_row( $expertise ) : '';
 		$output .= $industries ? Taxonomies::get_card_taxonomy_row( $industries ) : '';
-		$output .= wp_sprintf( '<div class="date"><span class="side-title">Completion: %d</span></div>', $year );
+		$output .= wp_sprintf( '<div class="location"><span class="side-title">%s, %s</span></div>', $address['city'], $address['state'] );
 		$output .= wp_sprintf( '<div class="footnote">%s</div>', $alternate_name );
 		$output .= wp_sprintf( '<div class="more-info-link"><a href="%s">more info</a></div>', $link );
-		$output .= wp_sprintf( '<div class="pattern" style="background:center/cover no-repeat url(%s);"></div>', $featured );
-		$output .= wp_sprintf( '<div class="square one"><strong>%s</strong>, %s</div>', $address['city'], $address['state'] );
-		$output .= '<div class="square two"></div>';
+		// $output .= wp_sprintf( '<div class="square one"><strong>%s</strong>, %s</div>', $address['city'], $address['state'] );
+		$output .= wp_sprintf( '<div class="square one"><strong>Complete: %s</strong></div>', $year );
+		// $output .= '<div class="square two"></div>';
 		$output .= '<div class="strip"></div>';
 		$output .= '</div>';
 
@@ -494,7 +493,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'preview_size' => [ 150, 150 ],
 			'query_args'   => [
 				'type' => 'image',
-				// figure out a way you only get images that have a size ratio of 1x1.
+				// @TODO: figure out a way you only get images that have a size ratio of 1x1.
 			],
 			'text'         => [
 				'add_upload_files_text' => 'add image(s)',
@@ -549,27 +548,27 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$html .= '<div id="project-side-metadata" class="inline-edit-group wp-clearfix">';
 
 		$html .= '<div>';
-		$html .= sprintf( '<label for="projectInfo[client]">%s</label>', 'Client' );
-		$html .= sprintf( '<input type="text" class="regular_text" name="projectInfo[client]" id="projectInfo[client]" value="%s"/>', $client );
+		$html .= wp_sprintf( '<label for="projectInfo[client]">%s</label>', 'Client' );
+		$html .= wp_sprintf( '<input type="text" class="regular_text" name="projectInfo[client]" id="projectInfo[client]" value="%s"/>', $client );
 		$html .= '</div>';
 		$html .= '<div>';
-		$html .= sprintf( '<label for="projectInfo[job_id]">%s</label>', 'Job Number' );
-		$html .= sprintf( '<input type="text" class="regular_text" name="projectInfo[job_id]" id="projectInfo[job_id]" value="%s"/>', $job_id );
+		$html .= wp_sprintf( '<label for="projectInfo[job_id]">%s</label>', 'Job Number' );
+		$html .= wp_sprintf( '<input type="text" class="regular_text" name="projectInfo[job_id]" id="projectInfo[job_id]" value="%s"/>', $job_id );
 		$html .= '</div>';
 		$html .= '<div>';
-		$html .= sprintf( '<label for="projectInfo[year_complete]">%s</label>', 'Year Complete' );
-		$html .= sprintf( '<input type="text" class="text_small" name="projectInfo[year_complete]" id="projectInfo[year_complete]" value="%s"/>', $complete );
+		$html .= wp_sprintf( '<label for="projectInfo[year_complete]">%s</label>', 'Year Complete' );
+		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[year_complete]" id="projectInfo[year_complete]" value="%s"/>', $complete );
 		$html .= '</div>';
 		$html .= '<div>';
-		$html .= sprintf( '<label for="projectInfo[tease]">%s</label>', 'Tease' );
-		$html .= sprintf( '<input type="text" class="text_small" name="projectInfo[tease]" id="projectInfo[tease]" value="%s"/>', $tease );
+		$html .= wp_sprintf( '<label for="projectInfo[tease]">%s</label>', 'Tease' );
+		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[tease]" id="projectInfo[tease]" value="%s"/>', $tease );
 		$html .= '</div>';
 		$html .= '<div>';
-		$html .= sprintf( '<label for="projectInfo[local_folder]">%s</label>', 'Local Folder' );
-		$html .= sprintf( '<input type="text" class="text_small" name="projectInfo[local_folder]" id="projectInfo[local_folder]" value="%s"/>', $local_folder );
+		$html .= wp_sprintf( '<label for="projectInfo[local_folder]">%s</label>', 'Local Folder' );
+		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[local_folder]" id="projectInfo[local_folder]" value="%s"/>', $local_folder );
 		$html .= '</div>';
 
-		$html .= '</div> <!-- end div.inline-edit-group wp-clearfix-->';
+		$html .= '</div> <!-- end div#project-side-metadata.inline-edit-group wp-clearfix-->';
 		echo $html;
 	}//end display_project_metabox_output()
 
@@ -590,7 +589,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Get the 6 most recently modified project posts.
+	 * Get the 6 most recently modified project posts that are set to 'publish'.
 	 *
 	 * @param int $quantity How many projects do I want?  Default is 6.
 	 */
@@ -650,14 +649,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			return;
 		}
 
-		if ( ! ( 'single-project.php' === basename( $template ) ) ) {
+		if ( ! ( 'single-project.php' === basename( $template ) || is_front_page() ) ) {
 			return;
 		}
 		wp_register_script( 'jQuery', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', [], 9, false );
 
 		// Enqueue the flickity script. The last element asks whether to load the script within the footer. We don't want that.
 		wp_enqueue_script(
-			'wp-rig-flickitenheimer',
+			'wp-rig-flickity',
 			get_theme_file_uri( '/assets/js/flickity.min.js' ),
 			[ 'jQuery' ],
 			wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/flickity.min.js' ) ),

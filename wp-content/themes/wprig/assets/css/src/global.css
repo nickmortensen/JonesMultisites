@@ -22,563 +22,88 @@
 --------------------------------------------------------------*/
 @import "_custom-properties.css";
 @import "_custom-selectors.css";
+@import "_accessibility.css";
+@import "_navigation.css";
+@import "_forms.css";
 @import "_reset.css";
 @import "_typography.css";
 @import "_elements.css";
 @import "_links.css";
 @import "_flex.css";
+@import "_footer.css";
 
-/*--------------------------------------------------------------
-# Accessibility
---------------------------------------------------------------*/
 
-/**
- * Text meant only for screen readers.
- * Re: word-wrap: Many screen reader and browser combinations announce broken
- * words as they would appear visually.
- */
-.screen-reader-text {
-	clip: rect(1px, 1px, 1px, 1px);
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	word-wrap: normal !important;
-}
 
-.screen-reader-text:focus {
-	background-color: #f1f1f1;
-	border-radius: 3px;
-	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
-	clip: auto !important;
-	color: #21759b;
-	display: block;
-	font-size: 0.875rem;
-	font-weight: 700;
-	height: auto;
-	left: 5px;
-	line-height: normal;
-	padding: 15px 23px 14px;
-	text-decoration: none;
-	top: 5px;
-	width: auto;
-	z-index: 100000; /* Above WP toolbar. */
-}
 
-/* Do not show the outline on the skip link target. */
-#primary[tabindex="-1"]:focus {
-	outline: 0;
-}
 
 /*--------------------------------------------------------------
 # Layouts
 --------------------------------------------------------------*/
 .site {
 	margin: 0;
-	min-width: 100%;
-	display: flex;
-	flex-flow: column nowrap;
-}
-
-/* min-width: 60em */
-@media (--sidebar-query) {
-
-	.has-sidebar .site {
-		margin: 0;
-	}
-
-	.site-header {
-		padding-bottom: 0;
-	}
-
-	.site-main {
-		min-width: 0;
-	}
-
-	.primary-sidebar {
-		min-width: 0;
-	}
-
-}
-
-/*--------------------------------------------------------------
-# Forms
---------------------------------------------------------------*/
-/* stylelint-disable */
-textarea {
 	width: 100%;
-	overflow: auto;
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-template-rows: repeat(12, 1fr);
+	height: 100vh;
 }
 
-button,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-	-webkit-appearance: button;
-	border: 1px solid;
-	border-color: #ccc #ccc #bbb;
-	border-radius: 3px;
-	background: #e6e6e6;
-	color: rgba(0, 0, 0, 0.8);
-	font-size: 0.75rem;
-	line-height: 1;
-	padding: 0.6em 1em 0.4em;
-	cursor: pointer;
-}
-/* stylelint-enable */
-
-button:hover,
-input[type="button"]:hover,
-input[type="reset"]:hover,
-input[type="submit"]:hover {
-	border-color: #ccc #bbb #aaa;
-}
-
-button:active,
-button:focus,
-input[type="button"]:active,
-input[type="button"]:focus,
-input[type="reset"]:active,
-input[type="reset"]:focus,
-input[type="submit"]:active,
-input[type="submit"]:focus {
-	border-color: #aaa #bbb #bbb;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="url"],
-input[type="password"],
-input[type="search"],
-input[type="number"],
-input[type="tel"],
-input[type="range"],
-input[type="date"],
-input[type="month"],
-input[type="week"],
-input[type="time"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="color"],
-textarea {
-	color: var(--gray-700);
-	border: 1px solid #ccc;
-	border-radius: 3px;
-	padding: 3px;
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="url"]:focus,
-input[type="password"]:focus,
-input[type="search"]:focus,
-input[type="number"]:focus,
-input[type="tel"]:focus,
-input[type="range"]:focus,
-input[type="date"]:focus,
-input[type="month"]:focus,
-input[type="week"]:focus,
-input[type="time"]:focus,
-input[type="datetime"]:focus,
-input[type="datetime-local"]:focus,
-input[type="color"]:focus,
-textarea:focus {
-	color: #111;
-}
-
-select {
-	border: 1px solid #ccc;
-}
 
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
 
 .site-header {
-	width: 100%;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
+	min-height: 80px;
+	padding: 0 2vw;
+	display: grid;
+	grid-template-columns: 1fr 5fr;
 }
 
-.header-image {
-	margin: 0;
-}
-
-.header-image img {
-	display: block;
-	margin: 0;
-}
-
-.custom-logo-link {
-	display: inline-block;
-	margin: 0;
+.site-header,
+.site-footer {
+	display: grid;
+	grid-column: 1 / -1;
+	background: var(--color-theme-primary);
 }
 
 .site-branding {
-	text-align: center;
-}
-
-.site-title {
-	margin: 0;
-	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-	font-size: 38px;
-	font-weight: 700;
-	line-height: 1.2;
-	color: var(--gray-900);
-}
-
-.site-title a {
-	text-decoration: none;
-	color: inherit;
+	grid-column: 1 / 1;
+	display: grid;
+	grid-template-columns: 1fr;
+	justify-items: flex-end;
+	align-items: flex-end;
+	margin-bottom: 14px;
 }
 
 
-/*--------------------------------------------------------------
-## Basic navigation menus - handles submenu and small screen toggle
---------------------------------------------------------------*/
-.nav--toggle-small .menu-toggle {
-	display: block;
-	margin: 0;
-	padding: 0;
-	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-	font-size: 80%;
-	text-transform: uppercase;
-	color: var(--color-theme-white);
-	border: 2px solid var(--color-theme-white);
-	border-radius: 0;
-	background: transparent;
-}
-
-.nav--toggle-small .menu {
-	display: none;
-}
-
-.nav--toggle-sub .dropdown,
-.nav--toggle-sub .dropdown-toggle {
-	display: none;
-}
-
-.site-icon {
-	display: block;
-}
-
-/* max-width: 37.5em */
-@media (--narrow-menu-query) {
-
-	.nav--toggle-small.nav--toggled-on .menu,
-	.jonessign-logo {
-		display: none;
-	}
-}
-
-/* min-width: 37.5em */
-@media (--wide-menu-query) {
-
-	.nav--toggle-small .menu-toggle,
-	.site-icon {
-		display: none;
-	}
-
-	.nav--toggle-small .menu,
-	.jonessign-logo {
-		display: block;
-	}
-
-	.nav--toggle-sub ul ul {
-		display: none;
-		position: absolute;
-		top: 100%;
-		flex-direction: column;
-		background: #fff;
-		margin-left: 0;
-		box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-		z-index: 1;
-	}
-
-	.nav--toggle-sub .dropdown,
-	.nav--toggle-sub .dropdown-toggle {
-		display: block;
-		background: transparent;
-		position: absolute;
-		right: 0;
-		top: 50%;
-		width: var(--dropdown-symbol-width);
-		height: var(--dropdown-symbol-width);
-		font-size: inherit;
-		line-height: inherit;
-		margin: 0;
-		padding: 0;
-		border: none;
-		border-radius: 0;
-		transform: translateY(-50%);
-		overflow: visible;
-	}
-
-	.nav--toggle-sub .dropdown-symbol {
-		display: block;
-		background: transparent;
-		position: absolute;
-		right: 20%;
-		top: 35%;
-		width: 60%;
-		height: 60%;
-		border: solid #000;
-		border-width: 0 2px 2px 0;
-		transform: translateY(-50%) rotate(45deg);
-	}
-
-	.nav--toggle-sub ul ul .dropdown,
-	.nav--toggle-sub ul ul .dropdown-toggle {
-		top: 40%;
-		right: 0.2em;
-	}
-
-	.nav--toggle-sub ul ul .dropdown-symbol {
-		transform: rotate(-45deg);
-	}
-
-	.nav--toggle-sub .dropdown-toggle:hover,
-	.nav--toggle-sub .menu-item--has-toggle:hover .dropdown-toggle {
-		pointer-events: none;
-	}
-
-	/* Need menu-item-has-children for non-JS */
-	.nav--toggle-sub li.menu-item-has-children,
-	.nav--toggle-sub li.menu-item--has-toggle {
-		position: relative;
-		padding-right: var(--dropdown-symbol-width);
-	}
-
-	/*
-	 * If the dropdown toggle is active with JS, then
-	 * we'll take care of showing the submenu with JS.
-	 */
-	.nav--toggle-sub li:hover > ul,
-	.nav--toggle-sub li.menu-item--toggled-on > ul,
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul {
-		display: block;
-	}
-
-	/*
-	 * "focus-within" is an alternative to focus class for
-	 * supporting browsers (all but IE/Edge) for no-JS context
-	 * (e.g. AMP) See https://caniuse.com/#feat=css-focus-within
-	 *
-	 * This selector needs to stay separated, otherwise submenus
-	 * will not be displayed with IE/Edge.
-	 */
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul {
-		display: block;
-	}
-}
-
-/*--------------------------------------------------------------
-## Main navigation menu
---------------------------------------------------------------*/
-.main-navigation {
-	clear: both;
-	display: block;
-	margin: 0 auto 2em;
-	padding: 0 1em;
-	width: 100%;
-	background: var(--color-theme-primary);
-	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-}
-
-/* min-width: 48em, 672px */
-@media (--content-query) {
-	.main-navigation {
-		margin: 0;
-	}
-}
-
-.main-navigation a {
-	display: block;
-	width: 100%;
-	padding: 0.5em 1em 0.5em 0;
-	text-decoration: none;
-	color: var(--color-theme-white);
-}
-
-.main-navigation a:hover,
-.main-navigation a:focus {
-	text-decoration: underline;
-}
-
-.main-navigation ul {
-	display: block;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.main-navigation ul ul li {
-	padding-left: 1em;
-}
-
-/* min-width:37.5em */
-@media (--wide-menu-query) {
-
-	.main-navigation ul li a {
-		padding: 0.4em 0.5em;
-	}
-
-	.main-navigation ul li {
-		margin: 0 0 0 0.5em;
-	}
-
-	.main-navigation ul li:first-child {
-		margin-left: 0;
-	}
-
-	.main-navigation ul ul a {
-		width: 200px;
-	}
-
-	.main-navigation ul ul li {
-		padding-left: 0;
-		margin-left: 0;
-	}
-
-	.main-navigation ul ul li a {
-		width: 218px;
-		background: none;
-	}
-
-	.main-navigation ul ul ul {
-		top: 0;
-		left: 100%;
-		min-height: 100%;
-	}
-
-	.main-navigation .menu {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
-}
-
-/*--------------------------------------------------------------
-# Content navigation
---------------------------------------------------------------*/
-.site-main .comment-navigation,
-.site-main .posts-navigation,
-.site-main .post-navigation,
-.site-main .pagination {
-	border-bottom: 1px solid #111;
-	margin: 0 auto 2em;
-	max-width: var(--content-width);
-	overflow: hidden;
-	padding: 0 1.5rem 2em;
-	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-}
-
-/* min-width: 48em */
-@media (--content-query) {
-
-	.site-main .posts-navigation,
-	.site-main .post-navigation,
-	.site-main .pagination {
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
-
-.nav-links {
+/* Drag indicator for flickity */
+.drag-svg {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: var(--blue-600);
 	display: flex;
-}
-
-.posts-navigation .nav-previous,
-.post-navigation .nav-previous {
-	width: 50%;
-	flex: 1 0 50%;
-}
-
-.posts-navigation .nav-next,
-.post-navigation .nav-next {
-	text-align: end;
-	flex: 1 0 50%;
-}
-
-.post-navigation-sub span {
-	color: var(--global-font-color);
-	text-decoration: none;
-	display: inline-block;
-}
-
-.site-main .pagination {
-	margin-bottom: 1.5em;
-}
-
-.pagination .nav-links {
+	align-items: center;
 	justify-content: center;
-	flex-wrap: wrap;
+
+	& > svg {
+		width: 30px;
+		animation: leftToRight 12s infinite;
+	}
 }
 
-.pagination .page-numbers {
-	display: inline-block;
-	margin-bottom: 0.5em;
-	margin-right: 1em;
-	border: 1px solid var(--color-link);
-	min-width: 1.75em;
-	line-height: 1.75;
-	text-align: center;
-	text-decoration: none;
-}
 
-.pagination a:visited {
-	color: var(--color-link);
-}
-
-.pagination a:hover,
-.pagination a:focus,
-.pagination a:active {
-	border-color: #00a0d2;
-}
-
-.pagination .prev,
-.pagination .next {
-	min-width: auto;
-	border-color: transparent;
-	text-decoration: underline;
-}
-
-.pagination .prev:hover,
-.pagination .prev:focus,
-.pagination .prev:active,
-.pagination .next:hover,
-.pagination .next:focus,
-.pagination .next:active {
-	border-color: transparent;
-}
-
-.pagination .dots {
-	min-width: auto;
-	border: none;
-}
-
-.pagination .current {
-	border-color: var(--global-font-color);
-}
-
-/*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
-.site-footer {
-	margin: 1em 0 0;
-	padding: 2em 0;
-	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-}
-
-.site-info {
-	text-align: center;
+@keyframes leftToRight {
+	0% {
+		transform: translate3d(5px, 0, 0);
+	}
+	50% {
+		transform: translate3d(-5px, 0, 0);
+	}
+	100% {
+		transform: translate3d(5px, 0, 0);
+	}
 }
 
 /*--------------------------------------------------------------
@@ -598,63 +123,4 @@ select {
 were hidden (via .neverending) before. */
 .infinity-end.neverending .site-footer {
 	display: block;
-}
-
-.container {
-	display: grid;
-	grid-gap: 20px;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: 1fr repeat(2, 440px) auto;
-
-	& .header {
-		grid-column: 1 / -1;
-		display: grid;
-		grid-gap: 20px;
-		grid-template-columns: 1fr 4fr;
-	}
-
-	& .frontpage-main {
-		grid-column: 1 / -1;
-		display: grid;
-		grid-gap: 20px;
-	}
-
-	& .frontpage-masthead {
-		grid-column: 1 / -1;
-		display: grid;
-		grid-gap: 20px;
-	}
-
-	& .frontpage-projects {
-		grid-column: 1 / -1;
-		display: flex;
-		flex-flow: column nowrap;
-
-		& > div {
-			display: flex;
-			background: var(--green-200);
-			flex-flow: row nowrap;
-			justify-content: space-around;
-		}
-	}
-
-	& .footer {
-		grid-column: 1 / -1;
-	}
-}
-
-.item {
-
-	/* We center the contents of these items. You can also do this with flexbox too! */
-	display: grid;
-	justify-content: center;
-	align-items: center;
-	border: 5px solid rgba(0 0 0 0.3);
-	border-radius: 3px;
-	font-size: 35px;
-	background-color: var(--yellow-600);
-
-	& p {
-		margin: 0 0 5px 0;
-	}
 }

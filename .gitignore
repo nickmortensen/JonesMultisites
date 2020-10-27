@@ -4,6 +4,9 @@
 !wp-content/
 !_ignore/wp_cli_notes_jonessign_io_multisite.md
 
+# ignore the credentials for the JonesInstallPhotos project.
+jonesinstallphotos.json
+
 # Ignore everything in the "wp-content" directory, except the "plugins"
 # and "themes" directories.
 wp-content/*
@@ -21,6 +24,8 @@ wp-content/plugins/*
 wp-content/themes/*
 !wp-content/themes/wprig
 !wp-content/themes/wprig/
+!/wp-content/themes/wprig/.vscode
+!/wp-content/themes/wprig/.vscode/*
 /wp-content/themes/wprig/*
 /wp-content/themes/wprig/tests
 /wp-content/themes/wprig/tests/

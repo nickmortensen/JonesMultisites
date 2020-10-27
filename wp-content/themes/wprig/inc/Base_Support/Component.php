@@ -82,6 +82,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'wrap_pre'           => [ $this, 'wrap_pre' ],
 			'user_agent_matches' => [ $this, 'user_agent_matches' ],
 			'pdf_button'         => [ $this, 'pdf_button' ],
+			'get_drag_svg'       => [ $this, 'get_drag_svg' ],
 		];
 	}
 
@@ -309,5 +310,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function pdf_button() {
 		return '<span class="material_icons">picture_as_pdf</span>';
+	}
+
+	/**
+	 * Return an SVG That will indicate you can drag something.
+	 *
+	 * @param string $color Hexidecimal Color for the path within the icon.
+	 */
+	public function get_drag_svg( $color = 'fff' ) {
+		$output  = '<div title="swipe left of right for more projects" class="drag-svg">';
+		$output .= '<svg title="swipe left or right to view more projects" id="Layer_1" data-name="Layer1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 363.85 400.79"><defs><style>.cls-1{fill:#' . $color . '}</style></defs><path class="cls-1" d="M471.14 244a40.44 40.44 0 0 0-40.38-39.75h-10a6 6 0 0 0-2.84.72 40.31 40.31 0 0 0-31.41-15h-10a6.19 6.19 0 0 0-2.9.75 50.42 50.42 0 0 0-35.2-21.24V108a28.29 28.29 0 0 0-56.57 0v146.85l-17.92-17.93a28.29 28.29 0 0 0-40.56 39.44c4.21 7 46 78.2 55.1 147.69a6.15 6.15 0 0 0 6.1 5.35h152.88a6.14 6.14 0 0 0 5.92-4.49c.2-.69 19.33-68.94 27.61-102.05 8.19-32.79 1.13-73.66.17-78.86zM459 319.88c-7 28-21.86 81.43-26.26 97.21H289.87c-11.24-73.55-54.52-144.67-56.4-147.74a6.07 6.07 0 0 0-.89-1.13 16 16 0 0 1 22.59-22.59l28.28 28.28a6.12 6.12 0 0 0 3.35 1.87 5 5 0 0 0 .54.06c.21 0 .41.06.62.06a6.16 6.16 0 0 0 4.37-1.81 6.09 6.09 0 0 0 1.77-4.66V108a16 16 0 0 1 31.95 0v136.63a6.16 6.16 0 1 0 12.31 0v-62.75a38.17 38.17 0 0 1 31.95 37.6v25.15a6.16 6.16 0 1 0 12.31 0v-42.37h3.86a28.12 28.12 0 0 1 28.09 28.08v14.3a6.16 6.16 0 1 0 12.31 0v-28.08h3.87a28.12 28.12 0 0 1 28.08 28.08 7.17 7.17 0 0 0 .08.81v.36a.64.64 0 0 0 0 .07c.44 2.02 7.89 42.9.09 74zM132.05 66.48h129.87l-15.05 15a6.16 6.16 0 1 0 8.71 8.7l25.53-25.53a5.88 5.88 0 0 0 .78-.95s0-.08.06-.11a5.41 5.41 0 0 0 .51-1c0-.1.06-.21.1-.31a7.93 7.93 0 0 0 .25-.83 6.26 6.26 0 0 0 0-2.44 7.27 7.27 0 0 0-.25-.83c0-.1-.06-.21-.1-.31a5.41 5.41 0 0 0-.51-1s0-.07-.06-.11a5.88 5.88 0 0 0-.78-.95l-25.53-25.39a6.16 6.16 0 0 0-8.71 8.71l15.05 15H132.05l15-15a6.16 6.16 0 1 0-8.71-8.71L112.85 56a6.46 6.46 0 0 0-.78.95.39.39 0 0 1-.07.05 6.12 6.12 0 0 0-.5 1c0 .1-.06.21-.1.31a7.27 7.27 0 0 0-.25.83 6.26 6.26 0 0 0 0 2.44 6.55 6.55 0 0 0 .25.83c0 .1.06.21.1.31a6.12 6.12 0 0 0 .5 1 .39.39 0 0 1 .06.11 6.46 6.46 0 0 0 .78.95l25.54 25.53a6.16 6.16 0 1 0 8.71-8.7z" transform="translate(-111.04 -28.62)"/></svg>';
+		$output .= '</div>';
+		return $output;
 	}
 }
