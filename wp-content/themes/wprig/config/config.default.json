@@ -23,7 +23,7 @@
 	  ],
 	  "features": {
 		"custom-selectors": true,
-		"custom-media-queries": true,
+		"custom-media-queries": false,
 		"custom-properties": true,
 		"nesting-rules": true
 	  }

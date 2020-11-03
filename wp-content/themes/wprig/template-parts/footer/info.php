@@ -9,12 +9,10 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-<div class="site-info">
-	<span>
-<?= esc_html( get_bloginfo( 'description', 'display' ) ); ?>
-	</span>
-</div><!-- .site-info -->
+<div class="slogan">
+	<span> <?= esc_html( get_bloginfo( 'description', 'display' ) ); ?> </span>
+</div><!-- .slogan -->
 
-<div class="site-details">
+<div class="about_us">
 	<span><?= ABOUT_US; ?></span>
 </div>

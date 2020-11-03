@@ -8,6 +8,7 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 html {
+	height: 100%;
 	box-sizing: border-box;
 	line-height: 1.15; /* 1 */
 }
@@ -27,11 +28,13 @@ html {
 /**
  * Remove the margin in all browsers.
  */
+
+
 body {
-	overflow-x: hidden;
-	background-image: var(--body-bg-color);
+	background: var(--bg-body-color, #fff);
 	margin: 0;
 }
+
 
 /**
  * 1. Add the correct box sizing in Firefox.

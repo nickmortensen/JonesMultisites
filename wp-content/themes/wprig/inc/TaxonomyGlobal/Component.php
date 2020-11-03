@@ -674,8 +674,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			 * 'defer' would mean wait until EVERYTHING is done loading to run the script.
 			 * We can pick 'defer' because it isn't needed until the visitor hits a scroll point using intersection observer.
 			 * No need to precache this, either.
+			 *
 			 * @link https://developer.wordpress.org/reference/functions/wp_script_add_data.
-			 * @link
 			 */
 			wp_script_add_data( $handle, 'defer', true );
 			wp_localize_script(

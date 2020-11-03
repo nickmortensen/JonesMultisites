@@ -43,7 +43,7 @@
 
 /* min-width: 48em or 672px*/
 
-@media (--content-query) {
+@media screen and (width > 672px) {
 
 	.entry-content > .wp-block-quote,
 	.entry-content > .wp-block-quote.is-style-large {
@@ -151,7 +151,8 @@ ul.wp-block-latest-posts.is-grid.alignfull {
 	grid-column: span 2;
 }
 
-@media screen and (min-width: 40em) {
+
+@media screen and (width > 560px) {
 
 	.wp-block-gallery.columns-2 {
 		grid-template-columns: repeat(2, 1fr);

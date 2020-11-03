@@ -36,10 +36,11 @@ class Component implements Component_Interface {
 	 */
 	public function initialize() {
 		add_filter( 'cmb2_render_testimonial', [ $this, 'render_testimonial_field_callback' ], 10, 5 );
+		add_filter( 'cmb2_render_timeline', [ $this, 'cmb2_render_timeline_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_client', [ $this, 'render_client_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_partner', [ $this, 'render_partner_field_callback' ], 10, 5 ); // CMB2 field specifically for a project partner.
 		add_filter( 'cmb2_render_projectlocation', [ $this, 'render_projectlocation_field_callback' ], 10, 5 ); // CMB2 field specifically for a project address.
-		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
+		// add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
 	}
@@ -208,6 +209,88 @@ class Component implements Component_Interface {
 		$output .= $field_type_object->_desc( true );
 		echo $output;
 	}
+	/**
+	 * Render 'Timeline' custom field type
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type_object  The `CMB2_Types` object.
+	 */
+	public function cmb2_render_timeline_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+		$new   = [
+			'title'       => '',
+			'date'        => '',
+			'media'       => '',
+		];
+		$value = wp_parse_args( $value, $new );
+		?>
+
+		<style>
+			#timeline_fields {
+
+			}
+
+			#timeline_fields > div {
+				display: grid;
+				grid-column: 1 / -1;
+				grid-row: span 1;
+				margin-top: 8px;
+				grid-template-columns: 1fr 5fr;
+				grid-template-rows: 1fr;
+				justify-items: flex-start;
+
+			}
+
+			#timeline_fields > div > label {
+				grid-column: 1 / 2;
+			}
+
+			input,
+			textarea,
+			select {
+				grid-column: 2 / -1;
+			}
+
+			label {
+				margin-top: 8px;
+				font-weight: var(--semibold);
+			}
+		</style>
+<section id="timeline_fields">
+
+<div>
+	<label for="<?= $field_type->_id( '_title' ); ?>">Event Title</label>
+	<?= $field_type->input(
+		[
+			'name'  => $field_type->_name( '[title]' ),
+			'id'    => $field_type->_id( '_title' ),
+			'value' => $value['title'],
+			'desc'  => '',
+		]
+	);
+	?>
+</div><!-- /event -->
+
+<div>
+	<label for="<?= $field_type->_id( '_media' ); ?>">Media</label>
+	<?= $field_type->input(
+		[
+			'name'  => $field_type->_name( '[media]' ),
+			'id'    => $field_type->_id( '_media' ),
+			'value' => $value['media'],
+			'desc'  => '',
+		]
+	); ?>
+</div>
+
+</section><!-- end section#timeline_fields -->
+		<?php
+	}
+
 
 	/**
 	 * Render Address Field
@@ -385,8 +468,8 @@ class Component implements Component_Interface {
 	}
 
 	.field-div {
-		margin-top: 8px;
 		display: grid;
+		margin-top: 8px;
 		grid-template-columns: 1fr 5fr;
 	}
 

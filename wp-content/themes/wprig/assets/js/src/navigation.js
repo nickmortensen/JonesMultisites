@@ -5,11 +5,10 @@
  * Handles toggling the navigation menu for small screens and enables TAB key
  * navigation support for dropdown menus.
  */
-/* eslint-disable */
+
 const KEYMAP = {
 	TAB: 9,
 };
-
 
 if ( 'loading' === document.readyState ) {
 	// The DOM has not yet been loaded.
@@ -38,7 +37,7 @@ function initNavToggleSubmenus() {
 	}
 
 	for ( let i = 0; i < navTOGGLE.length; i++ ) {
-		initEachNavToggleSubmenu(navTOGGLE[ i ]);
+		initEachNavToggleSubmenu( navTOGGLE[ i ] );
 	}
 }
 
@@ -61,7 +60,7 @@ function initEachNavToggleSubmenu( nav ) {
 
 	for ( let i = 0; i < SUBMENUS.length; i++ ) {
 		const parentMenuItem = SUBMENUS[ i ].parentNode;
-		let dropdown         = parentMenuItem.querySelector( '.dropdown' );
+		let dropdown = parentMenuItem.querySelector( '.dropdown' );
 
 		// If no dropdown, create one.
 		if ( ! dropdown ) {
@@ -74,7 +73,7 @@ function initEachNavToggleSubmenu( nav ) {
 			dropdown.appendChild( dropdownSymbol );
 
 			// Add before submenu.
-			SUBMENUS[ i ].parentNode.insertBefore(dropdown, SUBMENUS[ i ]);
+			SUBMENUS[ i ].parentNode.insertBefore( dropdown, SUBMENUS[ i ] );
 		}
 
 		// Convert dropdown to button.
@@ -87,25 +86,25 @@ function initEachNavToggleSubmenu( nav ) {
 		dropdown.parentNode.replaceChild( thisDropdownButton, dropdown );
 
 		// Toggle the submenu when we click the dropdown button.
-		thisDropdownButton.addEventListener( 'click', e => {
+		thisDropdownButton.addEventListener( 'click', ( e ) => {
 			toggleSubMenu( e.target.parentNode );
-		});
+		} );
 
 		// Clean up the toggle if a mouse takes over from keyboard.
-		parentMenuItem.addEventListener( 'mouseleave', e => {
+		parentMenuItem.addEventListener( 'mouseleave', ( e ) => {
 			toggleSubMenu( e.target, false );
-		});
+		} );
 
 		// When we focus on a menu link, make sure all siblings are closed.
-		parentMenuItem.querySelector( 'a' ).addEventListener( 'focus', e => {
+		parentMenuItem.querySelector( 'a' ).addEventListener( 'focus', ( e ) => {
 			const parentMenuItemsToggled = e.target.parentNode.parentNode.querySelectorAll( 'li.menu-item--toggled-on' );
 			for ( let j = 0; j < parentMenuItemsToggled.length; j++ ) {
 				toggleSubMenu( parentMenuItemsToggled[ j ], false );
 			}
-		});
+		} );
 
 		// Handle keyboard accessibility for traversing menu.
-		SUBMENUS[ i ].addEventListener( 'keydown', e => {
+		SUBMENUS[ i ].addEventListener( 'keydown', ( e ) => {
 			// These specific selectors help us only select items that are visible.
 			const focusSelector = 'ul.toggle-show > li > a, ul.toggle-show > li > button';
 
@@ -120,7 +119,7 @@ function initEachNavToggleSubmenu( nav ) {
 					toggleSubMenu( e.target.parentNode, false );
 				}
 			}
-		});
+		} );
 
 		SUBMENUS[ i ].parentNode.classList.add( 'menu-item--has-toggle' );
 	}
@@ -139,10 +138,10 @@ function initNavToggleSmall() {
 	}
 
 	for ( let i = 0; i < navTOGGLE.length; i++ ) {
-		initEachNavToggleSmall(navTOGGLE[ i ]);
+		initEachNavToggleSmall( navTOGGLE[ i ] );
 	}
 }
-const navIcon = document.querySelector( '#main-menu-icon' );
+
 /**
  * Initiate the script to process small
  * navigation toggle for a specific navigation menu.
@@ -159,15 +158,9 @@ function initEachNavToggleSmall( nav ) {
 	// Add an initial values for the attribute.
 	menuTOGGLE.setAttribute( 'aria-expanded', 'false' );
 
-	menuTOGGLE.addEventListener( 'click', e => {
-
+	menuTOGGLE.addEventListener( 'click', ( e ) => {
 		nav.classList.toggle( 'nav--toggled-on' );
 		e.target.setAttribute( 'aria-expanded', 'false' === e.target.getAttribute( 'aria-expanded' ) ? 'true' : 'false' );
-		let menuButtons = document.querySelectorAll( '.main-menu-icon');
-		if ( nav.classList.contains( 'nav--toggled-on' ) ) {
-			menuButtons[0].setAttribute( 'hidden', true );
-			menuButtons[1].setAttribute( 'hidden', false );
-		}
 	}, false );
 }
 

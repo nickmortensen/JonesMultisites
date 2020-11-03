@@ -9,7 +9,6 @@
 
 namespace WP_Rig\WP_Rig;
 
-$term = get_queried_object();
 get_header();
 
 wp_rig()->print_styles( 'wp-rig-content' );

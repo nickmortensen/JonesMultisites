@@ -8,15 +8,84 @@ a[href^="tel:"]::before {
 }
 
 
+:root {
+	--footer-text-color: var(--color-theme-white);
+
+}
+
+main {
+	background: var(--body-bg-color);
+	color: var(--global-font-color);
+}
+
+
+footer {
+	color: var(--footer-text-color);
+	height: 25vh;
+	min-height: 800px;
+	display: grid;
+	order: 3;
+
+	& > div {
+		font-family: var(--highlight-font-family);
+		padding: 8px 1.8vw;
+
+		& span {
+			font-weight: var(--bold);
+			font-size: clamp(28px, 3.5vw, 80px);
+		}
+	}
+
+	& > .about_us span {
+		font-size: clamp(20px, 1.85vw, 40px);
+	}
+}
+
+/* Jonessign Branch Address as displayed in footer */
+.single_jones_address {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 2vw;
+	width: 100%;
+	min-width: 280px;
+
+	/* Contains both the address and the phone number */
+	& > div {
+		padding-left: 2vw;
+		text-align: right;
+		font-size: clamp(20px, 1.84vw, 48px);
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: space-around;
+		border-left: 2px solid var(--footer-text-color);
+
+		/* The phone number is inside a link element */
+		& a {
+			font-size: clamp(20px, 1.84vw, 48px);
+			color: var(--footer-text-color);
+			text-decoration: none;
+		}
+	}
+
+	/* Namf of location - e.g. "Jones Richmond" */
+	& h2 {
+		color: var(--text-color-dark-bg);
+		font-size: clamp(28px, 2.14vw, 48px);
+	}
+
+}
+
+span[itemprop="streetAddress"] {
+	display: block;
+}
+
 .site-footer {
 	font-size: clamp(20px, 2.3vw, 34px);
 	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	grid-template-rows: repeat(4, auto);
-	order: 12;
 	grid-row: 12;
-	background: var(--color-theme-primary);
-	color: var(--color-theme-white);
+	color: var(--text-color-dark-bg);
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
 
@@ -33,8 +102,7 @@ a[href^="tel:"]::before {
 		grid-column: 1 / -1;
 
 		& span {
-			font-size: clamp(28px, 5vw, 88px);
-			color: var(--color-theme-white);
+			color: var(--text-color-dark-bg);
 			font-weight: var(--bold);
 		}
 	}
@@ -55,26 +123,57 @@ a[href^="tel:"]::before {
 		max-width: 100%;
 
 		& a {
-
 			margin: 5px 20px;
-			--color-links-light: var(--color-theme-white);
-			color: var(--color-links-light);
+			color: var(--text-color-dark-bg);
 		}
 	}
 
 }
 
+.location_selection {
+	color: var(--text-color-dark-bg);
+	width: 100vw;
+	background: var(--color-theme-primary);
+	display: grid;
+	height: 12vw;
+	min-height: 50px;
+	grid-column: 1 / -1;
+	grid-template-columns: 2fr 6fr;
+	align-items: center;
+	place-self: flex-end;
+
+	& .dropdown_container {
+		grid-column: 1 / 1;
+		min-width: 460px;
+	}
+
+	& .jones_location_option {
+		font-size: 1.4rem;
+		font-family: var(--highlight-font-family);
+	}
+
+	& #location_addresses {
+		grid-column: 2 / -1;
+		height: 100%;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+		align-items: flex-start;
+		align-content: space-around;
+		color: var(--text-color-dark-bg);
+	}
+
+	& .cs_options {
+		background: var(--color-theme-primary);
+
+	}
+}
+
 /* Rules apply only when page is in a window 48rem - 672 px or larger */
 
-@media (--content-query ) {
-	.site-footer {
+@media screen and (width > 672px) {
+	footer {
 		font-size: inherit;
-
-		& .site-details {
-			grid-column: 1 / span 4;
-			padding: 2vw;
-			background: var(--gray-300);
-		}
 	}
 }
 

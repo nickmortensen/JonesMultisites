@@ -1,0 +1,11 @@
+@keyframes leftToRight {
+	0% {
+		transform: translate3d(5px, 0, 0);
+	}
+	50% {
+		transform: translate3d(-5px, 0, 0);
+	}
+	100% {
+		transform: translate3d(5px, 0, 0);
+	}
+}

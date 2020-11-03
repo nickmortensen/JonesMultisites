@@ -201,6 +201,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
+		add_action( 'cmb2_init', [ $this, 'create_timeline_post_extra_fields' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
 		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_admin_columns' ], 10, 1 );
@@ -233,6 +234,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_location_schema'         => [ $this, 'get_location_schema' ],
 			'get_single_location_details' => [ $this, 'get_single_location_details' ],
 			'get_location_option'         => [ $this, 'get_location_option' ],
+			'get_single_location_address' => [ $this, 'get_single_location_address' ],
 		];
 	}
 
@@ -254,7 +256,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$info['location_image_id'] = $this->get_location_image( $location->term_id );
 		$info['city_image_id']     = $this->get_city_image( $location->term_id );
 		$info['blog_id']           = get_term_meta( $term_id, 'locationBlogID', true );
-		$info['Indepth']           = get_term_meta( $term_id, 'locationinDepth', true ) || '';
+		$info['indepth']           = get_term_meta( $term_id, 'locationinDepth', true ) || '';
 		$info['subdomain']         = preg_replace( '/^http:/i', 'https:', $this->get_location_url( $location->term_id, false ) );
 		$info['nimble']            = preg_replace( '/^http:/i', 'https:', $this->get_location_url( $location->term_id, true ) );
 		$info['address']           = $this->get_location_address( $term_id );
@@ -340,19 +342,21 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 	/**
 	 * Grab all the basic information [term_id, slug, description] for all of the locations within the 'location' taxonomy.
-
-	 * @param array $except The term_id of the location that I don't want to include. Default 75 is 'Denver'..
+	 *
+	 * @param bool $hide_empty Whether to hide the taxonomy terms that have no attachment or post assigned in the backend.
 	 */
-	public function get_location_taxonomy( $except = [ 75 ] ) : array {
-		return Taxonomies::get_all_terms_in_taxonomy( 'location', false );
+	public function get_location_taxonomy( $hide_empty = false ) : array {
+		return Taxonomies::get_all_terms_in_taxonomy( 'location', $hide_empty );
 	}
 
 	/**
 	 * Get all location term identifiers.
 	 *
-	 * @param array $except The term_id of the location that I don't want to include. Default 75 is 'Denver'..
+	 * @param int ...$except The term_ids of the location that I don't want to include. can add several, they will all become an array using the splat / spread operator(...).
+	 *
+	 * @link https://www.php.net/manual/en/migration56.new-features.php
 	 */
-	public function get_location_ids( $except = [ 75 ] ) : array {
+	public function get_location_ids( ...$except ) : array {
 		return array_diff( Taxonomies::get_all_term_ids_from_slug( 'location' ), $except );
 	}
 
@@ -360,8 +364,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Get a single location link.
 	 *
 	 * @param int $term_id The term id of the location.
+	 *
+	 * @return string $output An HTML string of a given link.
 	 */
-	public function get_single_location_link( $term_id ) {
+	public function get_single_location_link( $term_id ) : string {
 		[
 			'id'                => $id,
 			'name'              => $name,
@@ -374,19 +380,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'nimble'            => $nimble,
 			'address'           => $address,
 			'capabilities'      => $capabilities,
-		] = wp_rig()->get_location_info( $term_id );
+		]        = wp_rig()->get_location_info( $term_id );
 		$output  = '';
 		$output .= wp_sprintf( '<a class="location_link" title="%s" data-blog-identifier="%s" href="%s">%s</a>', $description, $blog, $subdomain, ucwords( explode( ' ', $name, 2 )[1] ) );
 		return $output;
 	}
 
-
 	/**
 	 * Get a single location address as an html element.
 	 *
 	 * @param int $term_id The term id of the location.
 	 */
-	public function get_location_option( $id ) {
+	public function get_location_option( int $term_id ) {
 		[
 			'id'                => $id,
 			'name'              => $name,
@@ -399,9 +404,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'nimble'            => $nimble,
 			'address'           => $address,
 			'capabilities'      => $capabilities,
-		]       = wp_rig()->get_location_info( $id );
+		]       = wp_rig()->get_location_info( $term_id );
 		$name   = 72 === $id ? 'Jones Sign Company' : $name;
-		$output = wp_sprintf( '<option value="%s" data-location-id="%d"%s>%s</option>', $slug, $id, selected( $id, 72, false ), ucwords( $name ) );
+		$selected = selected( $id, 72, false );
+		$selected = '';
+		$output = wp_sprintf( '<option data-value="%s" value="%s" data-location-id="%d"%s>%s</option>', $slug, $slug, $id, $selected, ucwords( $name ) );
 		return $output;
 	}
 
@@ -410,7 +417,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @param int $term_id The term id of the location.
 	 */
-	public function output_single_location_address( $term_id ) {
+	public function get_single_location_address( int $term_id ) {
 		[
 			'id'           => $id,
 			'name'         => $name,
@@ -418,7 +425,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'blog_id'      => $blog,
 			'address'      => $address,
 			'capabilities' => $capabilities,
-		] = wp_rig()->get_location_info( $term_id );
+		]        = wp_rig()->get_location_info( $term_id );
 		$output  = '';
 		$output .= wp_sprintf( '<address><span itemprop="streetAddress">%s </span>', $address['address'] );
 		$output .= wp_sprintf( '<span itemprop="addressLocality">%s</span>, ', $address['city'] );
@@ -427,7 +434,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$output .= '</address>';
 
 		return $output;
-
 	}
 
 	/**
@@ -435,7 +441,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @param int $term_id The term id of the location.
 	 */
-	public function get_single_location_details( $term_id ) {
+	public function get_single_location_details( int $term_id ) {
 		[
 			'id'                => $id,
 			'name'              => $name,
@@ -452,7 +458,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$output  = '';
 		$output .= wp_sprintf( '<div class="location_details" title="%s" data-show-location="%s" data-location-slug="%s" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">', $description, $blog, $slug );
 		$output .= wp_sprintf( '<h2>%s</h2>', ucwords( $name ) );
-		$output .= $this->output_single_location_address( $term_id );
+		$output .= $this->get_single_location_address( $term_id );
 		$output .= wp_sprintf( '<a href="tel:+1-%s" itemprop="telephone">%s</a>', $address['phone'], $address['phone'] );
 		$output .= '</div><!-- end div.location_details -->';
 		return $output;
@@ -461,15 +467,15 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Get links to all locations - for footer.
 	 *
-	 * @param array $except The term_id of the location that I don't want to include. Default 75 is 'Denver' and 72 is National.
+	 * @param int ...$except One or more term_id of the location that I don't want to include. Default 75 is 'Denver' and 72 is National.
 	 */
-	public function get_location_links( $except = [ 75, 72 ] ) {
+	public function get_location_links( ...$except ) {
 		global $blog_id;
 		$all_links = [];
 		// Don't want Jones National, Jones Denver, or the current site.
 		$except[] = $this->get_terms_blogs_array( 'blog' )[ $blog_id ];
 		// Utilize array_unique to ensure no duplicate term_ids.
-		$locations = $this->get_location_ids( array_unique( array_values( $except ) ) );
+		$locations = $this->get_location_ids( ...$except );
 		foreach ( $locations as $key => $value ) {
 			$all_links[] = $this->get_single_location_link( $value );
 		}
@@ -477,6 +483,217 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $all_links;
 	}
 
+	/**
+	 * Filter to show only on a page with an id of 605 -- which is 'Jones Timeline'.
+	 */
+	public function only_show_on_timeline_post() {
+		global $post;
+		return 605 === $post->ID;
+	}
+
+	/**
+	 * Event Repeater Field Label
+	 */
+	public function field_label( $content, $color = 'blue' ) {
+		return '<span style="display: block; width: 100%; margin: 0; margin-left: -10px; padding: 0.5rem; color: #fff; background: var(--' . $color . '-600);">' . $content . '</span>';
+	}
+
+	/**
+	 * Timeline post extra fields using custom timeline field.
+	 *
+	 */
+	public function create_timeline_post_extra_fields() {
+		// Create the metabox in which to display the timeline field.
+		$args    = [
+			'id'           => 'timeline-edit',
+			'title'        => 'Timeline Event Entry',
+			'object_types' => [ 'page' ],
+			'show_on'      => [
+				'id' => 605,
+			],
+			'closed'       => false,
+		];
+		$metabox = new_cmb2_box( $args );
+
+		// Group name for event.
+		$args     = [
+			'name'             => 'Eventsy',
+			'before_group'     => $this->field_label( 'Event Repeating Label Function Output HEre', 'red' ),
+			'after_group'      => $this->field_label( 'After Group Label Here', 'red' ),
+			'after_group_row'  => $this->field_label( 'End of Timeline Event Row', 'orange' ),
+			'before_group_row' => $this->field_label( 'Begin Timeline Event Row', 'orange' ),
+			'show_name'        => false,
+			'description'      => 'Timeline Events',
+			'id'               => 'event',
+			'type'             => 'group',
+			'repeatable'       => true,
+			'button_side'      => 'right',
+			'options'          => [
+				'group_title'    => 'Event',
+				'add_button'     => 'Add Another Event',
+				'remove_button'  => 'Remove This Event',
+				'sortable'       => true,
+				'remove_confirm' => 'Are you certain you wish to remove this event?',
+			],
+		];
+		$timeline = $metabox->add_field( $args );
+
+		// Title of Event.
+		$args = [
+			'classes' => [ 'align-left' ],
+			'name'    => 'Event Title',
+			'desc'    => 'Event title',
+			'default' => '',
+			'id'      => 'eventTitle',
+			'type'    => 'text',
+		];
+		$metabox->add_group_field( $timeline, $args );
+
+		// Month and year.
+		$args = [
+			'classes'     => [ 'align-right' ],
+			'name'        => 'Event Date',
+			'id'          => 'eventDate',
+			'desc'        => 'Month and year of Event',
+			'type'        => 'text_date',
+			'date_format' => 'm_yy',
+			'attributes'  => [
+				'data-datepicker' => wp_json_encode(
+					[
+						'yearRange' => '1918:+0',
+					]
+				),
+			],
+		];
+		$metabox->add_group_field( $timeline, $args );
+
+		// HTML Description of Event -- USES CODEMIRROR.
+		$args = [
+			'name'       => 'Description',
+			'desc'       => 'Longer Description of the event - can use html tags',
+			'default'    => '',
+			'id'         => 'eventDescription',
+			'type'       => 'textarea_code',
+			'attributes' => [
+				'date-codeeditor' => json_encode(
+					[
+						'codemirror' => [
+							'indentWithTabs'    => true,
+							'lineNumbers'       => true,
+							'screenReaderLabel' => 'Text Editor for a Timeline Event',
+							'tabindex'          => 3,
+						],
+					]
+				),
+			],
+		];
+		$metabox->add_group_field( $timeline, $args );
+
+		// Media Field.
+		$args = [
+			'name' => 'media',
+			'id'   => 'eventMedia',
+			'type' => 'file_list',
+			'text' => [
+				'add_upload_files_text' => 'Add Media Items',
+				'remove_image_text'     => 'Remove Media',
+				'file_text'             => 'File',
+				'file_download_text'    => 'Download',
+				'remove_text'           => 'Remove',
+			],
+		];
+		$metabox->add_group_field( $timeline, $args );
+
+
+	}
+
+	/**
+	 * Create Timeline Post Extra Fields.
+	 */
+	public function backup_create_timeline_post_extra_fields() {
+		$prefix  = 'timeline';
+		$args    = [
+			'id'           => $prefix . '-edit',
+			'title'        => 'timeline post fields',
+			'object_types' => [ 'page' ],
+			'context'      => 'normal',
+			'priority'     => 'high',
+			'show_on_cb'   => [ $this, 'only_show_on_timeline_post' ],
+		];
+		$metabox = new_cmb2_box( $args );
+
+		// Common Name.
+		$args = [
+			'name'        => 'Event',
+			'description' => 'A Timeline Event',
+			'id'          => 'timelineEventGroup',
+			'type'        => 'group',
+			'repeatable'  => true,
+			'button_side' => 'right',
+			'options'     => [
+				'group_title'    => 'Event',
+				'add_button'     => 'Add Another Event',
+				'remove_button'  => 'Remove This Event',
+				'sortable'       => true,
+				'remove_confirm' => 'Are you certain you wish to remove this event?',
+			],
+		];
+		$timeline = $metabox->add_field( $args );
+
+			// Title of Event.
+			$args = [
+				'classes' => [ 'input-full-width' ],
+				'name'    => 'Event Title',
+				'desc'    => 'Event title',
+				'default' => '',
+				'id'      => $prefix . 'EventTitle',
+				'type'    => 'text',
+			];
+			$metabox->add_group_field( $timeline, $args );
+			// Testimonial From the client.
+			$args = [
+				'classes' => [ 'input-full-width' ],
+				'name'    => 'Event Title',
+				'desc'    => 'Event title',
+				'default' => '',
+				'id'      => $prefix . 'EventTitle',
+				'type'    => 'text',
+			];
+			$metabox->add_group_field( $timeline, $args );
+
+			// Month and year.
+			$args = [
+				'name'        => 'Event Date',
+				'id'          => $prefix . 'EventDate',
+				'desc'        => 'Month and year of Event',
+				'type'        => 'text_date',
+				'date_format' => 'm_yy',
+				'attributes'  => [
+					'data-datepicker' => wp_json_encode(
+						[
+							'yearRange' => '1918:0',
+						]
+					),
+				],
+			];
+			$metabox->add_group_field( $timeline, $args );
+			$args = [
+				'name'    => 'Description',
+				'desc'    => 'field description (optional)',
+				'default' => '',
+				'id'      => $prefix . 'EventDescription',
+				'type'    => 'textarea_code',
+			];
+			$metabox->add_group_field( $timeline, $args );
+			$args = [
+				'name'    => 'Images',
+				'desc'    => 'Images to Attach',
+				'default' => '',
+				'id'      => $prefix . 'EventImages',
+				'type'    => 'file_list',
+			];
+			$metabox->add_group_field( $timeline, $args );
+	}
 	/**
 	 * Create the extra fields for the taxonomy type.
 	 *
@@ -819,17 +1036,40 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$version   = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/jonessign.min.js' ) ); // script version.
 		$in_footer = false; // Do we enqueue the script into the footer -- no.
 		wp_enqueue_script( $handle, $path, $deps, $version, $in_footer );
-		wp_script_add_data( $handle, 'defer', true ); // wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
+		wp_script_add_data( $handle, 'defer', false ); // if true - wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
 		wp_localize_script( $handle, 'jonesignInfo', [
 			'locations' => $loc_data,
 		] );
+
+		$handle      = 'jones-locations-classie'; // script handle.
+		$script_path = get_theme_file_uri( '/assets/js/classie.min.js' ); // path to script.
+		$deps        = []; // dependencies.
+		$version     = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/classie.min.js' ) ); // script version.
+		$in_footer   = false; // Do we enqueue the script into the footer.
+		wp_register_script( $handle, $script_path, $deps, $version, $in_footer );
+
+		$handle      = 'jones-locations-select'; // script handle.
+		$script_path = get_theme_file_uri( '/assets/js/select_effects.min.js' ); // path to script.
+		$deps        = [ 'jones-locations-classie' ]; // dependencies.
+		$version     = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/select_effects.min.js' ) ); // script version.
+		$in_footer   = false; // Do we enqueue the script into the footer.
+		wp_enqueue_script( $handle, $script_path, $deps, $version, $in_footer );
+
+		wp_script_add_data( $handle, 'defer', false ); // wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
 	}
+
+	/**
+	 * Output all the Jones Location information into a json-encoded array to use on any of the sites -- saves calls to the database.
+	 *
+	 * @see the only reason to run this, would be that I've added new information to any of the items within the location taxonomy.
+	 */
+
 
 	/**
 	 * Output entire rich snippet for a location.
 	 *
+	 * @param int $location Term id of the location. Defaults to 60 - which is Jones Green Bay.
 	 * @link https://search.google.com/structured-data/testing-tool
-	 * @param int $location Term id of the location. Defaults to 60 - which is Jones Green Bay
 	 */
 	public function get_location_schema( $location = 60 ) {
 		$jones_url     = $this->default_jones_url;

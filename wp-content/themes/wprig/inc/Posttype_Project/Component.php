@@ -62,6 +62,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_project_header_images'   => [ $this, 'get_project_header_images' ],
 			'get_project_narrative'       => [ $this, 'get_project_narrative' ],
 			'get_city_state'              => [ $this, 'get_city_state' ],
+			'get_payment_link'            => [ $this, 'get_payment_link' ],
 		];
 	}
 
@@ -99,6 +100,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function get_additional_project_info( $post_id ) {
 		return get_post_meta( $post_id, 'projectInfo', true ); // false is default, true if I want only the first value within the array.
+	}
+
+	/**
+	 * Output an internal payments link.
+	 */
+	public function get_payment_link() {
+		return 'link goes in here';
 	}
 
 	/**
@@ -277,9 +285,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$output .= wp_sprintf( '<div class="location"><span class="side-title">%s, %s</span></div>', $address['city'], $address['state'] );
 		$output .= wp_sprintf( '<div class="footnote">%s</div>', $alternate_name );
 		$output .= wp_sprintf( '<div class="more-info-link"><a href="%s">more info</a></div>', $link );
-		// $output .= wp_sprintf( '<div class="square one"><strong>%s</strong>, %s</div>', $address['city'], $address['state'] );
 		$output .= wp_sprintf( '<div class="square one"><strong>Complete: %s</strong></div>', $year );
-		// $output .= '<div class="square two"></div>';
 		$output .= '<div class="strip"></div>';
 		$output .= '</div>';
 

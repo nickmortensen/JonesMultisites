@@ -176,7 +176,9 @@
 	--paragraph-color: var(--global-font-color);
 
 	/* Jones SVG Textcolor */
-	--logotype-textfill: var(--color-theme-white);
+	--logo-letter-fill: var(--color-theme-white);
+	--logo-circle-fill: var(--gray-300);
+	--logo_text_fill: var(--logo-letter-fill);
 	--logotype-tagline-display: none;
 	--jonessign-text-svg-tagline-fill: var(--gray-500);
 
@@ -193,7 +195,8 @@
 	/* Gradient */
 	--admin-gradient: linear-gradient(45deg, var(--indigo-400) 0%, var(--indigo-600) 50%, var(--indigo-800) 100%);
 	--wesbos-gradient: linear-gradient(110deg, var(--pink-700), var(--indigo-500) );
-	/* FRONTPOAGE PROJECTS */
+
+	/* FRONTPAGE PROJECTS */
 	--cb-color: var(--gray-900);
 	--projects-accent-color: var(--blue-600);
 	--check-color: var(--blue-600);
@@ -213,6 +216,10 @@
 
 	/* MENU */
 	--main-menu-bg: var(--color-theme-primary);
+
+	/* TEXT COLOR */
+	--text-color: var(--gray-700);
+	--text-color-dark-bg: var(--color-theme-white);
 }
 /* stylelint-enable */
 
