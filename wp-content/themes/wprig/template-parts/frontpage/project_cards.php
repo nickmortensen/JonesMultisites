@@ -12,7 +12,7 @@ namespace WP_Rig\WP_Rig;
 ?>
 
 	<!-- project cards -->
-	<section id="fp-projects" class="frontpage-projects">
+	<section id="fp-projects" class="frontpage-projects full-grid">
 		<h2 class="section-title">Recent Projects</h2>
 
 		<!-- graphic to demonstrate touch drag availability -->

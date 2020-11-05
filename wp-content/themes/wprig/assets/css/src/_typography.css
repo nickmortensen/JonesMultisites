@@ -15,10 +15,11 @@ textarea {
 }
 
 :--heading {
+	--heading-color: var(--gray-800);
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
 	clear: both;
-	color: var(--indigo-700);
+	color: var(--heading-color);
 	margin: 0 0 5px 0;
 }
 

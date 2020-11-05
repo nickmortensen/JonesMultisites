@@ -156,6 +156,7 @@ class Theme {
 			 */
 			new AdditionalFields\Component(),
 			new TaxonomyGlobal\Component(),
+			new Timeline\Component(),
 			new Posttype_Global\Component(),
 			new Posttype_Client\Component(),
 			new Posttype_Staffmember\Component(),

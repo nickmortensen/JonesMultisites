@@ -11,14 +11,14 @@ strong {
 }
 
 .frontpage-projects {
-	grid-column: 1 / -1;
+	order: 5;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-flow: column nowrap;
 
 	& > h2 {
-		color: var(--color-theme-white);
+		color: var(--gray-600);
 		font-size: 2rem;
 		font-size: clamp(28px, 4vw, 112px);
 	}

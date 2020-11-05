@@ -12,7 +12,7 @@ global $locations;
 
 
 
-<section class="footer location_selection">
+<div id="location_selector" class="footer_element full-grid">
 
 	<div class="dropdown_container">
 
@@ -21,10 +21,11 @@ global $locations;
 			<?php foreach ( $locations as $location ) echo wp_rig()->get_location_option( $location ); ?>
 		</select>
 
-	</div><!-- end div.location_selector_container -->
+	</div><!-- end div.dropdown_container -->
 
-	<div id="location_addresses"></div><!-- end div#each-address -->
-</section>
+	<div id="location_addresses"></div><!-- end div#location_addresses -->
+
+</div><!-- end div#location_selector -->
 
 <script>
 document.querySelector('.cs-select').classList.toggle( 'cs-skin-border' );
@@ -39,19 +40,17 @@ branches.forEach( branch => {
 });
 
 	(function() {
-		[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function( el ) {
-			new SelectFx( el, {
+		new SelectFx(
+			document.querySelector( '.cs-select'), {
 				onChange: function( val ) {
 					let branches = document.querySelectorAll( '.single_jones_address' );
 					let target = document.querySelector('[data-slug="grb"]');
 					branches.forEach( branch => {
 						hide( branch );
 						if ( branch.dataset.slug === val ) show( branch );
-
 					})
 				}
 			});
-		} );
 	})();
 </script>
 

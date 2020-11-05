@@ -9,10 +9,7 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-<div class="slogan">
-	<span> <?= esc_html( get_bloginfo( 'description', 'display' ) ); ?> </span>
-</div><!-- .slogan -->
-
-<div class="about_us">
-	<span><?= ABOUT_US; ?></span>
-</div>
+<div id="company-info" class="footer_element full-grid">
+	<span id="description"><?= esc_html( get_bloginfo( 'description', 'display' ) ); ?> </span>
+	<span id="about_us"><?= ABOUT_US; ?></span>
+</div><!-- end div#company-info -->

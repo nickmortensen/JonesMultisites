@@ -111,7 +111,8 @@
 
 	/* END Tailwind Colors */
 
-	--global-font-color: rgb(64, 70, 77);
+	--global-font-color: var(--gray-900);
+	--global-text-color: var(--gray-900);
 	--global-font-family: -apple-system, ubuntu, serif;
 	--global-font-size: 20;
 	--global-font-line-height: 1.4;
@@ -220,6 +221,18 @@
 	/* TEXT COLOR */
 	--text-color: var(--gray-700);
 	--text-color-dark-bg: var(--color-theme-white);
+
+	/* FOOTER */
+	--footer-text-color: var(--color-theme-white);
+	--background-color: #0273b9;
+	--color: #7e7e7e;
+	--link-color: #ce606f;
+	--marker-color: var(--yellow-600);
+	--marker-border-color: var(--marker-color);
+	--subline-color: var(--gray-500);
+	--marker-header-bg-color: var(--color-theme-primary);
+	--address-color: var(--gray-900);
+	--state-fill: var(--blue-800);
 }
 /* stylelint-enable */
 
@@ -229,3 +242,5 @@
 	--jones-svg-fill: var(--color-theme-white);
 	--tagline-svg-fill: var(--gray-200);
 }
+
+

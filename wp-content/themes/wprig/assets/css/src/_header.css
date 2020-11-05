@@ -5,15 +5,7 @@
 .site-header {
 	background: var(--color-theme-primary);
 	padding-bottom: 1em;
-}
-
-.header-image {
-	margin: 0 auto;
-}
-
-.header-image img {
-	display: block;
-	margin: 0 auto;
+	order: 1;
 }
 
 .custom-logo-link {

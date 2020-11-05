@@ -23,11 +23,12 @@ foreach ( $fp_photos as $header_photo ) {
 
 
 
+
 <footer
 id="colophon"
-class="site-footer"
+class="full-grid"
 style="
-	background: linear-gradient( var(--blue-700), #000), center / cover no-repeat url(<?= $bgsrcs[1]; ?>) ;
+	background: linear-gradient( var(--blue-700), var(--blue-900)), center / cover no-repeat url(<?= $bgsrcs[1]; ?>) ;
 	background-blend-mode: multiply;">
 
 <?php get_template_part( 'template-parts/footer/info' ); ?>
