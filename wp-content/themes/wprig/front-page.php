@@ -69,7 +69,7 @@ $locations = wp_rig()->get_location_ids( 75 );
 
 </section> -->
 
-<?php get_template_part( 'template-parts/footer/locations_map' ); ?>
+
 
 	</main><!-- #primary -->
 

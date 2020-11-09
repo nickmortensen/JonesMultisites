@@ -87,10 +87,10 @@
 		this.selectOptionsCount = this.selectOptions.length;
 
 		// current index
-		this.current = this.selectOptions.indexOf( this.selEl.querySelector( 'li.cs-selected' ) ) || -1;
+		this.current = this.selectOptions.indexOf( this.selEl.querySelector( 'li.branch-selected' ) ) || -1;
 
 		// placeholder elem
-		this.selPlaceholder = this.selEl.querySelector( 'span.cs-placeholder.jones_location_option' );
+		this.selPlaceholder = this.selEl.querySelector( 'span.branch-placeholder.jones_location_option' );
 
 		// init events
 		this._initEvents();
@@ -109,7 +109,7 @@
 			let	link        = '';
 
 			if ( el.selectedOption && ! this.foundSelected && ! this.hasDefaultPlaceholder ) {
-				classes            += 'cs-selected ';
+				classes            += 'branch-selected ';
 				this.foundSelected  = true;
 			}
 
@@ -143,8 +143,8 @@
 			if ( tag === 'option' ) {
 				options += createOptionHTML( el );
 			} else if ( tag === 'optgroup' ) {
-				// options += '<li class="cs-optgroup"><span>' + el.label + '</span><ul>';
-				options += `<li class="cs-optgroup"><span>${el.label}</span><ul>`;
+				// options += '<li class="branch-optgroup"><span>' + el.label + '</span><ul>';
+				options += `<li class="branch-optgroup"><span>${el.label}</span><ul>`;
 				// [].slice.call( el.children ).forEach( function( opt ) {
 				Array.prototype.slice.call( el.children ).forEach( function( opt ) {
 					options += createOptionHTML( opt );
@@ -153,12 +153,12 @@
 			}
 		});
 
-		// const optionsElement = '<div class="cs-options"><ul>' + options + '</ul></div>';
-		const optionsElement = `<div class="cs-options"><ul>${options}</ul></div>`;
+		// const optionsElement = '<div class="branch-options"><ul>' + options + '</ul></div>';
+		const optionsElement = `<div class="branch-options"><ul>${options}</ul></div>`;
 		this.selEl           = document.createElement( 'div' );
 		this.selEl.className = this.el.className;
 		this.selEl.tabIndex  = this.el.tabIndex;
-		this.selEl.innerHTML = `<span class="cs-placeholder jones_location_option">${this.selectedOption.textContent}</span>${optionsElement}`;
+		this.selEl.innerHTML = `<span class="branch-placeholder jones_location_option">${this.selectedOption.textContent}</span>${optionsElement}`;
 		this.el.parentNode.appendChild( this.selEl );
 		this.selEl.appendChild( this.el );
 	};
@@ -258,7 +258,7 @@
 			// remove focus class if any..
 			this._removeFocus();
 			// add class focus - track which option we are navigating
-			classie.add( this.selectOptions[ this.preSelCurrent ], 'cs-focus' );
+			classie.add( this.selectOptions[ this.preSelCurrent ], 'branch-focus' );
 		}
 	};
 
@@ -275,13 +275,13 @@
 				// update placeholder text
 				this.selPlaceholder.textContent = this.selectOptions[ this.current ].textContent;
 			}
-			classie.remove( this.selEl, 'cs-active' );
+			classie.remove( this.selEl, 'branch-active' );
 		} else {
 			if ( this.hasDefaultPlaceholder && this.options.stickyPlaceholder ) {
 				// everytime we open we wanna see the default placeholder text
 				this.selPlaceholder.textContent = this.selectedOption.textContent;
 			}
-			classie.add( this.selEl, 'cs-active' );
+			classie.add( this.selEl, 'branch-active' );
 		}
 	};
 
@@ -304,12 +304,12 @@
 		// change native select element´s value
 		this.el.value = opt.getAttribute( 'data-value' );
 
-		// remove class cs-selected from old selected option and add it to current selected option
-		const oldOpt = this.selEl.querySelector( 'li.cs-selected' );
+		// remove class branch-selected from old selected option and add it to current selected option
+		const oldOpt = this.selEl.querySelector( 'li.branch-selected' );
 		if ( oldOpt ) {
-			classie.remove( oldOpt, 'cs-selected' );
+			classie.remove( oldOpt, 'branch-selected' );
 		}
-		classie.add( opt, 'cs-selected' );
+		classie.add( opt, 'branch-selected' );
 
 		// if there´s a link defined
 		if ( opt.getAttribute( 'data-link' ) ) {
@@ -329,17 +329,17 @@
 	 * returns true if select element is opened
 	 */
 	SelectFx.prototype._isOpen = function( opt ) {
-		return this.selEl.classList.contains( 'cs-active' );
+		return this.selEl.classList.contains( 'branch-active' );
 	};
 
 	/**
 	 * removes the focus class from the option
 	 */
 	SelectFx.prototype._removeFocus = function( opt ) {
-		const focusElement = this.selEl.querySelector( 'li.cs-focus' );
+		const focusElement = this.selEl.querySelector( 'li.branch-focus' );
 		if ( focusElement ) {
-			// classie.remove( focusElement, 'cs-focus' );
-			focusElement.classList.remove( 'cs-focus' );
+			// classie.remove( focusElement, 'branch-focus' );
+			focusElement.classList.remove( 'branch-focus' );
 		}
 	};
 

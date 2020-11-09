@@ -8,7 +8,7 @@
 namespace WP_Rig\WP_Rig;
 
 
-$locations = wp_rig()->get_location_ids( 75, 72 );
+$locations = wp_rig()->get_location_ids( 75 );
 
 ?>
 <section id="svg_map_element" class="full-grid">

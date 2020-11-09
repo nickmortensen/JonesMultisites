@@ -1,6 +1,12 @@
 
 /*--------------------------------------------------------------
 # Footer
+# NOTE:
+# "\2714" = ✔
+# "\2713" = ✓
+# "\2706" = ✆
+# "\25BE" = ▾
+
 --------------------------------------------------------------*/
 a[href^="tel:"]::before {
 	content: "\2706";
@@ -8,50 +14,35 @@ a[href^="tel:"]::before {
 }
 
 #company-info {
-	padding-top: 2vw;
-	display: grid;
-	background: rgba(40, 80, 120, 0.7);
-	backdrop-filter: blur(140px);
-	grid-template-rows: 1.5vw, 1.5vw;
-	place-items: center center;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+
+	border-bottom: 2px solid #fff;
 
 	& span {
 		padding: 0.5vw 2vw;
-		font-size: clamp(20px, 2.2vw, 40px);
+		font-size: clamp(16px, 1.7vw, 40px);
 		font-family: var(--highlight-font-family);
 		align-self: start;
-
 		&:first-of-type {
 			font-size: clamp(28px, 4.4vw, 80px);
 			font-weight: var(--superbold);
-			align-self: end;
-			justify-self: start;
-			border-bottom: 2px solid var(--color-theme-white);
 			padding-bottom: 6px;
 		}
 	}
 }
 
-@media screen and (width > 780px ) {
+@media screen and (width > 800px ) {
 	#company-info {
-		grid-template-columns: 2fr 4fr;
-		grid-template-rows: 2.25vw, auto;
-		align-self: start;
+		flex-flow: row nowrap;
 		padding: 0.5vw 2vw;
 
 		& span {
-			grid-column: 2 / -1;
-			font-size: clamp(16px, 1.55vw, 50px);
-			font-family: var(--highlight-font-family);
-			align-self: center;
-
+			flex-grow: 5;
 			&:first-of-type {
-				border-bottom: 2px solid transparent;
-				grid-column: 1 / 1;
-				font-size: clamp(34px, 3.1vw, 60px);
-				font-weight: var(--superbold);
-				align-self: center;
-
+				flex-grow: 1;
+				font-size: clamp(34px, 5.5vw, 68px);
 			}
 		}
 	}
@@ -59,19 +50,16 @@ a[href^="tel:"]::before {
 
 
 footer {
+	position: relative;
 	margin-top: 140px;
 	grid-row: 10 / 12;
 	order: 3;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-template-rows: repeat(2, auto-fit);
-	height: 800px;
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 800px;
 
-	& #location_selector {
-		align-self: flex-end;
-	}
 
-	& .all_locations {
+	/* & .all_locations {
 		grid-column: 1 / -1;
 		display: flex;
 		flex-flow: column wrap;
@@ -85,7 +73,7 @@ footer {
 			margin: 5px 20px;
 			color: var(--text-color-dark-bg);
 		}
-	}
+	} */
 }
 
 /* Jonessign Branch Address as displayed in footer */
@@ -128,20 +116,17 @@ span[itemprop="streetAddress"] {
 	display: block;
 }
 
+/* select element inside of this div is replaced with ul > li using select_effects.js */
 #location_selector {
 	color: var(--text-color-dark-bg);
-	width: 100vw;
-	background: var(--color-theme-primary);
-	display: grid;
-	height: 12vw;
-	min-height: 50px;
-	grid-column: 1 / -1;
-	grid-template-columns: 2fr 6fr;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
 	align-items: center;
-	place-self: flex-end;
+	height: 12vw;
 
 	& .dropdown_container {
-		grid-column: 1 / 1;
+		margin: 0 auto;
 		min-width: 460px;
 	}
 
@@ -149,32 +134,586 @@ span[itemprop="streetAddress"] {
 		font-size: 1.4rem;
 		font-family: var(--highlight-font-family);
 	}
+} /* end #location_selector */
 
-	& #location_addresses {
-		grid-column: 2 / -1;
-		height: 100%;
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: center;
-		align-items: flex-start;
-		align-content: space-around;
-		color: var(--text-color-dark-bg);
+#location_addresses {
+	border: 2px solid var(--yellow-600);
+	background: var(--gray-400);
+	order: 2;
+	align-self: flex-end;
+	height: 100%;
+	width: 100%;
+}
+
+/* Default custom select styles */
+.branch-select {
+	order: 1;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	text-align: left;
+	z-index: 100;
+	width: 100%;
+	max-width: 500px;
+	-webkit-touch-callout: none;
+	user-select: none;
+
+	&:focus {
+		outline: solid; /* For better accessibility add a style for this in your skin */
 	}
 
-	& .cs_options {
-		background: var(--color-theme-primary);
+	& select {
+		display: none;
+	}
 
+	& span {
+		display: block;
+		position: relative;
+		cursor: pointer;
+		padding: 1em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	/* Placeholder and selected option */
+	& > span {
+		padding-right: 2.3em;
+	}
+
+	/* down arrow becomes an up arrow */
+	&.branch-active > span::after {
+		transform: translateY(-50%) rotate(180deg);
+		transition: transform 0.4s ease;
+	}
+
+	/* Options Box -- contains options
+	opens when the branch-select element has ".branch-active" added to it by clicking */
+
+	& .branch-options {
+		position: absolute;
+		overflow: hidden;
+		width: 100%;
+		background: var(--color-theme-primary);
+		color: var(--text-color-dark-bg);
+		visibility: hidden;
+		top: 87px;
+
+		/* To ensure that the box opens above the "choose option" prompt */
+		/* transform: translateY(-117%); */
+		/* transform: translateY(1%); */
+	}
+
+	& ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+
+		& span {
+			padding: 1em;
+		}
+
+		& li.branch-focus span {
+			background-color: var(--color-theme-white);
+			color: var(--color-theme-primary);
+		}
+	}
+
+	/* Options inside the select are converted to list items inside an unordered list by javascript */
+	&.branch-active .branch-options {
+		visibility: visible;
+	}
+
+	/* Optgroup and optgroup label */
+	& li.branch-optgroup ul {
+		padding-left: 1em;
+	}
+
+	& li.branch-optgroup > span {
+		cursor: default;
+	}
+
+} /* /.branch-select */
+
+
+.branch-select > span::after,
+.branch-select .branch-selected span::after {
+	speak: none;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	transition: transform 0.4s ease;
+}
+
+/* down arrow to the right of the "Choose" text*/
+
+.branch-select > span::after {
+	content: "\25BE"; /* ▾ */
+	right: 3.1em;
+	font-stretch: condensed;
+}
+
+.branch-select > span.branch-placeholder::after {
+	content: "\25BE"; /* ▾ */
+	right: 3.1em;
+	font-stretch: condensed;
+}
+
+/**
+ * Checkmark to indicate which location has been previously chosen
+ * appears in open dropdown when a location has already been picked
+ */
+
+.branch-select .branch-selected span::after {
+	content: "\2713"; /* ✓ */
+	margin-left: 1em;
+	transition: transform 0.4s ease;
+}
+
+.branch-active {
+	z-index: 200;
+
+	& > ul > li:hover {
+		background: var(--yellow-600);
+		transition: all 0.2s;
 	}
 }
 
-/* Rules apply only when page is in a window 48rem - 672 px or larger */
+/* end branch-select baseline */
 
-@media screen and (width > 672px) {
-	footer {
+/* CS SKIN BORDER NO ICOMOON -- USES UNICODE ENTITIES INSTEAD */
+
+/* Just the box initially */
+
+.preferred-border {
+	background-color: rgba(255, 255, 255, 0.2); /* very faint white */
+	max-width: 600px;
+
+	/* Choose a location OR the chosen location */
+	& > span {
+		border: 5px solid #000;
+		border-color: inherit;
+		transition: background-color 0.2s, border-color 0.2s;
+	}
+
+	& ul span::after {
+		content: "";
+		opacity: 0;
+	}
+
+	/* When selected a location will be followed by a checkmark to indicate so - because the words in the box will revert to "Choose"*/
+
+	& .branch-selected span::after {
+		content: "\2714"; /* ✔ */
+		color: var(--color-theme-white);
+		font-size: 1.5em;
+		opacity: 1;
+		transition: opacity 0.2s;
+	}
+
+	& .branch-selected.branch-focus > span::after {
+		color: var(--color-theme-primary);
+		transition: all 0.2s;
+	}
+
+	& .branch-options {
+		letter-spacing: 1px;
+		color: var(--color-theme-white);
+		font-size: 1.15em;
+		opacity: 0;
+		transition: opacity 0.2s, visibility 0s 0.2s;
+	}
+
+	/* these are the options shown in the dropdown */
+	& ul span {
+		padding: 0.4em;
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+	}
+
+	/* the options on hover change color and background color */
+	& li.branch-focus span, {
+		background: var(--color-theme-white);
+		color: var(--color-theme-primary);
+		transition: all 0.2s;
+	}
+
+} /* /.preferred-border */
+
+@media screen and (width < 420px ) {
+	div.preferred-border {
 		font-size: inherit;
 	}
 }
 
+/* after "Choose Nearest Location" */
+.branch-placeholder::after {
+	content: "\2193"; /* ↓ */
+
+}
+
+.preferred-border > span::after,
+.preferred-border .branch-selected span::after {
+	content: "\2714"; /* ↓ */
+}
+
+/* default choice of label -- always appears */
+.preferred-border.branch-active > span {
+	background: var(--color-theme-primary);
+	background: trasnsparent;
+	border-color: var(--text-color-dark-bg);
+	color: var(--text-color-dark-bg);
+}
+
+/* overall box that holds the options in the dropdown */
+.preferred-border.branch-active .branch-options {
+	opacity: 1;
+	-webkit-transition: opacity 0.2s;
+	transition: opacity 0.2s;
+}
+
+/* END CS SKIN BORDER NO ICOMOON */
+
+
+/*--------------------------------------------------------------
+SVG LOCATIONS MAP
+--------------------------------------------------------------*/
+
+address > a[href^="tel:"] {
+	color: var(--color-theme-black);
+	display: block;
+	text-decoration: none;
+
+	&::before {
+		content: "\2706";
+		margin-right: 0.5em;
+	}
+}
+
+#svg_map_element {
+	min-height: 800px;
+}
+
+#jones_locations_svg_map_container {
+	--state-fill: var(--color-theme-primary);
+	--state-stroke: var(--blue-500);
+	--state-stroke-width: 2;
+	--address-font-size: 1.1rem;
+	--animation-duration: 10s;
+	--marker-color: var(--yellow-600);
+	--width: 90%;
+	background-color: transparent;
+	color: var(--color-theme-white);
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: var(--width);
+	max-width: 740px;
+	transform: translate(-50%, -50%);
+
+	& > div:not(.map) {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: flex-start;
+		align-items: center;
+
+		& > h2,
+		& > h3 {
+			color: inherit;
+		}
+	}
+
+	& svg {
+		height: auto;
+		max-width: 100%;
+
+		& .state {
+			fill: var(--state-fill);
+			stroke: var(--state-stroke);
+			stroke-width: var(--state-stroke-width);
+		}
+	}
+
+	& .map {
+		margin-top: 3em;
+		position: relative;
+	}
+
+	& .map-markers {
+		--marker-left: 63.5%;
+		--marker-top: 22%;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+
+		& .grb,
+		& .nat {
+
+			left: var(--marker-left);
+			top: var(--marker-top);
+			&::after {
+				animation-delay: 2s;
+			}
+		}
+
+		& .msp {
+			--marker-left: 55%;
+			--marker-top: 20%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 2.5s;
+			}
+		}
+
+		& .tpa {
+			--marker-left: 79%;
+			--marker-top: 86%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 3s;
+			}
+		}
+
+		& .mia {
+			--marker-left: 85%;
+			--marker-top: 91%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 3.5s;
+			}
+		}
+
+		& .rno {
+			--marker-left: 7%;
+			--marker-top: 36%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 4s;
+			}
+		}
+
+		& .las {
+			--marker-left: 14%;
+			--marker-top: 54%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 4.5s;
+			}
+		}
+
+		& .phl {
+			--marker-left: 89%;
+			--marker-top: 35%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 5s;
+			}
+		}
+
+		& .lax {
+			--marker-left: 6%;
+			--marker-top: 56%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 5.5s;
+			}
+		}
+
+		& .san {
+			--marker-left: 7%;
+			--marker-top: 62%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 6s;
+			}
+
+		}
+
+		& .mxt {
+			--marker-left: 9%;
+			--marker-top: 65%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 6.5s;
+			}
+		}
+
+		& .mxz {
+			--marker-left: 29%;
+			--marker-top: 72%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 7s;
+			}
+		}
+
+		& .ric {
+			--marker-left: 84%;
+			--marker-top: 45%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 7.5s;
+			}
+		}
+
+		& .vab {
+			--marker-left: 88%;
+			--marker-top: 48%;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: 8s;
+			}
+		}
+	} /* /map-markers */
+
+	& .map-marker {
+		position: absolute;
+
+		&::after {
+			animation-duration: var(--animation-duration, 10s);
+			animation-iteration-count: infinite;
+			animation-name: pop;
+			border-radius: 50%;
+			border: 1px solid var(--marker-color);
+			content: "";
+			height: 2em;
+			left: 0;
+			margin: -0.5em 0 0 -0.5em;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			width: 2em;
+		}
+
+		& a[href="#"] {
+			background-color: var(--marker-color);
+			border-radius: 50%;
+			height: 1em;
+			display: block;
+			text-indent: -9999px;
+			width: 1em;
+		}
+	}
+
+	/* & .map-marker:hover .map-marker-info {
+		display: block;
+		display: flex;
+	} */
+
+}
+
+
+.map-marker-info {
+	/* display: none; */
+	left: 50%;
+	position: absolute;
+	bottom: 0;
+	transform: translate(-50%, -2em);
+	width: 20em;
+	z-index: 999;
+
+	& div.heading {
+		background-color: var(--color-theme-primary);
+		border-radius: 0.5em 0.5em 0 0;
+
+		& > h2 {
+			color: var(--color-theme-white);
+			margin-bottom: 0;
+			padding: 0 1em;
+			letter-spacing: 1px;
+		}
+	}
+
+	& main {
+		background-color: var(--color-theme-white);
+		border: 1px solid var(--color-theme-white);
+		border-radius: 0 0 0.5em 0.5em;
+		color: var(--global-text-color);
+		padding: 0.5em 1em;
+	}
+
+}
+
+.map-marker-info-inner {
+	border-radius: 0.5em;
+	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.3);
+	font-size: 0.875em;
+
+	&::after {
+		border-left: 0.75em solid transparent;
+		border-right: 0.75em solid transparent;
+		border-top: 1em solid var(--color-theme-white);
+		content: "";
+		height: 0;
+		left: 50%;
+		position: absolute;
+
+		/* top: 99% gets rid of the 1px gap while animating that was driving me nuts */
+		top: 99%;
+		transform: translateX(-50%);
+		width: 0;
+	}
+
+	& address {
+		color: inherit;
+
+		& > span {
+			font-size: 0.9rem;
+
+			&:first-of-type {
+				display: block;
+			}
+		}
+	}
+
+}
+
+.animate {
+	animation-duration: 1s;
+	animation-fill-mode: both;
+}
+
+.animate-bounce-in {
+	animation-duration: 4.75s;
+	animation-name: bounce-in;
+}
+
+.animate-pop {
+	animation-duration: 6s;
+	animation-name: pop;
+}
+
+/*--------------------------------------------------------------
+SVG LOCATIONS MAP
+--------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
 END Footer
