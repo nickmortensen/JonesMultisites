@@ -1,0 +1,980 @@
+/* Default custom select styles */
+#location-select {
+	background: transparent;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	text-align: left;
+	z-index: 100;
+	width: 100%;
+	max-width: 500px;
+
+
+	&:focus {
+		outline: solid; /* For better accessibility add a style for this in your skin */
+	}
+} /* \location-select */
+
+
+.location-select {
+	color: inherit;
+
+	& select { /* don't show the select, but don't hide it from screen readers */
+		display: none;
+	}
+
+	& span {
+		display: block;
+		position: relative;
+		cursor: pointer;
+		padding: 1em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	/* Placeholder and selected option */
+	& > span {
+		padding-right: 2.3em;
+
+		/* down arrow to the right of the "Choose" text*/
+		&::after {
+			content: "\25BE"; /* ▾ */
+			right: 3.1em;
+			font-stretch: condensed;
+			speak: none;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			transition: transform 0.4s ease;
+		}
+	}
+
+	/* down arrow becomes an up arrow */
+	&.location-active > span::after {
+		-webkit-transform: translateY(-50%) rotate(180deg);
+		transform: translateY(-50%) rotate(180deg);
+	}
+
+	/* Options Box -- contains options
+	opens when the cs-select element has ".location-active" added to it by clicking */
+	& .location-options {
+		position: absolute;
+		overflow: hidden;
+		width: 100%;
+		visibility: hidden;
+		background: var(--color-theme-primary);
+		color: var(--text-color-dark-bg);
+
+		/* To ensure that the box opens above the "choose option" prompt */
+		transform: translateY(-117%);
+	}
+
+	& ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+
+		& span {
+			padding: 1em;
+		}
+
+		& li.location-focus span {
+			background-color: #ddd;
+		}
+	}
+
+	/* Optgroup and optgroup label */
+	& li.location-optgroup ul {
+		padding-left: 1em;
+	}
+
+	& li.location-optgroup > span {
+		cursor: default;
+	}
+
+	/* Checkmark to indicate which location has been previously chosen */
+
+	& .location-selected span::after {
+		content: "\2713"; /* ✓ */
+		margin-left: 1em;
+		transition: transform 0.4s ease;
+	}
+
+} /* \.location-select */
+
+.location-selected {
+	color: inherit;
+
+	& span {
+		color: inherit;
+
+		&::after {
+			speak: none;
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			transition: transform 0.4s ease;
+		}
+	}
+}/* \.location-selected */
+
+	/* Options inside the select are converted to list items inside an unordered list by javascript */
+.location-active {
+	z-index: 200;
+
+	& .location-options {
+		visibility: visible;
+
+		/* background-blend-mode: difference; */
+	}
+
+} /* \.location-active */
+
+
+/* ========================================================
+==== SKIN BOXES NO ICOMOON -- USES UNICODE ENTITIES INSTEAD
+==========================================================*/
+
+div.skin-boxes {
+	background: transparent;
+	font-size: 1.25em;
+	font-weight: 700;
+	max-width: 300px;
+	z-index: 2000;
+	color: var(--gray-900);
+
+	& > span {
+		background: var(--color-theme-white);
+		border: 4px solid var(--gray-900);
+	}
+
+	& > span::after,
+	&.location-active > span::after {
+		top: auto;
+		transform: none;
+		content: "\256b"; /* ╫ */
+	}
+
+	& .location-options {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		overflow: auto;
+		background: var(--yellow-200);
+		font-size: 75%;
+		opacity: 0;
+		transition: opacity 0.3s, visibility 0s 0.3s;
+	}
+
+	&.location-active .location-options {
+		opacity: 1;
+		transition: opacity 0.3s;
+	}
+
+	& .location-options ul {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		padding: 10px;
+	}
+
+	& .location-options li {
+		width: 20%;
+		height: 25%;
+		float: left;
+		position: relative;
+		cursor: pointer;
+		border-radius: 16px;
+		overflow: hidden;
+		opacity: 0;
+		border: 10px solid transparent;
+		background-clip: padding-box;
+		transform: scale3d(0.8, 0.8, 1);
+		box-shadow: inset 0 -6em 0 -2em var(--color-theme-white);
+		transition: transform 0.3s, opacity 0.3s;
+	}
+} /* \skin-boxes */
+
+@media screen and (width < 420px) {
+	div.skin-boxes {
+		font-size: 1em;
+
+		& .location-options li {
+			box-shadow: none;
+			border-width: 3px;
+			border-radius: 8px;
+		}
+	}
+}
+
+
+.skin-boxes.location-active .location-options li {
+	opacity: 1;
+	-webkit-transform: scale3d(1, 1, 1);
+	transform: scale3d(1, 1, 1);
+
+	&:nth-child(2) {
+		-webkit-transition-delay: 0.01s;
+		transition-delay: 0.01s;
+	}
+
+	&:nth-child(3) {
+		-webkit-transition-delay: 0.02s;
+		transition-delay: 0.02s;
+	}
+
+	&:nth-child(4) {
+		-webkit-transition-delay: 0.03s;
+		transition-delay: 0.03s;
+	}
+
+	&:nth-child(5) {
+		-webkit-transition-delay: 0.04s;
+		transition-delay: 0.04s;
+	}
+
+	&:nth-child(6) {
+		-webkit-transition-delay: 0.05s;
+		transition-delay: 0.05s;
+	}
+
+	&:nth-child(7) {
+		-webkit-transition-delay: 0.06s;
+		transition-delay: 0.06s;
+	}
+
+	&:nth-child(8) {
+		-webkit-transition-delay: 0.07s;
+		transition-delay: 0.07s;
+	}
+
+	&:nth-child(9) {
+		-webkit-transition-delay: 0.08s;
+		transition-delay: 0.08s;
+	}
+
+	&:nth-child(10) {
+		-webkit-transition-delay: 0.09s;
+		transition-delay: 0.09s;
+	}
+
+	&:nth-child(11) {
+		-webkit-transition-delay: 0.1s;
+		transition-delay: 0.1s;
+	}
+
+	&:nth-child(12) {
+		-webkit-transition-delay: 0.11s;
+		transition-delay: 0.11s;
+	}
+
+	&:nth-child(13) {
+		-webkit-transition-delay: 0.12s;
+		transition-delay: 0.12s;
+	}
+
+	&:nth-child(14) {
+		-webkit-transition-delay: 0.13s;
+		transition-delay: 0.13s;
+	}
+
+	&:nth-child(15) {
+		-webkit-transition-delay: 0.14s;
+		transition-delay: 0.14s;
+	}
+
+	&:nth-child(16) {
+		-webkit-transition-delay: 0.15s;
+		transition-delay: 0.15s;
+	}
+
+	&:nth-child(17) {
+		-webkit-transition-delay: 0.16s;
+		transition-delay: 0.16s;
+	}
+
+	&:nth-child(18) {
+		-webkit-transition-delay: 0.17s;
+		transition-delay: 0.17s;
+	}
+
+	&:nth-child(19) {
+		-webkit-transition-delay: 0.18s;
+		transition-delay: 0.18s;
+	}
+
+	&:nth-child(20) {
+		-webkit-transition-delay: 0.19s;
+		transition-delay: 0.19s;
+	}
+
+	&.location-selected::after {
+		content: "\2714";
+		color: var(--color-theme-white);
+		position: absolute;
+		font-size: 2em;
+		top: 50%;
+		left: 50%;
+		transform: translate3d(-50%, -50%, 0) translate3d(0, -1em, 0);
+	}
+
+	&.location-selected span::after {
+		content: "";
+	}
+} /* \.skin-boxes.location-active .location-options li */
+
+@media screen and (width < 420px) {
+	.skin-boxes .location-options li.location-selected::after {
+		-webkit-transform: translate3d(-50%, -50%, 0);
+		transform: translate3d(-50%, -50%, 0);
+	}
+}
+.skin-boxes .location-options li {
+	color: inherit;
+
+	&.color-588c75 {
+		background-color: #588c75;
+	}
+
+	&.color-b0c47f {
+		background-color: #b0c47f;
+	}
+
+	&.color-f3e395 {
+		background-color: #f3e395;
+	}
+
+	&.color-f3ae73 {
+		background-color: #f3ae73;
+	}
+
+	&.color-da645a {
+		background-color: #da645a;
+	}
+
+	&.color-79a38f {
+		background-color: #79a38f;
+	}
+
+	&.color-c1d099 {
+		background-color: #c1d099;
+	}
+
+	&.color-f5eaaa {
+		background-color: #f5eaaa;
+	}
+
+	&.color-f5be8f {
+		background-color: #f5be8f;
+	}
+
+	&.color-e1837b {
+		background-color: #e1837b;
+	}
+
+	&.color-9bbaab {
+		background-color: #9bbaab;
+	}
+
+	&.color-d1dcb2 {
+		background-color: #d1dcb2;
+	}
+
+	&.color-f9eec0 {
+		background-color: #f9eec0;
+	}
+
+	&.color-f7cda9 {
+		background-color: #f7cda9;
+	}
+
+	&.color-e8a19b {
+		background-color: #e8a19b;
+	}
+
+	&.color-bdd1c8 {
+		background-color: #bdd1c8;
+	}
+
+	&.color-e1e7cd {
+		background-color: #e1e7cd;
+	}
+
+	&.color-faf4d4 {
+		background-color: #faf4d4;
+	}
+
+	&.color-fbdfc9 {
+		background-color: #fbdfc9;
+	}
+
+	&.color-f1c1bd {
+		background-color: #f1c1bd;
+	}
+} /* \.skin-boxes .location-options li */
+
+.skin-boxes .location-options span {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	line-height: 2;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+}
+
+@media screen and (width < 420px) {
+	.skin-boxes .location-options span {
+		display: none;
+	}
+}
+
+.skin-boxes .location-options li span:hover,
+.skin-boxes li.location-focus span,
+.skin-boxes li.location-selected span {
+	color: var(--gray-900);
+}
+
+/* END SKIN COLOR BOXES NO ICOMOON */
+
+/* ==========================================================
+ SKIN UNDERLINE NO ICOMOON  - USES UNICODE CHARACTERS INSTEAD
+ ============================================================*/
+
+div.skin-underline {
+	background: transparent;
+	font-size: 1.8em;
+	max-width: 400px;
+
+	& > span {
+		padding: 0.5em 3em 0.5em 0.5em;
+		border-bottom: 3px solid #000;
+		border-color: inherit;
+		font-weight: var(--semibold);
+
+		&::after {
+			content: "\002b";
+			right: 0.25em;
+			transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 45deg);
+			transition: transform 0.5s;
+		}
+	}
+
+	&.location-active > span::after {
+		transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 270deg);
+	}
+
+	& .location-options {
+		background: #bbc7c8;
+		opacity: 0;
+		transition: opacity 0.3s 0.4s, visibility 0s 0.7s;
+	}
+
+	&.location-active .location-options {
+		opacity: 1;
+		transition: opacity 0.3s;
+	}
+
+	& ul span {
+		position: relative;
+		text-transform: uppercase;
+		font-size: 66%;
+		font-weight: 700;
+		letter-spacing: 1px;
+		padding: 1.2em 0.8em;
+		opacity: 0;
+		transform: translate3d(100%, 0, 0);
+		transition: opacity 0.3s, transform 0.3s;
+	}
+
+} /* \.skin-underline */
+
+@media screen and (width < 420px) {
+	div.skin-underline {
+		font-size: 1.2em;
+	}
+}
+
+.cs-select ul span::after {
+	content: "";
+	opacity: 0;
+}
+
+.cs-select .location-selected span::after {
+	content: "\2714";
+	opacity: 1;
+	transition: opacity 0.3s 0.7s;
+}
+
+.skin-underline ul span::before {
+	content: "";
+	position: absolute;
+	bottom: 1px;
+	left: 0;
+	height: 3px;
+	width: 100%;
+	background-color: var(--color-theme-white);
+	transform: translate3d(200%, 0, 0);
+	transition: transform 0.3s;
+}
+
+.skin-underline.location-active ul span,
+.skin-underline.location-active ul span::before {
+	opacity: 1;
+	transform: translate3d(0, 0, 0);
+}
+
+.skin-underline li:nth-child(5) span,
+.skin-underline li:nth-child(5) span::before,
+.skin-underline.location-active li:first-child span,
+.skin-underline.location-active li:first-child span::before {
+	transition-delay: 0s;
+}
+
+.skin-underline li:nth-child(4) span,
+.skin-underline li:nth-child(4) span::before,
+.skin-underline.location-active li:nth-child(2) span,
+.skin-underline.location-active li:nth-child(2) span::before {
+	transition-delay: 0.05s;
+}
+
+.skin-underline li:nth-child(3) span,
+.skin-underline li:nth-child(3) span::before {
+	transition-delay: 0.1s;
+}
+
+.skin-underline li:nth-child(2) span,
+.skin-underline li:nth-child(2) span::before,
+.skin-underline.location-active li:nth-child(4) span,
+.skin-underline.location-active li:nth-child(4) span::before {
+	transition-delay: 0.15s;
+}
+
+.skin-underline li:first-child span,
+.skin-underline li:first-child span::before,
+.skin-underline.location-active li:nth-child(5) span,
+.skin-underline.location-active li:nth-child(5) span::before {
+	transition-delay: 0.2s;
+} /* more items require more delay declarations */
+
+.skin-underline .location-options li span:hover,
+.skin-underline .location-options li.location-focus span,
+.skin-underline li.location-selected span {
+	color: #566473;
+	background: transparent;
+}
+
+/* END SKIN UNDERLINE NO ICOMOON */
+
+/* SKIN ELASTIC NO ICOMOON */
+
+div.skin-elastic {
+	background: transparent;
+	font-size: 1.5em;
+	font-weight: 700;
+	color: #5b8583;
+}
+
+@media screen and (width < 420px) {
+	div.skin-elastic {
+		font-size: 1em;
+	}
+}
+
+.skin-elastic > span {
+	background-color: var(--color-theme-white);
+	z-index: 100;
+
+	&::after {
+		content: "\25bc";
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+	}
+}
+
+.skin-elastic .location-options {
+	overflow: visible;
+	background: transparent;
+	opacity: 1;
+	visibility: visible;
+	padding-bottom: 1.25em;
+	pointer-events: none;
+}
+
+.skin-elastic.location-active .location-options {
+	pointer-events: auto;
+}
+
+.skin-elastic .location-options > ul::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	transform: scale3d(1, 0, 1);
+	background: var(--color-theme-white);
+	transform-origin: 50% 0%;
+	transition: transform 0.3s;
+}
+
+.skin-elastic.location-active .location-options > ul::before {
+	transform: scale3d(1, 1, 1);
+	transition: none;
+	animation: expand 0.6s ease-out;
+}
+
+.skin-elastic .location-options ul li {
+	opacity: 0;
+	transform: translate3d(0, -25px, 0);
+	transition: opacity 0.15s, transform 0.15s;
+}
+
+.skin-elastic.location-active .location-options ul li {
+	transform: translate3d(0, 0, 0);
+	opacity: 1;
+	transition: none;
+	animation: bounce 0.6s ease-out;
+}
+
+/* Optional delays (problematic in IE 11/Win) */
+/*
+.skin-elastic.location-active .location-options ul li:first-child {
+	-webkit-animation-delay: 0.1s;
+	animation-delay: 0.1s;
+}
+
+.skin-elastic.location-active .location-options ul li:nth-child(2) {
+	-webkit-animation-delay: 0.15s;
+	animation-delay: 0.15s;
+}
+
+.skin-elastic.location-active .location-options ul li:nth-child(3) {
+	-webkit-animation-delay: 0.2s;
+	animation-delay: 0.2s;
+}
+
+.skin-elastic.location-active .location-options ul li:nth-child(4) {
+	-webkit-animation-delay: 0.25s;
+	animation-delay: 0.25s;
+}
+
+/* with more items, more delays declarations are needed */
+
+
+.skin-elastic .location-options span {
+	background-repeat: no-repeat;
+	background-position: 1.5em 50%;
+	background-size: 2em auto;
+	padding: 0.8em 1em 0.8em 4em;
+}
+
+.skin-elastic .location-options span:hover,
+.skin-elastic .location-options li.location-focus span,
+.skin-elastic .location-options .location-selected span {
+	color: #1e4c4a;
+}
+
+.skin-elastic .location-options .location-selected span::after {
+	content: "";
+}
+
+@keyframes expand {
+	0% {
+		transform: scale3d(1, 0, 1);
+	}
+	25% {
+		transform: scale3d(1, 1.2, 1);
+	}
+	50% {
+		transform: scale3d(1, 0.85, 1);
+	}
+	75% {
+		transform: scale3d(1, 1.05, 1);
+	}
+	100% {
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@keyframes bounce {
+	0% {
+		transform: translate3d(0, -25px, 0);
+		opacity: 0;
+	}
+	25% {
+		transform: translate3d(0, 10px, 0);
+	}
+	50% {
+		transform: translate3d(0, -6px, 0);
+	}
+	75% {
+		transform: translate3d(0, 2px, 0);
+	}
+	100% {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+}
+
+/* END SKIN ELASTIC NO ICOMOON */
+
+/* SKIN SLIDE NO ICOMOON */
+div.skin-slide {
+	color: var(--color-theme-white);
+	font-size: 1.5em;
+	width: 300px;
+}
+
+@media screen and (width < 420px) {
+	div.skin-slide {
+		font-size: 1em;
+		width: 250px;
+	}
+}
+
+div.skin-slide::before {
+	content: "";
+	background: #282b30;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	backface-visibility: hidden;
+	transition: transform 0.3s;
+}
+
+.skin-slide.location-active::before {
+	transform: scale3d(1.1, 3.5, 1);
+}
+
+.skin-slide > span {
+	height: 80px;
+	line-height: 2.4;
+	transition: text-indent 0.3s, opacity 0.3s;
+}
+
+@media screen and (width < 420px) {
+	.skin-slide > span {
+		height: 60px;
+		line-height: 2;
+	}
+}
+
+.skin-slide.location-active > span {
+	text-indent: -290px;
+	opacity: 0;
+}
+
+.skin-slide > span::after,
+.skin-slide.location-active > span::after {
+
+	content: "\0084";
+	color: #eb7e7f;
+	backface-visibility: hidden;
+}
+
+.skin-slide.location-active > span::after {
+	transform: translate3d(0, -50%, 0);
+}
+
+.skin-slide .location-options {
+	background: transparent;
+	width: 70%;
+	height: 400%;
+	padding: 1.9em 0;
+	top: 50%;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
+}
+
+@media screen and (width < 420px) {
+	.skin-slide .location-options {
+		padding-top: 3em;
+	}
+}
+
+.skin-slide .location-options li {
+	opacity: 0;
+	transform: translate3d(30%, 0, 0);
+	transition: transform 0.3s, opacity 0.3s;
+}
+
+.skin-slide.location-active .location-options li {
+	transform: translate3d(0, 0, 0);
+	opacity: 1;
+}
+
+.skin-slide.location-active .location-options li:first-child {
+	transition-delay: 0.05s;
+}
+
+.skin-slide.location-active .location-options li:nth-child(2) {
+	transition-delay: 0.1s;
+}
+
+.skin-slide.location-active .location-options li:nth-child(3) {
+	transition-delay: 0.15s;
+}
+
+.skin-slide.location-active .location-options li:nth-child(4) {
+	transition-delay: 0.2s;
+}
+
+.skin-slide.location-active .location-options li:nth-child(5) {
+	transition-delay: 0.25s;
+} /* more options need more delay declaration */
+
+.skin-slide .location-options li span {
+	text-transform: uppercase;
+	font-weight: 500;
+	letter-spacing: 2px;
+	font-size: 65%;
+	padding: 0.8em 1em 0.8em 2.5em;
+}
+
+.skin-slide .location-options li span:hover,
+.skin-slide .location-options li.location-focus span,
+.skin-slide .location-options li.location-selected span {
+	color: #eb7e7f;
+	background: transparent;
+}
+
+.skin-slide .location-selected span::after {
+	content: "";
+}
+
+/* END SKIN SLIDE NO ICOMOON */
+
+/* SKIN ROTATE NO ICOMOON */
+
+
+div.skin-rotate {
+	background: transparent;
+	font-size: 1.5em;
+	font-weight: 700;
+	width: 300px;
+	perspective: 1000px;
+}
+
+@media screen and (width < 420px) {
+	div.skin-rotate {
+		font-size: 1em;
+		width: 200px;
+	}
+}
+
+.skin-rotate > span,
+.skin-rotate .location-options li {
+	background: transparent;
+	transform-origin: 50% 50% -200px;
+	backface-visibility: hidden;
+	transform-style: preserve-3d;
+	transition: transform 0.3s, opacity 0.3s;
+}
+
+@media screen and (width < 420px) {
+	.skin-rotate > span,
+	.skin-rotate .location-options li {
+		color: inherit;
+	}
+}
+
+.skin-rotate > span {
+	border: 1px dashed #c0c6c4;
+}
+
+.skin-rotate.location-active > span {
+	opacity: 0;
+	transform: rotate3d(0, 1, 0, -90deg);
+}
+
+.skin-rotate > span::after,
+.skin-rotate .location-selected span::after {
+	color: inherit;
+}
+
+.skin-rotate > span::after,
+.skin-rotate.location-active > span::after {
+	content: "\00BB";
+	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, -90deg);
+}
+
+.skin-rotate ul span::after {
+	content: "";
+	opacity: 0;
+}
+
+.skin-rotate .location-selected span::after {
+	content: "\2713";
+	font-size: 1.5em;
+	opacity: 0.5;
+	-webkit-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+
+.skin-rotate .location-options {
+	background: transparent;
+	top: 0;
+	overflow: visible;
+	visibility: visible;
+	pointer-events: none;
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.skin-rotate .location-options ul {
+	transform-style: preserve-3d;
+}
+
+.skin-rotate .location-options li {
+	opacity: 0;
+	transform: rotate3d(0, 1, 0, 90deg);
+}
+
+.skin-rotate.location-active .location-options li {
+	opacity: 1;
+	transform: rotate3d(0, 1, 0, 0deg);
+	pointer-events: auto;
+}
+
+.skin-rotate .location-options li:nth-child(2) {
+	transition-delay: 0.05s;
+}
+
+.skin-rotate .location-options li:nth-child(3) {
+	transition-delay: 0.1s;
+}
+
+.skin-rotate .location-options li:nth-child(4) {
+	transition-delay: 0.15s;
+}
+
+.skin-rotate .location-options li:nth-child(5) {
+	transition-delay: 0.2s;
+}
+
+.skin-rotate.location-active .location-options ul li {
+	transform: translate3d(0, 0, 0);
+}
+
+.skin-rotate .location-options li span {
+	padding: 1em 0;
+}
+
+.skin-rotate .location-options li span:hover,
+.skin-rotate .location-options li.location-focus span,
+.skin-rotate .location-selected span {
+	opacity: 0.8;
+	background: transparent;
+}
+
+/* END SKIN ROTATE NO ICOMOON */

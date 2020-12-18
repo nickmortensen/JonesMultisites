@@ -54,3 +54,18 @@
 		transform: scale(1);
 	}
 }
+
+.animate {
+	animation-duration: 1s;
+	animation-fill-mode: both;
+}
+
+.animate-bounce-in {
+	animation-duration: 4.75s;
+	animation-name: bounce-in;
+}
+
+.animate-pop {
+	animation-duration: 6s;
+	animation-name: pop;
+}

@@ -31,7 +31,7 @@ html {
 
 
 body {
-	background: var(--bg-body-color, #fff);
+	background: var(--body-bg-color);
 	margin: 0;
 }
 
@@ -41,7 +41,7 @@ body {
  * 2. Show the overflow in Edge and IE.
  */
 hr {
-	background-color: var(--gray-300);
+	background-color: var(--hr-color);
 	border: 0;
 	height: 1px;
 	margin-bottom: 1.5em;
@@ -70,7 +70,7 @@ li > ol {
 }
 
 dt {
-	font-weight: 700;
+	font-weight: var(--bold);
 }
 
 dd {

@@ -17,26 +17,33 @@
 # Infinite scroll
 --------------------------------------------------------------*/
 
-/*--------------------------------------------------------------
+/*---------------------------------------------------- ----------
 # Imports
 --------------------------------------------------------------*/
+/* stylelint-disable at-rule-empty-line-before */
 @import "_custom-properties.css";
 @import "_custom-selectors.css";
+@import "_reset.css";
 @import "_keyframes.css";
 @import "_accessibility.css";
 @import "_header.css";
 @import "_forms.css";
-@import "_reset.css";
 @import "_typography.css";
 @import "_elements.css";
 @import "_links.css";
 @import "_flex.css";
-@import "_funky-select.css";
 @import "_footer.css";
+
+/* @import "_select.css"; */
 
 /*--------------------------------------------------------------
 # Utility
 --------------------------------------------------------------*/
+
+/* unicode icon for phone */
+span[itemprop="streetAddress"] {
+	display: block;
+}
 
 /* NOTE THAT THIS WILL STILL BE SEEN BY SCREEN READERS & Will take up whitespace */
 .hide,
@@ -50,46 +57,49 @@
 	display: none;
 }
 
+.light-text {
+	color: var(--color-theme-white);
+
+	& :--heading,
+	& span {
+		color: var(--color-theme-white);
+	}
+}
+
 /*--------------------------------------------------------------
 # Layouts
 --------------------------------------------------------------*/
 
 .site {
 	margin: 0;
-	max-width: 100%;
+	display: grid;
+	grid-template-columns: 3fr 9fr;
+	grid-template-rows: 1fr 8fr 3fr;
 }
 
-
-@media screen and (width > 840px) {
-
-	.has-sidebar .site {
-		margin: 0 1em;
-		display: grid;
-		grid-template-columns: 3fr 1fr;
-		grid-gap: 2rem;
-		justify-content: center;
-	}
-
-	.site-header {
-		grid-column: span 2;
-	}
-
-	.site-main {
-		grid-column: 1;
-		min-width: 0;
-	}
-
-	.primary-sidebar {
-		grid-column: 2;
-		min-width: 0;
-	}
-
-	.site-footer {
-		grid-column: span 2;
-	}
+.site-header,
+.site-main,
+main,
+.site-footer {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-column: 1 / -1;
 }
 
+.site-header {
+	order: 1;
+	grid-row: 1 / 2;
+}
 
+.site-main {
+	order: 2;
+	grid-row: 2 / 10;
+}
+
+.site-footer {
+	order: 3;
+	grid-row: 10 / 12;
+}
 
 /* Drag indicator for flickity */
 .drag-svg {
@@ -143,7 +153,7 @@ were hidden (via .neverending) before. */
 	font-stretch: condensed;
 }
 
-@media screen and (width > 672px) {
+@media screen and (width > 768px) {
 
 	.site-main .comment-navigation,
 	.site-main .posts-navigation,

@@ -10,6 +10,8 @@
 .screen-reader-text {
 	clip: rect(1px, 1px, 1px, 1px);
 	position: absolute !important;
+	bottom: 0;
+	left: 0;
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
@@ -17,11 +19,11 @@
 }
 
 .screen-reader-text:focus {
-	background-color: #f1f1f1;
+	background-color: var(--gray-200);
 	border-radius: 3px;
 	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
 	clip: auto !important;
-	color: #21759b;
+	color: var(--teal-800);
 	display: block;
 	font-size: 0.875rem;
 	font-weight: 700;

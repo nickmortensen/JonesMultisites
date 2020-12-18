@@ -40,7 +40,7 @@ namespace WP_Rig\WP_Rig;
 		let locationSelect = document.querySelector('.cs-select');
 		console.log( `Replace this class: ${replaceThisClass} with this new class: ${newClass}` );
 		locationSelect.classList.replace(replaceThisClass, newClass);
-	// initialClass = newClass;
+	initialClass = newClass;
 	} );
 
 </script>

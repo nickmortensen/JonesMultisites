@@ -40,7 +40,6 @@ class Component implements Component_Interface {
 		add_filter( 'cmb2_render_client', [ $this, 'render_client_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_partner', [ $this, 'render_partner_field_callback' ], 10, 5 ); // CMB2 field specifically for a project partner.
 		add_filter( 'cmb2_render_projectlocation', [ $this, 'render_projectlocation_field_callback' ], 10, 5 ); // CMB2 field specifically for a project address.
-		// add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_jonesaddress', [ $this, 'render_jonesaddress_field_callback' ], 10, 5 );
 		add_filter( 'cmb2_render_rating', [ $this, 'cmb2_render_rating_field_callback' ], 10, 5 );
 	}
@@ -190,25 +189,26 @@ class Component implements Component_Interface {
 	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
 	 * @param int    $object_id          The ID of the current object.
 	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
-	 * @param object $field_type_object  The `CMB2_Types` object.
+	 * @param object $field_type         The `CMB2_Types` object.
 	 */
-	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type_object ) {
+	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
 		$output  = '<section id="cmb2-star-rating-metabox">';
 		$output .= '<fieldset>';
 		$output .= '<span class="star-cb-group">';
 		$y       = 5;
 		while ( $y > 0 ) {
 			$checked = checked( $value, $y, false ); // false option returns, true option echos.
-			$output .= wp_sprintf( '<input type="radio" id="rating-%1$s" name="%2$s" value="%1$s" %3$s />', $y, $field_type_object->_id( false ), $checked );
+			$output .= wp_sprintf( '<input type="radio" id="rating-%1$s" name="%2$s" value="%1$s" %3$s />', $y, $field_type->_id( false ), $checked );
 			$output .= wp_sprintf( '<label data-wanker="yes" for="rating-%s">%s</label>', $y );
 			$y--;
 		}
 		$output .= '</span>';
 		$output .= '</fieldset>';
 		$output .= '</section>';
-		$output .= $field_type_object->_desc( true );
+		$output .= $field_type->_desc( true );
 		echo $output;
 	}
+
 	/**
 	 * Render 'Timeline' custom field type
 	 *
@@ -218,13 +218,13 @@ class Component implements Component_Interface {
 	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
 	 * @param int    $object_id          The ID of the current object.
 	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
-	 * @param object $field_type_object  The `CMB2_Types` object.
+	 * @param object $field_type         The `CMB2_Types` object.
 	 */
 	public function cmb2_render_timeline_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
 		$new   = [
-			'title'       => '',
-			'date'        => '',
-			'media'       => '',
+			'title' => '',
+			'date'  => '',
+			'media' => '',
 		];
 		$value = wp_parse_args( $value, $new );
 		?>

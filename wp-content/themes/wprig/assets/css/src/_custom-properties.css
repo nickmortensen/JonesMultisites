@@ -6,18 +6,8 @@
  **/
 /* stylelint-disable */
 :root {
-	--hairline: 100;
-	--thin: 200;
-	--light: 300;
-	--normal: 400;
-	--medium: 500;
-	--semibold: 600;
-	--heavy: 600;
-	--bold: 700;
-	--extrabold: 800;
-	--superbold: 900;
-
-	/* Tailwind Colors */
+	/* TAILWIND COLORS */
+	/*#region*/
 	--indigo-100: #ebf4ff;
 	--indigo-200: #c3dafe;
 	--indigo-300: #a3bffa;
@@ -41,7 +31,7 @@
 	--red-300: #feb2b2;
 	--red-400: #fc8181;
 	--red-500: #f56565;
-	--red-600: #e53e3e;
+	--red-600: #ff2d26;
 	--red-700: #c53030;
 	--red-800: #9b2c2c;
 	--red-900: #742a2a;
@@ -108,21 +98,8 @@
 	--pink-700: #b83280;
 	--pink-800: #97266d;
 	--pink-900: #702459;
+	/*#endregion*/
 
-	/* END Tailwind Colors */
-
-	--global-font-color: var(--gray-900);
-	--global-text-color: var(--gray-900);
-	--global-font-family: -apple-system, ubuntu, serif;
-	--global-font-size: 20;
-	--global-font-line-height: 1.4;
-	--highlight-font-family: "Roboto Mono", ubuntu, system-ui, blinkmacsystemfont, sans-serif;
-	--content-width: 60vw; /* initially 45 rem */
-	--nav-width: 100vw; /* initially 45 rem */
-	--dropdown-symbol-width: 0.7em;
-	--h1-letter-spacing: 0.08em;
-
-	/* Custom editor colors */
 	--color-theme-primary: var(--blue-600);
 	--color-theme-secondary: var(--indigo-600);
 	--color-theme-red: var(--red-600);
@@ -132,12 +109,53 @@
 	--color-theme-black: var(--gray-900);
 	--color-theme-grey: var(--gray-500);
 	--color-theme-white: #ecf0f1;
-	--color-custom-daylight: var(--teal-300);
+
+	/* CUSTOM EDITOR COLORS */
 	--color-custom-sun: var(--yellow-200);
 	--nav-ul-bg: var(--color-theme-white);
 	--color-link: var(--color-theme-primary);
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
+
+	/* FONT WEIGHTS */
+	/*#region*/
+	--hairline: 100;
+	--thin: 200;
+	--light: 300;
+	--normal: 400;
+	--medium: 500;
+	--semibold: 600;
+	--heavy: 600;
+	--bold: 700;
+	--extrabold: 800;
+	--superbold: 900;
+
+	/* FONT FAMILIES */
+	--font-stack: 'fira code', monospace, sans-serif;
+	--highlight-font-family: "Roboto Mono", ubuntu, system-ui, blinkmacsystemfont, sans-serif;
+	--global-font-family: -apple-system, ubuntu, serif;
+	/*#endregion*/
+
+	/* General */
+	--body-bg-color: var(--color-theme-white, #ecf0f1);
+	--bg-body-color: var(--color-theme-white, #ecf0f1);
+	--hr-color: var(--gray-400);
+
+	/* TEXT COLOR */
+	--text-color-dark-bg: var(--color-theme-white);
+	--has-dark-bg: var(--color-theme-white);
+	--text-color: var(--gray-800, #515153);
+	--global-font-color: var(--text-color);
+	--global-text-color: var(--text-color);
+
+	/* END Tailwind Colors */
+
+	--global-font-size: 14;
+	--global-font-line-height: 1.4;
+	--content-width: 60vw; /* initially 45 rem */
+	--nav-width: 100vw; /* initially 45 rem */
+	--dropdown-symbol-width: 0.7em;
+	--h1-letter-spacing: 0.08em;
 
 	/* QUOTES */
 	--color-quote-border: var(--gray-800);
@@ -145,19 +163,24 @@
 	--transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	--reverse-timing-function: cubic-bezier(0.53, -1.09, 0.44, 1.18);
 
-	/* Custom editor font sizes */
+	/* CUSTOM EDITOR FONT SIZES */
 	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
-	--font-size-regular: calc(var(--global-font-size) / 16 * 1rem);
+	--font-size-regular: calc((24 / var(--global-font-size)) * 1rem);
 	--font-size-large: calc(36 / var(--global-font-size) * 1rem);
-	--font-size-larger: calc(48 / var(--global-font-size) * 1rem);
+	--font-size-larger: calc((40 / var(--global-font-size) )* 1rem);
+	--font-size-largest: calc((48 / var(--global-font-size)) * 1.2rem);
 
 	/* @link https://www.fluiditype.com */
-	--fontSize: calc(12px + 0.698vw);
-	--lineHeight: calc(var(--fontSize) * 1.4);
-	--letterSpacing: calc(var(--fontSize) * 0.0015);
-	--fontWeight: 300;
+	--fontsize-xs: calc(8px + 0.698vw);
+	--fontsize-s: calc(12px + 0.698vw);
+	--fontsize-m: calc(16px + 0.698vw);
+	--fontsize-l: calc(20px + 0.698vw);
+	--fontsize-xl: calc(24px + 0.698vw);
+	--lineHeight: calc(var(--fontsize-m) * 1.4);
+	--letterSpacing: calc(var(--fontsize-s) * 0.0015);
 
 	/* ADMIN VARIABLES */
+	/*#region*/
 	--admin-theme-primary: var(--color-theme-primary);
 	--table-header-color: var(--yellow-600);
 	--table-header-bg: var(--admin-theme-primary);
@@ -175,16 +198,16 @@
 	--admin-link-hover: var(--indigo-900);
 	--submenu-width: 180px;
 	--paragraph-color: var(--global-font-color);
+	/*#endregion*/
 
-	/* Jones SVG Textcolor */
+	/* LOGO */
+	--jones-svg-fill: var(--blue-600);
+	--tagline-svg-fill: var(--gray-500);
 	--logo-letter-fill: var(--color-theme-white);
 	--logo-circle-fill: var(--gray-300);
 	--logo_text_fill: var(--logo-letter-fill);
 	--logotype-tagline-display: none;
 	--jonessign-text-svg-tagline-fill: var(--gray-500);
-
-	/* General */
-	--body-bg-color: #fff;
 
 	/* PRE */
 	--pre-bg: var(--blue-700);
@@ -211,16 +234,8 @@
 	--more-info-bg: var(--check-color);
 	--flickity-button-color: var(--projects-accent-color);
 
-	/* LOGO */
-	--jones-svg-fill: var(--blue-600);
-	--tagline-svg-fill: var(--gray-500);
-
 	/* MENU */
 	--main-menu-bg: var(--color-theme-primary);
-
-	/* TEXT COLOR */
-	--text-color: var(--gray-700);
-	--text-color-dark-bg: var(--color-theme-white);
 
 	/* FOOTER */
 	--footer-text-color: var(--color-theme-white);
@@ -233,14 +248,21 @@
 	--marker-header-bg-color: var(--color-theme-primary);
 	--address-color: var(--gray-900);
 	--state-fill: var(--blue-800);
+
+	/* FORMS */
+	--field-focus-text-color: var(--gray-600);
 }
+
 /* stylelint-enable */
-
-
 .dark {
+	--text-color: var(--color-theme-white, #f7f7f7);
 	--body-bg-color: var(--blue-900);
 	--jones-svg-fill: var(--color-theme-white);
 	--tagline-svg-fill: var(--gray-200);
 }
 
-
+@media and (width > 768px ) {
+	:root {
+		--global-font-size: 20;
+	}
+}

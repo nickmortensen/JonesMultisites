@@ -50,15 +50,16 @@ if ( ! wp_rig()->is_primary_nav_menu_active() ) {
 
 	>
 		<?php esc_html_e( 'MENU', 'wp-rig' ); ?>
-	</button>
+		</button>
 
-	<div class="primary-menu-container">
+
+
+
 		<?php
 			$menu_arguments = [
-				'menu_id' => 'primary-menu',
+				'menu_id'    => 'primary-menu',
+				'menu_class' => 'dark_background',
 			];
 			wp_rig()->display_primary_nav_menu( $menu_arguments );
 		?>
-	</div>
-
 </nav><!-- end div#site-navigation -->

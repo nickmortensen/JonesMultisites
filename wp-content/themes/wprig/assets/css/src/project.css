@@ -11,6 +11,7 @@ strong {
 }
 
 .frontpage-projects {
+	margin-bottom: 2vw;
 	order: 5;
 	display: flex;
 	justify-content: center;
@@ -24,6 +25,10 @@ strong {
 	}
 }
 
+/*#region*/
+/*
+======== SINGLE PROJECT CARD =======
+*/
 .project-card {
 	background: var(--color-theme-white);
 	font-family: "roboto mono", var(--highlight-font-family);
@@ -80,9 +85,13 @@ strong {
 		padding-bottom: 1.2rem;
 		margin-bottom: 0;
 		font-size: clamp(2.1rem, 2.35vw, 3rem);
-		line-height: 1;
+		line-height: 1.15;
 		font-weight: 500;
 		min-height: 100px;
+
+		& > a {
+			text-decoration: none;
+		}
 	}
 
 	& .project_tease {
@@ -222,4 +231,28 @@ strong {
 	grid-row: 1;
 	grid-column: 2/4;
 	height: 2.5rem;
+}
+
+/*#endregion*/
+
+/*
+========= PROJECT PROFILE SINGLE PAGE ===========
+*/
+
+.single_project_profile {
+	padding-bottom: 4vw;
+	grid-column: 1 / -1;
+	color: var(--has-dark-bg);
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	& h1 {
+		font-size: calc(46px + 0.698vw);
+		font-size: clamp(28px, 2.3vw, 88px);
+	}
+
+	& .excerpt {
+		font-size: var(--fontsize-m);
+	}
 }

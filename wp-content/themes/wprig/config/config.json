@@ -24,7 +24,7 @@
 		],
 		"features": {
 		  "custom-selectors": true,
-		  "custom-media-queries": false,
+		  "custom-media-queries": true,
 		  "custom-properties": true,
 		  "nesting-rules": true
 		}

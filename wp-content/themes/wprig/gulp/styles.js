@@ -5,6 +5,7 @@
  * External dependencies
  */
 import { src, dest } from 'gulp';
+import postCssFor from 'postcss-for';
 import postcssPresetEnv from 'postcss-preset-env';
 import AtImport from 'postcss-import';
 import pump from 'pump';
@@ -75,7 +76,7 @@ export function stylesAfterReplacementStream() {
 							preserve: false,
 						},
 						'custom-properties': {
-							preserve: false,
+							preserve: true,
 						},
 						'custom-selectors': {
 							preserve: false,
@@ -84,6 +85,7 @@ export function stylesAfterReplacementStream() {
 					}
 			),
 		} ),
+		require('postcss-for'),
 		calc( {
 			preserve: false,
 		} ),

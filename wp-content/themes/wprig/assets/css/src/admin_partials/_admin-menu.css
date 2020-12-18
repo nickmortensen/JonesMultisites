@@ -1,8 +1,8 @@
 #wpadminbar {
 	background: var(--admin-bg-color);
 	font-family: serif;
-	padding: 1vh 2vw;
-	border-bottom: 2px solid var(--yellow-500);
+	padding: 10px 5px;
+	border-bottom: 2px solid var(--gray-500);
 }
 
 #wpadminbar a {

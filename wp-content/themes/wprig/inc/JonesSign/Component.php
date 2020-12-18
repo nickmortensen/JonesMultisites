@@ -10,6 +10,7 @@ namespace WP_Rig\WP_Rig\JonesSign;
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
 use WP_Rig\WP_Rig\TaxonomyGlobal\Component as Taxonomies;
+use WP_Rig\WP_Rig\Posttype_Project\Component as Projects;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
 use function get_terms;
@@ -408,7 +409,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$name     = 72 === $id ? 'Jones Sign Company' : $name;
 		$selected = selected( $id, 72, false );
 		$selected = '';
-		$output   = wp_sprintf( '<option data-value="%s" value="%s" data-location-id="%d"%s>%s</option>', $slug, $slug, $id, $selected, ucwords( $name ) );
+		$output   = wp_sprintf( '<option class="list-item" data-value="%s" value="%s" data-location-id="%d"%s>%s</option>', $slug, $slug, $id, $selected, ucwords( trim( preg_replace( '/Jones/i', '', $name ) ) ) );
 		return $output;
 	}
 
@@ -497,7 +498,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'address'           => $address,
 			'capabilities'      => $capabilities,
 		]        = wp_rig()->get_location_info( $term_id );
-		$branch  = 'nat' === $slug ? 'Jones Sign Company' : ucwords( $name );
+		$branch  = 'nat' === $slug ? 'Jones Sign CO.' : ucwords( $name );
 		$output  = '';
 		$output .= wp_sprintf( '<li data-branch-marker="%s" class="map-marker %s">', $slug, $slug );
 		$output .= "\n\t";
@@ -505,7 +506,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$output .= "\n\t";
 		$output .= '<div class="map-marker-info">';
 		$output .= "\n\t\t";
-		$output .= wp_sprintf( '<div data-location-info="%s" class="map-marker-info-inner %s">', $slug, 'nat' === $slug ? '' : 'hidden' );
+		$output .= wp_sprintf( '<div data-location-info="%s" class="inner %s">', $slug, 'nat' === $slug ? '' : 'hidden' );
 		$output .= "\n\t\t\t";
 		$output .= wp_sprintf( '<div class="heading"><h2>%s</h2></div>', $branch );
 		$output .= "\n\t\t\t";
@@ -513,13 +514,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		/*
 		 * WAIT UNTIL YOU HAVE GOOD PHOTOS OF ALL LOCATIONS.
-		$output .= wp_sprintf( '<img src="%s" />', wp_get_attachment_image_src( $location_image, 'medium' )[0]);
+		 * $output .= wp_sprintf( '<img src="%s" />', wp_get_attachment_image_src( $location_image, 'medium' )[0]);
 		*/
 		$output .= "\n\t\t\t\t";
 		$output .= $this->get_single_location_address( $term_id );
 		$output .= '</main>';
 		$output .= "\n\t\t";
-		$output .= '</div><!-- end div.map-marker-info-inner animate-bounce-in -->';
+		$output .= '</div><!-- end div.inner animate-bounce-in -->';
 		$output .= "\n\t";
 		$output .= '</div><!-- end div.map-marker-info -->';
 		$output .= "\n";
@@ -985,10 +986,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$in_footer   = false; // Do we enqueue the script into the footer.
 		wp_register_script( $handle, $script_path, $deps, $version, $in_footer );
 
-		$handle      = 'jones-locations-select'; // script handle.
-		$script_path = get_theme_file_uri( '/assets/js/select_effects.min.js' ); // path to script.
-		$deps        = [ 'jones-locations-classie' ]; // dependencies.
-		$version     = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/select_effects.min.js' ) ); // script version.
+		$handle      = 'jones-select-alternatives'; // script handle.
+		$script_path = get_theme_file_uri( '/assets/js/select_alternative.min.js' ); // path to script.
+		$deps        = []; // dependencies.
+		$version     = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/select_alternative.min.js' ) ); // script version.
 		$in_footer   = false; // Do we enqueue the script into the footer.
 		wp_enqueue_script( $handle, $script_path, $deps, $version, $in_footer );
 		wp_script_add_data( $handle, 'defer', false ); // wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.

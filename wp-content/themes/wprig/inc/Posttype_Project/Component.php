@@ -12,14 +12,22 @@ use WP_Rig\WP_Rig\Templating_Component_Interface;
 use WP_Rig\WP_Rig\AdditionalFields\Component as AdditionalFields;
 use WP_Rig\WP_Rig\Posttype_Global\Component as PostTypes;
 use WP_Rig\WP_Rig\TaxonomyGlobal\Component as Taxonomies;
+
+
 use function WP_Rig\WP_Rig\wp_rig;
+
 use function add_action;
+use function add_filter;
 use function get_current_screen;
-use function wp_enqueue_script;
 use function get_post_meta;
-use function wp_localize_script;
-use function register_post_type;
 use function get_posts;
+use function get_the_category;
+use function get_theme_file_path;
+use function get_theme_file_uri;
+use function register_post_type;
+use function wp_enqueue_script;
+use function admin_enqueue_scripts;
+use function wp_localize_script;
 
 /**
  * Class to work with the post type or 'project'.
@@ -276,7 +284,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$project_name = $name[0] . '<br />' . $name[1];
 		}
 		$output .= '<div data-project-id="' . $project_id . '" class="project-card">';
-		$output .= wp_sprintf( '<span class="project_name">%s</span>', $project_name );
+		$output .= wp_sprintf( '<span class="project_name"><a href="%1$s" title="link to the project page for %2$s" >%2$s</a></span>', $link, $project_name );
 		$output .= wp_sprintf( '<div class="project_tease">%s</div>', $tease );
 		$output .= wp_sprintf( '<div class="project_image" style="background:center/cover no-repeat url(%s);"></div>', $featured );
 		$output .= $signtypes ? Taxonomies::get_card_taxonomy_row( $signtypes ) : '';
@@ -644,40 +652,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $info;
 	}
 
-	/**
-	 * Enqueues javascript data that will allow me to access project posts over in assets/src/js/projects
-	 */
-	public function enqueue_projects_script() {
-		// If the AMP plugin is active, return early.
-		global $template;
 
-		if ( wp_rig()->is_amp() ) {
-			return;
-		}
-
-		if ( ! ( 'single-project.php' === basename( $template ) || is_front_page() ) ) {
-			return;
-		}
-		wp_register_script( 'jQuery', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', [], 9, false );
-
-		// Enqueue the flickity script. The last element asks whether to load the script within the footer. We don't want that.
-		wp_enqueue_script(
-			'wp-rig-flickity',
-			get_theme_file_uri( '/assets/js/flickity.min.js' ),
-			[ 'jQuery' ],
-			wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/flickity.min.js' ) ),
-			false
-		);
-
-		wp_enqueue_script(
-			'wp-rig-projects',
-			get_theme_file_uri( '/assets/js/project.min.js' ),
-			[],
-			wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/project.min.js' ) ),
-			false
-		);
-
-	} // end enqueue_projects_script()
 
 	/**
 	 * Set additional administrator columns based on postmeta fields that are added to the post type - columns will have no data just yet.
@@ -786,7 +761,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$job_id        = isset ( $project_info['job_id'] ) ? sanitize_text_field( $project_info['job_id'] ) : '';
 			$local_folder  = isset ( $project_info['local_folder'] ) ? wp_kses_normalize_entities( $project_info['local_folder'] ) : '';
 			$year_complete = isset ( $project_info['year_complete'] ) ? sanitize_text_field( $project_info['year_complete'] ) : '';
-			$tease         = isset ( $project_info['tease'] ) ? $project_info['tease'] : '';
+			$tease         = isset ( $project_info['tease'] ) ? sanitize_text_field( $project_info['tease'] ) : '';
 
 			$newdata = [
 				'client'        => $client,
@@ -880,5 +855,59 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_project_header_images( $project_id ) {
 		return PostTypes::get_header_images_ids( $project_id, 'project' );
 	}
+
+	/**
+	 * Enqueues javascript data that will allow me to access project posts over in assets/src/js/projects
+	 */
+	public function enqueue_projects_script() {
+		// If the AMP plugin is active, return early.
+		global $template;
+		global $post;
+
+		if ( wp_rig()->is_amp() ) {
+			return;
+		}
+
+		if ( ! ( 'single-project.php' === basename( $template ) || is_front_page() ) ) {
+			return;
+		}
+		wp_register_script( 'jQuery', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', [], 9, false );
+
+		$in_footer = false;
+		// Enqueue the flickity script. The last element asks whether to load the script within the footer. We don't want that.
+		$handle  = 'wp-rig-flickity';
+		$source  = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/flickity.js' ) : get_theme_file_uri( '/assets/js/flickity.min.js' );
+		$version = 'development' === ENVIRONMENT ? wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/flickity.js' ) ) : wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/flickity.min.js' ) );
+		wp_enqueue_script( $handle, $source, [ 'jQuery' ], $version, $in_footer );
+
+		$handle  = 'wp-rig-projects';
+		$source  = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/project.js' ) : get_theme_file_uri( '/assets/js/project.min.js' );
+		$version = 'development' === ENVIRONMENT ? wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/project.js' ) ) : wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/project.min.js' ) );
+		wp_enqueue_script( $handle, $source, [], $version, false );
+
+		/*
+		 * Allows us to add the js right within the module.
+		 * ESSENTIALLY HANDS THE DATA OFF TO A JAVASCRIPT FILE.
+		 * Setting 'precache' to true means we are loading this script in the head of the document.
+		 * By setting 'async' to true,it tells the browser to wait until it finishes loading to run the script.
+		 * 'Defer' would mean wait until EVERYTHING is done loading to run the script.
+		 * We can pick 'defer' because it isn't needed until the visitor hits a scroll point.
+		 * No need to precache this, either.
+		 * @param string $handle The handle given to the javascript file when enqued.
+		 * @param string $key   The name of an attribute to go in the opening <script> tag.
+		 * @param string $value The value of the attribute that is denoted with the $key variable.
+		 */
+		$key = 'defer';
+		wp_script_add_data( $handle, $key, true );
+		wp_localize_script(
+				$handle,
+				'projectData',
+				[
+					'identifiers' => array_values( array_diff( $this->get_recent_project_ids( 8 ), array( $post->ID ) ) ),
+					'current'     => $post->ID,
+					'resturl'     => rest_url( 'wp/v2/' ),
+				]
+			);
+	} // end enqueue_projects_script()
 
 }//end class

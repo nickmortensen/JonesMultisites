@@ -30,7 +30,7 @@
     },
     "debug": {
       "styles": true,
-      "scripts": false,
+      "scripts": true,
       "phpcs": true
     }
   },

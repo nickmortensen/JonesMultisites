@@ -146,18 +146,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @param string $singular Post type name in singular sform.
 	 * @param string $plural Post type name in plural sform.
+	 * @param string $description A description of this post type.
 	 * @param string $icon A menu icon.
 	 * @param array  $taxonomies The taxonomies to be used on this post type.
+	 * @param array  $supports The options that this post type will support.
 	 */
-	public function create_posttype_args( $singular, $plural, $icon, $taxonomies ) {
+	public function create_posttype_args( $singular, $plural, $description, $icon, $taxonomies, $supports ) {
 		return [
 			'label'                 => ucfirst( $singular ),
-			'description'           => 'Jones Sign Company ' . ucfirst( $plural ) . ' and Details',
+			'description'           => $description,
 			'labels'                => $this->create_posttype_labels( $singular, $plural ),
 			'supports'              => [ 'title', 'thumbnail', 'excerpt', 'post-formats', 'page-attributes' ],
 			'taxonomies'            => (array) $taxonomies,
 			'hierarchical'          => false,
-			'public'                => true,
+			'public'                => in_array( $singular, [ 'project', 'client', 'staffmember' ], true ),
 			'show_ui'               => true,
 			'show_in_menu'          => true,
 			'menu_position'         => 100,
@@ -177,7 +179,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'capability_type'       => 'post',
 			'show_in_rest'          => true,
 			'rest_base'             => $singular,
-			'rest_controller_class' => 'WP_REST_Client_Controller',
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
+			'feeds'                 => in_array( $singular, [ 'project', 'client' ], true ),
 		];
 	}
 
@@ -190,16 +193,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'singular'    => 'project',
 				'plural'      => 'projects',
 				'description' => 'Company Projects and Details',
-				'icon'        => 'dashicons-id-alt',
+				'icon'        => 'dashicons-welcome-widgets-menus',
 				'taxonomies'  => [ 'expertise', 'signtype', 'location' ],
+				'supports'    => [ 'additional-fields', 'title', 'excerpt', 'thumbnail', 'post-formats', 'page-attributes' ],
 
 			],
 			[
 				'singular'    => 'client',
 				'plural'      => 'clientele',
 				'description' => 'Clients and Details',
-				'icon'        => 'dashicons-admin-multisite',
+				'icon'        => 'dashicons-businessman',
 				'taxonomies'  => [ 'expertise', 'signtype', 'location' ],
+				'supports'    => [ 'additional-fields', 'title', 'excerpt', 'thumbnail', 'post-formats', 'page-attributes' ],
 
 			],
 			[
@@ -208,7 +213,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'description' => 'Company Staffmembers and Details',
 				'icon'        => 'dashicons-id-alt',
 				'taxonomies'  => [ 'expertise', 'location' ],
+				'supports'    => [ 'additional-fields', 'title', 'excerpt', 'thumbnail', 'post-formats', 'page-attributes' ],
 
+			],
+			[
+				'singular'    => 'inquiry',
+				'plural'      => 'inquiries',
+				'description' => 'Incoming Inquiries & Sales Leads',
+				'icon'        => 'dashicons-email-alt2',
+				'taxonomies'  => [ 'expertise', 'location', 'signtype' ],
+				'supports'    => [ 'additional-fields', 'title', 'excerpt', 'post-formats', 'page-attributes' ],
 			],
 		];
 
@@ -219,7 +233,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$description             = $posttypes[ $i ]['description'];
 			$icon                    = $posttypes[ $i ]['icon'];
 			$taxonomies              = $posttypes[ $i ]['taxonomies'];
-			$posttypes[ $i ]['args'] = $this->create_posttype_args( $singular, $plural, $taxonomies, $icon );
+			$supports                = $posttypes[ $i ]['supports'];
+			$posttypes[ $i ]['args'] = $this->create_posttype_args( $singular, $plural, $description, $icon, $taxonomies, $supports );
 		}
 		return $posttypes;
 	}

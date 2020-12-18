@@ -6,6 +6,11 @@
  * 2. Remove the margin in Firefox and Safari.
  */
 
+form {
+	--border-color-one: var(--gray-400);
+	--border-color-two: var(--gray-500);
+}
+
 button,
 input,
 optgroup,
@@ -154,11 +159,12 @@ button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
+
 	-webkit-appearance: button;
 	border: 1px solid;
-	border-color: #ccc #ccc #bbb;
+	border-color: var(--border-color-one) var(--border-color-one) var(--border-color-two);
 	border-radius: 3px;
-	background: var(--gray-100);
+	background: var(--gray-300);
 	color: rgba(0, 0, 0, 0.8);
 	font-size: 0.75rem;
 	line-height: 1;
@@ -171,7 +177,7 @@ button:hover,
 input[type="button"]:hover,
 input[type="reset"]:hover,
 input[type="submit"]:hover {
-	border-color: #ccc #bbb #aaa;
+	border-color: var(--border-color-one) var(--border-color-one) var(--border-color-two);
 }
 
 button:active,
@@ -201,7 +207,7 @@ input[type="datetime"],
 input[type="datetime-local"],
 input[type="color"],
 textarea {
-	color: var(--gray-700);
+	color: var(--field-focus-text-color);
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	padding: 3px;
@@ -223,9 +229,94 @@ input[type="datetime"]:focus,
 input[type="datetime-local"]:focus,
 input[type="color"]:focus,
 textarea:focus {
-	color: #111;
+	color: var(--field-focus-text-color);
 }
 
 select {
 	border: 1px solid #ccc;
+}
+
+.contact-form-section {
+	position: relative;
+	height: 0;
+	background: var(--teal-200);
+}
+
+.contact-form-container {
+	position: relative;
+	width: 540px;
+	padding: 2vw;
+	height: 440px;
+}
+
+input#contact_form_button {
+	text-transform: uppercase;
+	background: var(--color-theme-primary);
+	color: var(--has-dark-bg);
+	font-weight: var(--bold);
+	position: absolute;
+	margin-top: 2vw;
+	font-size: var(--fontsize-m);
+	right: 2vw;
+}
+
+form#contact {
+	& > div {
+		padding-top: 18px;
+	}
+
+}
+
+
+/**
+ * Autogrowing the text area.
+ * @link https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
+ */
+
+.grow-wrap {
+
+	/* Allows us to plop elements on top of one another and have them both sized based on the tallest one's height */
+	display: grid;
+
+	&::after {
+
+		/* weird space in content attribute is to prevent jumpy behavior */
+		content: attr(data-replicated-value) " ";
+
+		/* Replicate how textarea text behaves */
+		white-space: pre-wrap;
+
+		/* Hidden from view, clicks, and screen readers */
+		visibility: hidden;
+	}
+
+	& > textarea {
+
+		/* One could leave this, but after a user resizes, then it ruins the auto sizing */
+		resize: none;
+
+		/* Firefox shows scrollbar on growth, so here we hide it like this. */
+		overflow: hidden;
+	}
+
+	&::after,
+	& > textarea {
+
+		/* Identical styling required!! */
+		border: 1px solid var(--gray-800);
+		padding: 0.5rem;
+		font: inherit;
+
+		/* Place on top of each other */
+		grid-area: 1 / 1 / 1 / 1;
+	}
+}/* \.grow-wrap */
+
+.input_field_container {
+	display: grid;
+	grid-template-columns: minmax(110px, 30%) 3fr;
+
+	& label {
+		text-transform: uppercase;
+	}
 }

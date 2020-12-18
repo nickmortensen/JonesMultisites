@@ -2,68 +2,458 @@
 * Custom styles for the front-page.php template.
 */
 
-.full-grid {
-	grid-column: 1 / -1;
+@import "_custom-properties.css";
+
+:root {
+	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
+	--bgc: #3a4151;
+	--bgc-two: rgba(66, 74, 92, 0.6);
+	--box-shadow-one: 0 1px 3px rgba(0, 0, 0, 0.12);
+	--box-shadow-two: 0 1px 2px rgba(0, 0, 0, 0.24);
+	--box-shadow: var(--box-shadow-one), var(--box-shadow-two);
+	--burger-div-height: 45px;
+	--header-width: 60px;
+	--shadow-one: 0 1px 3px rgba(0, 0, 0, 0.12);
+	--shadow-two: 0 1px 2px rgba(0, 0, 0, 0.24);
+	--side-menu-box-shadow: var(--shadow-one), var(--shadow-two);
+	--side-menu-z-index: 1000;
 }
 
-.light-text {
-	color: var(--color-theme-white);
 
-	& > :--heading {
-		color: inherit;
-	}
+body.experimental {
+	padding: 0;
+	margin: 0;
+	position: relative;
+	display: grid;
+	grid-template-columns: 60px 1fr;
+	grid-template-rows: 2fr 4fr 2fr;
+	gap: 0 0;
+	grid-template-areas:
+		"sidemenu body"
+		"sidemenu body"
+		"sidemenu body";
 }
 
-@media screen and (width > 840px) {
+header#main-header {
+	grid-area: sidemenu;
+	width: var(--header-width);
+	height: 100%;
+	left: 0;
+	transition: left 0.5s ease-in-out 0.2s;
+	position: fixed;
+	display: inline-block;
+	background-color: var(--bgc);
+	z-index: 1000;
+}
 
-	.site {
-		margin: 0;
-		display: grid;
-		grid-template-columns: repeat(12, 1fr);
+#experimental-page {
+	grid-area: body;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: repeat(4, 1fr);
+	grid-template-areas:
+		"head"
+		"content"
+		"footer";
+}
+
+/* header#main-header nav {
+	height: 100%;
+	width: var(--header-width);
+	box-shadow: var(--box-shadow);
+	position: absolute;
+	left: 0;
+} */
+
+header#main-header nav > div.top-header {
+	position: relative;
+	background-color: var(--bgc);
+}
+
+header#main-header nav {
+	height: 100%;
+	width: var(--header-width);
+	box-shadow: var(--box-shadow);
+	position: absolute;
+	left: 0;
+	color: inherit;
+
+	&::after {
+		background-color: var(--bgc);
+		content: " ";
+		height: 100%;
+		width: var(--header-width);
+		position: absolute;
+		left: 0;
 	}
 
-	.site-main {
-		margin-top: 2rem;
-		display: grid;
-		grid-column: 1 / -1;
-		grid-template-columns: repeat(6, 1fr);
-		grid-gap: 2rem;
-		order: 2;
+	&::before {
+		background: var(--bgc-two);
+		left: var(--header-width);
+		content: " ";
+		width: 0;
+		height: 100%;
+		position: absolute;
+		transition: width 0.2s var(--bezier-transition);
+		box-shadow: var(--box-shadow);
 	}
 
-	.post {
-		margin-bottom: 0;
-		padding: 0 2rem;
-		border-radius: 0.5em;
-		box-shadow: 0 2px 8px hsla(0, 0%, 50%, 0.8);
+	&:hover::before {
+		width: calc(100 + var(--header-width));
+		width: 240px;
+		transition: width 0.4s var(--alternate-bezier-transition);
 	}
 
-	.post:first-of-type {
-		grid-column: span 2;
-		margin: 0;
-		padding: 0;
+} /* \header#main-header nav */
+
+/* header#main-header nav .nav-burger { */
+.nav-burger {
+	cursor: pointer;
+	width: 100%;
+	height: var(--burger-div-height);
+
+	& .burger {
+		margin-left: 18px;
+		margin-top: 30px;
+		cursor: pointer;
 	}
 
-	.wp-block-image.alignleft,
-	.wp-caption.alignleft {
-		margin-left: 0;
+	& .burger,
+	& .burger::before,
+	& .burger::after {
+		border-radius: 2px;
+		position: absolute;
+		z-index: 100;
+		width: 24px;
+		height: 4px;
+		background: var(--bgc);
+		background: var(--color-theme-white);
+		transition: all 0.3s;
 	}
 
-	.wp-block-image.alignright,
-	.wp-caption.alignright {
-		margin-right: 0;
+	& .burger::before,
+	& .burger::after {
+		content: "";
+		display: block;
 	}
 
-	.entry-footer {
-		border-bottom: none;
+	& .burger::before {
+		margin-top: -8px;
 	}
 
-	.site-main .posts-navigation {
-		width: 100%;
-		margin-bottom: 0;
-		padding: 2rem 0 0;
-		border-top: 1px solid #111;
-		border-bottom: none;
+	& .burger::after {
+		margin-top: 8px;
 	}
 
+} /* \.nav-burger */
+
+
+header#main-header nav ul {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	margin-top: calc(50vh - 160px);
+} /* \header#main-header nav ul*/
+
+header#main-header nav ul li {
+	font-size: 14px;
+	width: calc(var(--header-width) * 3);
+
+	height: 40px;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	& a {
+		min-width: 100%;
+		color: var(--has-dark-bg);
+		position: relative;
+		z-index: 0;
+		opacity: 0;
+		left: -80px;
+		text-transform: uppercase;
+		text-decoration: none;
+		transition: left 0.2s var(--bg-bezier), opacity 0.15s var(--alternate-bezier-transition);
+
+		&:hover,
+		&:active,
+		&:visited,
+		&:focus {
+			background-color: transparent;
+			color: var(--color-theme-white);
+		}
+	}
+
+	&:hover::before {
+		background-color: var(--color-theme-white);
+	}
+
+	&.active::before,
+	&:hover::before {
+		transform: scale(1.5) translate3d(0, 0, 0);
+		background-color: var(--color-theme-white);
+	}
+
+	/* dots that precede the links */
+	&::before {
+		z-index: 10;
+		content: " ";
+		width: 8px;
+		height: 8px;
+		background-color: transparent;
+		position: absolute;
+		left: 26px;
+		top: 16px;
+		border-radius: 50%;
+		border: 2px solid var(--color-theme-white);
+		transform: scale(1) translate3d(0, 0, 0);
+		transition: all 0.2s ease-in-out;
+
+	}
+}  /* \header#main-header nav ul li*/
+
+header#main-header nav:hover .burger {
+	background: transparent;
+	transform: rotate(45deg) translate3d(0, 0, 0);
+
+	&::before {
+		margin-top: 0;
+		transform: rotate(-90deg) translate3d(0, 0, 0);
+	}
+
+	&::after {
+		margin-top: 0;
+		transform: rotate(0deg) translate3d(0, 0, 0);
+	}
+
+} /* \header#main-header nav:hover .burger */
+
+header#main-header nav:hover li a {
+	left: calc(10px + var(--header-width));
+	opacity: 1;
+	transition-duration: 0.4s;
+	transition-delay: 0.2s;
+	transition-property: left, opacity;
+	transition-timing-function: var(--alternate-bezier-transition);
+}
+/* stylelint-disable */
+@for $i from 2 to 12 {
+	header#main-header nav:hover li:nth-child($i) a {
+		transition-delay: calc(($(i)s * 0.05) + 0.2s);
+	}
+}
+/* stylelint-enable */
+
+/* EXPERIMENTAL FORM: template-parts/frontpage/form-experiment.php */
+
+#form-experiment {
+	--box-shadow:
+		0 16px 24px 2px rgba(0, 0, 0, 0.14),
+		0 6px 30px 5px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba(0, 0, 0, 0.3);
+	--mail-unicode: "\2709";
+	--arrow-unicode: "\2794";
+	--person-unicode: "\1F464";
+	--general-color: var(--blue-600);
+	--progress-color: var(--blue-800);
+	--icon-color: var(--gray-400);
+	--incorrect: var(--red-700);
+	margin: 0;
+	overflow-x: hidden;
+	background: var(--general-color);
+	font-family: var(--font-stack);
+
+	& h1 {
+		position: relative;
+		color: var(--has-dark-bg);
+		opacity: 0;
+		transition: 0.8s ease-in-out;
+	}
+
+	& .center {
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	& #register {
+		background: var(--has-dark-bg);
+		position: relative;
+		width: 550px;
+		box-shadow: var(--box-shadow);
+		transition: transform 0.1s ease-in-out;
+
+		&.close {
+			width: 0;
+			padding: 0;
+			overflow: hidden;
+			transition: 0.8s ease-in-out;
+			box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0);
+		}
+	}
+
+	& #submitFormButton,
+	& #forwardButton,
+	& #previousButton {
+		z-index: 20;
+		position: absolute;
+		float: right;
+		cursor: pointer;
+		color: var(--icon-color);
+		font-size: 40px;
+
+		&:hover {
+			color: var(--progress-color);
+		}
+	}
+
+	& #submitFormButton,
+	& #forwardButton {
+
+		--bottom: 5px;
+		--bottom: 20%;
+		--font-size: 5rem;
+		--font-size: 3.5rem;
+		right: 20px;
+		bottom: var(--bottom);
+		font-size: var(--font-size);
+
+		&:focus {
+			color: var(--has-dark-bg);
+			background: var(--general-color);
+		}
+	}
+
+
+	& #submitFormButton {
+		appearance: none;
+		background: unset;
+		padding: unset;
+		border-width: 0;
+		z-index: 14;
+		background-color: var(--indigo-600);
+
+		&.hideButton {
+			opacity: 0;
+		}
+
+		&.showButton {
+			opacity: 1;
+		}
+	}
+
+	/* Previous button appears instead of the person character once we've advanced past the first question */
+	& #previousButton {
+		font-size: 1.2rem;
+		left: 30px; /* same as padding on container */
+		top: 12px;
+		transform: rotate(180deg);
+
+		&::after {
+			content: var(--arrow-unicode);
+		}
+
+		&.person-symbol {
+			transform: unset;
+
+			&::after {
+				content: var(--person-unicode);
+			}
+		}
+	}
+
+	& .wrong #forwardButton {
+		color: var(--incorrect);
+	}
+
+	& .close #forwardButton,
+	& .close #previousButton {
+		color: var(--has-dark-bg);
+	}
+
+	& #inputContainer {
+		position: relative;
+		padding: 30px 20px 20px 20px;
+		margin: 10px 60px 10px 10px;
+		opacity: 0;
+		transition: opacity 0.3s ease-in-out;
+
+		& input {
+			position: relative;
+			width: 100%;
+			border: none;
+			font-size: 20px;
+			font-weight: 700;
+			outline: 0;
+			background: transparent;
+			box-shadow: none;
+
+			&:valid + #inputLabel {
+				top: 6px;
+				left: 42px; /* space for previous arrow */
+				margin-left: 0 !important;
+				font-size: 11px;
+				font-weight: 400;
+				color: var(--icon-color);
+			}
+		} /*  input */
+	}
+
+	& #inputLabel {
+		position: absolute;
+		pointer-events: none;
+		top: 32px; /* same as container padding + margin */
+		left: 20px; /* same as container padding */
+		font-size: 20px;
+		font-weight: var(--bold);
+		transition: 0.2s ease-in-out;
+	}
+
+	& #inputProgress {
+		border-bottom: 3px solid var(--color-theme-blue);
+		width: 0;
+		transition: width 0.6s ease-in-out;
+	}
+
+	& .wrong #inputProgress {
+		border-color: var(--incorrect);
+	}
+
+	/* shows up as we move through the form in the bakground */
+	& #progress {
+		position: absolute;
+		background: var(--progress-color);
+		height: 100vh;
+		width: 0;
+		transition: width 0.2s ease-in-out;
+	}
+
+} /* \#form-experiment */
+
+
+@media (max-width: 420px) {
+	#form-experiment {
+		& #forwardButton {
+			right: 10px;
+		}
+
+		& #previousButton {
+			left: 10px;
+		}
+
+		& #inputLabel {
+			left: 0;
+		}
+
+		& #inputContainer {
+			padding-left: 0;
+			margin-right: 20px;
+		}
+	}
 }

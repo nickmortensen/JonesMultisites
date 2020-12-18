@@ -7,12 +7,10 @@
 
 namespace WP_Rig\WP_Rig;
 
-
 $locations = wp_rig()->get_location_ids( 75 );
 
 ?>
-<section id="svg_map_element" class="full-grid">
-	<div id="jones_locations_svg_map_container">
+	<div id="map-container">
 
 		<div>
 			<h2>Jones Sign Company</h2>
@@ -22,22 +20,20 @@ $locations = wp_rig()->get_location_ids( 75 );
 		<div class="map">
 
 			<ul class="map-markers">
-
-			<?php
-			foreach ( $locations as $location ) {
-				echo wp_rig()->get_single_mapped_location( $location ) . "\n";
-			}
-			?>
-
-
+				<?php
+				foreach ( $locations as $location ) {
+					echo wp_rig()->get_single_mapped_location( $location ) . "\n";
+				}
+				?>
 			</ul><!-- end ul.map-markers -->
 
 			<svg
-			xmlns="http://www.w3.org/2000/svg"
-			xmlns:xlink="http://www.w3.org/1999/xlink"
-			version="1.1"
-			id="usa"
-			viewBox="0 0 612 378.2">
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+				version="1.1"
+				id="usa"
+				viewBox="0 0 612 378.2"
+			>
 				<g>
 					<path class="state" id="alabama" d="M423 307.7c0.6-2.1 0.8-4 0.3-4.6 -0.2-0.2-0.5-0.5-0.7-0.8 -1.6-1.6-3.5-3.6-3-5.2 0.2-0.7 0.9-1.2 1.9-1.4 3.6-0.8 26.5-2.3 31.2-2.6 -0.8-1.6-1.6-3.4-1.6-4.5 0-2.7-0.6-5.9-0.8-6.9 -0.2-0.9 0.2-2.1 0.7-3.4 0.5-1.4 1-3.1 0.6-3.9 -0.9-1.7-6.2-14.3-8.9-23.7 -2.2-7.8-3.9-13.3-4.4-14.8l-29.7 2.6 0.4 48.9c0.1 0.6 2.5 17.3 2.5 20.1 1.4 0 2.7 0 3.2 0.1 0.8 0.2 5.3 1.3 7.8 0.3C422.6 307.9 422.8 307.8 423 307.7z"/>
 					<path class="state" id="arizona" d="M160.3 205.1l-57.2-8.6c-0.6 2.9-2.7 12.3-4.2 13.4 -1.1 0.7-2-0.2-2.6-1 -0.7-0.8-1.5-1.7-2.8-1.7 -0.1 0-0.2 0-0.4 0.2 -1.4 1.5-1 8.8-0.8 11.3 0 0.6 0.1 1 0.1 1.2 0 0.6-0.2 1.3-0.5 2.1 -0.5 1.3-1 2.7-0.7 4.2 0.2 0.8 0.6 2 1 3.3 1.1 3.3 1.8 5.6 1.2 6.6 -0.3 0.5-0.9 1.1-1.6 1.9 -1.2 1.3-2.8 3-2.8 4 0 1.3-1.1 2.9-2.1 4.5 -0.5 0.7-0.9 1.4-1.2 1.9 -0.4 0.9 0.2 2.9 0.6 4.5 0.3 1.1 0.6 2 0.6 2.6 0 1.1-2.4 2.6-4.7 3.7 9.8 5.9 40.7 25.2 42.7 25.7 1.4 0.4 15 2 25.2 3.1L160.3 205.1z"/>
@@ -95,5 +91,4 @@ $locations = wp_rig()->get_location_ids( 75 );
 
 		</div><!-- end div.map -->
 
-	</div>
-</section><!-- end div.footer_element.full-grid -->
+	</div><!-- end #map-container -->

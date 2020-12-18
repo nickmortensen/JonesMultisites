@@ -166,6 +166,7 @@ class Theme {
 			new TaxonomySigntype\Component(),
 			new Media\Component(),
 			new JonesSign\Component(),
+			new ContactForm\Component(),
 
 		];
 

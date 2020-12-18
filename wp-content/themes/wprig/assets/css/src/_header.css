@@ -2,10 +2,18 @@
 # Header
 --------------------------------------------------------------*/
 
+
 .site-header {
 	background: var(--color-theme-primary);
-	padding-bottom: 1em;
-	order: 1;
+}
+
+.header-image {
+	margin: 0 auto;
+
+	& img {
+		display: block;
+		margin: 0 auto;
+	}
 }
 
 .custom-logo-link {
@@ -14,62 +22,88 @@
 }
 
 .site-branding {
-	text-align: center;
-	padding: 60px 0 1.75em;
+	width: 100%;
+	background: var(--color-theme-primary);
+	grid-column: 1 / -1;
+	grid-row: 1 / span 1;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+
+}
+
+@media screen and (width > 768px ) {
+	.site-branding {
+		grid-column: 1 / 5;
+	}
 }
 
 .site-title {
-	margin: 0 1em;
+	margin: 0 auto;
 	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-	font-size: 38px;
-	font-weight: 700;
-	line-height: 1.2;
-	color: #333332;
-}
+	color: var(--has-dark-bg);
 
-.site-title a {
-	text-decoration: none;
-	color: inherit;
+	& a {
+		font-size: var(--fontsize-l);
+		text-decoration: none;
+		color: inherit;
+
+		&:visited {
+			color: inherit;
+		}
+	}
 }
 
 .site-description {
 	margin: 0.4375em 0 0;
 	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
-	font-size: 17px;
+	font-size: var(--fontsize-s);
 	font-weight: inherit;
-	line-height: 1.4;
 	word-wrap: break-word;
-	color: #757575;
+	color: var(--has-dark-bg);
 }
 
 /*--------------------------------------------------------------
 ## Basic navigation menus - handles submenu and small screen toggle
 --------------------------------------------------------------*/
-.nav--toggle-small .menu-toggle {
-	display: block;
-	margin: 1.2em auto;
-	padding: 0.6em 1.2em 0.5em;
-	font-family: var(--global-font-family);
-	font-stretch: normal;
-	letter-spacing: 0.2em;
-	font-size: 80%;
-	text-transform: uppercase;
-	border: 2px solid #000;
-	border-radius: 0;
-	background: transparent;
+.nav--toggle-small {
+	font-family: var(--highlight-font-family);
 
-	&.light {
-		color: var(--color-theme-white);
-		border-color: var(--color-theme-white);
-		height: 40px;
+	& .menu-toggle {
+		color: var(--has-dark-bg);
+		display: block;
+		padding: 8px;
+		font-stretch: condensed;
+		font-size: var(--fontsize-l);
+		text-transform: uppercase;
+		border: 2px solid var(--has-dark-bg);
+		border-radius: 0;
+		width: 40vw;
+		margin: 0 auto;
+		background: transparent;
 	}
 
+	& .menu {
+		display: none;
+
+	}
+}/* /nav--toggle-small */
+
+.primary-menu-container {
+	padding-bottom: 4vw;
+	width: 100%;
 }
 
-.nav--toggle-small .menu {
-	display: none;
+@media screen and (width > 768px ) {
+	.primary-menu-container {
+		display: flex;
+	}
+}
+
+.nav--toggled-on > .primary-menu-container {
+	transform: translateY(0) translateX(35%);
+	transition: transform 0.5s var(--transition-timing-function);
 }
 
 .nav--toggle-sub .dropdown,
@@ -79,16 +113,14 @@
 
 /* Styles only appear on screens smaller than 525px */
 
-@media screen and (width < 525px) {
+@media screen and (width < 769px) {
 
 	.nav--toggle-small.nav--toggled-on .menu {
 		display: block;
 	}
 }
 
-/* 37.5 rem or 525 px at minimum ) */
-
-@media screen and (width > 525px) {
+@media screen and (width > 768px) {
 
 	.nav--toggle-small .menu-toggle {
 		display: none;
@@ -191,19 +223,23 @@
 ## Main navigation menu
 --------------------------------------------------------------*/
 .main-navigation {
-	clear: both;
-	display: block;
-	margin: 0 auto 2em;
+	grid-column: 1 / -1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	padding: 0 1em;
-	max-width: var(--content-width);
 	font-family: var(--highlight-font-family);
-	font-stretch: condensed;
+}
+
+@media screen and (width > 768px ) {
+	.main-navigation {
+		padding: 1em;
+		grid-column-start: 5;
+		grid-column-end: 13;
+	}
 }
 
 .main-navigation a {
-	display: block;
-	width: 100%;
-	padding: 0.5em 1em 0.5em 0;
 	text-decoration: none;
 	color: #000;
 }
@@ -213,21 +249,30 @@
 	text-decoration: underline;
 }
 
-.dark_background {
-	color: var(--color-theme-white);
+.main-navigation ul {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
 
-	& li {
+@media screen and (width > 768px) {
+	.main-navigation ul {
 		color: inherit;
-
-		& a {
-			color: var(--color-theme-white);
-
-			&:hover,
-			&:focus {
-				text-decoration: none;
-			}
-		}
 	}
+}
+
+.main-navigation a {
+	display: block;
+
+	padding: 0.5em 1em 0.5em 0;
+	text-decoration: none;
+	color: #000;
+}
+
+.main-navigation a:hover,
+.main-navigation a:focus {
+	text-decoration: underline;
 }
 
 .main-navigation ul {
@@ -241,9 +286,7 @@
 	padding-left: 1em;
 }
 
-/* greater than 37.5em or 525px */
-
-@media screen and (width > 525px) {
+@media (--wide-menu-query) {
 
 	.main-navigation ul li a {
 		padding: 0.4em 0.5em;
@@ -284,89 +327,111 @@
 		flex-wrap: wrap;
 		justify-content: center;
 	}
+}
 
-	ul.dark_background {
-		color: var(--color-theme-white);
-		display: flex;
-		flex-flow: row nowrap;
+/*--------------------------------------------------------------
+# Content navigation
+--------------------------------------------------------------*/
+.site-main .comment-navigation,
+.site-main .posts-navigation,
+.site-main .post-navigation,
+.site-main .pagination {
+	border-bottom: 1px solid #111;
+	margin: 0 auto 2em;
+	max-width: var(--content-width);
+	overflow: hidden;
+	padding: 0 1.5rem 2em;
+	font-family: var(--highlight-font-family);
+	font-stretch: condensed;
+}
 
+@media (--content-query) {
+
+	.site-main .comment-navigation,
+	.site-main .posts-navigation,
+	.site-main .post-navigation,
+	.site-main .pagination {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
-
-.toggle_menu_div {
-	--total-length: 126.64183044433594;
-	--length: 24;
-	--offset: -38;
-	background: transparent;
-
-	& input {
-		display: none;
-	}
-
-	& label {
-		border: 2px soolid var(--yellow-600);
-		display: block;
-		cursor: pointer;
-		position: absolute;
-		max-width: 150px;
-		max-height: 150px;
-	}
-
-	& path {
-		fill: none;
-		stroke: var(--color-theme-white);
-		stroke-width: 3;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-		stroke-dasharray: var(--length) var(--total-length);
-		stroke-dashoffset: var(--offset);
-		transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-	}
-
-	& input:checked + svg .line--1,
-	& input:checked + svg .line--3 {
-		--length: 22.627416998;
-	}
-
-	& input:checked + svg .line--2 {
-		--length: 0;
-	}
-
-	& .line--1,
-	& .line--3 {
-		--total-length: 126.64183044433594;
-	}
-
-	& circle {
-		fill: var(--red-600);
-		opacity: 0.5;
-	}
-
-	& label:hover circle {
-		opacity: 1;
-	}
+.nav-links {
+	display: flex;
 }
 
-.back input:checked + svg .line--1,
-.back input:checked + svg .line--3 {
-	--length: 8.602325267;
+.comment-navigation .nav-previous,
+.posts-navigation .nav-previous,
+.post-navigation .nav-previous {
+	width: 50%;
+	flex: 1 0 50%;
 }
 
-.menu--1 .line--1,
-.menu--1 .line--3 {
-	--total-length: 126.64183044433594;
+.comment-navigation .nav-next,
+.posts-navigation .nav-next,
+.post-navigation .nav-next {
+	text-align: end;
+	flex: 1 0 50%;
 }
 
-.menu--1 .line--2 {
-	--total-length: 70;
+.post-navigation-sub span {
+	color: var(--global-font-color);
+	text-decoration: none;
+	display: inline-block;
 }
 
-.menu--1 input:checked + svg .line--1,
-.menu--1 input:checked + svg .line--3 {
-	--offset: -94.1149185097;
+.site-main .pagination {
+	margin-bottom: 1.5em;
 }
 
-.menu--1 input:checked + svg .line--2 {
-	--offset: -50;
+.pagination .nav-links {
+	justify-content: center;
+	flex-wrap: wrap;
 }
+
+.pagination .page-numbers {
+	display: inline-block;
+	margin-bottom: 0.5em;
+	margin-right: 1em;
+	border: 1px solid var(--color-link);
+	min-width: 1.75em;
+	line-height: 1.75;
+	text-align: center;
+	text-decoration: none;
+}
+
+.pagination a:visited {
+	color: var(--color-link);
+}
+
+.pagination a:hover,
+.pagination a:focus,
+.pagination a:active {
+	border-color: #00a0d2;
+}
+
+.pagination .prev,
+.pagination .next {
+	min-width: auto;
+	border-color: transparent;
+	text-decoration: underline;
+}
+
+.pagination .prev:hover,
+.pagination .prev:focus,
+.pagination .prev:active,
+.pagination .next:hover,
+.pagination .next:focus,
+.pagination .next:active {
+	border-color: transparent;
+}
+
+.pagination .dots {
+	min-width: auto;
+	border: none;
+}
+
+.pagination .current {
+	border-color: var(--text-color);
+}
+

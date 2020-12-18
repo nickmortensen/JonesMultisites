@@ -1,12 +1,12 @@
 {
 	"rules": {
 		"at-rule-empty-line-before": [ "always", {
-				"except": [ "after-same-name", "blockless-after-same-name-blockless", "first-nested" ],
-				"ignore": [ "after-comment", "inside-block" ]
+				"except": [ "after-same-name", "first-nested" ],
+				"ignore": [ "after-comment", "blockless-after-same-name-blockless", "inside-block" ]
 			} ],
 		"at-rule-name-case": "lower",
 		"at-rule-name-space-after": "always-single-line",
-		"at-rule-no-unknown": [ true, { "ignoreAtRules": [ "custom-media", "/^custom/", "/extend/" ] } ],
+		"at-rule-no-unknown": [ true, { "ignoreAtRules": [ "custom-media", "/^custom/", "/extend/", "/^for/" ] } ],
 		"at-rule-semicolon-newline-after": "always",
 		"block-closing-brace-newline-after": "always",
 		"block-closing-brace-newline-before": "always",

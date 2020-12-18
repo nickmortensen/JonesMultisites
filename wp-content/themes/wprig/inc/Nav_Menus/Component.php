@@ -131,12 +131,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 
-	/**
-	 * Add custom fields to $item nav object
-	 * in order to be used in custom Walker
-	 *
-	 * @access      public
-	 * @since       1.0
-	 * @return      void
-	*/
+/**
+ * Determine the items you want to have in the side menu and create an array of links.
+ */
 }

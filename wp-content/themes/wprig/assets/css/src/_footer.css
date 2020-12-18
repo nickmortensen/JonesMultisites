@@ -13,434 +13,427 @@ a[href^="tel:"]::before {
 	margin-right: 0.5em;
 }
 
-#company-info {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-
-	border-bottom: 2px solid #fff;
-
-	& span {
-		padding: 0.5vw 2vw;
-		font-size: clamp(16px, 1.7vw, 40px);
-		font-family: var(--highlight-font-family);
-		align-self: start;
-		&:first-of-type {
-			font-size: clamp(28px, 4.4vw, 80px);
-			font-weight: var(--superbold);
-			padding-bottom: 6px;
-		}
-	}
-}
-
-@media screen and (width > 800px ) {
-	#company-info {
-		flex-flow: row nowrap;
-		padding: 0.5vw 2vw;
-
-		& span {
-			flex-grow: 5;
-			&:first-of-type {
-				flex-grow: 1;
-				font-size: clamp(34px, 5.5vw, 68px);
-			}
-		}
-	}
-}
-
-
 footer {
-	position: relative;
-	margin-top: 140px;
+	margin-top: 5vw; /* to clear the descending flickity dots */
+	font-family: var(--highlight-font-family);
+	color: var(--has-dark-bg);
 	grid-row: 10 / 12;
-	order: 3;
-	display: flex;
-	flex-flow: column nowrap;
+	grid-template-columns: repeat(12, 1fr);
+	grid-template-rows: 4fr 2fr;
 	min-height: 800px;
-
-
-	/* & .all_locations {
-		grid-column: 1 / -1;
-		display: flex;
-		flex-flow: column wrap;
-		justify-content: space-between;
-		align-items: space-between;
-		align-content: space-between;
-		min-height: 440px;
-		max-width: 100%;
-
-		& a {
-			margin: 5px 20px;
-			color: var(--text-color-dark-bg);
-		}
-	} */
-}
-
-/* Jonessign Branch Address as displayed in footer */
-.single_jones_address {
-	display: flex;
-	flex-flow: row wrap;
+	justify-items: stretch;
 	align-items: center;
-	justify-content: space-between;
-	padding: 0 2vw;
-	width: 100%;
-	min-width: 280px;
-
-	/* Contains both the address and the phone number */
-	& > div {
-		padding-left: 2vw;
-		text-align: right;
-		font-size: clamp(20px, 1.84vw, 48px);
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: space-around;
-		border-left: 2px solid var(--footer-text-color);
-
-		/* The phone number is inside a link element */
-		& a {
-			font-size: clamp(20px, 1.84vw, 48px);
-			color: var(--footer-text-color);
-			text-decoration: none;
-		}
-	}
-
-	/* Namf of location - e.g. "Jones Richmond" */
-	& h2 {
-		color: var(--text-color-dark-bg);
-		font-size: clamp(28px, 2.14vw, 48px);
-	}
-
 }
 
-span[itemprop="streetAddress"] {
-	display: block;
+@media screen and ( width > 768px ) {
+	footer {
+		grid-template-rows: 4fr 2fr;
+	}
 }
 
-/* select element inside of this div is replaced with ul > li using select_effects.js */
-#location_selector {
-	color: var(--text-color-dark-bg);
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	height: 12vw;
-
-	& .dropdown_container {
-		margin: 0 auto;
-		min-width: 460px;
-	}
-
-	& .jones_location_option {
-		font-size: 1.4rem;
-		font-family: var(--highlight-font-family);
-	}
-} /* end #location_selector */
-
-#location_addresses {
-	border: 2px solid var(--yellow-600);
-	background: var(--gray-400);
-	order: 2;
-	align-self: flex-end;
-	height: 100%;
-	width: 100%;
-}
+/*--------------------------------------------------------------
+======================== LOCATION SELECT =======================
+--------------------------------------------------------------*/
+/*#region*/
 
 /* Default custom select styles */
-.branch-select {
-	order: 1;
-	display: inline-block;
-	vertical-align: middle;
+#location-select {
+
+	--options-bg: #bbc7c8;
+	--options-bg: rgba(2, 115, 185, 0.7);
+	grid-column: 1 / span 3;
+	grid-row: 1 / 1;
+	align-self: flex-start;
 	position: relative;
 	text-align: left;
 	z-index: 100;
-	width: 100%;
-	max-width: 500px;
+	width: max(280px, 24vw);
 	-webkit-touch-callout: none;
 	user-select: none;
+	background: transparent;
+	font-size: 0.8em;
+	min-width: 25vw;
+}
 
-	&:focus {
-		outline: solid; /* For better accessibility add a style for this in your skin */
-	}
+div.location-select-element:focus {
+	outline: none; /* For better accessibility add a style for this in your skin */
+}
 
-	& select {
-		display: none;
-	}
+.location-select-element select {
+	display: none;
+}
 
-	& span {
-		display: block;
-		position: relative;
-		cursor: pointer;
-		padding: 1em;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+.location-select-element span {
+	display: block;
+	position: relative;
+	cursor: pointer;
+	padding: 1em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
-	/* Placeholder and selected option */
-	& > span {
-		padding-right: 2.3em;
-	}
+/* Placeholder and selected option */
+.location-select-element > span {
+	padding: 0.5em 3em 0.5em 0.5em;
+	border-bottom: 3px solid #000;
+	border-color: inherit;
+	font-weight: var(--bold);
+}
 
-	/* down arrow becomes an up arrow */
-	&.branch-active > span::after {
-		transform: translateY(-50%) rotate(180deg);
-		transition: transform 0.4s ease;
-	}
-
-	/* Options Box -- contains options
-	opens when the branch-select element has ".branch-active" added to it by clicking */
-
-	& .branch-options {
-		position: absolute;
-		overflow: hidden;
-		width: 100%;
-		background: var(--color-theme-primary);
-		color: var(--text-color-dark-bg);
-		visibility: hidden;
-		top: 87px;
-
-		/* To ensure that the box opens above the "choose option" prompt */
-		/* transform: translateY(-117%); */
-		/* transform: translateY(1%); */
-	}
-
-	& ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		width: 100%;
-
-		& span {
-			padding: 1em;
-		}
-
-		& li.branch-focus span {
-			background-color: var(--color-theme-white);
-			color: var(--color-theme-primary);
-		}
-	}
-
-	/* Options inside the select are converted to list items inside an unordered list by javascript */
-	&.branch-active .branch-options {
-		visibility: visible;
-	}
-
-	/* Optgroup and optgroup label */
-	& li.branch-optgroup ul {
-		padding-left: 1em;
-	}
-
-	& li.branch-optgroup > span {
-		cursor: default;
-	}
-
-} /* /.branch-select */
-
-
-.branch-select > span::after,
-.branch-select .branch-selected span::after {
+.location-select-element > span::after,
+.location-select-element .location-selected span::after {
 	speak: none;
 	position: absolute;
 	top: 50%;
-	transform: translateY(-50%);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	transition: transform 0.4s ease;
+	content: "\002b"; /*+*/
+	right: 0.25em;
+	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 45deg);
+	transition: transform 0.5s;
 }
 
-/* down arrow to the right of the "Choose" text*/
-
-.branch-select > span::after {
-	content: "\25BE"; /* ▾ */
-	right: 3.1em;
-	font-stretch: condensed;
+.location-select-element > span::after {
+	content: "\002b"; /*+*/
+	right: 1em;
+	right: 0.25em;
+	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 45deg);
+	transition: transform 0.5s;
 }
 
-.branch-select > span.branch-placeholder::after {
-	content: "\25BE"; /* ▾ */
-	right: 3.1em;
-	font-stretch: condensed;
-}
-
-/**
- * Checkmark to indicate which location has been previously chosen
- * appears in open dropdown when a location has already been picked
- */
-
-.branch-select .branch-selected span::after {
-	content: "\2713"; /* ✓ */
+.location-select-element .location-selected span::after {
+	content: "\2713";
 	margin-left: 1em;
-	transition: transform 0.4s ease;
 }
 
-.branch-active {
+.location-select-element.location-active > span::after {
+	-webkit-transform: translateY(-50%) rotate(180deg);
+	transform: translateY(-50%) rotate(180deg);
+	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 270deg);
+}
+
+div.location-active {
 	z-index: 200;
-
-	& > ul > li:hover {
-		background: var(--yellow-600);
-		transition: all 0.2s;
-	}
 }
 
-/* end branch-select baseline */
-
-/* CS SKIN BORDER NO ICOMOON -- USES UNICODE ENTITIES INSTEAD */
-
-/* Just the box initially */
-
-.preferred-border {
-	background-color: rgba(255, 255, 255, 0.2); /* very faint white */
-	max-width: 600px;
-
-	/* Choose a location OR the chosen location */
-	& > span {
-		border: 5px solid #000;
-		border-color: inherit;
-		transition: background-color 0.2s, border-color 0.2s;
-	}
-
-	& ul span::after {
-		content: "";
-		opacity: 0;
-	}
-
-	/* When selected a location will be followed by a checkmark to indicate so - because the words in the box will revert to "Choose"*/
-
-	& .branch-selected span::after {
-		content: "\2714"; /* ✔ */
-		color: var(--color-theme-white);
-		font-size: 1.5em;
-		opacity: 1;
-		transition: opacity 0.2s;
-	}
-
-	& .branch-selected.branch-focus > span::after {
-		color: var(--color-theme-primary);
-		transition: all 0.2s;
-	}
-
-	& .branch-options {
-		letter-spacing: 1px;
-		color: var(--color-theme-white);
-		font-size: 1.15em;
-		opacity: 0;
-		transition: opacity 0.2s, visibility 0s 0.2s;
-	}
-
-	/* these are the options shown in the dropdown */
-	& ul span {
-		padding: 0.4em;
-		-webkit-backface-visibility: hidden;
-		backface-visibility: hidden;
-	}
-
-	/* the options on hover change color and background color */
-	& li.branch-focus span, {
-		background: var(--color-theme-white);
-		color: var(--color-theme-primary);
-		transition: all 0.2s;
-	}
-
-} /* /.preferred-border */
-
-@media screen and (width < 420px ) {
-	div.preferred-border {
-		font-size: inherit;
-	}
+/* location Options */
+.location-select-element .location-options {
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	visibility: hidden;
+	background: var(--options-bg, #ffc600);
+	opacity: 0;
+	transition: opacity 0.3s 0.4s, visibility 0s 0.7s;
 }
 
-/* after "Choose Nearest Location" */
-.branch-placeholder::after {
-	content: "\2193"; /* ↓ */
-
-}
-
-.preferred-border > span::after,
-.preferred-border .branch-selected span::after {
-	content: "\2714"; /* ↓ */
-}
-
-/* default choice of label -- always appears */
-.preferred-border.branch-active > span {
-	background: var(--color-theme-primary);
-	background: trasnsparent;
-	border-color: var(--text-color-dark-bg);
-	color: var(--text-color-dark-bg);
-}
-
-/* overall box that holds the options in the dropdown */
-.preferred-border.branch-active .branch-options {
+.location-select-element.location-active .location-options {
+	visibility: visible;
 	opacity: 1;
-	-webkit-transition: opacity 0.2s;
-	transition: opacity 0.2s;
+	transition: opacity 0.3s;
 }
 
-/* END CS SKIN BORDER NO ICOMOON */
+.location-select-element ul {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style: none;
 
+	& span {
+		position: relative;
+		text-transform: uppercase;
+		font-size: 66%;
+		font-weight: var(--bold);
+		letter-spacing: 1px;
+		padding: 1.2em 0.8em;
+		opacity: 0;
+		-webkit-transform: translate3d(100%, 0, 0);
+		transform: translate3d(100%, 0, 0);
+		-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+		transition: opacity 0.3s, transform 0.3s;
+	}
+}
+
+
+.location-select-element ul span::after {
+	content: "";
+	opacity: 0;
+}
+
+.location-select-element ul span::before {
+	content: "";
+	position: absolute;
+	bottom: 1px;
+	left: 0;
+	height: 3px;
+	width: 100%;
+	background-color: #fff;
+	transform: translate3d(200%, 0, 0);
+	transition: transform 0.3s;
+}
+
+
+.location-select-element .location-selected span::after {
+	content: "\002b"; /*+*/
+	opacity: 1;
+	-webkit-transition: opacity 0.3s 0.7s;
+	transition: opacity 0.3s 0.7s;
+}
+
+.location-select-element ul li.location-focus span {
+	background-color: #ddd;
+}
+
+/* Optgroup and optgroup label */
+.location-select-element li.location-optgroup ul {
+	padding-left: 1em;
+}
+
+.location-select-element li.location-optgroup > span {
+	cursor: default;
+}
+
+div.location-select-element {
+	background: transparent;
+	font-size: 1.8em;
+	max-width: 400px;
+}
+
+@media screen and (max-width: 30em) {
+	div.location-select-element {
+		font-size: 1.2em;
+	}
+}
+
+.location-select-element > span {
+	padding: 0.5em 3em 0.5em 0.5em;
+	border-bottom: 2px solid #000;
+	border-color: inherit;
+	font-weight: var(--bold);
+}
+
+.location-select-element > span::after {
+	content: "\002b"; /* + */
+	right: 0.25em;
+	font-size: var(--fontsize-xl);
+	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 0deg);
+	transition: transform 0.5s;
+}
+
+/* Plus sign spins around and becomes an 'x' */
+.location-select-element.location-active > span::after {
+	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 225deg);
+}
+
+.location-select-element .location-options {
+	background: var(--options-bg, #bbc7c8);
+	opacity: 0;
+	transition: opacity 0.3s 0.4s, visibility 0s 0.7s;
+}
+
+.location-select-element.location-active .location-options {
+	opacity: 1;
+	transition: opacity 0.3s;
+}
+
+.location-select-element ul span {
+	position: relative;
+	text-transform: uppercase;
+	font-size: 66%;
+	font-weight: var(--bold);
+	letter-spacing: 1px;
+	padding: 1.2em 0.8em;
+	opacity: 0;
+	transform: translate3d(100%, 0, 0);
+	transition: opacity 0.3s, transform 0.3s;
+}
+
+.location-select-element ul span::after {
+	content: "";
+	opacity: 0;
+}
+
+.location-select-element .location-selected span {
+	position: relative;
+}
+
+/* Checkmark only appears when an item is selected and we open up the selections again */
+.location-select-element .location-selected span::after {
+	content: "\2713"; /*✓*/
+	opacity: 1;
+	transition: opacity 0.3s 0.7s;
+	font-size: 1.5em;
+	color: var(--yellow-600);
+
+	/* transform: translate3d(-150%, -50%, 0) rotate3d(0, 0, 0, -90deg); */
+	transform: translate3d(-2rem, -50%, 0) rotate3d(0, 0, 0, -90deg);
+}
+
+
+.location-select-element.location-active ul span,
+.location-select-element.location-active ul span::before {
+	opacity: 1;
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+
+.location-select-element li:nth-child(5) span,
+.location-select-element li:nth-child(5) span::before,
+.location-select-element.location-active li:first-child span,
+.location-select-element.location-active li:first-child span::before {
+	transition-delay: 0.05s;
+}
+
+.location-select-element li:nth-child(2) span,
+.location-select-element li:nth-child(2) span::before,
+.location-select-element.location-active li:nth-child(2) span,
+.location-select-element.location-active li:nth-child(2) span::before {
+	transition-delay: calc(2s * 0.05);
+}
+
+
+.location-select-element li:nth-child(3) span,
+.location-select-element li:nth-child(3) span::before,
+.location-select-element.location-active li:nth-child(3) span,
+.location-select-element.location-active li:nth-child(3) span::before {
+	transition-delay: calc(3s * 0.05);
+}
+
+
+.location-select-element li:nth-child(4) span,
+.location-select-element li:nth-child(4) span::before,
+.location-select-element.location-active li:nth-child(4) span,
+.location-select-element.location-active li:nth-child(4) span::before {
+	transition-delay: calc(4s * 0.05);
+}
+
+
+.location-select-element li:nth-child(5) span,
+.location-select-element li:nth-child(5) span::before,
+.location-select-element.location-active li:nth-child(5) span,
+.location-select-element.location-active li:nth-child(5) span::before {
+	transition-delay: calc(5s * 0.05);
+}
+
+
+.location-select-element li:nth-child(6) span,
+.location-select-element li:nth-child(6) span::before,
+.location-select-element.location-active li:nth-child(6) span,
+.location-select-element.location-active li:nth-child(6) span::before {
+	transition-delay: calc(6s * 0.05);
+}
+
+
+.location-select-element li:nth-child(7) span,
+.location-select-element li:nth-child(7) span::before,
+.location-select-element.location-active li:nth-child(7) span,
+.location-select-element.location-active li:nth-child(7) span::before {
+	transition-delay: calc(7s * 0.05);
+}
+
+
+.location-select-element li:nth-child(8) span,
+.location-select-element li:nth-child(8) span::before,
+.location-select-element.location-active li:nth-child(8) span,
+.location-select-element.location-active li:nth-child(8) span::before {
+	transition-delay: calc(8s * 0.05);
+}
+
+
+.location-select-element li:nth-child(9) span,
+.location-select-element li:nth-child(9) span::before,
+.location-select-element.location-active li:nth-child(9) span,
+.location-select-element.location-active li:nth-child(9) span::before {
+	transition-delay: calc(9s * 0.05);
+}
+
+
+.location-select-element li:nth-child(10) span,
+.location-select-element li:nth-child(10) span::before,
+.location-select-element.location-active li:nth-child(10) span,
+.location-select-element.location-active li:nth-child(10) span::before {
+	transition-delay: calc(10s * 0.05);
+}
+
+
+.location-select-element li:nth-child(11) span,
+.location-select-element li:nth-child(11) span::before,
+.location-select-element.location-active li:nth-child(11) span,
+.location-select-element.location-active li:nth-child(11) span::before {
+	transition-delay: calc(11s * 0.05);
+}
+
+
+.location-select-element li:nth-child(12) span,
+.location-select-element li:nth-child(12) span::before,
+.location-select-element.location-active li:nth-child(12) span,
+.location-select-element.location-active li:nth-child(12) span::before {
+	transition-delay: calc(12s * 0.05);
+}
+
+
+.location-select-element li:nth-child(13) span,
+.location-select-element li:nth-child(13) span::before,
+.location-select-element.location-active li:nth-child(13) span,
+.location-select-element.location-active li:nth-child(13) span::before {
+	transition-delay: calc(13s * 0.05);
+}
+
+
+.location-select-element li:nth-child(14) span,
+.location-select-element li:nth-child(14) span::before,
+.location-select-element.location-active li:nth-child(14) span,
+.location-select-element.location-active li:nth-child(14) span::before {
+	transition-delay: calc(14s * 0.05);
+}/* more items require more delay declarations */
+
+.location-select-element .location-options li span:hover,
+.location-select-element .location-options li.location-focus span,
+.location-select-element li.location-selected span {
+	color: var(--gray-100);
+	background: rgba(2, 115, 185, 0.9);
+	transition: all 0.2s ease;
+}
+
+/*#endregion*/
 
 /*--------------------------------------------------------------
-SVG LOCATIONS MAP
+======================== LOCATION MAP ==========================
 --------------------------------------------------------------*/
-
-address > a[href^="tel:"] {
-	color: var(--color-theme-black);
-	display: block;
-	text-decoration: none;
-
-	&::before {
-		content: "\2706";
-		margin-right: 0.5em;
-	}
-}
-
-#svg_map_element {
-	min-height: 800px;
-}
-
-#jones_locations_svg_map_container {
+#location-map {
 	--state-fill: var(--color-theme-primary);
 	--state-stroke: var(--blue-500);
 	--state-stroke-width: 2;
 	--address-font-size: 1.1rem;
 	--animation-duration: 10s;
 	--marker-color: var(--yellow-600);
-	--width: 90%;
-	background-color: transparent;
-	color: var(--color-theme-white);
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	width: var(--width);
-	max-width: 740px;
-	transform: translate(-50%, -50%);
+	--width: 70%;
+	--map-max-width: 100%;
+	--map-m-top: 3em;
+	--animation-delay: 2s;
 
-	& > div:not(.map) {
-		display: flex;
-		flex-flow: column nowrap;
-		justify-content: flex-start;
-		align-items: center;
-
-		& > h2,
-		& > h3 {
-			color: inherit;
-		}
-	}
+	grid-column: 3 / -1;
+	grid-row: 1 / 1;
+	max-width: var(--width);
+	justify-self: center;
+	align-self: flex-start;
 
 	& svg {
 		height: auto;
-		max-width: 100%;
+		max-width: var(--map-max-width);
+	}
 
-		& .state {
-			fill: var(--state-fill);
-			stroke: var(--state-stroke);
-			stroke-width: var(--state-stroke-width);
-		}
+	& .state {
+		fill: var(--state-fill);
+		stroke: var(--state-stroke);
+		stroke-width: var(--state-stroke-width);
 	}
 
 	& .map {
-		margin-top: 3em;
+		margin-top: var(--map-m-top);
 		position: relative;
-	}
+	}/* /.map */
 
 	& .map-markers {
 		--marker-left: 63.5%;
@@ -449,271 +442,338 @@ address > a[href^="tel:"] {
 		margin: 0;
 		padding: 0;
 
-
 		& .grb,
 		& .nat {
-
 			left: var(--marker-left);
 			top: var(--marker-top);
 			&::after {
-				animation-delay: 2s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .msp {
 			--marker-left: 55%;
 			--marker-top: 20%;
+			--animation-delay: 2.5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 2.5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .tpa {
 			--marker-left: 79%;
 			--marker-top: 86%;
+			--animation-delay: 3s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 3s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .mia {
 			--marker-left: 85%;
 			--marker-top: 91%;
+			--animation-delay: 3.5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 3.5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .rno {
 			--marker-left: 7%;
 			--marker-top: 36%;
+			--animation-delay: 4s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 4s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .las {
 			--marker-left: 14%;
 			--marker-top: 54%;
+			--animation-delay: 4.5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 4.5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .phl {
 			--marker-left: 89%;
 			--marker-top: 35%;
+			--animation-delay: 5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .lax {
 			--marker-left: 6%;
 			--marker-top: 56%;
+			--animation-delay: 5.5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 5.5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .san {
 			--marker-left: 7%;
 			--marker-top: 62%;
+			--animation-delay: 6s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 6s;
+				animation-delay: var(--animation-delay);
 			}
-
 		}
 
 		& .mxt {
 			--marker-left: 9%;
 			--marker-top: 65%;
+			--animation-delay: 6.5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 6.5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .mxz {
 			--marker-left: 29%;
 			--marker-top: 72%;
+			--animation-delay: 7s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 7s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .ric {
 			--marker-left: 84%;
 			--marker-top: 45%;
+			--animation-delay: 7.5s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 7.5s;
+				animation-delay: var(--animation-delay);
 			}
 		}
 
 		& .vab {
 			--marker-left: 88%;
 			--marker-top: 48%;
+			--animation-delay: 8s;
 			left: var(--marker-left);
 			top: var(--marker-top);
 
 			&::after {
-				animation-delay: 8s;
+				animation-delay: var(--animation-delay);
 			}
 		}
-	} /* /map-markers */
+
+	}/* /.map-markers */
 
 	& .map-marker {
+		--height: 2em;
+		--width: var(--height);
+		--margin-top-bottom: -0.5em;
 		position: absolute;
 
 		&::after {
-			animation-duration: var(--animation-duration, 10s);
+
+			/*
+			animation-duration: var(--animation-duration);
 			animation-iteration-count: infinite;
 			animation-name: pop;
+			--margin-top-bottom: -0.5em;
+			*/
+			animation: var(--animation-duration) infinite pop;
 			border-radius: 50%;
+			opacity: 0;
 			border: 1px solid var(--marker-color);
 			content: "";
-			height: 2em;
-			left: 0;
-			margin: -0.5em 0 0 -0.5em;
-			opacity: 0;
+			height: var(--height);
+			width: var(--width);
 			position: absolute;
+			left: 0;
 			top: 0;
-			width: 2em;
+			margin: var(--margin-top-bottom) 0 0 var(--margin-top-bottom);
 		}
 
 		& a[href="#"] {
+			--height: 1em;
+			--width: var(--height);
+
 			background-color: var(--marker-color);
 			border-radius: 50%;
-			height: 1em;
+			height: var(--height);
 			display: block;
 			text-indent: -9999px;
-			width: 1em;
+			width: var(--width);
 		}
-	}
 
-	/* & .map-marker:hover .map-marker-info {
-		display: block;
-		display: flex;
-	} */
-
-}
-
-
-.map-marker-info {
-	/* display: none; */
-	left: 50%;
-	position: absolute;
-	bottom: 0;
-	transform: translate(-50%, -2em);
-	width: 20em;
-	z-index: 999;
-
-	& div.heading {
-		background-color: var(--color-theme-primary);
-		border-radius: 0.5em 0.5em 0 0;
-
-		& > h2 {
-			color: var(--color-theme-white);
-			margin-bottom: 0;
-			padding: 0 1em;
-			letter-spacing: 1px;
+		/*
+		====== UNCOMMENT IF WE WISH LOCATION INFORMATION TO BE VISIBLE ON HOVER MARKER HOVER ====
+		 & .map-marker:hover .map-marker-info {
+			display: block;
+			display: flex;
 		}
-	}
+		*/
 
-	& main {
-		background-color: var(--color-theme-white);
-		border: 1px solid var(--color-theme-white);
-		border-radius: 0 0 0.5em 0.5em;
-		color: var(--global-text-color);
-		padding: 0.5em 1em;
-	}
+	}/* \.map-marker */
 
-}
+	& .map-marker-info {
+		--bg-border-color: var(--bg-body-color);
+		--marker-width: 300px;
 
-.map-marker-info-inner {
-	border-radius: 0.5em;
-	box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.3);
-	font-size: 0.875em;
-
-	&::after {
-		border-left: 0.75em solid transparent;
-		border-right: 0.75em solid transparent;
-		border-top: 1em solid var(--color-theme-white);
-		content: "";
-		height: 0;
-		left: 50%;
+		/* display: none; */
 		position: absolute;
+		left: 50%;
+		bottom: 0;
+		transform: translate(-50%, -2em);
+		width: var(--marker-width);
+		z-index: 1200;
 
-		/* top: 99% gets rid of the 1px gap while animating that was driving me nuts */
-		top: 99%;
-		transform: translateX(-50%);
-		width: 0;
-	}
+		& .inner {
+			flex-flow: column nowrap;
+			border-radius: 0.5em;
+			box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.3);
+			font-size: 0.875em;
 
-	& address {
-		color: inherit;
-
-		& > span {
-			font-size: 0.9rem;
-
-			&:first-of-type {
-				display: block;
+			/* QUOTE TEPEE */
+			&::after {
+				border-left: 0.75em solid transparent;
+				border-right: 0.75em solid transparent;
+				border-top: 1em solid var(--bg-border-color);
+				content: "";
+				height: 0;
+				width: 0;
+				position: absolute;
+				top: 99%; /* gets rid of the 1px gap */
+				left: 50%;
+				transform: translateX(-50%); /* places tepee in midle */
 			}
-		}
+
+			& > div {
+				background-color: var(--color-theme-primary);
+				border-radius: 0.5em 0.5em 0 0;
+
+				& > h2 {
+					font-size: var(--fontsize-s);
+					color: var(--has-dark-bg);
+					margin-bottom: 0;
+					padding: 0.5vw 8px;
+					letter-spacing: 1px;
+				}
+			}/* \.heading */
+
+			& main {
+				display: block;
+				width: 100%;
+				background-color: var(--bg-border-color);
+				color: var(--text-color);
+				border: 1px solig var(--bg-border-color);
+				border-radius: 0 0 0.5em 0.5em;
+				padding: 0.5em 1em;
+
+				& > address {
+					--fontsize-xs: calc(7px + 0.698vw);
+
+					color: inherit;
+
+					& > span {
+						font-size: 0.9em;
+						font-size: var(--fontsize-xs);
+
+						&:first-of-type {
+							display: block; /* Street Address appears ona  single line */
+						}
+					}
+
+					& a {
+						font-size: var(--fontsize-xs);
+					}
+				} /* \address */
+			} /* \main */
+
+		} /* \.inner */
 	}
 
-}
+}/* /#location-map */
 
-.animate {
-	animation-duration: 1s;
-	animation-fill-mode: both;
-}
-
-.animate-bounce-in {
-	animation-duration: 4.75s;
-	animation-name: bounce-in;
-}
-
-.animate-pop {
-	animation-duration: 6s;
-	animation-name: pop;
+@media screen and ( width > 768px ) {
+	#location-map {
+		--width: 90%;
+		grid-column: 4 / -1;
+	}
 }
 
 /*--------------------------------------------------------------
-SVG LOCATIONS MAP
+======================== LOCATION ADDRESS =======================
 --------------------------------------------------------------*/
+#location-address {
+	grid-column: 1 / -1;
+	align-self: flex-end;
+
+	background: var(--indigo-600);
+	width: 100%;
+
+	& .single_jones_address {
+
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		padding: 0 2vw;
+		min-width: 320px;
+		font-size: clamp(var(--fontsize-s), 1.2vw, 38px);
+
+		& h2 {
+			font-size: clamp(46px, 2.84vw, 88px);
+			color: var(--has-dark-bg);
+			max-width: 40%;
+		}
+
+		& div {
+			max-width: 40%;
+		}
+
+		& a {
+			color: var(--has-dark-bg);
+		}
+	}
+
+}
+
+@media screen and ( width > 768px ) {
+	#location-address {
+		grid-column: 1 / -1;
+	}
+}
+
 
 /*--------------------------------------------------------------
 END Footer
