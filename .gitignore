@@ -92,3 +92,9 @@ wp-content/themes/*
 !/wp-content/themes/wprig/postcss.config.js
 
 **/.DS_Store
+
+
+# ignore some files you are just dicking around with
+wp-content/themes/wprig/inc/Nav_Menus/Walker.php
+wp-content/themes/wprig/modal-messaround.php
+wp-content/themes/wprig/template-parts/bakheader

@@ -24,6 +24,7 @@
 @import "_custom-properties.css";
 @import "_custom-selectors.css";
 @import "_reset.css";
+@import "_navigation.css";
 @import "_keyframes.css";
 @import "_accessibility.css";
 @import "_header.css";
@@ -69,37 +70,56 @@ span[itemprop="streetAddress"] {
 /*--------------------------------------------------------------
 # Layouts
 --------------------------------------------------------------*/
-
-.site {
+body {
+	padding: 0;
 	margin: 0;
+	position: relative;
 	display: grid;
-	grid-template-columns: 3fr 9fr;
-	grid-template-rows: 1fr 8fr 3fr;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 4fr 2fr;
+	gap: 0 0;
+	grid-template-areas:
+		"header"
+		"content"
+		"footer";
 }
 
-.site-header,
-.site-main,
-main,
-.site-footer {
+@media screen and (min-width: 680px ) {
+
+	#content {
+		margin-left: var(--hamburger-menu-width);
+	}
+}
+
+#main-header {
+	border-bottom: 2px solid var(--gray-500);
+	background: var(--gray-300);
+	max-height: 160px;
 	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	grid-column: 1 / -1;
+	grid-area: header;
+	grid-template-columns: 1fr 3fr 1fr;
+	grid-template-areas: "branding topmenu searchbar";
+	justify-content: center;
+	align-items: flex-end;
 }
 
-.site-header {
-	order: 1;
-	grid-row: 1 / 2;
+
+.branding {
+	grid-area: branding;
+	border-right: 2px solid var(--gray-700);
+	place-items: center;
+
 }
 
-.site-main {
-	order: 2;
-	grid-row: 2 / 10;
+.main-navigation {
+	grid-area: topmenu;
+	display: grid;
+	justify-content: flex-end;
+	align-items: flex-end;
 }
 
-.site-footer {
-	order: 3;
-	grid-row: 10 / 12;
-}
+.searchbar { grid-area: searchbar; }
+
 
 /* Drag indicator for flickity */
 .drag-svg {
@@ -116,6 +136,7 @@ main,
 		animation: leftToRight 12s infinite;
 	}
 }
+
 
 /*--------------------------------------------------------------
 # Infinite scroll

@@ -14,6 +14,8 @@
 
 namespace WP_Rig\WP_Rig;
 
+get_header();
+
 global $post;
 global $post_type;
 global $template;
@@ -39,7 +41,7 @@ echo $post_type;
 	'client'        => $client,
 	'year_complete' => $year_complete,
 ] = wp_rig()->get_all_project_info( $post->ID );
-dump_debug($post_type);
+
 [
 	'vertical' => $vertical,
 	'featured' => $featured,
@@ -60,47 +62,41 @@ $featured_srcset = wp_get_attachment_image_srcset( $featured, 'medium' );
 
 $vertical_src = wp_get_attachment_image_src( $vertical, 'medium_large' )[0] ?? '';
 $featured_src = wp_get_attachment_image_src( $featured, 'medium_large' )[0];
-get_header();
+
 
 wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project', 'wp-rig-flickity' );
 ?>
 
 <main id="single-item" class="site-main project">
 
-<style>
+	<style>
 
-	.single_project_profile {
-		background: center / cover no-repeat url(<?= $featured_src; ?>), var(--blue-700);
-		background-blend-mode: multiply;
-	}
-.svg-contain {
-	background: #efefef;
-	width: 300px;
-	height: 300px;
-	border-radius: 50%;
-}
+		.single_project_profile {
+			background: center / cover no-repeat url(<?= $featured_src; ?>), var(--blue-700);
+			background-blend-mode: multiply;
+		}
 
-.client_logo {
-	width: 10vw;
-	height: 10vw;
-}
+		.svg-contain {
+			background: #efefef;
+			width: 300px;
+			height: 300px;
+			border-radius: 50%;
+		}
 
-</style>
+		.client_logo {
+			width: 10vw;
+			height: 10vw;
+		}
+
+	</style>
 
 <section class="single_project_profile">
-<div>
-	<?php the_title( '<h1 class="light-text">', '</h1>' ); ?>
-	<span class="light-text excerpt project_excerpt"><?= $excerpt; ?></span>
-</div>
-<object data="<?= $svg; ?>" type="image/svg+xml" class="client_logo">Client Logo</object>
-</section><!-- .entry-header -->
-
-<?php
-if ( 'development' === ENVIRONMENT ) {
-	get_template_part( 'template-parts/content/admin_tweaks' );
-}
-?>
-
+	<div>
+		<?php the_title( '<h1 class="light-text">', '</h1>' ); ?>
+		<span class="light-text excerpt project_excerpt"><?= $excerpt; ?></span>
+	</div>
+	<object data="<?= $svg; ?>" type="image/svg+xml" class="client_logo">Client Logo</object>
+</section>
 
 <style>
 	figure.flickity {
@@ -158,9 +154,9 @@ if ( 'development' === ENVIRONMENT ) {
 </style>
 
 
-<section class="related-projects"></section>
+<section id="project-page-related-projects" class="related-projects"></section>
 </main><!-- #single-project -->
-
+<?php wp_rig()->wrap_pre( wp_rig()->get_all_project_info( $post->ID ) ); ?>
 
 
 

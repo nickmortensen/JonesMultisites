@@ -71,6 +71,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_project_narrative'       => [ $this, 'get_project_narrative' ],
 			'get_city_state'              => [ $this, 'get_city_state' ],
 			'get_payment_link'            => [ $this, 'get_payment_link' ],
+			'get_project_sidemenu_items'  => [ $this, 'get_project_sidemenu_items' ],
 		];
 	}
 
@@ -136,7 +137,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_city_state( $address ) {
 		return $address['city'] . ', ' . $address['state'];
 	}
-
 
 	/**
 	 * Get Project Narrative text.
@@ -909,5 +909,31 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				]
 			);
 	} // end enqueue_projects_script()
+
+	/**
+	 * Shows a side menu of several projects.
+	 *
+	 * @param int $projects The number of projects to fetch. Gets the most recently updated projects.
+	 */
+	public function get_project_sidemenu_items( $projects = 8 ) : array {
+		global $template;
+		$recent_project_ids = $this->get_recent_project_ids( $projects );
+
+		// When on a project page, no need to have the current project in the side menu, right?
+		if ( 'single-project.php' === basename( $template ) ) {
+			global $post;  // The current post if we are on a post page.
+			$current            = [ $post->ID ];
+			$total              = (int) $projects + 1;
+			$recent_project_ids = array_diff( $this->get_recent_project_ids( $total ), $current );
+		}
+		$project_links = [];
+		foreach ( $recent_project_ids as $index => $project ) {
+			$url             = get_post_permalink( $project );
+			$excerpt         = get_post( $project )->post_excerpt;
+			$title           = get_post( $project )->post_title;
+			$project_links[] = "<li><a href = '$url' title='$excerpt'>$title</a></li>";
+		}
+		return $project_links;
+	}
 
 }//end class

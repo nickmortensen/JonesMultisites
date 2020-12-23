@@ -19,7 +19,7 @@ namespace WP_Rig\WP_Rig;
 
 			<span id="previousButton" class="person-symbol"></span>
 			<span class="" id="forwardButton">&#x2794;</span>
-			<button class="hideButton" type="submit" form="experimentalForm" id="submitFormButton" title="submit your inquiry now">&#9993;</button>
+			<!-- <button class="hideButton" type="submit" form="experimentalForm" id="submitFormButton" title="submit your inquiry now">&#9993;</button> -->
 
 
 			<div id="inputContainer">
@@ -37,46 +37,46 @@ namespace WP_Rig\WP_Rig;
 const mail  = '&#9993;';
 const arrow = '&#x2794;';
 let questions = [
-	{
-		question: 'What is your first name?',
-		attributes: {
-			autocomplete: 'given-name',
-			form: 'experimentalForm',
-			tabIndex: 10,
-			name: 'firstName',
-			title: 'enter your first name',
-		},
-	},
-	{
-		question:"What is your last name?",
-		attributes: {
-			autocomplete: 'family-name',
-			form: 'experimentalForm',
-			tabIndex: 20,
-			name: 'lastName',
-			title: 'enter your last name',
-		},
-	},
-	{
-		question:"What is your Company Name?",
-		attributes: {
-			autocomplete: 'organization',
-			form: 'experimentalForm',
-			tabIndex: 30,
-			name: 'companyName',
-			title: 'which company are you with?'
-		},
-	},
-	{
-		question:"What is your Position?",
-		attributes: {
-			autocomplete: 'organization-title',
-			form: 'experimentalForm',
-			tabIndex: 40,
-			name: 'jobTitle',
-			title: 'Enter your job title',
-		},
-	},
+	// {
+	// 	question: 'What is your first name?',
+	// 	attributes: {
+	// 		autocomplete: 'given-name',
+	// 		form: 'experimentalForm',
+	// 		tabIndex: 10,
+	// 		name: 'firstName',
+	// 		title: 'enter your first name',
+	// 	},
+	// },
+	// {
+	// 	question:"What is your last name?",
+	// 	attributes: {
+	// 		autocomplete: 'family-name',
+	// 		form: 'experimentalForm',
+	// 		tabIndex: 20,
+	// 		name: 'lastName',
+	// 		title: 'enter your last name',
+	// 	},
+	// },
+	// {
+	// 	question:"What is your Company Name?",
+	// 	attributes: {
+	// 		autocomplete: 'organization',
+	// 		form: 'experimentalForm',
+	// 		tabIndex: 30,
+	// 		name: 'companyName',
+	// 		title: 'which company are you with?'
+	// 	},
+	// },
+	// {
+	// 	question:"What is your Position?",
+	// 	attributes: {
+	// 		autocomplete: 'organization-title',
+	// 		form: 'experimentalForm',
+	// 		tabIndex: 40,
+	// 		name: 'jobTitle',
+	// 		title: 'Enter your job title',
+	// 	},
+	// },
 	{
 		question:"What is your email?",
 		attributes: {
@@ -161,6 +161,8 @@ let onComplete = function() {
 
 	// Load next question
 	function putQuestion() {
+
+		const finalQuestion = isLastQuestion( position, questions );
 		inputLabel.innerHTML = questions[position].question;
 		inputField.type      = questions[position].type || 'text';
 		inputField.value     = questions[position].answer || '';
@@ -174,22 +176,40 @@ let onComplete = function() {
 		let autocomplete = questions[position].attributes.autocomplete || '';
 		inputField.setAttribute( 'autocomplete', autocomplete );
 
+
+		/**
+		 * On the final question, change the forward button into a send mail button with the following attributes
+		 * type="submit"
+		 * form="experimentalForm"
+		 * title="use this button to send an email"
+		 */
+		if ( finalQuestion ) {
+			forwardButton.remove();
+			const submitFormButton = document.createElement( 'button' );
+			submitFormButton.innerHTML = mail;
+			submitFormButton.setAttribute( 'id', 'submitFormButton' );
+			submitFormButton.setAttribute( 'tabindex', '62' );
+			submitFormButton.setAttribute( 'type', 'submit' );
+			submitFormButton.setAttribute( 'class', '' );
+			submitFormButton.setAttribute( 'form', 'experimentalForm' );
+			submitFormButton.setAttribute( 'title', 'submit your message by pretting this button' );
+			inputContainer.insertAdjacentElement( 'beforebegin', submitFormButton );
+
+		} else {
+			assignButtonTabIndices();
+			console.log( 'this isnt the last question ');
+		}
+
+
 		inputField.focus();
 
-		assignButtonTabIndices();
 
 		// set the progress of the background
 		progress.style.width     = position * 100 / questions.length + '%';
 		previousButton.className = position ? '' : 'person-symbol';
 
 		showCurrent();
-		const finalQuestion = isLastQuestion( position, questions );
 
-		if ( finalQuestion ) {
-			console.log( 'this is the last question' );
-		} else {
-			console.log( 'this isnt the last question ');
-		}
 
 	}
 
@@ -232,8 +252,8 @@ function validate() {
 
 			if ( isLastQuestion( position, questions ) ) {
 				forwardButton.classList.add( 'hidden' );
-				submitFormButton.classList.remove('hideButton');
-				submitFormButton.classList.add('showButton');
+				// submitFormButton.classList.remove('hideButton');
+				// submitFormButton.classList.add('showButton');
 			}
 		} else {
 			hideCurrent( function() {

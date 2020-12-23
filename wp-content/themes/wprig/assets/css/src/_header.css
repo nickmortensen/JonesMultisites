@@ -2,7 +2,6 @@
 # Header
 --------------------------------------------------------------*/
 
-
 .site-header {
 	background: var(--color-theme-primary);
 }
@@ -21,31 +20,14 @@
 	margin: 0 auto 1em;
 }
 
-.site-branding {
-	width: 100%;
-	background: var(--color-theme-primary);
-	grid-column: 1 / -1;
-	grid-row: 1 / span 1;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-
-}
-
-@media screen and (width > 768px ) {
-	.site-branding {
-		grid-column: 1 / 5;
-	}
-}
 
 .site-title {
 	margin: 0 auto;
 	font-family: var(--highlight-font-family);
-	color: var(--has-dark-bg);
+	color: var(--gray-600);
 
 	& a {
-		font-size: var(--fontsize-l);
+		font-size: var(--fontsize-m);
 		text-decoration: none;
 		color: inherit;
 
@@ -91,8 +73,7 @@
 }/* /nav--toggle-small */
 
 .primary-menu-container {
-	padding-bottom: 4vw;
-	width: 100%;
+	display: none;
 }
 
 @media screen and (width > 768px ) {

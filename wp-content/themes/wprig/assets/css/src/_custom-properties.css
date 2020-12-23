@@ -160,8 +160,15 @@
 	/* QUOTES */
 	--color-quote-border: var(--gray-800);
 	--color-quote-citation: var(--gray-600);
+
+	/* BEZIER TRANSITIONS */
+	/*#region*/
 	--transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	--reverse-timing-function: cubic-bezier(0.53, -1.09, 0.44, 1.18);
+	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
+	/*#endregion*/
 
 	/* CUSTOM EDITOR FONT SIZES */
 	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
@@ -200,6 +207,7 @@
 	--paragraph-color: var(--global-font-color);
 	/*#endregion*/
 
+
 	/* LOGO */
 	--jones-svg-fill: var(--blue-600);
 	--tagline-svg-fill: var(--gray-500);
@@ -236,6 +244,21 @@
 
 	/* MENU */
 	--main-menu-bg: var(--color-theme-primary);
+
+	/* SIDE HAMBURGER MENU */
+	/*#region*/
+	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
+	--hamburger-menu-background-color-one: var(--color-theme-primary);
+	--hamburger-menu-background-color-two: rgba(40, 80, 120, 0.6);
+	--burger-div-height: 45px;
+	--hamburger-menu-width: 60px;
+	--shadow-one: 0 1px 3px rgba(0, 0, 0, 0.12);
+	--shadow-two: 0 1px 2px rgba(0, 0, 0, 0.24);
+	--hamburger-menu-box-shadow: var(--shadow-one), var(--shadow-two);
+	/*#endregion*/
+
 
 	/* FOOTER */
 	--footer-text-color: var(--color-theme-white);

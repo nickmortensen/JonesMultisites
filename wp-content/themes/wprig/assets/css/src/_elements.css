@@ -25,16 +25,6 @@ html {
 	box-sizing: inherit;
 }
 
-/**
- * Remove the margin in all browsers.
- */
-
-
-body {
-	background: var(--body-bg-color);
-	margin: 0;
-}
-
 
 /**
  * 1. Add the correct box sizing in Firefox.

@@ -9,7 +9,7 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-<div class="site-branding">
+<div class="branding">
 	<?php the_custom_logo(); ?>
 
 	<?php
@@ -29,7 +29,7 @@ namespace WP_Rig\WP_Rig;
 	if ( $wp_rig_description || is_customize_preview() ) {
 		?>
 		<p class="site-description">
-			<?php echo $wp_rig_description; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
+			<?= $wp_rig_description; /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped */ ?>
 		</p>
 		<?php
 	}

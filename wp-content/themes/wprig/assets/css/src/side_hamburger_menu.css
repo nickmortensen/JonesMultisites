@@ -1,0 +1,209 @@
+/*---------------------------------------------------- ----------
+# Imports
+--------------------------------------------------------------*/
+/* stylelint-disable at-rule-empty-line-before */
+@import "_custom-properties.css";
+@import "_custom-selectors.css";
+
+/*--------------------------------------------------------------
+# Side Hamburger Navigation
+--------------------------------------------------------------*/
+/* DO NOT DISPLAY THIS MENU ON SMALL SCREEN */
+/* less than 37.5em or 525px */
+
+@media screen and (width < 768px) {
+	nav#side-hamburger-menu {
+		display: none;
+		visibility: hidden;
+	}
+}
+
+nav#side-hamburger-nav {
+	display: block;
+	z-index: 140;
+	height: 100%;
+	width: var(--hamburger-menu-width);
+	box-shadow: var(--hamburger-menu-box-shadow);
+	position: absolute;
+	left: 0;
+	color: inherit;
+
+	&::after {
+		background-color: var(--hamburger-menu-background-color-one);
+		content: " ";
+		height: 100%;
+		width: var(--hamburger-menu-width);
+		position: absolute;
+		left: 0;
+	}
+
+	&::before {
+		background: var(--hamburger-menu-background-color-two);
+		left: var(--hamburger-menu-width);
+		content: " ";
+		width: 0;
+		height: 100%;
+		position: absolute;
+		transition: width 0.2s var(--bezier-transition);
+		box-shadow: var(--hamburger-menu-box-shadow);
+	}
+
+	&:hover::before {
+		width: calc(100 + var(--hamburger-menu-width));
+		width: 240px;
+		transition: width 0.4s var(--alternate-bezier-transition);
+	}
+
+	& > div {
+		position: relative;
+		background-color: var(--hamburger-menu-background-color-one);
+	} /* \nav#side-hamburger-nav > div */
+
+	& ul {
+		position: absolute;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		margin-top: calc(50vh - 160px);
+
+		& li {
+			font-size: 14px;
+			width: calc(var(--hamburger-menu-width) * 3);
+			height: 40px;
+			cursor: pointer;
+			position: relative;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+
+			& a {
+				min-width: 100%;
+				color: var(--has-dark-bg);
+				position: relative;
+				z-index: 0;
+				opacity: 0;
+				left: -80px;
+				text-transform: uppercase;
+				text-decoration: none;
+				transition: left 0.2s var(--bg-bezier), opacity 0.15s var(--alternate-bezier-transition);
+
+				&:hover,
+				&:active,
+				&:visited,
+				&:focus {
+					background-color: transparent;
+					color: var(--has-dark-bg);
+				}
+			}
+
+			&:hover::before {
+				background-color: var(--has-dark-bg);
+			}
+
+			&.active::before,
+			&:hover::before {
+				transform: scale(1.5) translate3d(0, 0, 0);
+				background-color: var(--has-dark-bg);
+			}
+
+			/* dots that precede the links */
+			&::before {
+				z-index: 10;
+				content: " ";
+				width: 8px;
+				height: 8px;
+				background-color: transparent;
+				position: absolute;
+				left: 26px;
+				top: 16px;
+				border-radius: 50%;
+				border: 2px solid var(--has-dark-bg);
+				transform: scale(1) translate3d(0, 0, 0);
+				transition: all 0.2s ease-in-out;
+			}
+
+		} /* \nav#side-hamburger-nav > ul li */
+
+
+	} /* \nav#side-hamburger-nav > ul */
+
+}/* \nav#side-hamburger-nav */
+
+/* Burger Menu On Hover slides things around and creates an X */
+nav#side-hamburger-nav:hover .burger {
+	background: transparent;
+	transform: rotate(45deg) translate3d(0, 0, 0);
+
+	&::before {
+		margin-top: 0;
+		transform: rotate(-90deg) translate3d(0, 0, 0);
+	}
+
+	&::after {
+		margin-top: 0;
+		transform: rotate(0deg) translate3d(0, 0, 0);
+	}
+}
+
+nav#side-hamburger-nav:hover li a {
+	left: calc(10px + var(--hamburger-menu-width));
+	opacity: 1;
+	transition-duration: 0.4s;
+	transition-delay: 0.2s;
+	transition-property: left, opacity;
+	transition-timing-function: var(--alternate-bezier-transition);
+
+	&:hover {
+		color: var(--yellow-600);
+		transition: color 0.2s ease;
+		transition-delay: 0;
+	}
+}
+
+/* stylelint-disable */
+@for $i from 2 to 12 {
+	nav#side-hamburger-nav:hover li:nth-child($i) a {
+		transition-delay: calc(($(i)s * 0.05) + 0.2s);
+	}
+}
+/* stylelint-enable */
+
+.nav-burger {
+	cursor: pointer;
+	width: 100%;
+	height: var(--burger-div-height);
+
+	& .burger {
+		margin-left: 18px;
+		margin-top: 30px;
+		cursor: pointer;
+	}
+
+	& .burger,
+	& .burger::before,
+	& .burger::after {
+		border-radius: 2px;
+		position: absolute;
+		z-index: 100;
+		width: 24px;
+		height: 4px;
+		background: var(--hamburger-menu-background-color-one);
+		background: var(--has-dark-bg);
+		transition: all 0.3s;
+	}
+
+	& .burger::before,
+	& .burger::after {
+		content: "";
+		display: block;
+	}
+
+	& .burger::before {
+		margin-top: -8px;
+	}
+
+	& .burger::after {
+		margin-top: 8px;
+	}
+
+} /* \.nav-burger */

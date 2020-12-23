@@ -282,35 +282,35 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$css_files = [
-			'wp-rig-global'     => [
+			'wp-rig-global'         => [
 				'file'   => 'global.min.css',
 				'global' => true,
 			],
-			'wp-rig-comments'   => [
+			'wp-rig-comments'       => [
 				'file'             => 'comments.min.css',
 				'preload_callback' => function() {
 					return ! post_password_required() && is_singular() && ( comments_open() || get_comments_number() );
 				},
 			],
-			'wp-rig-content'    => [
+			'wp-rig-content'        => [
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
 			],
-			'wp-rig-front-page' => [
+			'wp-rig-front-page'     => [
 				'file'             => 'front-page.min.css',
 				'preload_callback' => function() {
 					global $template;
 					return 'front-page.php' === basename( $template );
 				},
 			],
-			'wp-rig-taxonomy'   => [
+			'wp-rig-taxonomy'       => [
 				'file'             => 'taxonomies.min.css',
 				'preload_callback' => function() {
 					global $template;
 					return 'taxonomy-signtype.php' === basename( $template );
 				},
 			],
-			'wp-rig-project'    => [
+			'wp-rig-project'        => [
 				'file'             => 'project.min.css',
 				'preload_callback' => function() {
 					global $template;
@@ -318,12 +318,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				},
 			],
 			// Preload only on project post types using the single-project.php template.
-			'wp-rig-flickity'   => [
+			'wp-rig-flickity'       => [
 				'file'             => 'flickity.min.css',
 				'preload_callback' => function() {
 					global $template;
 					return 'project' === get_post_type() && 'single-project.php' === basename( $template ) || 'front-page.php' === basename( $template );
 				},
+			],
+			// Preload only on project post types using the single-project.php template.
+			'wp-rig-side-hamburger' => [
+				'file'   => 'side_hamburger_menu.min.css',
+				'global' => true,
 			],
 		];
 

@@ -20,10 +20,6 @@
 	margin: 0;
 }
 
-.site-branding {
-	text-align: center;
-	padding: 0;
-}
 
 .site-title {
 	margin: 0;
@@ -374,3 +370,7 @@
 .pagination .current {
 	border-color: var(--global-font-color);
 }
+
+
+
+/* ONLY SHOW ON screens larger than 37.5 rem or 525 px */
