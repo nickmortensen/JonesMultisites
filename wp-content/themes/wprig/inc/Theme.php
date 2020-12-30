@@ -167,6 +167,7 @@ class Theme {
 			new Media\Component(),
 			new JonesSign\Component(),
 			new ContactForm\Component(),
+			new Search\Component(),
 
 		];
 

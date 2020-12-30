@@ -11,13 +11,6 @@
 /* DO NOT DISPLAY THIS MENU ON SMALL SCREEN */
 /* less than 37.5em or 525px */
 
-@media screen and (width < 768px) {
-	nav#side-hamburger-menu {
-		display: none;
-		visibility: hidden;
-	}
-}
-
 nav#side-hamburger-nav {
 	display: block;
 	z-index: 140;

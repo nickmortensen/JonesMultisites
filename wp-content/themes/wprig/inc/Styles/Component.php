@@ -282,6 +282,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$css_files = [
+			// Only need to load this on certain pages, but how is a fella supposed to do that?
+			'wp-rig-side-hamburger' => [
+				'file'   => 'side_hamburger_menu.min.css',
+				'global' => true,
+			],
 			'wp-rig-global'         => [
 				'file'   => 'global.min.css',
 				'global' => true,
@@ -324,11 +329,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 					global $template;
 					return 'project' === get_post_type() && 'single-project.php' === basename( $template ) || 'front-page.php' === basename( $template );
 				},
-			],
-			// Preload only on project post types using the single-project.php template.
-			'wp-rig-side-hamburger' => [
-				'file'   => 'side_hamburger_menu.min.css',
-				'global' => true,
 			],
 		];
 

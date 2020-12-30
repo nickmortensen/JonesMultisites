@@ -64,7 +64,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *               adding support for further arguments in the future.
 	 */
 	public function template_tags() : array {
-		return [];
+		return [
+			'alt_search_html' => [ $this, 'alt_search_html' ],
+		];
 	}
 
 	/**
@@ -114,6 +116,35 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'aria-label' => 'Jones Sign Website Search', // False first parameter returns 'True' echoes the field..
 		];
 		$output = get_search_form( $args );
+		return $output;
+	}
+
+	/**
+	 * Search input surrounding HTML with input.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/get_search_form/
+	 * @link https://webdevstudios.com/2015/09/01/search-everything-within-custom-post-types/
+	 */
+	public function alt_search_html() {
+		$args   = [
+			'echo'       => false,
+			'aria-label' => 'Jones Sign Website Search', // False first parameter returns 'True' echoes the field..
+		];
+		$output = <<<SEARCH
+<div class="search_wrap">
+	<div class="search" role="search">
+		<input
+		type="search"
+		class="search_term"
+		placeholder="Enter search term"
+		aria-label="Search"
+	/>
+		<button type="submit" class="search_button">
+			<i class="search-icon">&#9906;</i>
+		</button>
+	</div><!-- end .search-->
+</div><!-- end .search_wrap-->
+SEARCH;
 		return $output;
 	}
 

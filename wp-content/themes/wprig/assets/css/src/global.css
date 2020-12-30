@@ -84,12 +84,15 @@ body {
 		"footer";
 }
 
-@media screen and (min-width: 680px ) {
-
-	#content {
-		margin-left: var(--hamburger-menu-width);
-	}
+#content {
+	margin-left: 0;
 }
+
+nav#side-hamburger-nav {
+	display: none;
+}
+
+
 
 #main-header {
 	border-bottom: 2px solid var(--gray-500);
@@ -118,7 +121,38 @@ body {
 	align-items: flex-end;
 }
 
-.searchbar { grid-area: searchbar; }
+.searchbar { grid-area: footer; }
+
+
+@media screen and (min-width: 768px ) {
+
+	body {
+		padding: 0;
+		margin: 0;
+		position: relative;
+		display: grid;
+		grid-template-columns: 160px, 1fr;
+		grid-template-rows: 1fr 4fr 2fr;
+		gap: 0 0;
+		grid-template-areas:
+			"sidemenu content"
+			"sidemenu content"
+			"sidemenu content";
+	}
+
+	#content {
+		margin-left: var(--hamburger-menu-width);
+		grid-area: content;
+	}
+
+	nav#side-hamburger-nav {
+		display: block;
+	}
+
+	.searchbar { grid-area: searchbar; }
+}
+
+
 
 
 /* Drag indicator for flickity */
