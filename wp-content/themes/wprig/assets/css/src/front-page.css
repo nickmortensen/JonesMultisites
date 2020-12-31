@@ -23,29 +23,6 @@
 	--side-menu-z-index: 1000;
 }
 
-
-/* header#main-header {
-	grid-area: sidemenu;
-	width: var(--header-width);
-	height: 100%;
-	left: 0;
-	transition: left 0.5s ease-in-out 0.2s;
-	position: fixed;
-	display: inline-block;
-	background-color: var(--bgc);
-	z-index: 1000;
-} */
-
-
-
-/* header#main-header nav {
-	height: 100%;
-	width: var(--header-width);
-	box-shadow: var(--box-shadow);
-	position: absolute;
-	left: 0;
-} */
-
 /* EXPERIMENTAL FORM: template-parts/frontpage/form-experiment.php */
 
 #form-experiment {
@@ -64,6 +41,7 @@
 	overflow-x: hidden;
 	background: var(--general-color);
 	font-family: var(--font-stack);
+
 
 	& h1 {
 		position: relative;

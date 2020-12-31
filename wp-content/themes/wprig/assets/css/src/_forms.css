@@ -447,3 +447,9 @@ form#contact {
 
 
 }
+
+@media screen and (min-width: 460px) {
+	#search_form:hover {
+		width: 290px; /* at larger screen will accomodate a longer query (roughly 27 characters)*/
+	}
+}

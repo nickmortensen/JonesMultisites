@@ -14,22 +14,16 @@ a[href^="tel:"]::before {
 }
 
 footer {
+	grid-area: footer;
 	margin-top: 5vw; /* to clear the descending flickity dots */
-	font-family: var(--highlight-font-family);
-	color: var(--has-dark-bg);
-	grid-row: 10 / 12;
-	grid-template-columns: repeat(12, 1fr);
-	grid-template-rows: 4fr 2fr;
-	min-height: 800px;
-	justify-items: stretch;
-	align-items: center;
+	display: grid;
+	grid-template-columns: 2fr 8fr;
+	grid-template-rows: 600px 1fr;
+	grid-template-areas:
+		"locationselect map"
+		"locationselect locationaddress";
 }
 
-@media screen and ( width > 768px ) {
-	footer {
-		grid-template-rows: 4fr 2fr;
-	}
-}
 
 /*--------------------------------------------------------------
 ======================== LOCATION SELECT =======================
@@ -38,21 +32,14 @@ footer {
 
 /* Default custom select styles */
 #location-select {
-
-	--options-bg: #bbc7c8;
 	--options-bg: rgba(2, 115, 185, 0.7);
-	grid-column: 1 / span 3;
-	grid-row: 1 / 1;
+	grid-area: locationselect;
 	align-self: flex-start;
-	position: relative;
-	text-align: left;
 	z-index: 100;
-	width: max(280px, 24vw);
 	-webkit-touch-callout: none;
 	user-select: none;
 	background: transparent;
 	font-size: 0.8em;
-	min-width: 25vw;
 }
 
 div.location-select-element:focus {
@@ -137,7 +124,7 @@ div.location-active {
 .location-select-element ul {
 	margin: 0;
 	padding: 0;
-	width: 100%;
+	/* width: 100%; */
 	list-style: none;
 
 	& span {
@@ -152,6 +139,7 @@ div.location-active {
 		transform: translate3d(100%, 0, 0);
 		-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
 		transition: opacity 0.3s, transform 0.3s;
+		color: #fff;
 	}
 }
 
@@ -177,7 +165,6 @@ div.location-active {
 .location-select-element .location-selected span::after {
 	content: "\002b"; /*+*/
 	opacity: 1;
-	-webkit-transition: opacity 0.3s 0.7s;
 	transition: opacity 0.3s 0.7s;
 }
 
@@ -195,6 +182,7 @@ div.location-active {
 }
 
 div.location-select-element {
+	position: relative;
 	background: transparent;
 	font-size: 1.8em;
 	max-width: 400px;
@@ -278,115 +266,20 @@ div.location-select-element {
 	transform: translate3d(0, 0, 0);
 }
 
-.location-select-element li:nth-child(5) span,
-.location-select-element li:nth-child(5) span::before,
-.location-select-element.location-active li:first-child span,
-.location-select-element.location-active li:first-child span::before {
-	transition-delay: 0.05s;
+
+/* more items require more delay declarations */
+
+/* stylelint-disable */
+@for $i from 2 to 14 {
+	.location-select-element li:nth-child($i) span,
+	.location-select-element li:nth-child($i) span::before,
+	.location-select-element.location-active li:nth-child($i) span,
+	.location-select-element.location-active li:nth-child($i) span::before {
+		transition-delay: calc($(i)s * 0.05);
+	}
 }
 
-.location-select-element li:nth-child(2) span,
-.location-select-element li:nth-child(2) span::before,
-.location-select-element.location-active li:nth-child(2) span,
-.location-select-element.location-active li:nth-child(2) span::before {
-	transition-delay: calc(2s * 0.05);
-}
-
-
-.location-select-element li:nth-child(3) span,
-.location-select-element li:nth-child(3) span::before,
-.location-select-element.location-active li:nth-child(3) span,
-.location-select-element.location-active li:nth-child(3) span::before {
-	transition-delay: calc(3s * 0.05);
-}
-
-
-.location-select-element li:nth-child(4) span,
-.location-select-element li:nth-child(4) span::before,
-.location-select-element.location-active li:nth-child(4) span,
-.location-select-element.location-active li:nth-child(4) span::before {
-	transition-delay: calc(4s * 0.05);
-}
-
-
-.location-select-element li:nth-child(5) span,
-.location-select-element li:nth-child(5) span::before,
-.location-select-element.location-active li:nth-child(5) span,
-.location-select-element.location-active li:nth-child(5) span::before {
-	transition-delay: calc(5s * 0.05);
-}
-
-
-.location-select-element li:nth-child(6) span,
-.location-select-element li:nth-child(6) span::before,
-.location-select-element.location-active li:nth-child(6) span,
-.location-select-element.location-active li:nth-child(6) span::before {
-	transition-delay: calc(6s * 0.05);
-}
-
-
-.location-select-element li:nth-child(7) span,
-.location-select-element li:nth-child(7) span::before,
-.location-select-element.location-active li:nth-child(7) span,
-.location-select-element.location-active li:nth-child(7) span::before {
-	transition-delay: calc(7s * 0.05);
-}
-
-
-.location-select-element li:nth-child(8) span,
-.location-select-element li:nth-child(8) span::before,
-.location-select-element.location-active li:nth-child(8) span,
-.location-select-element.location-active li:nth-child(8) span::before {
-	transition-delay: calc(8s * 0.05);
-}
-
-
-.location-select-element li:nth-child(9) span,
-.location-select-element li:nth-child(9) span::before,
-.location-select-element.location-active li:nth-child(9) span,
-.location-select-element.location-active li:nth-child(9) span::before {
-	transition-delay: calc(9s * 0.05);
-}
-
-
-.location-select-element li:nth-child(10) span,
-.location-select-element li:nth-child(10) span::before,
-.location-select-element.location-active li:nth-child(10) span,
-.location-select-element.location-active li:nth-child(10) span::before {
-	transition-delay: calc(10s * 0.05);
-}
-
-
-.location-select-element li:nth-child(11) span,
-.location-select-element li:nth-child(11) span::before,
-.location-select-element.location-active li:nth-child(11) span,
-.location-select-element.location-active li:nth-child(11) span::before {
-	transition-delay: calc(11s * 0.05);
-}
-
-
-.location-select-element li:nth-child(12) span,
-.location-select-element li:nth-child(12) span::before,
-.location-select-element.location-active li:nth-child(12) span,
-.location-select-element.location-active li:nth-child(12) span::before {
-	transition-delay: calc(12s * 0.05);
-}
-
-
-.location-select-element li:nth-child(13) span,
-.location-select-element li:nth-child(13) span::before,
-.location-select-element.location-active li:nth-child(13) span,
-.location-select-element.location-active li:nth-child(13) span::before {
-	transition-delay: calc(13s * 0.05);
-}
-
-
-.location-select-element li:nth-child(14) span,
-.location-select-element li:nth-child(14) span::before,
-.location-select-element.location-active li:nth-child(14) span,
-.location-select-element.location-active li:nth-child(14) span::before {
-	transition-delay: calc(14s * 0.05);
-}/* more items require more delay declarations */
+/* stylelint-enable */
 
 .location-select-element .location-options li span:hover,
 .location-select-element .location-options li.location-focus span,
@@ -413,11 +306,8 @@ div.location-select-element {
 	--map-m-top: 3em;
 	--animation-delay: 2s;
 
-	grid-column: 3 / -1;
-	grid-row: 1 / 1;
-	max-width: var(--width);
-	justify-self: center;
-	align-self: flex-start;
+	grid-area: map;
+
 
 	& svg {
 		height: auto;
@@ -725,20 +615,12 @@ div.location-select-element {
 
 }/* /#location-map */
 
-@media screen and ( width > 768px ) {
-	#location-map {
-		--width: 90%;
-		grid-column: 4 / -1;
-	}
-}
 
 /*--------------------------------------------------------------
 ======================== LOCATION ADDRESS =======================
 --------------------------------------------------------------*/
 #location-address {
-	grid-column: 1 / -1;
-	align-self: flex-end;
-
+	grid-area: locationaddress;
 	background: var(--indigo-600);
 	width: 100%;
 
@@ -768,11 +650,6 @@ div.location-select-element {
 
 }
 
-@media screen and ( width > 768px ) {
-	#location-address {
-		grid-column: 1 / -1;
-	}
-}
 
 
 /*--------------------------------------------------------------

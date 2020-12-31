@@ -1108,7 +1108,6 @@ JSONLD;
 
 	/**
 	 * Output an AVG With the icon for Jones Sign Company
-	 *
 	 */
 	public function get_jones_icon() {
 		$icon = <<<ICO

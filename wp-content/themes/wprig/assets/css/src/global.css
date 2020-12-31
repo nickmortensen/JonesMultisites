@@ -76,101 +76,47 @@ body {
 	position: relative;
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-template-rows: 1fr 4fr 2fr;
+	grid-template-rows: 1fr;
 	gap: 0 0;
+	grid-template-areas: "website";
+	align-content: stretch;
+}
+
+#side-hamburger-nav { display: none; }
+
+/* full header styles at _header.css */
+header { grid-area: header; }
+
+#website { grid-area: website; }
+
+/* full footer styles at _footer.css */
+footer { grid-area: footer; }
+
+#website {
+	display: grid;
+	min-height: 100%;
+	grid-template-columns: 1fr;
+	grid-template-rows: 180px 6fr 2fr;
 	grid-template-areas:
 		"header"
-		"content"
+		"main"
 		"footer";
 }
 
-#content {
-	margin-left: 0;
-}
-
-nav#side-hamburger-nav {
-	display: none;
-}
-
-
-
-#main-header {
-	border-bottom: 2px solid var(--gray-500);
-	background: var(--gray-300);
-	max-height: 160px;
-	display: grid;
-	grid-area: header;
-	grid-template-columns: 1fr 3fr 1fr;
-	grid-template-areas: "branding topmenu searchbar";
-	justify-content: center;
-	align-items: flex-end;
-}
-
-
-.branding {
-	grid-area: branding;
-	border-right: 2px solid var(--gray-700);
-	place-items: center;
-
-}
-
-.main-navigation {
-	grid-area: topmenu;
-	display: grid;
-	justify-content: flex-end;
-	align-items: flex-end;
-}
-
-.searchbar { grid-area: footer; }
-
-
 @media screen and (min-width: 768px ) {
-
 	body {
-		padding: 0;
-		margin: 0;
-		position: relative;
-		display: grid;
-		grid-template-columns: 160px, 1fr;
-		grid-template-rows: 1fr 4fr 2fr;
-		gap: 0 0;
-		grid-template-areas:
-			"sidemenu content"
-			"sidemenu content"
-			"sidemenu content";
+		grid-template-columns: var(--hamburger-menu-width), 1fr;
+		grid-template-rows: 1fr;
+		grid-template-areas: "sidemenu website";
 	}
 
-	#content {
-		margin-left: var(--hamburger-menu-width);
-		grid-area: content;
-	}
+	#website { margin-left: var(--hamburger-menu-width); }
 
-	nav#side-hamburger-nav {
+	#side-hamburger-nav {
 		display: block;
-	}
-
-	.searchbar { grid-area: searchbar; }
-}
-
-
-
-
-/* Drag indicator for flickity */
-.drag-svg {
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	background: var(--blue-600);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	& > svg {
-		width: 30px;
-		animation: leftToRight 12s infinite;
+		grid-area: sidemenu;
 	}
 }
-
 
 /*--------------------------------------------------------------
 # Infinite scroll
@@ -316,4 +262,23 @@ were hidden (via .neverending) before. */
 were hidden (via .neverending) before. */
 .infinity-end.neverending .site-footer {
 	display: block;
+}
+
+/*--------------------------------------------------------------
+Drag indicator for flickity
+--------------------------------------------------------------*/
+
+.drag-svg {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: var(--blue-600);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	& > svg {
+		width: 30px;
+		animation: leftToRight 12s infinite;
+	}
 }

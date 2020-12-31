@@ -21,31 +21,31 @@ foreach ( $fp_photos as $header_photo ) {
 }
 ?>
 
-<footer
-id="colophon"
-class="site-footer"
-style="
-	background: center / cover no-repeat url(<?= $bgsrcs[1]; ?>),
-	linear-gradient( var(--blue-900) 20%, var(--gray-900) 60%);
-	background-blend-mode: multiply;">
 
-	<div id="location-select">
-		<?php get_template_part( 'template-parts/footer/location', 'select' ); ?>
-	</div><!-- /#location-select -->
+		<footer
+		id="colophon"
+		class="site-footer"
+		style="
+			background: center / cover no-repeat url(<?= $bgsrcs[1]; ?>),
+			linear-gradient( var(--blue-900) 20%, var(--gray-900) 60%);
+			background-blend-mode: multiply;">
 
-	<div id="location-map">
-		<?php get_template_part( 'template-parts/footer/location', 'map' ); ?>
-	</div><!-- /#location-map -->
+			<div id="location-select">
+				<?php get_template_part( 'template-parts/footer/location', 'select' ); ?>
+			</div><!-- /#location-select -->
 
-	<div id="location-address">
-		</div><!-- /#location-address -->
-	<?php get_template_part( 'template-parts/footer/location', 'address' ); ?>
+			<div id="location-map">
+				<?php get_template_part( 'template-parts/footer/location', 'map' ); ?>
+			</div><!-- /#location-map -->
 
-</footer><!-- #colophon -->
+			<div id="location-address">
+				</div><!-- /#location-address -->
+			<?php get_template_part( 'template-parts/footer/location', 'address' ); ?>
 
+		</footer><!-- #colophon -->
+
+</section>
 <?php wp_footer(); ?>
-</div><!--all_elements-->
-
 
 <script>
 	const show = element => element.style.display = 'flex';

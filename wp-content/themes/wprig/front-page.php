@@ -1,6 +1,7 @@
 <?php
 /**
- * Render your site front page, whether the front page displays the blog posts index or a static page.
+ * Render your site front page, whether the
+ * front page displays the blog posts index or a static page.
  *
  * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#front-page-display
  *
@@ -28,35 +29,8 @@ foreach ( $fp_photos as $header_photo ) {
 $locations = wp_rig()->get_location_ids( 75 );
 ?>
 
-<style>
-	.contact-form-section,
-	#housekeeping {
-		grid-column: 1 / -1;
-		display: grid;
-		place-items: center;
-	}
 
-	#housekeeping {
-		background-color: var(--indigo-400);
-		align-items: flex-start;
-
-	}
-</style>
-
-<section id="housekeeping">
-	<h1>housekeeping</h1>
-
-</section><!-- end section#housekeeping -->
-
-
-	<main id="primary" class="site-main full-grid">
-
-
-		<section style="display: none;" class="contact-form-section">
-			<div class="contact-form-container">
-				<?= wp_rig()->get_contact_form(); ?>
-			</div>
-		</section>
+	<main>
 
 
 		<?php
@@ -75,9 +49,10 @@ $locations = wp_rig()->get_location_ids( 75 );
 
 
 
-	</main><!-- #primary -->
+	</main><!-- main -->
 
 
 
 <?php
+// get_sidebar();
 get_footer();

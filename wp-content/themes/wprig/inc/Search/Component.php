@@ -53,7 +53,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
 	public function initialize() {
-		add_action( 'cmb2_init', [ $this, 'create_search_input' ] );
 	}
 
 	/**

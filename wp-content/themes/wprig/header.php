@@ -33,15 +33,15 @@ namespace WP_Rig\WP_Rig;
 	<!-- hamburger menu -->
 	<?php get_template_part( 'template-parts/menu/hamburger' ); ?>
 
-		<div id="content">
+<section id="website">
 
-			<header class="banner" id="main-header" role="banner">
+		<header>
+			<?php get_template_part( 'template-parts/header/branding' ); ?>
+			<?php get_template_part( 'template-parts/header/navigation' ); ?>
+			<?php get_template_part( 'template-parts/header/searchbar' ); ?>
+			<!-- <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a> -->
+		</header>
 
-				<?php get_template_part( 'template-parts/header/branding' ); ?>
-				<?php get_template_part( 'template-parts/header/navigation' ); ?>
-				<?php get_template_part( 'template-parts/header/searchbar' ); ?>
-				<!-- <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a> -->
-			</header>
 
 
 

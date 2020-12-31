@@ -2,8 +2,26 @@
 # Header
 --------------------------------------------------------------*/
 
-.site-header {
-	background: var(--color-theme-primary);
+header {
+	background-color: var(--gray-200);
+	display: grid;
+	grid-template-columns: 1fr 3fr 1fr;
+	grid-template-areas: "branding topmenu searchbar";
+
+	& > .branding {
+			grid-area: branding;
+			border-right: 2px solid var(--gray-700);
+			place-items: center;
+
+		}
+
+	& > .main-navigation {
+		grid-area: topmenu;
+		display: grid;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+
 }
 
 .header-image {

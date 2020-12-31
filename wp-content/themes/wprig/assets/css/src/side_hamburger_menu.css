@@ -1,14 +1,16 @@
 /*---------------------------------------------------- ----------
 # Imports
 --------------------------------------------------------------*/
-/* stylelint-disable at-rule-empty-line-before */
+
 @import "_custom-properties.css";
 @import "_custom-selectors.css";
 
 /*--------------------------------------------------------------
 # Side Hamburger Navigation
 --------------------------------------------------------------*/
+
 /* DO NOT DISPLAY THIS MENU ON SMALL SCREEN */
+
 /* less than 37.5em or 525px */
 
 nav#side-hamburger-nav {
@@ -50,7 +52,9 @@ nav#side-hamburger-nav {
 	& > div {
 		position: relative;
 		background-color: var(--hamburger-menu-background-color-one);
-	} /* \nav#side-hamburger-nav > div */
+	}
+
+	/* \nav#side-hamburger-nav > div */
 
 	& ul {
 		position: absolute;
@@ -115,12 +119,18 @@ nav#side-hamburger-nav {
 				transition: all 0.2s ease-in-out;
 			}
 
-		} /* \nav#side-hamburger-nav > ul li */
+		}
+
+		/* \nav#side-hamburger-nav > ul li */
 
 
-	} /* \nav#side-hamburger-nav > ul */
+	}
 
-}/* \nav#side-hamburger-nav */
+	/* \nav#side-hamburger-nav > ul */
+
+}
+
+/* \nav#side-hamburger-nav */
 
 /* Burger Menu On Hover slides things around and creates an X */
 nav#side-hamburger-nav:hover .burger {
@@ -154,11 +164,13 @@ nav#side-hamburger-nav:hover li a {
 }
 
 /* stylelint-disable */
+
 @for $i from 2 to 12 {
 	nav#side-hamburger-nav:hover li:nth-child($i) a {
 		transition-delay: calc(($(i)s * 0.05) + 0.2s);
 	}
 }
+
 /* stylelint-enable */
 
 .nav-burger {
@@ -199,4 +211,6 @@ nav#side-hamburger-nav:hover li a {
 		margin-top: 8px;
 	}
 
-} /* \.nav-burger */
+}
+
+/* \.nav-burger */
