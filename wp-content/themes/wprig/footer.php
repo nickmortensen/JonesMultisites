@@ -44,7 +44,7 @@ foreach ( $fp_photos as $header_photo ) {
 
 		</footer><!-- #colophon -->
 
-</section>
+	</div><!-- div#page-->
 <?php wp_footer(); ?>
 
 <script>

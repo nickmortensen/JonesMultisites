@@ -150,6 +150,7 @@ class Theme {
 			new Custom_Logo\Component(),
 			new Post_Thumbnails\Component(),
 			new Customizer\Component(),
+			new Sidebars\Component(),
 			new Styles\Component(),
 			/**
 			 * Additional Items added by me.

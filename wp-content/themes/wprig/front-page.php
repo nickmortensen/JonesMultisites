@@ -11,6 +11,14 @@
 namespace WP_Rig\WP_Rig;
 
 get_header();
+
+
+// Use grid layout if blog index is displayed.
+if ( is_home() ) {
+	wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-front-page' );
+} else {
+	wp_rig()->print_styles( 'wp-rig-content' );
+}
 ?>
 
 
@@ -30,8 +38,7 @@ $locations = wp_rig()->get_location_ids( 75 );
 ?>
 
 
-	<main>
-
+<main id="primary" class="site-main">
 
 		<?php
 		// phpcs:disable
@@ -41,10 +48,10 @@ $locations = wp_rig()->get_location_ids( 75 );
 		// 	get_template_part( 'template-parts/content/entry', get_post_type() );
 		// }
 		// phpcs:enable
-		get_template_part( 'template-parts/frontpage/form-experiment' );
+		// get_template_part( 'template-parts/frontpage/form-experiment' );
 
-		get_template_part( 'template-parts/frontpage/company-info' );
-		get_template_part( 'template-parts/frontpage/project-cards' );
+		// get_template_part( 'template-parts/frontpage/company-info' );
+		// get_template_part( 'template-parts/frontpage/project-cards' );
 		?>
 
 

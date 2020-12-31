@@ -11,6 +11,11 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.io/normalize.css/
 
 /* Document
    ========================================================================== */
+html,
+body {
+	max-width: 100%;
+	overflow-x: hidden;
+}
 
 /* Sections
    ========================================================================== */

@@ -28,20 +28,32 @@ namespace WP_Rig\WP_Rig;
 
 <?php wp_rig()->print_styles( 'wp-rig-front-page' ); ?>
 
+
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 	<!-- hamburger menu -->
-	<?php get_template_part( 'template-parts/menu/hamburger' ); ?>
-
-<section id="website">
-
-		<header>
-			<?php get_template_part( 'template-parts/header/branding' ); ?>
-			<?php get_template_part( 'template-parts/header/navigation' ); ?>
-			<?php get_template_part( 'template-parts/header/searchbar' ); ?>
-			<!-- <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a> -->
-		</header>
+<?php get_template_part( 'template-parts/menu/hamburger' ); ?>
+<div id="page" class="site">
 
 
+	<header id="masthead" class="site-header">
+		<?php get_template_part( 'template-parts/header/branding' ); ?>
+		<?php get_template_part( 'template-parts/header/navigation' ); ?>
+		<?php get_template_part( 'template-parts/header/searchbar' ); ?>
+		<!-- <a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a> -->
+	</header>
 
 
+<script>
+
+let indicateWindowWidth;
+window.addEventListener( 'resize', () => {
+	clearTimeout( indicateWindowWidth );
+	indicateWindowWidth = setTimeout( () => {
+		console.log( window.innerWidth );
+		document.querySelector( '.search-field' ).value = `window is now ${window.innerWidth}px`;
+	}, 500 );
+
+})
+
+</script>

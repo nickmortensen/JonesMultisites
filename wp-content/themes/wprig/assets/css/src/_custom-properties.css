@@ -261,16 +261,23 @@
 
 
 	/* FOOTER */
-	--footer-text-color: var(--color-theme-white);
-	--background-color: #0273b9;
-	--color: #7e7e7e;
-	--link-color: #ce606f;
-	--marker-color: var(--yellow-600);
-	--marker-border-color: var(--marker-color);
-	--subline-color: var(--gray-500);
-	--marker-header-bg-color: var(--color-theme-primary);
 	--address-color: var(--gray-900);
-	--state-fill: var(--blue-800);
+	--address-font-size: 1.1rem;
+	--animation-delay: 2s;
+	--animation-duration: 10s;
+	--background-color: #0273b9;
+	--footer-text-color: var(--color-theme-white);
+	--link-color: #ce606f;
+	--map-m-top: 3em;
+	--map-max-width: 100%;
+	--marker-border-color: var(--marker-color);
+	--marker-color: var(--yellow-600);
+	--marker-header-bg-color: var(--color-theme-primary);
+	--state-fill: var(--color-theme-primary);
+	--state-stroke-width: 2;
+	--state-stroke: var(--blue-500);
+	--subline-color: var(--gray-500);
+	--width: 70%;
 
 	/* FORMS */
 	--field-focus-text-color: var(--gray-600);

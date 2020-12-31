@@ -28,6 +28,7 @@ use function dynamic_sidebar;
 class Component implements Component_Interface, Templating_Component_Interface {
 
 	const PRIMARY_SIDEBAR_SLUG = 'sidebar-1';
+	const HAMBURGER_MENU_SLUG = 'hamburger-menu';
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -57,6 +58,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return [
 			'is_primary_sidebar_active' => [ $this, 'is_primary_sidebar_active' ],
 			'display_primary_sidebar'   => [ $this, 'display_primary_sidebar' ],
+			'is_hamburger_menu_active'  => [ $this, 'is_hamburger_menu_active' ],
+			'display_hamburger_menu'    => [ $this, 'display_hamburger_menu' ],
 		];
 	}
 
@@ -64,17 +67,29 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * Registers the sidebars.
 	 */
 	public function action_register_sidebars() {
-		register_sidebar(
+		$sidebars = [
 			[
 				'name'          => esc_html__( 'Sidebar', 'wp-rig' ),
 				'id'            => static::PRIMARY_SIDEBAR_SLUG,
 				'description'   => esc_html__( 'Add widgets here.', 'wp-rig' ),
 				'before_widget' => '<section id="%1$s" class="widget %2$s">',
 				'after_widget'  => '</section>',
-				'before_title'  => '<h2 class="widget-title">',
-				'after_title'   => '</h2>',
+				'before_title'  => '<h3 class="widget-title">',
+				'after_title'   => '</h3>',
+			],
+			[
+				'name'          => esc_html__( 'Hamburger Menu', 'wp-rig' ),
+				'id'            => static::HAMBURGER_MENU_SLUG,
+				'description'   => esc_html__( 'Add menu here.', 'wp-rig' ),
+				'before_widget' => '<section id="%1$s" class="widget %2$s">',
+				'after_widget'  => '</section>',
+				'before_title'  => '<h3 class="widget-title">',
+				'after_title'   => '</h3>',
 			]
-		);
+		];
+		foreach ( $sidebars as $sidebar ) {
+			register_sidebar( $sidebar );
+		}
 	}
 
 	/**
@@ -84,11 +99,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return array Filtered body classes.
 	 */
 	public function filter_body_classes( array $classes ) : array {
+		global $template;
 		if ( $this->is_primary_sidebar_active() ) {
-			global $template;
-
-			if ( ! in_array( basename( $template ), [ 'front-page.php', '404.php', '500.php', 'offline.php' ], true ) ) {
+			if ( ! in_array( basename( $template ), [ '404.php', '500.php', 'offline.php' ], true ) ) {
 				$classes[] = 'has-sidebar';
+			}
+		}
+
+		if ( $this->is_hamburger_menu_active() ) {
+			if ( ! in_array( basename( $template ), [ '404.php', '500.php', 'offline.php' ], true ) ) {
+				$classes[] = 'hamburger_menu';
 			}
 		}
 
@@ -103,11 +123,25 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function is_primary_sidebar_active() : bool {
 		return (bool) is_active_sidebar( static::PRIMARY_SIDEBAR_SLUG );
 	}
+	/**
+	 * Checks whether the primary sidebar is active.
+	 *
+	 * @return bool True if the primary sidebar is active, false otherwise.
+	 */
+	public function is_hamburger_menu_active() : bool {
+		return (bool) is_active_sidebar( static::HAMBURGER_MENU_SLUG );
+	}
 
 	/**
 	 * Displays the primary sidebar.
 	 */
 	public function display_primary_sidebar() {
 		dynamic_sidebar( static::PRIMARY_SIDEBAR_SLUG );
+	}
+	/**
+	 * Displays the primary sidebar.
+	 */
+	public function display_hamburger_menu() {
+		dynamic_sidebar( static::HAMBURGER_MENU_SLUG );
 	}
 }

@@ -1,9 +1,6 @@
 /**
 * Custom styles for the front-page.php template.
 */
-
-@import "_custom-properties.css";
-
 :root {
 	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* can be removed */
 	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045); /* can be removed */

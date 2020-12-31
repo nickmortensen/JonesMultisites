@@ -1,4 +1,3 @@
-
 /*--------------------------------------------------------------
 # Footer
 # NOTE:
@@ -6,6 +5,13 @@
 # "\2713" = ✓
 # "\2706" = ✆
 # "\25BE" = ▾
+# "\002b" = +
+
+# AT WIDE SCREEN, THE FOOTER CONTAINS
+# * 1. Location Chooser
+# * 2. SVG MAP
+# * 3. LOCATION INFO
+
 
 --------------------------------------------------------------*/
 a[href^="tel:"]::before {
@@ -17,13 +23,16 @@ footer {
 	grid-area: footer;
 	margin-top: 5vw; /* to clear the descending flickity dots */
 	display: grid;
-	grid-template-columns: 2fr 8fr;
-	grid-template-rows: 600px 1fr;
+	grid-template-columns: 2fr 5fr;
+	grid-template-rows: auto auto;
 	grid-template-areas:
 		"locationselect map"
 		"locationselect locationaddress";
-}
 
+	& :--heading {
+		color: var(--has-dark-bg);
+	}
+}
 
 /*--------------------------------------------------------------
 ======================== LOCATION SELECT =======================
@@ -58,6 +67,7 @@ div.location-select-element:focus {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	color: var(--has-dark-bg);
 }
 
 /* Placeholder and selected option */
@@ -75,14 +85,14 @@ div.location-select-element:focus {
 	top: 50%;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	content: "\002b"; /*+*/
+	content: "\002b"; /* + */
 	right: 0.25em;
 	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 45deg);
 	transition: transform 0.5s;
 }
 
 .location-select-element > span::after {
-	content: "\002b"; /*+*/
+	content: "\002b"; /* + */
 	right: 1em;
 	right: 0.25em;
 	transform: translate3d(0, -50%, 0) rotate3d(0, 0, 1, 45deg);
@@ -90,7 +100,7 @@ div.location-select-element:focus {
 }
 
 .location-select-element .location-selected span::after {
-	content: "\2713";
+	content: "\2713"; /* ✓ */
 	margin-left: 1em;
 }
 
@@ -124,6 +134,7 @@ div.location-active {
 .location-select-element ul {
 	margin: 0;
 	padding: 0;
+
 	/* width: 100%; */
 	list-style: none;
 
@@ -295,19 +306,8 @@ div.location-select-element {
 ======================== LOCATION MAP ==========================
 --------------------------------------------------------------*/
 #location-map {
-	--state-fill: var(--color-theme-primary);
-	--state-stroke: var(--blue-500);
-	--state-stroke-width: 2;
-	--address-font-size: 1.1rem;
-	--animation-duration: 10s;
-	--marker-color: var(--yellow-600);
-	--width: 70%;
-	--map-max-width: 100%;
-	--map-m-top: 3em;
-	--animation-delay: 2s;
-
 	grid-area: map;
-
+	place-self: center center;
 
 	& svg {
 		height: auto;
@@ -326,7 +326,7 @@ div.location-select-element {
 	}/* /.map */
 
 	& .map-markers {
-		--marker-left: 63.5%;
+		--marker-left: 64.5%;
 		--marker-top: 22%;
 		list-style: none;
 		margin: 0;
@@ -592,7 +592,6 @@ div.location-select-element {
 
 				& > address {
 					--fontsize-xs: calc(7px + 0.698vw);
-
 					color: inherit;
 
 					& > span {
@@ -621,11 +620,10 @@ div.location-select-element {
 --------------------------------------------------------------*/
 #location-address {
 	grid-area: locationaddress;
-	background: var(--indigo-600);
 	width: 100%;
 
 	& .single_jones_address {
-
+		color: var(--has-dark-bg);
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
@@ -635,7 +633,6 @@ div.location-select-element {
 
 		& h2 {
 			font-size: clamp(46px, 2.84vw, 88px);
-			color: var(--has-dark-bg);
 			max-width: 40%;
 		}
 
@@ -649,8 +646,6 @@ div.location-select-element {
 	}
 
 }
-
-
 
 /*--------------------------------------------------------------
 END Footer

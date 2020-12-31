@@ -283,12 +283,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		$css_files = [
 			// Only need to load this on certain pages, but how is a fella supposed to do that?
-			'wp-rig-side-hamburger' => [
-				'file'   => 'side_hamburger_menu.min.css',
-				'global' => true,
-			],
 			'wp-rig-global'         => [
 				'file'   => 'global.min.css',
+				'global' => true,
+			],
+			'wp-rig-front-page'     => [
+				'file'             => 'front-page.min.css',
+				'preload_callback' => function() {
+					global $template;
+					return 'front-page.php' === basename( $template );
+				},
+			],
+			'wp-rig-side-hamburger' => [
+				'file'   => 'side_hamburger_menu.min.css',
 				'global' => true,
 			],
 			'wp-rig-comments'       => [
@@ -301,11 +308,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
 			],
-			'wp-rig-front-page'     => [
-				'file'             => 'front-page.min.css',
+			'wp-rig-sidebar'        => [
+				'file'             => 'sidebar.min.css',
 				'preload_callback' => function() {
-					global $template;
-					return 'front-page.php' === basename( $template );
+					return wp_rig()->is_primary_sidebar_active();
+				},
+			],
+			'wp-rig-widgets'        => [
+				'file'             => 'widgets.min.css',
+				'preload_callback' => function() {
+					return wp_rig()->is_primary_sidebar_active();
 				},
 			],
 			'wp-rig-taxonomy'       => [

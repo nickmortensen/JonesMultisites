@@ -14,3 +14,5 @@
 @custom-media --wide-menu-query screen and (min-width: 37.5em);
 @custom-media --content-query screen and (min-width: 48em);
 @custom-media --sidebar-query screen and (min-width: 60em);
+@custom-media --show-hamburger-menu screen and (min-width: 60em);
+@custom-media --hide-hamburger-menu screen and (max-width: 60em);
