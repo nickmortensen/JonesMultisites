@@ -82,11 +82,44 @@ body {
 .site-main {
 	grid-area: main;
 	min-height: 100vh;
-	background: var(--yellow-600);
+}
+
+.site-main.frontpage {
+	display: grid;
+	grid-template-rows: 2fr repeat(3, 1fr);
+	grid-template-areas:
+		"masthead"
+		"form"
+		"about"
+		"projects";
 }
 
 .site-footer {
 	grid-area: footer;
+}
+
+/*--------------------------------------------------------------
+# About
+--------------------------------------------------------------*/
+
+#about {
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 4vh;
+	justify-content: center;
+	align-items: center;
+	color: var(--text-color);
+
+	& h3 {
+		margin: 0 auto;
+		font-size: clamp(var(--fontsize-xl), 4vw, 88px);
+	}
+
+	& span {
+		font-family: var(--highlight-font-family);
+		width: clamp(220px, 80vw, 1600px);
+		font-size: var(--fontsize-m);
+	}
 }
 
 /*--------------------------------------------------------------

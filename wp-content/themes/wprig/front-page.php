@@ -38,7 +38,7 @@ $locations = wp_rig()->get_location_ids( 75 );
 ?>
 
 
-<main id="primary" class="site-main">
+<main id="primary" class="site-main frontpage">
 
 		<?php
 		// phpcs:disable
@@ -48,10 +48,11 @@ $locations = wp_rig()->get_location_ids( 75 );
 		// 	get_template_part( 'template-parts/content/entry', get_post_type() );
 		// }
 		// phpcs:enable
-		// get_template_part( 'template-parts/frontpage/form-experiment' );
+		get_template_part( 'template-parts/frontpage/masthead' );
+		get_template_part( 'template-parts/frontpage/form-experiment' );
 
-		// get_template_part( 'template-parts/frontpage/company-info' );
-		// get_template_part( 'template-parts/frontpage/project-cards' );
+		get_template_part( 'template-parts/frontpage/company-info' );
+		get_template_part( 'template-parts/frontpage/project-cards' );
 		?>
 
 
@@ -61,5 +62,4 @@ $locations = wp_rig()->get_location_ids( 75 );
 
 
 <?php
-// get_sidebar();
 get_footer();

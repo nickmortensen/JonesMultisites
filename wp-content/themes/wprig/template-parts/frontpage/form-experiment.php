@@ -8,13 +8,12 @@
 namespace WP_Rig\WP_Rig;
 
 ?>
-<section id="ironic" class="full-grid" style="min-height: 12vw; background-color: var(--indigo-700);">
-</section>
-<section id="form-experiment" class="full-grid">
+<section id="form-experiment" class="frontpage">
 	<form action="get" name="experimentalForm" id="experimentalForm"></form>
 	<div id="progress"></div>
 
 	<div class="center">
+
 		<div id="register">
 
 			<span id="previousButton" class="person-symbol"></span>
@@ -29,6 +28,7 @@ namespace WP_Rig\WP_Rig;
 			</div><!-- end div#inputcontainer -->
 
 		</div><!-- end div#register -->
+
 	</div><!-- end div.center -->
 
 </section><!-- end section#form-experiment -->
@@ -269,16 +269,17 @@ function validate() {
 
 } //end validate()
 
-// give the previous and next arrows tab indexes in relation to the tabindex of the input field
-function assignButtonTabIndices() {
-	let [ previous, next ] = [...inputField.parentNode.parentElement.querySelectorAll( 'span' ) ];
-	if ( previous.classList.contains( 'person-symbol' ) ) {
-		next.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) + 1  );
-	} else {
-		next.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) + 1 );
-		previous.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) - 1 );
+	// give the previous and next arrows tab indexes in relation to the tabindex of the input field
+	function assignButtonTabIndices() {
+		let [ previous, next ] = [...inputField.parentNode.parentElement.querySelectorAll( 'span' ) ];
+		// If we are on the first field, there is no need to set a tab index on the prior element, so just set a tabindex on the next element ( usually an arrow)
+		if ( previous.classList.contains( 'person-symbol' ) ) {
+			next.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) + 1  );
+		} else {
+			next.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) + 1 );
+			previous.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) - 1 );
+		}
 	}
-}
 
 	// Helpers
 	function hideCurrent( callback ) {

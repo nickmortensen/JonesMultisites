@@ -9,7 +9,7 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-<div id="company-info" class="full-grid">
+<section id="about" class="frontpage">
 	<h3 id="slogan"><?= esc_html( get_bloginfo( 'description', 'display' ) ); ?> </h3>
 	<span id="about-us"><?= ABOUT_US; ?></span>
-</div><!-- end div#company-info -->
+</section><!-- end section#company-info -->

@@ -11,6 +11,7 @@ strong {
 }
 
 .frontpage-projects {
+	grid-area: projects;
 	margin-bottom: 2vw;
 	order: 5;
 	display: flex;

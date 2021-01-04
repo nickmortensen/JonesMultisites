@@ -1,27 +1,17 @@
-/**
-* Custom styles for the front-page.php template.
-*/
-:root {
-	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275); /* can be removed */
-	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045); /* can be removed */
-	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
-	--bgc: #3a4151;
-	--bgc: #0273b9;
-	--bgc-two: rgba(66, 74, 92, 0.6);
-	--bgc-two: rgba(40, 80, 120, 0.6);
-	--box-shadow-one: 0 1px 3px rgba(0, 0, 0, 0.12);
-	--box-shadow-two: 0 1px 2px rgba(0, 0, 0, 0.24);
-	--box-shadow: var(--box-shadow-one), var(--box-shadow-two);
-	--burger-div-height: 45px;
-	--header-width: 60px;
-	--shadow-one: 0 1px 3px rgba(0, 0, 0, 0.12);
-	--shadow-two: 0 1px 2px rgba(0, 0, 0, 0.24);
-	--side-menu-box-shadow: var(--shadow-one), var(--shadow-two);
-	--side-menu-z-index: 1000;
+/* --------------------------------
+ * COMPANY MASTHEAD
+ * -------------------------------- */
+
+section#masthead.frontpage {
+	min-height: 8vh;
+	grid-area: masthead;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+	background-color: var(--blue-900);
 }
 
 /* EXPERIMENTAL FORM: template-parts/frontpage/form-experiment.php */
-
 #form-experiment {
 	--box-shadow:
 		0 16px 24px 2px rgba(0, 0, 0, 0.14),
@@ -38,7 +28,7 @@
 	overflow-x: hidden;
 	background: var(--general-color);
 	font-family: var(--font-stack);
-
+	grid-area: form;
 
 	& h1 {
 		position: relative;

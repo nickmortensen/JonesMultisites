@@ -22,11 +22,11 @@
 nav#side-hamburger-nav {
 	display: block;
 	z-index: 140;
+	position: fixed;
+	left: 0;
 	height: 100%;
 	width: var(--hamburger-menu-width);
 	box-shadow: var(--hamburger-menu-box-shadow);
-	position: fixed;
-	left: 0;
 	color: inherit;
 
 	&::after {
