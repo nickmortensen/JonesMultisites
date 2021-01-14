@@ -191,7 +191,7 @@
 	--admin-theme-primary: var(--color-theme-primary);
 	--table-header-color: var(--yellow-600);
 	--table-header-bg: var(--admin-theme-primary);
-	--admin-font: serif;
+	--admin-font: 'fira code', monospace, sans-serif;
 	--admin-font-size: 1.15rem;
 	--admin-row-actions-font-size: 8px;
 	--admin-heading-color: var(--global-font-color);
@@ -205,6 +205,7 @@
 	--admin-link-hover: var(--indigo-900);
 	--submenu-width: 180px;
 	--paragraph-color: var(--global-font-color);
+	--star-rating-size: 1.25rem;
 	/*#endregion*/
 
 

@@ -611,6 +611,7 @@ form#tags-filter {
 	padding: 8px 12px;
 	margin: 0;
 	line-height: 1.4;
+	border-bottom: unset;
 }
 
 #poststuff .stuffbox h2 {

@@ -25,10 +25,12 @@ section#masthead.frontpage {
 	--icon-color: var(--gray-400);
 	--incorrect: var(--red-700);
 	margin: 0;
+	position: relative; /* this may have to go */
 	overflow-x: hidden;
 	background: var(--general-color);
 	font-family: var(--font-stack);
 	grid-area: form;
+
 
 	& h1 {
 		position: relative;

@@ -13,7 +13,6 @@ use WP_Rig\WP_Rig\AdditionalFields\Component as AdditionalFields;
 use WP_Rig\WP_Rig\Posttype_Global\Component as PostTypes;
 use WP_Rig\WP_Rig\TaxonomyGlobal\Component as Taxonomies;
 
-
 use function WP_Rig\WP_Rig\wp_rig;
 
 use function add_action;
@@ -931,7 +930,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$url             = get_post_permalink( $project );
 			$excerpt         = get_post( $project )->post_excerpt;
 			$title           = get_post( $project )->post_title;
-			$project_links[] = "<li><a href = '$url' title='$excerpt'>$title</a></li>";
+			$project_links[] = wp_sprintf( '<li><a href="%s" title="%s">%s</a></li>', $url, $excerpt, $title );
 		}
 		return $project_links;
 	}

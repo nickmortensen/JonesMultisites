@@ -5,7 +5,7 @@ div#cmb2-metabox-media_rating {
 }
 
 div#media_rating {
-	background: var(--gray-400);
+	background: var(--gray-100);
 }
 
 /* star rating custom field for media properties */
@@ -19,7 +19,7 @@ div#media_rating {
 }
 
 #cmb2-star-rating-metabox .star-cb-group * {
-	font-size: 1.9rem;
+	font-size: 1.4rem;
 }
 
 #cmb2-star-rating-metabox .star-cb-group > input {

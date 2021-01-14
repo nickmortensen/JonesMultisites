@@ -43,6 +43,17 @@
 # Layouts
 --------------------------------------------------------------*/
 
+/* @link https://css-tricks.com/fixing-smooth-scrolling-with-find-on-page/ */
+html:focus-within {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion) {
+	html:focus-within {
+		scroll-behavior: auto;
+	}
+}
+
 body {
 	min-height: 100%;
 	display: grid;

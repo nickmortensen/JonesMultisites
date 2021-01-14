@@ -8,23 +8,21 @@
 namespace WP_Rig\WP_Rig;
 
 ?>
-<section id="form-experiment" class="frontpage">
-	<form action="get" name="experimentalForm" id="experimentalForm"></form>
-	<div id="progress"></div>
 
+<section id="form-experiment">
+	<form style="padding-left: 40%;"action="get" name="experimentalForm" id="experimentalForm"></form>
+	<div id="progress"></div>
 	<div class="center">
 
 		<div id="register">
 
 			<span id="previousButton" class="person-symbol"></span>
-			<span class="" id="forwardButton">&#x2794;</span>
-			<!-- <button class="hideButton" type="submit" form="experimentalForm" id="submitFormButton" title="submit your inquiry now">&#9993;</button> -->
-
+			<span class="" title="advance to the next form field" id="forwardButton"></span>
 
 			<div id="inputContainer">
-				<input data-identifier="inputField" id="inputField" required />
-				<label data-identifier="inputLabel" for="inputField" id="inputLabel"></label>
-				<div id="inputProgress"></div>
+				<input data-identifier="" id="inputField" required />
+				<label for="inputField" id="inputLabel"></label>
+				<div id="inputProgress" class="underline"></div>
 			</div><!-- end div#inputcontainer -->
 
 		</div><!-- end div#register -->
@@ -34,49 +32,67 @@ namespace WP_Rig\WP_Rig;
 </section><!-- end section#form-experiment -->
 
 <script>
-const mail  = '&#9993;';
-const arrow = '&#x2794;';
+
+
+const info          = '&#9432;'; // alternately &#8505;
+const mail          = '&#9993;';
+const arrow         = '&#x2794;';
+const register      = document.getElementById( 'register' );
+const progress      = document.getElementById( 'progress' );
+const forwardButton = document.getElementById( 'forwardButton' );
+forwardButton.innerHTML = arrow;
+
+const sheetInfo = {
+	googleWebApp: 'https://script.google.com/macros/s/AKfycbz6hC2Fw34eoOrnOwJ_V4cbAFDfeDe8niMTb1f1AV7btoeEpZsD/exec',
+	sheetUrl: '',
+};
+
+let formData = [];
 let questions = [
-	// {
-	// 	question: 'What is your first name?',
-	// 	attributes: {
-	// 		autocomplete: 'given-name',
-	// 		form: 'experimentalForm',
-	// 		tabIndex: 10,
-	// 		name: 'firstName',
-	// 		title: 'enter your first name',
-	// 	},
-	// },
-	// {
-	// 	question:"What is your last name?",
-	// 	attributes: {
-	// 		autocomplete: 'family-name',
-	// 		form: 'experimentalForm',
-	// 		tabIndex: 20,
-	// 		name: 'lastName',
-	// 		title: 'enter your last name',
-	// 	},
-	// },
-	// {
-	// 	question:"What is your Company Name?",
-	// 	attributes: {
-	// 		autocomplete: 'organization',
-	// 		form: 'experimentalForm',
-	// 		tabIndex: 30,
-	// 		name: 'companyName',
-	// 		title: 'which company are you with?'
-	// 	},
-	// },
-	// {
-	// 	question:"What is your Position?",
-	// 	attributes: {
-	// 		autocomplete: 'organization-title',
-	// 		form: 'experimentalForm',
-	// 		tabIndex: 40,
-	// 		name: 'jobTitle',
-	// 		title: 'Enter your job title',
-	// 	},
-	// },
+	{
+		question: 'What is your name?',
+		attributes: {
+			autocomplete: 'given-name',
+			form: 'experimentalForm',
+			tabIndex: 10,
+			name: 'fullName',
+			title: 'Please input a first and last name.',
+		},
+		answer: '',
+	},
+	{
+		question:"What is your zip code?",
+		attributes: {
+			autocomplete: 'postal-code',
+			form: 'experimentalForm',
+			tabIndex: 20,
+			name: 'zip',
+			title: 'Enter your 5 digit zipcode, we\'ll figure out your city and state based on it.',
+		},
+		answer: '54688',
+	},
+	{
+		question:"What is your Company Name?",
+		attributes: {
+			autocomplete: 'organization',
+			form: 'experimentalForm',
+			tabIndex: 30,
+			name: 'companyName',
+			title: 'What is the name of the company you are with?'
+		},
+		answer: 'Top of the top BoxingFoxy Boxing Inc',
+	},
+	{
+		question:"What is your Position?",
+		attributes: {
+			autocomplete: 'organization-title',
+			form: 'experimentalForm',
+			tabIndex: 40,
+			name: 'jobTitle',
+			title: 'Enter your job title or position within your company.',
+		},
+		answer: 'Head Man in Charge',
+	},
 	{
 		question:"What is your email?",
 		attributes: {
@@ -85,8 +101,9 @@ let questions = [
 			pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 			tabIndex: 50,
 			name: 'emailAddress',
-			title: 'name@domain.com',
+			title: 'Please enter a valid email address',
 		},
+		answer: 'moreover@boxing.com',
 	},
 	{
 		question:"What is your message",
@@ -94,21 +111,37 @@ let questions = [
 			form: 'experimentalForm',
 			tabIndex: 60,
 			name: 'inquiry',
-			title: 'tell us a bit about what you are looking for',
+			title: 'Let us know what you are looking for.',
 		},
+		answer: 'A longer message would go here',
 	}
 ];
 
 /* Do something after the questions have been answered */
-let onComplete = function() {
-	let h1 = document.createElement('h1');
-	h1.appendChild( document.createTextNode( `Thanks for reaching out, ${questions[0].answer}` ) );
-	setTimeout( function() {
-		register.parentElement.appendChild( h1 )
-		setTimeout( function() {
-			h1.style.opacity = 1;
-		}, 50 )
-	}, 1000 )
+let onComplete = function( formData ) {
+	let newData    = new FormData();
+
+	// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+	// let dataToSend = JSON.stringify( Object.fromEntries( formData ) );
+
+	formData.forEach( datum => {
+		newData.append( datum[0], datum[1] );
+	})
+
+	fetch( sheetInfo.googleWebApp, { method: 'POST', body: newData } )
+		.then( response => {
+			const h1 = document.createElement('h1');
+			// @see https://stackoverflow.com/questions/10272773/split-string-on-the-first-white-space-occurrence/10272822
+			h1.appendChild( document.createTextNode( `Thanks for reaching out, ${questions[0].answer.split( /(?<=^\S+)\s/ )[0]}` ) );
+
+			setTimeout( function() {
+				register.parentElement.appendChild( h1 )
+				setTimeout( function() {
+					h1.style.opacity = 1;
+				}, 50 )
+			}, 500 );
+		} )
+		.catch( error => console.error( 'Error!', error.message ) );
 }
 
 ;( function( questions, onComplete ) {
@@ -119,7 +152,7 @@ let onComplete = function() {
 
 	// init
 	// --------------
-	// guard clause - if we are on the first question or there are no questions, then return.
+	// guard clause - if there are no questions, then return.
 	if ( 0 == questions.length ) {
 		return;
 	}
@@ -139,21 +172,23 @@ let onComplete = function() {
 		}
 	} );
 
-	// If you strike the enter key while you are focused in the input field, it will validate and advance to th next input
+	// If you strike the enter key while you are focused in the input field, it will validate and advance to the next input
 	inputField.addEventListener( 'keyup', function( e ) {
 		transform( 0, 0 ); // ie hack to redraw
-		// 13 = enter
-		13 == e.keyCode && validate();
+		// 13 is 'enter'
+		13 === e.keyCode && validate();
 	})
 
 	// Go back a field if you hit the back arrow.
 	previousButton.addEventListener( 'click', function( e ) {
+		// Gaurd clause - don't do anything if we are still on the first question and it is clicked -- ( though it should not be there anyway )
 		if ( position === 0 ) {
 			return;
 		}
+		// Set the position variable to one less than it currently is and move to that question as the input
 		position -= 1;
 		hideCurrent( putQuestion );
-	})
+	} )
 
 
 	// Functions
@@ -161,48 +196,30 @@ let onComplete = function() {
 
 	// Load next question
 	function putQuestion() {
-
-		const finalQuestion = isLastQuestion( position, questions );
-		inputLabel.innerHTML = questions[position].question;
+		let inputLabel   = document.getElementById( 'inputLabel' );
+		let inputfield   = document.getElementById( 'inputfield' );
+		let fieldName    = questions[position].attributes.name;
+		let tabIndex     = questions[position].attributes.tabIndex || 34;
+		let formId       = questions[position].attributes.form || 'experimentalForm';
+		let title        = questions[position].attributes.title || '';
+		let autocomplete = questions[position].attributes.autocomplete || '';
+		// const finalQuestion = isLastQuestion( position, questions );
+		inputLabel.textContent = questions[position].question;
 		inputField.type      = questions[position].type || 'text';
 		inputField.value     = questions[position].answer || '';
-		inputField.setAttribute( 'name', questions[position].attributes.name );
-		let tabIndex = questions[position].attributes.tabIndex || 34;
+		inputField.name      = fieldName;
+		inputField.setAttribute( 'data-identifier', fieldName );
 		inputField.setAttribute( 'tabindex', tabIndex );
-		let formId = questions[position].attributes.form || 'experimentalForm';
 		inputField.setAttribute( 'form', formId );
-		let title = questions[position].attributes.title || '';
 		inputField.setAttribute( 'title', title );
-		let autocomplete = questions[position].attributes.autocomplete || '';
 		inputField.setAttribute( 'autocomplete', autocomplete );
 
-
-		/**
-		 * On the final question, change the forward button into a send mail button with the following attributes
-		 * type="submit"
-		 * form="experimentalForm"
-		 * title="use this button to send an email"
-		 */
-		if ( finalQuestion ) {
-			forwardButton.remove();
-			const submitFormButton = document.createElement( 'button' );
-			submitFormButton.innerHTML = mail;
-			submitFormButton.setAttribute( 'id', 'submitFormButton' );
-			submitFormButton.setAttribute( 'tabindex', '62' );
-			submitFormButton.setAttribute( 'type', 'submit' );
-			submitFormButton.setAttribute( 'class', '' );
-			submitFormButton.setAttribute( 'form', 'experimentalForm' );
-			submitFormButton.setAttribute( 'title', 'submit your message by pretting this button' );
-			inputContainer.insertAdjacentElement( 'beforebegin', submitFormButton );
-
-		} else {
-			assignButtonTabIndices();
-			console.log( 'this isnt the last question ');
-		}
-
+		// arrow fields for forward and backward should have tabindices
+		let [ previous, next ] = [...inputField.parentNode.parentElement.querySelectorAll( 'span' ) ];
+		previous.setAttribute( 'tabindex', tabIndex - 1 );
+		next.setAttribute( 'tabindex', tabIndex + 1 );
 
 		inputField.focus();
-
 
 		// set the progress of the background
 		progress.style.width     = position * 100 / questions.length + '%';
@@ -214,19 +231,21 @@ let onComplete = function() {
 	}
 
 // See whether we are on the last question or not
-function isLastQuestion( position, questions ) {
-	let question = position + 1; // Index of the question starting at 1
-	return question === questions.length;
-}
+const isLastQuestion = () => Number( position + 1 ) === questions.length;
 
+function makeResponseObject( formData ) {
+	return Object.fromEntries(formData);
+}
 
 // Validate what the people have inputted
 function validate() {
 
+	// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
 	let validateCore = function() {
-		return inputField.value.match( questions[position].attributes.pattern || /.+/)
+		return inputField.value.match( questions[position].attributes.pattern || /.+/ );
 	}
 
+	// If the question object does not have a validate attribute (none do), then use the validateCore function.
 	if ( ! questions[position].validate ) {
 		questions[position].validate = validateCore;
 	}
@@ -235,51 +254,37 @@ function validate() {
 	if ( ! questions[position].validate() ) {
 		wrong( inputField.focus.bind( inputField ) );
 	}
+
 	else ok( function() {
 
-		// execute the custom end function or the default value set
-		if ( questions[position].done ) {
-			questions[position].done();
-		} else {
-			questions[position].answer = inputField.value;
-		}
+		questions[position].answer = inputField.value;
 		++position;
 
 		// if there is a new question, hide current and load next
 		if ( questions[position] ) {
-
+			addData();
 			hideCurrent( putQuestion );
 
-			if ( isLastQuestion( position, questions ) ) {
-				forwardButton.classList.add( 'hidden' );
-				// submitFormButton.classList.remove('hideButton');
-				// submitFormButton.classList.add('showButton');
-			}
 		} else {
 			hideCurrent( function() {
 				// remove the box if there is no next question
 
-				register.className = 'close';
+				register.className   = 'close';
 				progress.style.width = '100%';
-
-				onComplete();
+				addData();
+				onComplete( formData );
 			})
 		}
 	})
 
 } //end validate()
 
-	// give the previous and next arrows tab indexes in relation to the tabindex of the input field
-	function assignButtonTabIndices() {
-		let [ previous, next ] = [...inputField.parentNode.parentElement.querySelectorAll( 'span' ) ];
-		// If we are on the first field, there is no need to set a tab index on the prior element, so just set a tabindex on the next element ( usually an arrow)
-		if ( previous.classList.contains( 'person-symbol' ) ) {
-			next.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) + 1  );
-		} else {
-			next.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) + 1 );
-			previous.setAttribute( 'tabindex', Number( inputField.getAttribute( 'tabindex' ) ) - 1 );
-		}
-	}
+function addData() {
+	let {name, value} = inputField;
+	formData.push([name, value]);
+	console.log(formData, 'is the current formData');
+}
+
 
 	// Helpers
 	function hideCurrent( callback ) {
@@ -311,6 +316,7 @@ function validate() {
 
 	function wrong( callback, transformTime = 100 ) {
 		register.className = 'wrong';
+
 		// shaking motion
 		for ( var i = 0; i < 6; i++ ) {
 			setTimeout( transform, transformTime * i, ( i % 2 * 2 - 1 ) * 20, 0 );
@@ -319,27 +325,25 @@ function validate() {
 		}
 	}
 
+
 }( questions, onComplete ))
 
 
 
-console.log( ironic.classList.value );
-</script>
 
 
-<script>
-/*!
- * Capture data from form into google sheet
- * @version   1.0.1
- * @requires  jQuery v1.6 or later
- * @requires  Sheetrock 1.6
- * @see       https://github.com/chriszarate/sheetrock
- * @see       https://dev.to/omerlahav/submit-a-form-to-a-google-spreadsheet-1bia
- * @author    Nick Mortensen <nmortensen at jonessign>
- */
+// let send = document.querySelector( '.sendToSpreadsheet' );
+// send.addEventListener( 'click',  e => {
+// 	e.preventDefault();
+// 	fetch( sheetInfo.googleWebApp, { method: 'POST', body: formDataObject})
+// 		.then(response => console.log('Success!', response ))
+// 		.catch(error => console.error('Error!', error.message))
+// })
 
-/* contains the data for all the slides */
-const mySpreadsheet = 'https: //docs.google.com/spreadsheets/d/1JkoXp5PNSzxLcgN0RHhDY4k-8TF450yILtq-HltjuSc/edit?usp = sharing#gid = 0';
-const webAppURL     = 'https: //script.google.com/macros/s/AKfycbyvpTaK8WBKwYrHgpWkLs1uAsssdf5kffT2ofsjxeOqzWrSCQ/exec';
-const form          = document.forms['experimentalForm'];
+// document.getElementById( 'submitFormButton').addEventListener('submit', e => {
+// 	e.preventDefault();
+// 	fetch( sheetInfo.googleWebApp, { method: 'POST', body: formDataObject})
+// 		.then(response => console.log('Success!', response ))
+// 		.catch(error => console.error('Error!', error.message))
+// })
 </script>
