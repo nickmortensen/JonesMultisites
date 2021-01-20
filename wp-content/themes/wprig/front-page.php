@@ -35,25 +35,36 @@ foreach ( $fp_photos as $header_photo ) {
 }
 
 $locations = wp_rig()->get_location_ids( 75 );
+
+
 ?>
 
 
 <main id="primary" class="site-main frontpage">
 
-		<?php
-		// phpcs:disable
-		// while ( have_posts() ) {
-		// 	the_post();
+<?php
+// phpcs:disable
+/*
+while ( have_posts() ) {
+	the_post();
 
-		// 	get_template_part( 'template-parts/content/entry', get_post_type() );
-		// }
-		// phpcs:enable
-		get_template_part( 'template-parts/frontpage/masthead' );
-		get_template_part( 'template-parts/frontpage/form-experiment' );
+	get_template_part( 'template-parts/content/entry', get_post_type() );
+}
+get_template_part( 'template-parts/frontpage/masthead' );
+get_template_part( 'template-parts/frontpage/form-experiment' );
+*/
+// phpcs:enable
 
-		get_template_part( 'template-parts/frontpage/company-info' );
-		get_template_part( 'template-parts/frontpage/project-cards' );
-		?>
+?>
+
+<div class="search-container">
+<?php get_search_form(); ?>
+</div>
+
+<?php
+	get_template_part( 'template-parts/frontpage/company-info' );
+	get_template_part( 'template-parts/frontpage/project-cards' );
+?>
 
 
 

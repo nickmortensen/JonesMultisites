@@ -1,18 +1,18 @@
-const randomNumber = ( min, max ) => {
+'use strict';
+
+function randomNumber( min, max ) {
 	min = Math.ceil( min );
 	max = Math.floor( max );
-	return Math.floor( Math.random() * ( max - min ) ) + min;
-};
+	return Number( Math.floor( Math.random() * ( max - min ) ) + min );
+}
 
 const randomA = randomNumber( 1, 5 );
 const randomB = randomNumber( 1, 5 );
-// const formContainer          = document.getElementById( 'contact-form-holder' );
 const testformButton         = document.getElementById( 'testformButton' );
 const addTheseLabel = document.getElementById( 'addTheseLabel' ) || '';
 const addTheseInput = document.getElementById( 'addthese' );
 // do not display the send button until the math problem for #addthese is solved correctly;
 
-// const phptest               = '\<\?php echo "<h1>USING</h1>"; \?\>';
 const mathQuestion          = `Add ${randomA} + ${randomB}`;
 const infoIcon              = `<i class = "pl-2 material-icons" data-tooltip = "we ask you to solve this problem to eliminate robot responses to this form"> info </i>`;
 const details               = mathQuestion + infoIcon;

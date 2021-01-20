@@ -278,7 +278,7 @@
 	--state-stroke-width: 2;
 	--state-stroke: var(--blue-500);
 	--subline-color: var(--gray-500);
-	--width: 70%;
+	/* --width: 70%; */
 
 	/* FORMS */
 	--field-focus-text-color: var(--gray-600);

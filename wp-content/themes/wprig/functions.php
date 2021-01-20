@@ -79,3 +79,12 @@ function show( $content, $wrap_with_pre_tag = true ) {
 	echo '</pre>';
 
 }
+
+/**
+ * Hook into pre_search_form
+ */
+// function jones_pre_search_form() {
+// 	return '<section>';
+// }
+
+// add_filter( 'get_search_form', 'jones_pre_search_form' );

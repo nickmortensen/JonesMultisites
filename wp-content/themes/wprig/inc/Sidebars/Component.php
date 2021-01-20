@@ -28,7 +28,7 @@ use function dynamic_sidebar;
 class Component implements Component_Interface, Templating_Component_Interface {
 
 	const PRIMARY_SIDEBAR_SLUG = 'sidebar-1';
-	const HAMBURGER_MENU_SLUG = 'hamburger-menu';
+	const HAMBURGER_MENU_SLUG  = 'hamburger-menu';
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -85,7 +85,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'after_widget'  => '</section>',
 				'before_title'  => '<h3 class="widget-title">',
 				'after_title'   => '</h3>',
-			]
+			],
 		];
 		foreach ( $sidebars as $sidebar ) {
 			register_sidebar( $sidebar );

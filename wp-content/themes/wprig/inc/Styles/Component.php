@@ -38,6 +38,8 @@ use function add_query_arg;
  */
 class Component implements Component_Interface, Templating_Component_Interface {
 
+	const MATERIAL_ICONS_VERSION = '9';
+
 	/**
 	 * Associative array of CSS files, as $handle => $data pairs.
 	 * $data must be an array with keys 'file' (file path relative to 'assets/css' directory), and optionally 'global'
@@ -50,6 +52,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	protected $css_files;
 
+
 	/**
 	 * Associative array of Google Fonts to load, as $font_name => $font_variants pairs.
 	 *
@@ -58,6 +61,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @var array
 	 */
 	protected $google_fonts;
+
+	/**
+	 * Associative array of Material Icon Css to load to load, as $font_name => $font_variants pairs.
+	 *
+	 * Do not access this property directly, instead use the `get_gmaterial_icons()` method.
+	 *
+	 * @var array
+	 */
+	protected $material_icons;
+
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -74,11 +87,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function initialize() {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons' ], 40 );
+		// add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_material_design_styles' ], 60 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 40 );
+		// add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_material_scripts' ] );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
 		add_filter( 'wp_resource_hints', [ $this, 'filter_resource_hints' ], 10, 2 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'add_material_icons' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'add_material_icons_backend' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_custom_admin_style' ] );
 	}
 
@@ -102,11 +117,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function action_enqueue_styles() {
 
-		// Enqueue Google Fonts as well as Material icons for the pblic facing side of site.
+		// Enqueue Google Fonts.
 		$google_fonts_url = $this->get_google_fonts_url();
 		if ( ! empty( $google_fonts_url ) ) {
-			wp_enqueue_style( 'wp-rig-material-icons', $this->get_material_icon_font_url(), [], '9', 'all' );
-			wp_enqueue_style( 'wp-rig-fonts', $google_fonts_url, [], null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+			wp_enqueue_style( 'wp-rig-fonts', $google_fonts_url, [], 9, 'all' );
 		}
 
 		$css_uri = get_theme_file_uri( '/assets/css/' );
@@ -308,18 +322,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
 			],
-			'wp-rig-sidebar'        => [
-				'file'             => 'sidebar.min.css',
-				'preload_callback' => function() {
-					return wp_rig()->is_primary_sidebar_active();
-				},
-			],
-			'wp-rig-widgets'        => [
-				'file'             => 'widgets.min.css',
-				'preload_callback' => function() {
-					return wp_rig()->is_primary_sidebar_active();
-				},
-			],
+			// 'wp-rig-sidebar'        => [
+			// 	'file'             => 'sidebar.min.css',
+			// 	'preload_callback' => function() {
+			// 		return wp_rig()->is_primary_sidebar_active();
+			// 	},
+			// ],
+			// 'wp-rig-widgets'        => [
+			// 	'file'             => 'widgets.min.css',
+			// 	'preload_callback' => function() {
+			// 		return wp_rig()->is_primary_sidebar_active();
+			// 	},
+			// ],
 			'wp-rig-taxonomy'       => [
 				'file'             => 'taxonomies.min.css',
 				'preload_callback' => function() {
@@ -390,7 +404,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		$google_fonts = [
 			'Oswald'      => [ '700' ],
-			'Oxygen'      => [ '700' ],
 			'Roboto Mono' => [ '300', '400', '400i', '500', '700' ],
 			'Ubuntu'      => [ '300', '400', '400i', '500', '700' ],
 		];
@@ -403,6 +416,21 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$this->google_fonts = (array) apply_filters( 'wp_rig_google_fonts', $google_fonts );
 
 		return $this->google_fonts;
+	}
+
+	/**
+	 * Returns Material Icons used in theme.
+	 *
+	 * @return array Associative array of $font_name => $font_variants pairs.
+	 */
+	protected function get_material_icon_names() : array {
+		if ( is_array( $this->material_icons ) ) {
+			return $this->material_icons;
+		}
+
+		$material_icons       = [ 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', 'Material Icons Sharp', 'Material Icons Two Tone', ];
+		$this->material_icons = (array) apply_filters( 'wp_rig_material_icons', $material_icons );
+		return $this->material_icons;
 	}
 
 	/**
@@ -442,26 +470,48 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
 	}
 
+
 	/**
 	 * Output the url for the Material Icons.
 	 */
-	protected function get_material_icon_font_url() : string {
+	public function get_material_icon_fonts_url_array() : array {
 		$base_url   = 'https://fonts.googleapis.com/icon';
-		$family     = 'Material Icons';
-		$query_args = [
-			'family' => str_replace( ' ', '+', $family ),
-		];
-		return add_query_arg( $query_args, $base_url );
+		$icon_fonts = $this->get_material_icon_names();
+		$output     = [];
+		foreach ( $icon_fonts as $iconset ) {
+			$query_args = [
+				'family' => str_replace( ' ', '+', $iconset ),
+			];
+
+			$output[] = add_query_arg( $query_args, $base_url );
+		}
+		return $output;
 	}
 
 	/**
-	 * Add Material Icons to the site.
+	 * Add Material Icons to the frontend of the site.
 	 *
 	 * @see Use admin_enqueue_scripts hook.
 	 */
-	public function add_material_icons() {
-		$icons_url = $this->get_material_icon_font_url();
-		wp_enqueue_style( 'wp-rig-material-icons', $icons_url, [], '9', 'all' );
+	public function add_material_icons_frontend() {
+		$urls     = $this->get_material_icon_fonts_url_array();
+		$handles  = $this->get_material_icon_names();
+		$iconsets = array_combine( $handles, $urls );
+		$version  = static::MATERIAL_ICONS_VERSION;
+		foreach ( $iconsets as $handle => $url ) {
+			wp_enqueue_style( $handle, $url, [], $version, 'all' );
+		}
+	}
+
+	/**
+	 * Add Material Icons to the admin end of the site.
+	 *
+	 * @see Use admin_enqueue_scripts hook.
+	 */
+	public function add_material_icons_backend() {
+		$material_icons = $this->get_material_icon_fonts_url_array();
+		$version        = static::MATERIAL_ICONS_VERSION;
+		wp_enqueue_style( 'wp-rig-material-icons', $material_icons[0], [], $version, 'all' );
 	}
 
 	/**
@@ -487,5 +537,26 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
 		remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
 		remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	}
+
+	/**
+	 * Registers or enqueues stylesheets for Material design.
+	 *
+	 * Stylesheets that are global are enqueued. All other stylesheets are only registered, to be enqueued later.
+	 */
+	public function action_enqueue_material_design_styles() {
+		$url = 'https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css';
+		wp_enqueue_style( 'material-design', $url, [], 9, 'all' );
+	}
+
+	/**
+	 * Add material design javascript.
+	 */
+	public function enqueue_material_scripts() {
+		$script_uri   = 'https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js';
+		$dependencies = []; // location: wp-admin/js/inline-edit-post.js.
+		$version      = '9';
+		$footer       = true;
+		wp_enqueue_script( 'material-design-javascript', $script_uri, $dependencies, $version, $footer );
 	}
 }

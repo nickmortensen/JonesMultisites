@@ -1,0 +1,231 @@
+/*--------------------------------------------------------------
+# Site Search
+--------------------------------------------------------------*/
+
+
+.search-container {
+	--width: unset;
+	--field-focus-text-color: var(--has-dark-bg);
+	--border-color-one: var(--color-theme-primary);
+	position: relative;
+	grid-area: search;
+	background: var(--blue-500);
+	min-width: 100%;
+
+	& > form {
+		--width: 32rem;
+		--height: 6rem;
+		--margin-left: -16rem;
+		--margin-top: -3rem;
+		--margin-left: calc((var(--width)/2) * -1);
+		--margin-top: calc((var(--height)/2) * -1);
+
+		font-size: 62.5%; /* resets text to 10px inside form */
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: var(--margin-left);
+		margin-top: var(--margin-top);
+		width: var(--width);
+		height: var(--height);
+
+
+		/* hide any checkbox */
+		& input.checkbox {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+			opacity: 0;
+			z-index: -10;
+		}
+
+		& .label-initial,
+		& .label-active {
+			position: absolute;
+			cursor: pointer;
+		}
+
+		& .label-initial {
+			--width: 6.8rem;
+			--height: 6.4rem;
+			--left: 13.12rem;
+			--left: calc(var(--width) + var(--height));
+
+			z-index: 2;
+			top: 0;
+			left: var(--left);
+			width: var(--width);
+			height: var(--height);
+		}
+
+		& .label-active {
+			--top: 1.5rem;
+			--right: 1.5rem;
+			--width: 3rem;
+			--height: 3rem;
+
+			z-index: 3;
+			top: var(--top);
+			right: var(--right);
+			width: var(--width);
+			height: var(--height);
+
+			transform: scale(0);
+		}
+
+		/* Initially, the circle in the magnifying glass */
+		& div.border {
+			--top: 50%;
+			--left: 50%;
+			--width: 6rem;
+			--height: 100%;
+			--border-thickness: 0.6rem;
+
+			--border-thickness: calc(0.6rem / 2);
+
+			position: absolute;
+			top: var(--top);
+			left: var(--left);
+			width: var(--width);
+			height: var(--height);
+
+			border: var(--border-thickness) solid #fff;
+			border-radius: 10rem;
+			transform: translate(-50%, -50%);
+			transition: width 0.4s 0.4s;
+
+			/* the little handle in the magnifying glass */
+			&::after {
+				--bottom: -1.6rem;
+				--right: -1.6rem;
+				--width: 3rem;
+				--height: 0.6rem;
+				--height: var(--border-thickness);
+				content: "";
+				position: absolute;
+				bottom: var(--bottom);
+				right: var(--right);
+				width: var(--width);
+				height: var(--height);
+
+				background: #fff;
+
+				border-radius: 0.6rem;
+				transform-origin: 100% 50%;
+				transform: rotate(225deg) translateX(3rem);
+				transition: width 0.2s 0.8s;
+			}
+		} /* div.border */
+
+
+		& input[id^="jones-search-form-"].input {
+			--field-focus-text-color: var(--has-dark-bg);
+			--border: 0 solid transparent;
+			--width: 26rem;
+			--height: 6rem;
+			position: relative;
+			width: var(--width);
+			height: var(--height);
+			padding: 0.9rem 0 0.9rem 2.4rem;
+			background: transparent;
+			outline: none;
+			border: var(--border);
+			font-size: 2.4rem;
+			z-index: -1; /* put input field behind div.border in the stacking order */
+			opacity: 0;
+			transition: opacity 0.2s;
+		} /* end input[id^="jones-search-form-"] */
+
+		& .close {
+			--top: 1.5rem;
+			--right: 1.5rem;
+			--width: 3rem;
+			--height: 3rem;
+
+			position: absolute;
+			top: var(--top);
+			right: var(--right);
+			width: var(--width);
+			height: var(--height);
+
+			cursor: pointer;
+			z-index: -1;
+
+			/* These are the components of the 'x' */
+			&::before,
+			&::after {
+				--top: 1.2rem;
+				content: "";
+				position: absolute;
+				top: var(--top);
+				left: 0;
+				width: 100%;
+				height: 0.6rem;
+				background: #fff;
+				border-radius: 0.5rem;
+				opacity: 0;
+			}
+
+			&::before {
+				transform: rotate(-45deg) translateX(2rem);
+				transition: transform 0.2s, opacity 0.1s 0.1s;
+			}
+
+			&::after {
+				transform: rotate(45deg) translateX(2rem);
+				transition: transform 0.2s 0.2s, opacity 0.1s 0.3s;
+			}
+
+		} /* end .close */
+
+		& #trigger {
+			color: inherit;
+
+			&:checked ~ .border {
+				transition: width 0.4s 0.2s;
+				width: 100%;
+
+				&::after {
+					width: 0;
+					transition: width 0.2s cubic-bezier(0.42, -0.7, 0.62, 1.25);
+				}
+			}
+
+			&:checked ~ .input {
+				opacity: 1;
+				z-index: auto;
+				transition: opacity 0.2s 0.6s;
+			}
+
+			&:checked ~ .label-initial {
+				transform: scale(0);
+			}
+
+			&:checked ~ .close {
+				z-index: auto;
+
+				&::before {
+					transform: rotate(-45deg);
+					opacity: 1;
+					transition: transform 0.2s 0.6s cubic-bezier(0.73, 0.14, 0.4, 1.58), opacity 0.1s 0.6s;
+				}
+				&::after {
+					transform: rotate(45deg);
+					opacity: 1;
+					transition: transform 0.2s 0.8s cubic-bezier(0.73, 0.14, 0.4, 1.58), opacity 0.1s 0.8s;
+				}
+			}
+
+			&:checked ~ .label-active {
+				transition: transform 0 0.6s;
+				transform: scale(1);
+			}
+
+		} /* end #trigger */
+
+	} /* end .site-search */
+
+	/* end .search-container */
+
+}
+

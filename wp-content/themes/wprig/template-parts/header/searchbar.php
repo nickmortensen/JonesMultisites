@@ -12,7 +12,14 @@ if ( ! wp_rig()->is_primary_nav_menu_active() ) {
 }
 
 ?>
-
-	<div class="searchbar"> <?php get_search_form(); ?> </div><!-- end div.searchbar -->
+<style>
+.searchbar {
+	grid-area: search;
+	background-color: var(--blue-400);
+	opacity: 0.75;
+	mix-blend-mode: luminosity;
+}
+</style>
+	<span class="searchbar"> <?php get_search_form(); ?> </span><!-- end div.searchbar -->
 
 

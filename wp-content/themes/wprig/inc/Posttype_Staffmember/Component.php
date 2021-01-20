@@ -173,7 +173,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Get the label for the project address field;
 		 */
 		function get_label_cb() {
-			$html = '<span style="color:var(--indigo-600);font-size: 2.5rem; border-bottom: 2px solid var(--indigo-600)">Base Info</span>';
+			$html = '<span style="color:var(--color-theme-primary);font-size: 2.5rem; border-bottom: 2px solid var(--color-theme-primary)">Base Info</span>';
 			return $html;
 		}
 
@@ -212,6 +212,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 					'yearRange' => '-42:+0',
 				] ),
 			],
+		];
+		$metabox->add_field( $args );
+
+		/**
+		 * Career Highlights.
+		 */
+		$args = [
+			'name'       => 'Hightlights',
+			'id'         => 'staffHighlights',
+			'type'       => 'text',
+			'desc'       => 'accomplishments, awards',
+			'repeatable' => true,
+			'text'       => [
+				'add_row_text' => 'add another',
+			],
+			'classes'    => [ 'highlight_repeater' ],
 		];
 		$metabox->add_field( $args );
 	}//end additional_fields()
@@ -367,7 +383,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function add_metabox_to_staffmembers( $post_type, $post ) {
 		$id       = 'staffinfo-short-details';
-		$title    = 'More Staff Detail';
+		$title    = 'Staff Details';
 		$callback = [ $this, 'display_staff_metabox_output' ];
 		$screen   = 'staffmember';
 		$context  = 'side';
@@ -394,28 +410,28 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$staff_id         = $staff_info['staff_id'] ?? '';
 		$desired_value    = 'on';
 
-		$html .= '<div class="box-side-context toggle_checkbox flex col-nowrap justify-around align-start">';
+		$html .= '<div class="box-side-context toggle_checkbox">';
 
-		$html .= '<div class="flex row-reverse-nowrap justify-end">';
-		$html .= '<label class="checkbox-left" for="staffInfo[staff_management]">Management?</label>';
+		$html .= '<div class="">';
 		$html .= '<input name="staffInfo[staff_management]" type="checkbox" id="staffInfo[staff_management]" value="on" ' . checked( $staff_management, 'on', false ) . ' />';
+		$html .= '<label class="light-text" for="staffInfo[staff_management]">Management?</label>';
 		$html .= '</div>';
 
-		$html .= '<div class="flex row-reverse-nowrap justify-end">';
-		$html .= '<label class="checkbox-left" for="staffInfo[staff_current]">Current?</label>';
+		$html .= '<div class="">';
 		$html .= '<input name="staffInfo[staff_current]" type="checkbox" id="staffInfo[staff_current]" value="on" ' . checked( $staff_current, 'on', false ) . '/>';
+		$html .= '<label class="light-text" for="staffInfo[staff_current]">Current?</label>';
 		$html .= '</div>';
 
-		$html .= '<div class="side-context-field flex col-nowrap align-start justify-center">';
-		$html .= '<label for="staffInfo[full_title]">Full Title</label>';
+		$html .= '<div class="grid-input-outer">';
+		$html .= '<label class="light-text" for="staffInfo[full_title]">Full Title</label>';
 		$html .= '<input type="text" name="staffInfo[full_title]" id="staffInfo[full_title]" value="' . $full_title . '"/>';
 		$html .= '</div>';
-		$html .= '<div class="side-context-field flex col-nowrap align-start justify-center">';
-		$html .= '<label for="staffInfo[short_title]">Title (Shortened)</label>';
+		$html .= '<div class="grid-input-outer">';
+		$html .= '<label class="light-text" for="staffInfo[short_title]">Title (Shortened)</label>';
 		$html .= '<input type="text" name="staffInfo[short_title]" id="staffInfo[short_title]" value="' . $short_title . '"/>';
 		$html .= '</div>';
-		$html .= '<div class="side-context-field flex col-nowrap align-start justify-center">';
-		$html .= '<label for="staffInfo[staff_id]">Staff ID</label>';
+		$html .= '<div class="grid-input-outer">';
+		$html .= '<label class="light-text" for="staffInfo[staff_id]">Staff ID</label>';
 		$html .= '<input type="text" name="staffInfo[staff_id]" id="staffInfo[staff_id]" value="' . $staff_id . '"/>';
 		$html .= '</div>';
 
@@ -448,7 +464,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		switch ( $column ) {
 			// Output checkbox with name attribute staff_management.
 			case 'staff_management':
-				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
+				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear" style="margin-bottom: 14px;">';
 				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
 				$html .= '<div class="toggle_checkbox">';
 				$html .= '<label class="alignleft" for="staffInfo[staff_management]">Management?</label>';
@@ -550,7 +566,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		if ( is_admin () && 'staffmember' === $post_type ) :
 		// Only use the minified script if we are in a production environment.
-		$script_uri   = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/staffmember_quickedit.js' ) : get_theme_file_uri( '/assets/js/staffmember_quickedit.min.js' );
+		$script_uri   = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/quickedit_staff.js' ) : get_theme_file_uri( '/assets/js/quickedit_staff.min.js' );
 		$version      = '20';
 		$dependencies = [ 'jquery', 'inline-edit-post' ]; // location: wp-admin/js/inline-edit-post.js.
 		$in_footer    = true; // True if we want to load the script in footer, false to load within header.
@@ -584,8 +600,43 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$value      = wp_parse_args( $value, $new_values );
 		?>
 
+		<style>
 
-		<section class="staffmember-info-fields" style="background:var(--blue-100);">
+		.staffmember-info-fields {
+			margin-top: 28px;
+			background: var(--gray-100);
+		}
+		.field-div {
+			margin-top: 5px;
+			padding-bottom: 15px;
+			display: grid;
+			grid-template-columns: 190px 290px;
+		}
+
+		.field-div > span {
+			font-size: 150%;
+		}
+
+		.field-div > span ~ input {
+			font-size: 150%;
+			line-height: 1.5;
+			color: var(--gray-600);
+			border-radius: 0.1em;
+
+		}
+
+		.field-div > span ~ input:focus {
+			outline: 2px solid var(--blue-300);
+		}
+
+	.cmb2-wrap input.cmb2-text-small, .cmb2-wrap input.cmb2-timepicker {
+		width: 260px;
+		color: #fff;
+		background: var(--color-theme-primary);
+		font-size: 1.4rem;
+}
+		</style>
+		<section class="staffmember-info-fields">
 
 
 			<!-- desk phone-->

@@ -493,7 +493,7 @@ const outputAddress = location => {
  * Output a telephone number as a link item in HTML.
  * @param {string} phone The phone number - with hyphens.
  */
-const outputPhone = phone => `<a class="telephone_link" href="tel:+1-${input.phone}" itemprop="telephone">${input.phone}</a>`;
+const outputPhone = input => `<a class="telephone_link" href="tel:+1-${input.phone}" itemprop="telephone">${input.phone}</a>`;
 
 const eachAddress = [];
 locations.forEach( location => {
