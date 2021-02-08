@@ -169,7 +169,6 @@ class Theme {
 			new JonesSign\Component(),
 			new ContactForm\Component(),
 			new Search\Component(),
-
 		];
 
 		if ( defined( 'JETPACK__VERSION' ) ) {

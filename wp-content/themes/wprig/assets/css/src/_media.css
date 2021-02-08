@@ -22,23 +22,21 @@ object {
 ## Captions
 --------------------------------------------------------------*/
 
+.wp-caption-text { text-align: center; }
+
 .wp-caption {
 	margin-bottom: 1.5em;
 	max-width: 100%;
-}
 
-.wp-caption img[class*="wp-image-"] {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
+	& img[class*="wp-image-"] {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
 
-.wp-caption-text {
-	text-align: center;
-}
-
-.wp-caption .wp-caption-text {
-	margin: 0.8075em 0;
+	& .wp-caption-text {
+		margin: 0.8075em 0;
+	}
 }
 
 /* min-width: 48em 672px */
@@ -72,36 +70,8 @@ object {
 
 @media screen and (min-width: 560px) {
 
-	.gallery-columns-2 {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
-	.gallery-columns-3 {
-		grid-template-columns: repeat(3, 1fr);
-	}
-
-	.gallery-columns-4 {
-		grid-template-columns: repeat(4, 1fr);
-	}
-
-	.gallery-columns-5 {
-		grid-template-columns: repeat(5, 1fr);
-	}
-
-	.gallery-columns-6 {
-		grid-template-columns: repeat(6, 1fr);
-	}
-
-	.gallery-columns-7 {
-		grid-template-columns: repeat(7, 1fr);
-	}
-
-	.gallery-columns-8 {
-		grid-template-columns: repeat(8, 1fr);
-	}
-
-	.gallery-columns-9 {
-		grid-template-columns: repeat(9, 1fr);
+	@for $i from 2 to 9 {
+		.gallery-columns-$i { grid-template-columns: repeat($i, 1fr); }
 	}
 }
 

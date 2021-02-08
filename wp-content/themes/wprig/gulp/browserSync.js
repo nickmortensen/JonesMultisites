@@ -37,6 +37,7 @@ export function serve( done ) {
 		port: config.dev.browserSync.bypassPort,
 		liveReload: true,
 		https: false,
+		ws: true,
 	};
 
 	// Only setup HTTPS certificates if HTTPS is enabled

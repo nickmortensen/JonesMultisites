@@ -119,7 +119,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
 	 */
 	public function add_metabox_to_client( $post_type, $post ) {
-		$id       = 'client_projects';
+		$id       = 'client-information-side-metabox';
 		$title    = 'Project Partnership';
 		$callback = [ $this, 'display_client_metabox_output_checkboxes' ];
 		$screen   = $this->get_slug();

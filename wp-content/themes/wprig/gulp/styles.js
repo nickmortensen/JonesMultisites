@@ -76,7 +76,7 @@ export function stylesAfterReplacementStream() {
 							preserve: false,
 						},
 						'custom-properties': {
-							preserve: true,
+							preserve: false,
 						},
 						'custom-selectors': {
 							preserve: false,

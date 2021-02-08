@@ -44,7 +44,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'widgets_init', [ $this, 'action_register_sidebars' ] );
-		add_filter( 'body_class', [ $this, 'filter_body_classes' ] );
+		add_filter( 'body_class', [ $this, 'filter_body_classes' ] ); // Add hide-sidenav class to body.
 	}
 
 	/**
@@ -102,7 +102,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		global $template;
 		if ( $this->is_primary_sidebar_active() ) {
 			if ( ! in_array( basename( $template ), [ '404.php', '500.php', 'offline.php' ], true ) ) {
-				$classes[] = 'has-sidebar';
+				$classes[] = 'hide-sidenav';
 			}
 		}
 

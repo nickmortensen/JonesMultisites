@@ -30,9 +30,7 @@
 }
 */
 
-.entry {
-	margin-bottom: 1rem;
-}
+.entry { margin-bottom: 1rem; }
 
 .entry-meta,
 .entry-footer {
@@ -41,24 +39,16 @@
 	font-size: 80%;
 }
 
-.entry-meta {
-	margin: 1em 0;
-}
+.entry-meta { margin: 1em 0; }
 
 /* Hides the update date and time. */
-.updated:not(.published) {
-	display: none;
-}
+.updated:not(.published) { display: none; }
 
-.post-thumbnail img {
-	margin: 0 auto;
-}
+.post-thumbnail img { margin: 0 auto; }
 
 .page-content,
 .entry-content,
-.entry-summary {
-	margin: 1.5em 0 0;
-}
+.entry-summary { margin: 1.5em 0 0; }
 
 .page-content > *,
 .entry-content > *,
@@ -281,18 +271,10 @@
 ## Custom block font sizes.
 --------------------------------------------------------------*/
 
-.has-small-font-size {
-	font-size: var(--font-size-small);
-}
+.has-small-font-size { font-size: var(--font-size-small); }
 
-.has-regular-font-size {
-	font-size: var(--font-size-regular);
-}
+.has-regular-font-size { font-size: var(--font-size-regular); }
 
-.has-large-font-size {
-	font-size: var(--font-size-large);
-}
+.has-large-font-size { font-size: var(--font-size-large); }
 
-.has-larger-font-size {
-	font-size: var(--font-size-larger);
-}
+.has-larger-font-size { font-size: var(--font-size-larger); }

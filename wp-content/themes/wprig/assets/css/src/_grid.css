@@ -1,0 +1,92 @@
+/* ======
+ * JUST GRID STUFF, YO
+ * Sits at the top of my imports stack and just tells what goes where.
+ *
+*/
+
+:root {
+	--page-grid-template-areas: "header" "main" "footer";
+	--header-grid-template-areas: "branding contact searchfield";
+}
+
+
+body,
+header,
+footer,
+#page,
+#contact-form,
+.site-main.frontpage,
+.main-navigation {
+	display: grid;
+}
+
+body {
+	grid-template-columns: none;
+	grid-template-rows: none;
+	grid-template-areas: "content";
+}
+
+#sidenav,
+#page { grid-area: content; }
+
+#page {
+	grid-template-columns: 1fr;
+	grid-template-rows: 300px 1fr auto;
+	grid-template-areas: var(--page-grid-template-areas);
+}
+
+header {
+	max-height: 300px;
+	grid-area: header;
+	grid-template-columns: 30% repeat(2, 1fr);
+	grid-template-areas: var(--header-grid-template-areas);
+
+	& #branding {
+		grid-area: branding;
+	}
+
+	& #connect {
+		grid-area: contact;
+	}
+
+	& > .main-navigation {
+		grid-area: topmenu;
+	}
+}
+
+footer {
+	grid-area: footer;
+	grid-template-columns: 2fr 5fr;
+	grid-template-rows: auto auto;
+	grid-template-areas:
+		"locationselect map"
+		"locationselect locationaddress";
+
+}
+
+.site-main {
+	grid-area: main;
+	grid-template-rows: 40px 300px repeat(3, 1fr);
+	grid-template-areas:
+		"search"
+		"article"
+		"gallery"
+		"connect"
+		"related";
+}
+
+.site-main.frontpage {
+	grid-template-areas:
+		"search"
+		"safetydata"
+		"fp-contactform"
+		"about"
+		"projects";
+}
+
+#safetydata { grid-area: safetydata; }
+
+
+.site-footer {
+	grid-area: footer;
+}

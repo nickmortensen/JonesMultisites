@@ -87,9 +87,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function initialize() {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ] );
-		// add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_material_design_styles' ], 60 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 40 );
-		// add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_material_scripts' ] );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
 		add_filter( 'wp_resource_hints', [ $this, 'filter_resource_hints' ], 10, 2 );
@@ -322,18 +320,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
 			],
-			// 'wp-rig-sidebar'        => [
-			// 	'file'             => 'sidebar.min.css',
-			// 	'preload_callback' => function() {
-			// 		return wp_rig()->is_primary_sidebar_active();
-			// 	},
-			// ],
-			// 'wp-rig-widgets'        => [
-			// 	'file'             => 'widgets.min.css',
-			// 	'preload_callback' => function() {
-			// 		return wp_rig()->is_primary_sidebar_active();
-			// 	},
-			// ],
 			'wp-rig-taxonomy'       => [
 				'file'             => 'taxonomies.min.css',
 				'preload_callback' => function() {
@@ -428,7 +414,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			return $this->material_icons;
 		}
 
-		$material_icons       = [ 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', 'Material Icons Sharp', 'Material Icons Two Tone', ];
+		$material_icons       = [ 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', 'Material Icons Sharp', 'Material Icons Two Tone' ];
 		$this->material_icons = (array) apply_filters( 'wp_rig_material_icons', $material_icons );
 		return $this->material_icons;
 	}

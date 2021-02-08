@@ -9,6 +9,9 @@
 form {
 	--border-color-one: var(--gray-400);
 	--border-color-two: var(--gray-500);
+	--hover-bg: var(--blue-800);
+	--button-bg: var(--color-theme-primary);
+	--button-text: var(--foreground);
 }
 
 button,
@@ -28,9 +31,7 @@ textarea {
  */
 
 button,
-input {
-	overflow: visible; /* 1 */
-}
+input { overflow: visible; /* 1 */ }
 
 /**
   * Remove the inheritance of text transform in Edge, Firefox, and IE.
@@ -38,9 +39,7 @@ input {
  */
 
 button,
-select {
-	text-transform: none; /* 1 */
-}
+select { text-transform: none; /* 1 */ }
 
 /**
   * Remove the inner border and padding in Firefox.
@@ -69,9 +68,7 @@ button:-moz-focusring,
   * Correct the padding in Firefox.
  */
 
-fieldset {
-	padding: 0.35em 0.75em 0.625em;
-}
+fieldset { padding: 0.35em 0.75em 0.625em; }
 
 /**
   * 1. Correct the text wrapping in Edge and IE.
@@ -93,9 +90,7 @@ legend {
   * Add the correct vertical alignment in Chrome, Firefox, and Opera.
  */
 
-progress {
-	vertical-align: baseline;
-}
+progress { vertical-align: baseline; }
 
 /**
   * 1. Add the correct box sizing in IE 10.
@@ -113,9 +108,7 @@ progress {
  */
 
 [type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-	height: auto;
-}
+[type="number"]::-webkit-outer-spin-button { height: auto; }
 
 /**
   * 1. Correct the odd appearance in Chrome and Safari.
@@ -131,9 +124,7 @@ progress {
   * Remove the inner padding in Chrome and Safari on macOS.
  */
 
-[type="search"]::-webkit-search-decoration {
-	-webkit-appearance: none;
-}
+[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
 
 /**
   * 1. Correct the inability to style clickable types in iOS and Safari.
@@ -159,7 +150,6 @@ button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-
 	-webkit-appearance: button;
 	border: 1px solid;
 	border-color: var(--border-color-one) var(--border-color-one) var(--border-color-two);
@@ -180,6 +170,7 @@ input[type="submit"]:hover {
 	border-color: var(--border-color-one) var(--border-color-one) var(--border-color-two);
 }
 
+
 button:active,
 button:focus,
 input[type="button"]:active,
@@ -187,9 +178,7 @@ input[type="button"]:focus,
 input[type="reset"]:active,
 input[type="reset"]:focus,
 input[type="submit"]:active,
-input[type="submit"]:focus {
-	border-color: #aaa #bbb #bbb;
-}
+input[type="submit"]:focus { border-color: #aaa #bbb #bbb; }
 
 input[type="text"],
 input[type="email"],
@@ -232,14 +221,11 @@ textarea:focus {
 	color: var(--field-focus-text-color);
 }
 
-select {
-	border: 1px solid #ccc;
-}
+select { border: 1px solid #ccc; }
 
 .contact-form-section {
 	position: relative;
 	height: 0;
-	background: var(--teal-200);
 }
 
 .contact-form-container {
@@ -252,7 +238,7 @@ select {
 input#contact_form_button {
 	text-transform: uppercase;
 	background: var(--color-theme-primary);
-	color: var(--has-dark-bg);
+	color: var(--foreground);
 	font-weight: var(--bold);
 	position: absolute;
 	margin-top: 2vw;
@@ -261,12 +247,8 @@ input#contact_form_button {
 }
 
 form#contact {
-	& > div {
-		padding-top: 18px;
-	}
-
+	& > div { padding-top: 18px; }
 }
-
 
 /**
  * Autogrowing the text area.
@@ -321,135 +303,3 @@ form#contact {
 	}
 }
 
-/* Great Forms Snippets 07_04_search_snippets.txt -- edited to retail snale case --- stops at line 93*/
-#search_wrap {
-
-	--accent-color: var(--blue-600);
-	width: 50%;
-	margin: 0 auto 1em;
-
-	& #search_form {
-		position: relative;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		transition: all 1s;
-		width: 50px;
-		height: 50px;
-		background: var(--accent-color);
-		box-sizing: border-box;
-		border-radius: 25px;
-		border: 4px solid #fff;
-		padding: 5px;
-
-		&:hover {
-			width: 80%;
-			cursor: pointer;
-
-			& input {
-				display: block;
-				border: solid 3px var(--accent-color);
-			}
-
-			& .search_icon {
-				background: var(--accent-color);
-				color: #fff;
-
-				&::before {
-					font-family: serif;
-					content: "\2191"; /* up arrow */
-					transform: rotate(90deg); /* up arrow is now right facing arrow */
-				}
-			}
-		}
-
-		& input {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 42.5px;
-			line-height: 0.7;
-			outline: 0;
-			border: 0;
-			display: none;
-			font-size: 1em;
-			border-radius: 20px;
-			padding: 0 20px;
-			-moz-appearance: none;/* older firefox */
-			-webkit-appearance: none; /* safari, chrome, edge and ie mobile */
-			appearance: none;
-		}
-	} /* \#search_form */
-
-
-	& .search {
-		width: 100%;
-		position: relative;
-		display: flex;
-	}
-
-	& .search_term {
-		width: 100%;
-		border: 3px solid var(--accent-color);
-		border-right: none;
-		padding: 5px;
-		height: 36px;
-		border-radius: 5px 0 0 5px;
-		outline: none;
-		color: #9dbfaf;
-		-moz-appearance: none;/* older firefox */
-		-webkit-appearance: none; /* safari, chrome, edge and ie mobile */
-		appearance: none;
-
-		&:focus {
-			color: #70c5b5;
-		}
-	} /* \.search_term */
-
-
-	& .search_button {
-		width: 40px;
-		height: 36px;
-		border: 1px solid var(--accent-color);
-		background: var(--accent-color);
-		text-align: center;
-		color: #fff;
-		border-radius: 0 5px 5px 0;
-		cursor: pointer;
-		font-size: 20px;
-
-		&:focus {
-			outline: 0;
-		}
-	} /* \.search_button */
-
-	& .search_icon {
-		box-sizing: border-box;
-		padding: 10px;
-		width: 42.5px;
-		height: 42.5px;
-		position: absolute;
-		top: 0;
-		right: 0;
-		border-radius: 50%;
-		color: #fff;
-		text-align: center;
-		font-size: 1.2em;
-		transition: all 1s;
-		cursor: pointer;
-
-		&::before {
-			content: "\ea27"; /*magnifying glass */
-			font-weight: 900;
-		}
-	}
-
-
-}
-
-@media screen and (min-width: 460px) {
-	#search_form:hover {
-		width: 290px; /* at larger screen will accomodate a longer query (roughly 27 characters)*/
-	}
-}

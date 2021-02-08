@@ -23,7 +23,6 @@ section#masthead.frontpage {
 	background-size: cover;
 	/* background-position: 25% -50%; */
 	background-clip: padding-box;
-
 }
 
 </style>

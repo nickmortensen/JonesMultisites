@@ -1,5 +1,5 @@
 'use strict';
-
+/* eslint-disable no-unused-vars, no-undef */
 const projectsBox          = document.getElementById( 'client_projects' );
 const allProjectCheckboxes = document.querySelectorAll( 'input[name = "clientProjects"' );
 let selected               = clientProjectsAll.selected;

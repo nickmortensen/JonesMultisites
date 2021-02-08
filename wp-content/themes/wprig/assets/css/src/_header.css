@@ -3,20 +3,75 @@
 --------------------------------------------------------------*/
 
 header {
-	background-color: var(--gray-200);
-	display: grid;
-	grid-template-columns: 1fr 3fr 1fr;
-	grid-template-areas: "branding topmenu searchbar";
+	border-bottom: 9px solid var(--yellow-600);
 
-	& > .branding {
-		grid-area: branding;
-		border-right: 2px solid var(--gray-700);
-		place-items: center;
+	& #branding,
+	& #connect {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	& #branding {
+
+		& > a {
+			color: var(--foreground);
+			margin: 2vw 8vw;
+
+			& > img {
+				--blendmode: hard-light;
+				--filter: drop-shadow(5px 5px 5px #fff);
+				--filter: drop-shadow(5px 5px 5px #fff) drop-shadow(-5px -5px 5px var(--yellow-300));
+				--backdrop-filter: brightness(60%);
+				height: clamp(44px, 7.4vw, 240px);
+				width: clamp(44px, 7.4vw, 240px);
+				filter: var(--filter);
+				mix-blend-mode: var(--blendmode);
+			}
+		}
+	}
+
+	& #connect {
+		color: var(--foreground);
+
+		& a[class^="material-icons"] {
+
+			--timing-function: var(--reverse-timing-function);
+			--border-thickness: 4px;
+			--scale: scale(0.8);
+			color: inherit;
+			font-size: calc(1.3 * var(--fontsize-xl));
+			background: var(--blue-600);
+			padding: 2rem;
+			border: var(--border-thickness) solid var(--foreground);
+			border-radius: 50%;
+			transition: all 0.3s var(--timing-function);
+			transform: var(--scale);
+
+			&:hover,
+			&:focus {
+				--scale: scale(1.1);
+				--border-thickness: 8px;
+				--timing-function: var(--transition-timing-function);
+			}
+
+			&:active {
+				background: var(--blue-900);
+			}
+
+			&:visited {
+				background: var(--gray-500);
+			}
+
+			&:hover {
+				background: var(--blue-500);
+			}
+
+		}
 	}
 
 	& > .main-navigation {
-		grid-area: topmenu;
-		display: grid;
 		justify-content: flex-end;
 		align-items: flex-end;
 	}
@@ -59,7 +114,7 @@ header {
 	font-size: var(--fontsize-s);
 	font-weight: inherit;
 	word-wrap: break-word;
-	color: var(--has-dark-bg);
+	color: var(--foreground);
 }
 
 /*--------------------------------------------------------------
@@ -69,33 +124,27 @@ header {
 	font-family: var(--highlight-font-family);
 
 	& .menu-toggle {
-		color: var(--has-dark-bg);
+		color: var(--foreground);
 		display: block;
 		padding: 8px;
 		font-stretch: condensed;
 		font-size: var(--fontsize-l);
 		text-transform: uppercase;
-		border: 2px solid var(--has-dark-bg);
+		border: 2px solid var(--foreground);
 		border-radius: 0;
 		width: 40vw;
 		margin: 0 auto;
 		background: transparent;
 	}
 
-	& .menu {
-		display: none;
+	& .menu { display: none; }
 
-	}
 }/* /nav--toggle-small */
 
-.primary-menu-container {
-	display: none;
-}
+.primary-menu-container { display: none; }
 
 @media screen and (width > 768px ) {
-	.primary-menu-container {
-		display: flex;
-	}
+	.primary-menu-container { display: flex; }
 }
 
 .nav--toggled-on > .primary-menu-container {
@@ -104,28 +153,20 @@ header {
 }
 
 .nav--toggle-sub .dropdown,
-.nav--toggle-sub .dropdown-toggle {
-	display: none;
-}
+.nav--toggle-sub .dropdown-toggle { display: none; }
 
 /* Styles only appear on screens smaller than 525px */
 
 @media screen and (width < 769px) {
 
-	.nav--toggle-small.nav--toggled-on .menu {
-		display: block;
-	}
+	.nav--toggle-small.nav--toggled-on .menu { display: block; }
 }
 
 @media screen and (width > 768px) {
 
-	.nav--toggle-small .menu-toggle {
-		display: none;
-	}
+	.nav--toggle-small .menu-toggle { display: none; }
 
-	.nav--toggle-small .menu {
-		display: block;
-	}
+	.nav--toggle-small .menu { display: block; }
 
 	.nav--toggle-sub ul ul {
 		display: none;
@@ -198,9 +239,7 @@ header {
 	 */
 	.nav--toggle-sub li:hover > ul,
 	.nav--toggle-sub li.menu-item--toggled-on > ul,
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul {
-		display: block;
-	}
+	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul { display: block; }
 
 	/*
 	 * "focus-within" is an alternative to focus class for
@@ -210,9 +249,7 @@ header {
 	 * This selector needs to stay separated, otherwise submenus
 	 * will not be displayed with IE/Edge.
 	 */
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul {
-		display: block;
-	}
+	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul { display: block; }
 
 }
 
@@ -264,13 +301,11 @@ header {
 
 	padding: 0.5em 1em 0.5em 0;
 	text-decoration: none;
-	color: #000;
+	color: var(--gray-800);
 }
 
 .main-navigation a:hover,
-.main-navigation a:focus {
-	text-decoration: underline;
-}
+.main-navigation a:focus { text-decoration: underline; }
 
 .main-navigation ul {
 	display: block;
@@ -279,27 +314,17 @@ header {
 	padding: 0;
 }
 
-.main-navigation ul ul li {
-	padding-left: 1em;
-}
+.main-navigation ul ul li { padding-left: 1em; }
 
 @media (--wide-menu-query) {
 
-	.main-navigation ul li a {
-		padding: 0.4em 0.5em;
-	}
+	.main-navigation ul li a { padding: 0.4em 0.5em; }
 
-	.main-navigation ul li {
-		margin: 0 0 0 0.5em;
-	}
+	.main-navigation ul li { margin: 0 0 0 0.5em; }
 
-	.main-navigation ul li:first-child {
-		margin-left: 0;
-	}
+	.main-navigation ul li:first-child { margin-left: 0; }
 
-	.main-navigation ul ul a {
-		width: 200px;
-	}
+	.main-navigation ul ul a { width: 200px; }
 
 	/* stylelint-disable */
 	.main-navigation ul ul li {

@@ -202,8 +202,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
+		// add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_googlesheets_script' ] );   ?
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
-		// Admin set post columns - put additional columns into the admin end for the location taxonomy.
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_admin_columns' ], 10, 1 );
 		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
@@ -996,6 +996,32 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		wp_enqueue_script( $handle, $script_path, $deps, $version, $in_footer );
 		wp_script_add_data( $handle, 'defer', false ); // wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
 	}
+
+	/**
+	 * Output all the Jones Location information into a json-encoded array to use on any of the sites -- saves calls to the database.
+	 *
+	 * @see the only reason to run this, would be that I've added new information to any of the items within the location taxonomy.
+	 */
+	public function action_enqueue_googlesheets_script() {
+
+		$handle    = 'jones-googlesheets-data'; // script handle.
+		$path      = get_theme_file_uri( '/assets/js/src/retrievesheetdata.js' ); // path to script.
+		$version   = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/retrievesheetdata.js' ) ); // script version.
+		$in_footer = false; // Do we enqueue the script into the footer -- no.
+
+		wp_register_script( $handle, $path, $deps = [], $version, $in_footer );
+		wp_script_add_data( $handle, 'defer', false ); // if true - wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
+		wp_enqueue_script( $handle, $path, [], $version, false );
+
+		$deps    = [ 'jones-googlesheets-data' ]; // dependencies.
+		$version = '5.5.3';
+		$handle2 = 'google-spreadsheet-api';
+
+		wp_register_script( $handle2, 'https://apis.google.com/js/api.js', $handle, $version, false );
+		wp_script_add_data( $handle2, 'defer', true );
+		wp_enqueue_script( $handle2, 'https://apis.google.com/js/api.js', $handle, $version, false );
+	}
+
 
 	/**
 	 * Output all the Jones Location information into a json-encoded array to use on any of the sites -- saves calls to the database.

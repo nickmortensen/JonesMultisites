@@ -13,6 +13,9 @@ wp-content/*
 !wp-content/plugins/
 !wp-content/themes/
 
+
+
+
 # Ignore everything in the "plugins" directory, except the plugins you
 # specify (see the commented-out examples for hints on how to do this.)
 wp-content/plugins/*
@@ -56,7 +59,6 @@ wp-content/themes/*
 !/wp-content/themes/wprig/inc/
 !/wp-content/themes/wprig/template-parts/
 !/wp-content/themes/wprig/config/
-#use
 /wp-content/themes/wprig/config/config.local.json
 
 !/wp-content/themes/wprig/tests/
@@ -98,3 +100,9 @@ wp-content/themes/*
 wp-content/themes/wprig/inc/Nav_Menus/Walker.php
 wp-content/themes/wprig/modal-messaround.php
 wp-content/themes/wprig/template-parts/bakheader
+wp-content/themes/wprig/*.bak.php
+wp-content/themes/wprig/**/*.bak.php
+/wp-content/themes/wprig/modal-messaround.bak.php
+/wp-content/themes/wprig/front-page.1027.bak.php
+/wp-content/themes/wprig/front-page-0122.bak.php
+/wp-content/themes/wprig/front-page-experiment.bak.php

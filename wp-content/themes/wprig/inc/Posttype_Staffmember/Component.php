@@ -61,8 +61,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return 'staffmember';
 	}
 
-
-
 	/**
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
@@ -107,7 +105,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_all_staffmembers() {
 		return PostTypes::get_all_posttype( 'staffmember' );
 	}
-
 
 	/**
 	 * Enqueues a script that improves navigation menu accessibility.
@@ -299,8 +296,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'title'       => array_slice( $columns, 0, 1 ),
 		];
 
-		$new_columns['staff_management'] = 'Mgmt?';
-		$new_columns['staff_current']    = 'Current?';
+		$new_columns['staff_management'] = '<span title="is this person management?" class="material-icons"> supervised_user_circle </span>';
+		$new_columns['staff_current']    = '<span title="is this a current staffmember?" class="material-icons"> check_circle_outline </span>';
 
 		return array_merge( $new, $columns, $new_columns );
 	}
@@ -322,8 +319,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			case 'staff_title':
 				$jobtitle    = isset( $staff_info['full_title'] ) ? $staff_info['full_title'] : '';
 				$short_title = isset( $staff_info['short_title'] ) ? $staff_info['short_title'] : '';
-				$html        = wp_sprintf( '<div id="full_title_%d">%s</div>', $post_id, $jobtitle );
-				$html       .= wp_sprintf( '<div id="short_title_%d" hidden>%s</div>', $post_id, $short_title );
+				$html        = wp_sprintf( '<div id="full_title_%d" hidden>%s</div>', $post_id, $jobtitle );
+				$html       .= wp_sprintf( '<div id="short_title_%d">%s</div>', $post_id, $short_title );
 				break;
 			case 'staff_id':
 				$img      = $this->output_circular_images( $post_id );
@@ -351,7 +348,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Output the image for the person as an image in a circle.
+	 * Output the image for the person as an image in a circle using an SVG to frame.
 	 *
 	 * @param int    $post_id The ID of the staffmember.
 	 * @param string $size The size of the image -- defaults to 'thumbnail.
@@ -359,15 +356,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function output_circular_images( $post_id, $size = 'thumbnail' ) {
 		$thumb_url = get_the_post_thumbnail_url( $post_id, $size );
-		return '<svg role="none" style="height: 36px; width: 36px;">
-				<mask id="avatar">
-					<circle cx="18" cy="18" fill="white" r="18"></circle>
-				</mask>
-				<g mask="url(#avatar)">
-					<image x="0" y="0" height="100%" preserveAspectRatio="xMidYMid slice" width="100%" xlink:href="' . $thumb_url . '" style="height: 36px; width: 36px;"></image>
-					<circle cx="18" cy="18" r="18" style="stroke-width:2;stroke:rgba(0,0,0,0.1);fill:none;"></circle>
-				</g>
-			</svg>';
+		return '
+		<svg role="none" style="height: 36px; width: 36px;">
+			<mask id="avatar"> <circle cx="18" cy="18" fill="white" r="18"></circle> </mask>
+			<g mask="url(#avatar)">
+				<image x="0" y="0" height="100%" preserveAspectRatio="xMidYMid slice" width="100%" xlink:href="' . $thumb_url . '" style="height: 36px; width: 36px;"></image>
+				<circle cx="18" cy="18" r="18" style="stroke-width:2;stroke:rgba(0,0,0,0.1);fill:none;"></circle>
+			</g>
+		</svg>';
 	}
 
 	/**
@@ -382,7 +378,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
 	 */
 	public function add_metabox_to_staffmembers( $post_type, $post ) {
-		$id       = 'staffinfo-short-details';
+		$id       = 'staffmember-information-side-metabox';
 		$title    = 'Staff Details';
 		$callback = [ $this, 'display_staff_metabox_output' ];
 		$screen   = 'staffmember';
@@ -478,7 +474,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				$html .= '<fieldset class="inline-edit-col-left inline-edit-staffmember clear">';
 				$html .= '<div class="inline-edit-group column-' . $column . ' wp-clearfix">';
 				$html .= '<div class="toggle_checkbox">';
-				$html .= '<label for="staffInfo[staff_current]">Current?</label>';
+				$html .= '<label class="alignleft" for="staffInfo[staff_current]">Current?</label>';
 				$html .= '<input name="staffInfo[staff_current]" type="checkbox" id="staff_current" value="on"/>';
 				$html .= '</div>';
 				$html .= '</div>';
@@ -610,19 +606,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			margin-top: 5px;
 			padding-bottom: 15px;
 			display: grid;
-			grid-template-columns: 190px 290px;
+			grid-template-columns: repeat(2, 190px);
+			grid-template-areas: "label input";
 		}
 
 		.field-div > span {
 			font-size: 150%;
+			grid-area: label;
 		}
 
 		.field-div > span ~ input {
+			padding-left: 0.4rem;
 			font-size: 150%;
 			line-height: 1.5;
 			color: var(--gray-600);
 			border-radius: 0.1em;
-
+			grid-area: input;
 		}
 
 		.field-div > span ~ input:focus {
@@ -637,13 +636,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 }
 		</style>
 		<section class="staffmember-info-fields">
-
-
 			<!-- desk phone-->
 			<div class="field-div" data-fieldid="desk_phone">
-				<span>
-					<label for="<?= $field_type->_id( '_desk_phone' ); ?>'">Desk Phone</label>
-				</span>
+				<span> <label for="<?= $field_type->_id( '_desk_phone' ); ?>'">Desk Phone</label> </span>
 				<?= $field_type->input(
 					[
 						'name'  => $field_type->_name( '[desk_phone]' ),
@@ -659,9 +654,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 			<!-- extension -->
 			<div class="field-div" data-fieldid="desk_ext">
-				<span>
-					<label for="<?= $field_type->_id( '_desk_ext' ); ?>'">ext</label>
-				</span>
+				<span> <label for="<?= $field_type->_id( '_desk_ext' ); ?>'">ext</label> </span>
 				<?= $field_type->input(
 					[
 						'name'  => $field_type->_name( '[desk_ext]' ),
@@ -676,9 +669,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 			<!-- mobile -->
 			<div class="field-div" data-fieldid="mobile_phone">
-				<span>
-					<label for="<?= $field_type->_id( '_mobile_phone' ); ?>'">Mobile</label>
-				</span>
+				<span> <label for="<?= $field_type->_id( '_mobile_phone' ); ?>'">Mobile</label> </span>
 				<?= $field_type->input(
 					[
 						'name'  => $field_type->_name( '[mobile_phone]' ),
@@ -693,9 +684,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 			<!-- email -->
 			<div class="field-div" data-fieldid="staff_email">
-				<span>
-					<label for="<?= $field_type->_id( '_staff_email' ); ?>'">Email</label>
-				</span>
+				<span> <label for="<?= $field_type->_id( '_staff_email' ); ?>'">Email</label> </span>
 				<?= $field_type->input(
 					[
 						'name'    => $field_type->_name( '[staff_email]' ),
@@ -703,7 +692,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 						'value'   => $value['staff_email'],
 						'type'    => 'text_email',
 						'default' => '',
-						'class'   => '',
+						'class'   => 'staffmember_more info_email',
 					]
 				);
 				?>

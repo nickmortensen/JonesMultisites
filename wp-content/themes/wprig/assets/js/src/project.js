@@ -1,26 +1,25 @@
+/* eslint-disable no-unused-vars, no-undef */
 const {
 	identifiers,
 	current,
 	resturl: restURL,
-} = projectData; //eslint-disable-line no-unused-vars, no-undef
+} = projectData;
 
-console.log( current );
 const getRandom = ( smallest = 1, largest = 9 ) => Math.floor( Math.abs( ( Math.random() * ( smallest - largest + 1 ) ) + 1 ) );
-console.log( getRandom( 4, 14 ) );
+// console.log( getRandom( 4, 14 ) );
 // should be an array that does not include 53
 // let projectOneIndex = getRandom( 1, projectData.identifiers.length );
 const projectOne = getRandom( 1, projectData.identifiers.length ); //eslint-disable-line no-undef
 const projectTwo = Math.abs( projectOne - 3 );
-console.log( projectOne, projectTwo );
+// console.log( projectOne, projectTwo );
 
 const relatedProjects = [ identifiers[ projectOne ], identifiers[ projectTwo ] ];
 const queryURL        = `${restURL}project?include=${relatedProjects.join()}`;
-console.log( 'querying the following URL using WP API:', queryURL );
 
 function sendRESTquery() {
 	fetch( queryURL )
 		.then( response => response.json() )
-		.then( data => console.log( data ) )
+		// .then( data => console.log( data ) )
 		.catch( error => console.error( error.message ) );
 }
 

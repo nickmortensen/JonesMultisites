@@ -53,6 +53,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function template_tags() : array {
 		return [
 			'get_project_card'            => [ $this, 'get_project_card' ],
+			'get_secondary_project_card'  => [ $this, 'get_secondary_project_card' ],
 			'get_all_projects'            => [ $this, 'get_all_projects' ],
 			'get_project_slideshow'       => [ $this, 'get_project_slideshow' ],
 			'get_project_square_images'   => [ $this, 'get_project_square_images' ],
@@ -223,7 +224,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$size                  = 'medium';
 		$project               = [];
 		$project['thumbnail']  = get_post_thumbnail_id( $project_id );
-		$project['thumb_url']  = wp_get_attachment_image_src( get_post_thumbnail_id( $project_id ), $size )[0];
+		$project['thumb_url']  = wp_get_attachment_image_src( get_post_thumbnail_id( $project_id ), $size )[0] ?? wp_get_attachment_image_src( 761, 'medium' )[0];
 		$project['type']       = get_post( $project_id )->post_type;
 		$project['signtypes']  = wp_get_post_terms( $project_id, 'signtype', [ 'fields' => 'ids' ] );
 		$project['expertise']  = wp_get_post_terms( $project_id, 'expertise', [ 'fields' => 'ids' ] );
@@ -245,6 +246,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$additional_info_array = $this->get_additional_project_info( $project_id );
 		return array_merge( $project, $additional_info_array );
 	}
+
 
 	/**
 	 * Get project card as poached from codepen.
@@ -282,19 +284,69 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$rest         = ltrim( $project_name, $name[0] . ' ' );
 			$project_name = $name[0] . '<br />' . $name[1];
 		}
-		$output .= '<div data-project-id="' . $project_id . '" class="project-card">';
-		$output .= wp_sprintf( '<span class="project_name"><a href="%1$s" title="link to the project page for %2$s" >%2$s</a></span>', $link, $project_name );
+		$output .= '<div data-project-id="' . $project_id . '" class="single-project-card">';
+		$output .= '<div class="open"></div>';
+		$output .= wp_sprintf( '<div class="project_completion"><strong>%s</strong></div>', $year );
+		$output .= wp_sprintf( '<span class="project_title"><a href="%1$s" title="link to the project page for %2$s" >%2$s</a></span>', $link, $project_name );
 		$output .= wp_sprintf( '<div class="project_tease">%s</div>', $tease );
 		$output .= wp_sprintf( '<div class="project_image" style="background:center/cover no-repeat url(%s);"></div>', $featured );
-		$output .= $signtypes ? Taxonomies::get_card_taxonomy_row( $signtypes ) : '';
-		$output .= $expertise ? Taxonomies::get_card_taxonomy_row( $expertise ) : '';
-		$output .= $industries ? Taxonomies::get_card_taxonomy_row( $industries ) : '';
-		$output .= wp_sprintf( '<div class="location"><span class="side-title">%s, %s</span></div>', $address['city'], $address['state'] );
-		$output .= wp_sprintf( '<div class="footnote">%s</div>', $alternate_name );
-		$output .= wp_sprintf( '<div class="more-info-link"><a href="%s">more info</a></div>', $link );
-		$output .= wp_sprintf( '<div class="square one"><strong>Complete: %s</strong></div>', $year );
-		$output .= '<div class="strip"></div>';
+		$output .= $signtypes ? Taxonomies::get_card_taxonomy_row( $signtypes ) : ''; // Class of 'project_signtype'.
+		$output .= $expertise ? Taxonomies::get_card_taxonomy_row( $expertise ) : ''; // Class of 'project_expertise'.
+		$output .= $industries ? Taxonomies::get_card_taxonomy_row( $industries ) : ''; // Class of 'project_industry'.
+		$output .= wp_sprintf( '<div class="project_location"><span class="side-title">%s, %s</span></div>', $address['city'], $address['state'] );
+		$output .= wp_sprintf( '<div class="project_footnote">%s</div>', $alternate_name );
+		$output .= wp_sprintf( '<div class="more_information"><a href="%s">more info</a></div>', $link );
 		$output .= '</div>';
+
+		return $output;
+	}
+
+	/**
+	 * Get secondary project card as to appear on the all porojects page.
+	 *
+	 * @param int $project_id Project identification or post_id.
+	 *
+	 * @link https://codepen.io/nickmortensen/pen/yLOrxbW?editors=1100
+	 * @link https://codepen.io/julesforrest/pen/QBzaQR
+	 *
+	 * @return string HTML for an individual project card.
+	 */
+	public function get_secondary_project_card( int $project_id ) : string {
+		$output = '';
+		[
+			'signtypes'     => $signtypes,
+			'expertise'     => $expertise,
+			'industries'    => $industries,
+			'thumb_url'     => $featured,
+			'year_complete' => $year,
+			'tease'         => $tease,
+			'job_id'        => $jobid,
+			'address'       => $address,
+			'svg'           => $svg,
+			'thumbnail'     => $thumbnail_id,
+			'modified'      => $last_modified,
+			'job'           => $project_name,
+			'link'          => $link,
+			'vertical'      => $vertical_img_url,
+			'slideshow'     => $slides_array,
+			'square'        => $square_images_array,
+			'partners'      => $partners_array,
+			'client'        => $client,
+			'alt_name'      => $alternate_name,
+		]       = $this->get_all_project_info( $project_id );
+		if ( str_word_count( $project_name ) === 2 ) {
+			$name         = explode( ' ', $project_name, 2 );
+			$rest         = ltrim( $project_name, $name[0] . ' ' );
+			$project_name = $name[0] . '<br />' . $name[1];
+		}
+		$output .= wp_sprintf( '<figure data-project-id="%d" class="card">', $project_id );
+		$output .= wp_sprintf( '<img src="%s">', $featured ?? wp_get_attachment_image_src( 761, 'medium' )[0] );
+		$output .= wp_sprintf( '<div data-project-id="%d" class="overlay"></div>', $project_id );
+		$output .= wp_sprintf( '<figcaption data-project-id="%d">', $project_id );
+		$output .= wp_sprintf( '<h3>%s</h3>', $project_name );
+		$output .= wp_sprintf( '<span>%s</span>', $tease );
+		$output .= '</figcaption><!-- end div.card-->';
+		$output .= '</figure><!-- end div.card-->';
 
 		return $output;
 	}
@@ -325,8 +377,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * Get the label for the project address field;
 		 */
 		function get_label_cb() {
-			$html  = '<style>.label_callback {color:white; font-weight: 600;background: var(--indigo-600);font-size: 2.5rem; padding-left: 1ch; margin-bottom: 1ch;}</style>';
-			$html .= '<div class="label_callback">Project Information</div>';
+			$html = '<div class="additional_fields project_post"><span>Project Information</span></div>';
 			return $html;
 		}
 
@@ -336,7 +387,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * @param string $text The text to markup.
 		 */
 		function get_general_label_cb( $text ) {
-			return '<div class="label_callback">' . ucwords( $text ) . '</div>';
+			return '<div class="additional_fields project_post"><span><span>' . ucwords( $text ) . '</span></div>';
 		}
 
 		/**
@@ -531,8 +582,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
 	 */
 	public function add_metabox_to_project( $post_type, $post ) {
-		$id       = 'projectinfo-short-details';
-		$title    = 'Project Information';
+		$id       = 'project-information-side-metabox';
+		$title    = 'Project Info';
 		$callback = [ $this, 'display_project_metabox_output' ];
 		$screen   = $this->get_slug();
 		$context  = 'side';
@@ -556,32 +607,29 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$complete     = $project_info['year_complete'] ?? '2020';
 		$tease        = $project_info['tease'] ?? '7 word teaser';
 
-		$html .= '<style> #project-side-metadata { background: var(--indigo-200); display: flex; flex-flow: column nowrap; } #project-side-metadata > div { padding-top: 10px; display: flex; flex-flow: column nowrap; justify-content: flex-start; } </style>';
-
-		$html .= '<div id="project-side-metadata" class="inline-edit-group wp-clearfix">';
-
-		$html .= '<div>';
+		$html .= '<div id="project-sideinfo" class="inline-edit-group wp-clearfix admin_side_information">';
+		$html .= '<div class="label_left">';
 		$html .= wp_sprintf( '<label for="projectInfo[client]">%s</label>', 'Client' );
 		$html .= wp_sprintf( '<input type="text" class="regular_text" name="projectInfo[client]" id="projectInfo[client]" value="%s"/>', $client );
 		$html .= '</div>';
-		$html .= '<div>';
-		$html .= wp_sprintf( '<label for="projectInfo[job_id]">%s</label>', 'Job Number' );
+		$html .= '<div class="label_left">';
+		$html .= wp_sprintf( '<label for="projectInfo[job_id]">%s</label>', 'Job #' );
 		$html .= wp_sprintf( '<input type="text" class="regular_text" name="projectInfo[job_id]" id="projectInfo[job_id]" value="%s"/>', $job_id );
 		$html .= '</div>';
-		$html .= '<div>';
-		$html .= wp_sprintf( '<label for="projectInfo[year_complete]">%s</label>', 'Year Complete' );
+		$html .= '<div class="label_left">';
+		$html .= wp_sprintf( '<label for="projectInfo[year_complete]">%s</label>', 'Complete' );
 		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[year_complete]" id="projectInfo[year_complete]" value="%s"/>', $complete );
 		$html .= '</div>';
-		$html .= '<div>';
+		$html .= '<div class="label_top">';
 		$html .= wp_sprintf( '<label for="projectInfo[tease]">%s</label>', 'Tease' );
 		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[tease]" id="projectInfo[tease]" value="%s"/>', $tease );
 		$html .= '</div>';
-		$html .= '<div>';
+		$html .= '<div class="label_top">';
 		$html .= wp_sprintf( '<label for="projectInfo[local_folder]">%s</label>', 'Local Folder' );
 		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[local_folder]" id="projectInfo[local_folder]" value="%s"/>', $local_folder );
 		$html .= '</div>';
 
-		$html .= '</div> <!-- end div#project-side-metadata.inline-edit-group wp-clearfix-->';
+		$html .= '</div> <!-- end div#project-sideinfo.inline-edit-group wp-clearfix.admin_side_information-->';
 		echo $html;
 	}//end display_project_metabox_output()
 
@@ -624,6 +672,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function the_project_menu_items() {
 		return $this->get_recent_projects( 6 );
 	}
+
 	/**
 	 * Output a menu with the 6 most recently modified projects.
 	 */
@@ -650,8 +699,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 		return $info;
 	}
-
-
 
 	/**
 	 * Set additional administrator columns based on postmeta fields that are added to the post type - columns will have no data just yet.
@@ -929,8 +976,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		foreach ( $recent_project_ids as $index => $project ) {
 			$url             = get_post_permalink( $project );
 			$excerpt         = get_post( $project )->post_excerpt;
-			$title           = get_post( $project )->post_title;
-			$project_links[] = wp_sprintf( '<li><a href="%s" title="%s">%s</a></li>', $url, $excerpt, $title );
+			$title           = str_replace( '& Casino', '', get_post( $project )->post_title );
+			$project_links[] = wp_sprintf( '<a href="%s" title="%s">%s</a>', $url, $excerpt, $title );
 		}
 		return $project_links;
 	}

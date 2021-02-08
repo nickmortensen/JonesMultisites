@@ -1,0 +1,198 @@
+/*--------------------------------------------------------------
+# Links
+--------------------------------------------------------------*/
+
+a {
+	color: var(--color-link);
+
+	/**
+	* Remove the gray background on active links in IE 10.
+	*/
+	background-color: transparent;
+
+	&:visited { color: var(--color-link-visited); }
+
+	&:focus { outline: thin dotted; }
+
+	&:focus,
+	&:hover,
+	&:active { color: var(--color-link-active); }
+
+	&:hover,
+	&:active { outline: 0; }
+}
+
+.material-icons {
+	--timing-function: var(--reverse-timing-function);
+	--shadow-color: var(--gray-900);
+	--h-offset: 2px;
+	--v-offset: var(--h-offset);
+	--blur-radius: 4px;
+	--spread-radius: 1px;
+	--button-size: 80px;
+	--fixed-offset: calc(var(--button-size) / 4);
+	--button-shadow: var(--h-offset) var(--v-offset) var(--blur-radius) var(--shadow-color);
+	--button-xl: var(--fontsize-xl);
+	--button-m: var(--fontsize-m);
+	--button-active-background: var(--blue-800);
+	--button-color: var(--foreground);
+	--button-background: var(--color-theme-blue);
+
+
+	&.button {
+		color: var(--button-color);
+		background: var(--button-background);
+		font-size: var(--button-m);
+		border-radius: 50%;
+		padding: 0.6rem;
+		box-shadow: var(--button-shadow);
+		transform: scale(0.7);
+		transition: all 0.3s var(--reverse-timing-function);
+		outline: none;
+
+		&:hover {
+			transform: scale(0.8);
+			transition: all 0.2s var(--bg-bezier);
+			color: var(--button-color);
+			outline: none;
+		}
+
+		&:focus {
+			outline: 1px solid var(--gray-200);
+			outline-offset: 3px;
+		}
+
+		&:active {
+			--shadow-color: var(--gray-200);
+			box-shadow: var(--button-shadow);
+			background: var(--button-active-background);
+			transition: all 0.1s ease;
+			text-shadow: 1px 1px var(--yellow-600);
+		}
+
+		&.reversed {
+			--button-color: var(--foreground);
+			--button-background: var(--gray-400);
+			--button-hover-background: var(--gray-300);
+			--button-active-background: var(--gray-700);
+		}
+	}
+
+	&.floating-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		font-size: calc(var(--button-size) / 2);
+		position: fixed;
+		right: var(--fixed-offset);
+		top: var(--fixed-offset);
+		width: var(--button-size);
+		height: var(--button-size);
+		cursor: pointer;
+		border-radius: 50%;
+		box-shadow: var(--button-shadow);
+		background: var(--button-bg);
+		color: var(--button-color);
+		transition: all 0.25s var(--reverse-timing-function);
+		will-change: box-shadow;
+
+		&:active,
+		&:focus,
+		&:focus-within {
+			--h-offset: -1px;
+			--button-bg: var(--indigo-800);
+			outline: none;
+		}
+
+		&:hover {
+			--button-bg: var(--indigo-800);
+		}
+
+		&:visited {
+			--v-offset: 2px;
+		}
+
+	}
+}
+
+
+[anim="ripple"] {
+	--ripple-background: var(--foreground);
+	--ripple-opacity: 0.3;
+	--ripple-duration: 600ms;
+	--ripple-easing: linear;
+
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		display: block;
+		background: var(--ripple-background);
+		border-radius: 50%;
+		pointer-events: none;
+
+		top: calc(var(--y) * 1px);
+		left: calc(var(--x) * 1px);
+		width: calc(var(--d) * 1px);
+		height: calc(var(--d) * 1px);
+
+		opacity: calc(var(--o, 1) * var(--ripple-opacity));
+		transition: calc(var(--t, 0) * var(--ripple-duration)) var(--ripple-easing);
+		transform: translate(-50%, -50%) scale(var(--s, 1));
+		transform-origin: center;
+	}
+}
+
+.throbbing {
+	position: fixed;
+	right: 20px;
+	top: 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 150px;
+	width: 150px;
+	border-radius: 100%;
+	background: var(indigo-600);
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
+
+
+	& span {
+		position: relative;
+		font-size: 72px;
+		top: 5px;
+		left: -5px;
+	}
+
+	&::before,
+	&::after {
+		opacity: 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top: -8px;
+		left: -8px;
+		right: 0;
+		bottom: 0;
+		content: "";
+		height: 100%;
+		width: 100%;
+		border: 8px solid rgba(0, 0, 0, 0.2);
+		border-radius: 100%;
+		animation-name: throb;
+		animation-duration: 3s;
+		animation-delay: 0s;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.65, 0, 0.34, 1);
+		z-index: -1;
+	}
+	&::before {
+		animation-delay: 0.5s;
+	}
+}

@@ -1,5 +1,9 @@
 # Ignore everything:
 /*
+
+**/*.bak.php
+
+
 !/.github/
 !/assets/
 /assets/*
@@ -44,3 +48,4 @@
 !screenshot.png
 !.travis.yml
 !.browserslistrc
+wp-content/themes/wprig/front-page.1027.bak.php

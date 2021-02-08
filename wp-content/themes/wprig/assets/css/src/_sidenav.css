@@ -1,0 +1,115 @@
+/*--------------------------------------------------------------
+# Tutorial from https://cdpn.io/nickmortensen/debug/bGepRww
+--------------------------------------------------------------*/
+.nav-icons {
+	z-index: 1000;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	display: flex;
+	flex-flow: row nowrap;
+	min-width: 220px;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+#sidenav {
+	--sidemenu-width: 220px;
+	--blendMode: normal;
+	--easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
+	--duration: 0.6s;
+
+	mix-blend-mode: var(--blendMode);
+	background: var(--color-theme-primary);
+	width: var(--sidemenu-width);
+	position: relative;
+	z-index: 10;
+	transition: transform 0.3s var(--alternate-bezier-transition);
+
+	& > a#close-sidenav {
+		position: sticky;
+		top: 8px;
+		left: 60%;
+	}
+
+	& #internalNav {
+		position: sticky;
+		color: var(--foreground);
+		top: 15vh;
+		left: 0;
+		display: flex;
+		flex-flow: column nowrap;
+		min-width: 100%;
+		min-height: 70vh;
+		padding-left: 1vw;
+
+		& > a,
+		& > h4 {
+			font-family: var(--highlight-font-family);
+			font-size: var(--fontsize-xs);
+			color: var(--foreground);
+		}
+
+		& > a {
+			text-decoration: none;
+			margin-top: 0.6rem;
+		}
+	}
+
+	/*--------------------------------------------------------------
+# Tutorial from https://cdpn.io/nickmortensen/debug/bGepRww
+--------------------------------------------------------------*/
+	/* these are styles to make it pretty */
+	/* sidenav.css has all the layout, state and functionality */
+
+	nav {
+		display: inline-flex;
+		flex-direction: column;
+		padding: 2rem;
+		font-size: 1.25rem;
+		color: var(--text);
+
+		@media (min-width: 540px) {
+			padding-block-start: 4.5rem;
+		}
+
+		@media (max-width: 540px) {
+			background-color: var(--surface2);
+			border-inline-end: 1px var(--surface1);
+			box-shadow: 5px 0 40px hsla(0 0% 0% / 0.45);
+			font-size: 1.5rem;
+		}
+
+		& > h4 {
+			text-transform: uppercase;
+
+			&:not(:first-child) {
+				margin-block-start: 2rem;
+			}
+		}
+
+		& a {
+			text-decoration: none;
+			line-height: 1.25;
+		}
+	} /* end nav */
+}
+
+/* end #sidenav */
+
+/*  Only appears on development */
+#devScreenWidth {
+	position: fixed;
+	bottom: 10%;
+	left: 5%;
+	z-index: 1211;
+	line-height: 4;
+	font-size: 12px;
+	font-weight: 900;
+	color: var(--background);
+	background: var(--yellow-600);
+	border-radius: 50%;
+	padding: 18px;
+	box-shadow: 5px 5px 10px 3px var(--gray-500);
+	mix-blend-mode: difference;
+}

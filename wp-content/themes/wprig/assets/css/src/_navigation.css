@@ -1,13 +1,9 @@
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-.site-header {
-	padding-bottom: 1em;
-}
+.site-header { padding-bottom: 1em; }
 
-.header-image {
-	margin: 0;
-}
+.header-image { margin: 0; }
 
 .header-image img {
 	display: block;
@@ -19,7 +15,6 @@
 	margin: 0;
 }
 
-
 .site-title {
 	margin: 0;
 	font-family: var(--highlight-font-family);
@@ -28,12 +23,13 @@
 	font-weight: 700;
 	line-height: 1.2;
 	color: #333332;
+
+	& a {
+		text-decoration: none;
+		color: inherit;
+	}
 }
 
-.site-title a {
-	text-decoration: none;
-	color: inherit;
-}
 
 .site-description {
 	margin: 0;
@@ -75,23 +71,15 @@
 /* less than 37.5em or 525px */
 
 @media screen and (width < 525px) {
-
-	.nav--toggle-small.nav--toggled-on .menu {
-		display: block;
-	}
+	.nav--toggle-small.nav--toggled-on .menu { display: block; }
 }
 
 /* greater than 37.5em or 525px */
 
 @media screen and (width > 525px) {
+	.nav--toggle-small .menu-toggle { display: none; }
 
-	.nav--toggle-small .menu-toggle {
-		display: none;
-	}
-
-	.nav--toggle-small .menu {
-		display: block;
-	}
+	.nav--toggle-small .menu { display: block; }
 
 	.nav--toggle-sub ul ul {
 		display: none;
@@ -142,14 +130,10 @@
 		right: 0.2em;
 	}
 
-	.nav--toggle-sub ul ul .dropdown-symbol {
-		transform: rotate(-45deg);
-	}
+	.nav--toggle-sub ul ul .dropdown-symbol { transform: rotate(-45deg); }
 
 	.nav--toggle-sub .dropdown-toggle:hover,
-	.nav--toggle-sub .menu-item--has-toggle:hover .dropdown-toggle {
-		pointer-events: none;
-	}
+	.nav--toggle-sub .menu-item--has-toggle:hover .dropdown-toggle { pointer-events: none; }
 
 	/* Need menu-item-has-children for non-JS */
 	.nav--toggle-sub li.menu-item-has-children,
@@ -164,9 +148,7 @@
 	 */
 	.nav--toggle-sub li:hover > ul,
 	.nav--toggle-sub li.menu-item--toggled-on > ul,
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul {
-		display: block;
-	}
+	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul { display: block; }
 
 	/*
 	 * "focus-within" is an alternative to focus class for
@@ -176,9 +158,7 @@
 	 * This selector needs to stay separated, otherwise submenus
 	 * will not be displayed with IE/Edge.
 	 */
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul {
-		display: block;
-	}
+	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul { display: block; }
 }
 
 /*--------------------------------------------------------------
@@ -192,26 +172,27 @@
 	max-width: var(--content-width);
 	font-family: var(--highlight-font-family);
 	font-stretch: condensed;
-}
 
-.main-navigation a {
-	display: block;
-	width: 100%;
-	padding: 0.5em 1em 0.5em 0;
-	text-decoration: none;
-	color: #000;
-}
+	& a {
+		display: block;
+		width: 100%;
+		padding: 0.5em 1em 0.5em 0;
+		text-decoration: none;
+		color: #000;
+	}
 
-.main-navigation a:hover,
-.main-navigation a:focus {
-	text-decoration: underline;
-}
+	&:hover,
+	&:focus {
+		text-decoration: underline;
+	}
 
-.main-navigation ul {
-	display: block;
-	list-style: none;
-	margin: 0;
-	padding: 0;
+	& ul {
+		display: block;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
 }
 
 .main-navigation ul ul li {
@@ -222,21 +203,13 @@
 
 @media screen and (width > 525px) {
 
-	.main-navigation ul li a {
-		padding: 0.4em 0.5em;
-	}
+	.main-navigation ul li a { padding: 0.4em 0.5em; }
 
-	.main-navigation ul li {
-		margin: 0 0 0 0.5em;
-	}
+	.main-navigation ul li { margin: 0 0 0 0.5em; }
 
-	.main-navigation ul li:first-child {
-		margin-left: 0;
-	}
+	.main-navigation ul li:first-child { margin-left: 0; }
 
-	.main-navigation ul ul a {
-		width: 200px;
-	}
+	.main-navigation ul ul a { width: 200px; }
 
 	/* stylelint-disable */
 	.main-navigation ul ul li {
@@ -270,7 +243,7 @@
 .site-main .posts-navigation,
 .site-main .post-navigation,
 .site-main .pagination {
-	border-bottom: 1px solid #111;
+	border-bottom: 1px solid var(--background);
 	margin: 0;
 	max-width: var(--content-width);
 	overflow: hidden;
@@ -292,9 +265,7 @@
 	}
 }
 
-.nav-links {
-	display: flex;
-}
+.nav-links { display: flex; }
 
 .comment-navigation .nav-previous,
 .posts-navigation .nav-previous,

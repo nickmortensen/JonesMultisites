@@ -1,7 +1,6 @@
 /*--------------------------------------------------------------
 # Elements
 --------------------------------------------------------------*/
-/* stylelint-disable */
 
 /**
  * 1. Correct the line height in all browsers.
@@ -36,22 +35,15 @@ hr {
 	height: 1px;
 	margin-bottom: 1.5em;
 	box-sizing: content-box; /* 1 */
-	height: 0; /* 1 */
 	overflow: visible; /* 2 */
 }
 
 ul,
-ol {
-	margin: 0 0 1.5em 3em;
-}
+ol { margin: 0 0 1.5em 3em; }
 
-ul {
-	list-style: disc;
-}
+ul { list-style: disc; }
 
-ol {
-	list-style: decimal;
-}
+ol { list-style: decimal; }
 
 li > ul,
 li > ol {
@@ -59,13 +51,9 @@ li > ol {
 	margin-left: 1.5em;
 }
 
-dt {
-	font-weight: var(--bold);
-}
+dt { font-weight: var(--bold); }
 
-dd {
-	margin: 0 1.5em 1.5em;
-}
+dd { margin: 0 1.5em 1.5em; }
 
 /**
  * Remove the border on images inside links in IE 10.
@@ -78,12 +66,9 @@ img {
 }
 
 /* Extra wide images within figure tags don't overflow the content area. */
-figure {
-	margin: 0.5em 0;
-}
+figure { margin: 0.5em 0; }
 
 table {
 	margin: 0 0 1.5em;
 	width: 100%;
 }
-/* stylelint-enable */

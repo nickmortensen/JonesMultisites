@@ -2,66 +2,238 @@
  * Contact Form
  */
 
+@media (max-width: 599px) {
+	:root {
+		--contact-form-display: none;
+	}
+}
+
+@media (min-width: 600px) {
+	:root {
+		--contact-form-display: grid;
+	}
+
+	#contact-form {
+		display: var(--contact-form-display);
+		grid-area: fp-contactform;
+		grid-template-columns: 1fr;
+		grid-template-rows: 115px 380px;
+		grid-template-areas:
+			"fpformintro"
+			"fpform";
+
+	}
+
+}
+
 #contact-form {
-	height: 100vh;
-	width: 50vw;
-	min-width: 440px;
-	background: rgba(40, 80, 120, 0.6);
-	z-index: 5250;
+	display: var(--contact-form-display);
+
+	--form-background: var(--foreground);
+	--single-field-width: clamp(380px, 75vw, 900px);
+	--input-text-size: clamp(12px, 2vw, 32px);
+	--container-left-padding: 30px;
+	--containing-height: 380px;
+	--box-shadow:
+		0 16px 24px 2px rgba(0, 0, 0, 0.14),
+		0 6px 30px 5px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba(0, 0, 0, 0.3);
+	--general-color: var(--color-theme-primary);
+	--progress-color: var(--blue-800);
+	--icon-color: var(--gray-400);
+	--incorrect: var(--red-700);
 }
 
+#single-field-form {
+	margin: 0;
+	position: relative; /* this may have to go */
+	overflow-x: hidden;
+	background: var(--color-theme-primary);
+	font-family: var(--font-stack);
+	height: var(--containing-height);
+	grid-area: fpform;
 
-.body-blackout {
-	position: absolute;
-	z-index: 1010;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.65);
-	display: none;
 
-	&.is-blacked-out {
-		display: block;
+	& #inquiryFirstName {
+		font-weight: var(--superbold);
+
+		&::first-letter { text-transform: uppercase; }
 	}
 
-	& ~ .material-icons {
-		color: var(--indigo-600);
+	& .center {
+		height: var(--containing-height);
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
-}
 
-.popup-trigger {
-	display: inline-block;
-}
+	& #register {
+		transition: transform 0.1s ease-in-out;
+		position: relative;
+		width: var(--single-field-width);
+		box-shadow: var(--box-shadow);
+		background: var(--form-background);
 
-.popup-modal {
-	opacity: 0;
-	height: 365px;
-	width: 650px;
-	background-color: var(--color-theme-white);
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	padding: 45px;
-	pointer-events: none;
-	transition: all 300ms ease-in-out;
-	z-index: 1011;
-
-	&.is--visible {
-		opacity: 1;
-		pointer-events: auto;
+		&.close {
+			width: 0;
+			padding: 0;
+			overflow: hidden;
+			transition: 0.8s ease-in-out;
+			box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0);
+		}
 	}
-}
 
-.popup-modal__close {
-	position: absolute;
-	font-size: 1.2rem;
-	right: -10px;
-	top: -10px;
-	cursor: pointer;
-}
+	& #submitFormButton,
+	& #forwardButton,
+	& #previousButton {
+		z-index: 20;
+		position: absolute;
+		float: right;
+		cursor: pointer;
+		color: var(--icon-color);
+		font-size: 40px;
+		&:hover { color: var(--progress-color); }
+	}
 
-.large-text {
-	font-size: var(--fontsize-xl);
+	/* Previous button appears instead of the person character once we've advanced past the first question */
+	& #previousButton {
+		font-size: var(--fontsize-s);
+		left: calc(var(--container-left-padding) - 2px); /* same as padding on container */
+		top: 6px;
+		color: var(--colr-theme-primary);
+	}
+
+	& #submitFormButton,
+	& #forwardButton {
+		--bottom: 30%;
+		--right: 10px;
+		--font-size: 3.5rem;
+		right: var(--right);
+		bottom: var(--bottom);
+		font-size: var(--font-size);
+		color: var(--gray-200);
+
+		&:focus {
+			outline: none;
+			color: var(--color-theme-primary);
+			background: var(--gray-200);
+		}
+	}
+
+	& #submitFormButton {
+		appearance: none;
+		background: unset;
+		padding: unset;
+		border-width: 0;
+		z-index: 14;
+
+		&.hideButton { display: none; }
+
+		&.showButton { display: inline-block; }
+	}
+
+
+	& .wrong #forwardButton { color: var(--incorrect); }
+
+	& .close #forwardButton,
+	& .close #previousButton { color: var(--foreground); }
+
+	& #inputContainer {
+		position: relative;
+		background: var(--foreground);
+		padding: var(--container-left-padding) 20px 20px 20px;
+		margin: 0 80px 0 10px;
+		opacity: 0;
+		transition: opacity 0.3s ease-in-out;
+
+		& input {
+			background: transparent;
+			position: relative;
+			width: 100%;
+			border: none;
+			font-size: var(--input-text-size);
+			font-weight: 700;
+			outline: 0;
+			box-shadow: none;
+
+			&:valid + #inputLabel {
+				top: 0.5em;
+				left: calc(var(--container-left-padding) + 26px); /* space for previous arrow */
+				margin-left: 0 !important;
+				font-size: clamp(6px, 0.9rem, 18px);
+				font-weight: 400;
+				color: var(--icon-color);
+			}
+		} /*  input */
+	}
+
+	& #inputLabel {
+		position: absolute;
+		pointer-events: none;
+		top: 46px; /* same as container padding + margin */
+		left: 23px; /* same as container padding */
+		font-size: clamp(18px, 2.2vw, 38px);
+		font-weight: var(--bold);
+		transition: 0.2s ease-in-out;
+		will-change: left, top;
+	}
+
+	& #inputProgress {
+		border-top: 3px solid var(--color-theme-blue);
+		width: 0;
+		transition: width 0.6s ease-in-out;
+		font-size: 0.7rem;
+		font-style: italic;
+		font-weight: 900;
+		text-align: right;
+		padding-top: 1rem;
+		margin-top: -10px;
+
+		& > * {
+			opacity: 0;
+			display: none;
+		}
+
+		& span.error-text {
+			font-size: var(--fontsize-xxs);
+		}
+	}
+
+	& .wrong #inputProgress {
+		border-color: var(--incorrect);
+		color: var(--incorrect);
+
+		& > span {
+			opacity: 0;
+			display: inline;
+
+			&.hide {
+				display: none;
+			}
+
+			&.opacity-full {
+				opacity: 1;
+				transition: all 0.4s ease;
+			}
+		}
+	}
+
+	/* shows up as we move through the form in the bakground */
+	& #progress {
+		position: absolute;
+		background: var(--progress-color);
+		height: 100vh;
+		height: 100%;
+		width: 0;
+		will-change: width;
+		transition: width 0.2s var(--transition-timing-function);
+	}
+
+	& h1 {
+		position: relative;
+		color: var(--foreground);
+		opacity: 0;
+		transition: 0.8s ease-in-out;
+		font-size: clamp(18px, 5vw, 110px);
+	}
 }

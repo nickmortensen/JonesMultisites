@@ -515,4 +515,24 @@ locations.forEach( location => {
 
 
 
+let indicateWindowWidth;
+window.addEventListener( 'resize', () => {
+	clearTimeout( indicateWindowWidth );
+	indicateWindowWidth = setTimeout( () => {
+		console.log( 'current window width in pixels: ',  window.innerWidth );
+		// document.querySelector( '.search-field' ).value = `window is now ${window.innerWidth}px`;
+	}, 500 );
+})
+
+let optionHTML = [];
+let newLocationsArray = [];
+[1, 2, 6, 9, 10, 13].forEach( item => newLocationsArray.push( locationsArray[item] ) );
+
+const itemIntoOption = ( item ) => {
+	let option = `<option value="${item.slug}">${item.common}</option>`;
+	optionHTML.push(option);
+}
+newLocationsArray.forEach( item => itemIntoOption( item) );
+
+let a = optionHTML.join( "\r\n" );
 

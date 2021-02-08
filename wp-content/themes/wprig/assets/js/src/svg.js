@@ -8,7 +8,7 @@
 const incomingData = script_vars;
 const fetchAddress = script_vars.AJAXurl;
 
-console.table( incomingData );
+console.table( 'incoming data is: ', incomingData );
 const mediaGridObserver = new MutationObserver( function( mutations ) {
 	for ( let i = 0; i < mutations.length; i++ ) {
 		for ( let j = 0; j < mutations[ i ].addedNodes.length; j++ ) {

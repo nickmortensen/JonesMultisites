@@ -17,13 +17,6 @@ if ( ! has_header_image() ) {
 
 <style>
 
-:root {
-	--mdc-ripple-fg-size: 33px;
-	--mdc-ripple-fg-scale: 2.70290786342101;
-	--mdc-ripple-fg-translate-start: 19.5px, 14.5px;
-	--mdc-ripple-fg-translate-end: 11.5px, 11.5px;
-}
-
 .connect {
 	padding-right: 5vw;
 	grid-area: connect;
@@ -44,7 +37,33 @@ if ( ! has_header_image() ) {
 </style>
 
 
-<div class="connect">
-	<h3 class="light-text">connect</h3>
-	<a id="open-contact-form" class="material-icons-sharp"> chat_bubble_outline </a>
-</div>
+<!-- <div id="connect" class="throbbing">
+	<span class="material-icons"> mail_outline</span>
+</div> -->
+
+
+<a href="#" class="material-icons floating-btn" anim="ripple">mail_outline</a>
+
+
+<script>
+
+"use strict";
+[].map.call( document.querySelectorAll('[anim="ripple"]'), el => {
+	el.addEventListener('click', e => {
+		e       = e.touches ? e.touches[0] : e;
+		const r = el.getBoundingClientRect();
+		const d = Math.sqrt( Math.pow(r.width, 2) + Math.pow(r.height, 2) ) * 2;
+		el.style.cssText = `--s: 0; --o: 1;`;
+		el.offsetTop;
+		el.style.cssText = `
+			--t: 1;
+			--o: 0;
+			--d: ${d};
+			--x:${e.clientX - r.left};
+			--y:${e.clientY - r.top};
+			`;
+	});
+});
+
+
+</script>

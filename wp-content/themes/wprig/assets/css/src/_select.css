@@ -9,17 +9,22 @@
 	width: 100%;
 	max-width: 500px;
 
-
 	&:focus {
-		outline: solid; /* For better accessibility add a style for this in your skin */
+		outline: solid;
+
+		/* For better accessibility add a style for this in your skin */
 	}
-} /* \location-select */
+}
+
+/* \location-select */
 
 
 .location-select {
 	color: inherit;
 
-	& select { /* don't show the select, but don't hide it from screen readers */
+	& select {
+
+		/* don't show the select, but don't hide it from screen readers */
 		display: none;
 	}
 
@@ -33,12 +38,16 @@
 		text-overflow: ellipsis;
 	}
 
-	/* Placeholder and selected option */
+
 	& > span {
+
+		/* Placeholder and selected option */
 		padding-right: 2.3em;
 
-		/* down arrow to the right of the "Choose" text*/
+
 		&::after {
+
+			/* down arrow to the right of the "Choose" text*/
 			content: "\25BE"; /* ▾ */
 			right: 3.1em;
 			font-stretch: condensed;
@@ -52,15 +61,17 @@
 		}
 	}
 
-	/* down arrow becomes an up arrow */
+
 	&.location-active > span::after {
-		-webkit-transform: translateY(-50%) rotate(180deg);
+
+		/* down arrow becomes an up arrow */
 		transform: translateY(-50%) rotate(180deg);
 	}
 
-	/* Options Box -- contains options
-	opens when the cs-select element has ".location-active" added to it by clicking */
 	& .location-options {
+
+		/* Options Box -- contains options
+		opens when the cs-select element has ".location-active" added to it by clicking */
 		position: absolute;
 		overflow: hidden;
 		width: 100%;
@@ -78,33 +89,30 @@
 		padding: 0;
 		width: 100%;
 
-		& span {
-			padding: 1em;
-		}
+		& span { padding: 1em; }
 
-		& li.location-focus span {
-			background-color: #ddd;
-		}
+		& li.location-focus span { background-color: #ddd; }
 	}
 
-	/* Optgroup and optgroup label */
 	& li.location-optgroup ul {
+
+		/* Optgroup and optgroup label */
 		padding-left: 1em;
 	}
 
-	& li.location-optgroup > span {
-		cursor: default;
-	}
+	& li.location-optgroup > span { cursor: default; }
 
-	/* Checkmark to indicate which location has been previously chosen */
 
 	& .location-selected span::after {
+
+		/* Checkmark to indicate which location has been previously chosen */
 		content: "\2713"; /* ✓ */
 		margin-left: 1em;
 		transition: transform 0.4s ease;
 	}
+}
 
-} /* \.location-select */
+/* \.location-select */
 
 .location-selected {
 	color: inherit;
@@ -122,19 +130,20 @@
 			transition: transform 0.4s ease;
 		}
 	}
-}/* \.location-selected */
+}
+
+/* \.location-selected */
+
+.location-active {
 
 	/* Options inside the select are converted to list items inside an unordered list by javascript */
-.location-active {
 	z-index: 200;
 
-	& .location-options {
-		visibility: visible;
+	& .location-options { visibility: visible; }
 
-		/* background-blend-mode: difference; */
-	}
+}
 
-} /* \.location-active */
+/* \.location-active */
 
 
 /* ========================================================
@@ -150,7 +159,7 @@ div.skin-boxes {
 	color: var(--gray-900);
 
 	& > span {
-		background: var(--color-theme-white);
+		background: var(--foreground);
 		border: 4px solid var(--gray-900);
 	}
 
@@ -198,10 +207,12 @@ div.skin-boxes {
 		border: 10px solid transparent;
 		background-clip: padding-box;
 		transform: scale3d(0.8, 0.8, 1);
-		box-shadow: inset 0 -6em 0 -2em var(--color-theme-white);
+		box-shadow: inset 0 -6em 0 -2em var(--foreground);
 		transition: transform 0.3s, opacity 0.3s;
 	}
-} /* \skin-boxes */
+}
+
+/* \skin-boxes */
 
 @media screen and (width < 420px) {
 	div.skin-boxes {
@@ -215,110 +226,20 @@ div.skin-boxes {
 	}
 }
 
-
 .skin-boxes.location-active .location-options li {
 	opacity: 1;
 	-webkit-transform: scale3d(1, 1, 1);
 	transform: scale3d(1, 1, 1);
 
-	&:nth-child(2) {
-		-webkit-transition-delay: 0.01s;
-		transition-delay: 0.01s;
-	}
-
-	&:nth-child(3) {
-		-webkit-transition-delay: 0.02s;
-		transition-delay: 0.02s;
-	}
-
-	&:nth-child(4) {
-		-webkit-transition-delay: 0.03s;
-		transition-delay: 0.03s;
-	}
-
-	&:nth-child(5) {
-		-webkit-transition-delay: 0.04s;
-		transition-delay: 0.04s;
-	}
-
-	&:nth-child(6) {
-		-webkit-transition-delay: 0.05s;
-		transition-delay: 0.05s;
-	}
-
-	&:nth-child(7) {
-		-webkit-transition-delay: 0.06s;
-		transition-delay: 0.06s;
-	}
-
-	&:nth-child(8) {
-		-webkit-transition-delay: 0.07s;
-		transition-delay: 0.07s;
-	}
-
-	&:nth-child(9) {
-		-webkit-transition-delay: 0.08s;
-		transition-delay: 0.08s;
-	}
-
-	&:nth-child(10) {
-		-webkit-transition-delay: 0.09s;
-		transition-delay: 0.09s;
-	}
-
-	&:nth-child(11) {
-		-webkit-transition-delay: 0.1s;
-		transition-delay: 0.1s;
-	}
-
-	&:nth-child(12) {
-		-webkit-transition-delay: 0.11s;
-		transition-delay: 0.11s;
-	}
-
-	&:nth-child(13) {
-		-webkit-transition-delay: 0.12s;
-		transition-delay: 0.12s;
-	}
-
-	&:nth-child(14) {
-		-webkit-transition-delay: 0.13s;
-		transition-delay: 0.13s;
-	}
-
-	&:nth-child(15) {
-		-webkit-transition-delay: 0.14s;
-		transition-delay: 0.14s;
-	}
-
-	&:nth-child(16) {
-		-webkit-transition-delay: 0.15s;
-		transition-delay: 0.15s;
-	}
-
-	&:nth-child(17) {
-		-webkit-transition-delay: 0.16s;
-		transition-delay: 0.16s;
-	}
-
-	&:nth-child(18) {
-		-webkit-transition-delay: 0.17s;
-		transition-delay: 0.17s;
-	}
-
-	&:nth-child(19) {
-		-webkit-transition-delay: 0.18s;
-		transition-delay: 0.18s;
-	}
-
-	&:nth-child(20) {
-		-webkit-transition-delay: 0.19s;
-		transition-delay: 0.19s;
+	@for $i from 2 to 20 {
+		&:nth-child($i) {
+			transition-delay: calc(0.00$(i) - 0.001s);
+		}
 	}
 
 	&.location-selected::after {
 		content: "\2714";
-		color: var(--color-theme-white);
+		color: var(--foreground);
 		position: absolute;
 		font-size: 2em;
 		top: 50%;
@@ -329,7 +250,9 @@ div.skin-boxes {
 	&.location-selected span::after {
 		content: "";
 	}
-} /* \.skin-boxes.location-active .location-options li */
+}
+
+/* \.skin-boxes.location-active .location-options li */
 
 @media screen and (width < 420px) {
 	.skin-boxes .location-options li.location-selected::after {
@@ -337,88 +260,49 @@ div.skin-boxes {
 		transform: translate3d(-50%, -50%, 0);
 	}
 }
+
 .skin-boxes .location-options li {
 	color: inherit;
 
-	&.color-588c75 {
-		background-color: #588c75;
-	}
+	&.color-588c75 { background-color: #588c75; }
 
-	&.color-b0c47f {
-		background-color: #b0c47f;
-	}
+	&.color-b0c47f { background-color: #b0c47f; }
 
-	&.color-f3e395 {
-		background-color: #f3e395;
-	}
+	&.color-f3e395 { background-color: #f3e395; }
 
-	&.color-f3ae73 {
-		background-color: #f3ae73;
-	}
+	&.color-f3ae73 { background-color: #f3ae73; }
 
-	&.color-da645a {
-		background-color: #da645a;
-	}
+	&.color-da645a { background-color: #da645a; }
 
-	&.color-79a38f {
-		background-color: #79a38f;
-	}
+	&.color-79a38f { background-color: #79a38f; }
 
-	&.color-c1d099 {
-		background-color: #c1d099;
-	}
+	&.color-c1d099 { background-color: #c1d099; }
 
-	&.color-f5eaaa {
-		background-color: #f5eaaa;
-	}
+	&.color-f5eaaa { background-color: #f5eaaa; }
 
-	&.color-f5be8f {
-		background-color: #f5be8f;
-	}
+	&.color-f5be8f { background-color: #f5be8f; }
 
-	&.color-e1837b {
-		background-color: #e1837b;
-	}
+	&.color-e1837b { background-color: #e1837b; }
 
-	&.color-9bbaab {
-		background-color: #9bbaab;
-	}
+	&.color-9bbaab { background-color: #9bbaab; }
 
-	&.color-d1dcb2 {
-		background-color: #d1dcb2;
-	}
+	&.color-d1dcb2 { background-color: #d1dcb2; }
 
-	&.color-f9eec0 {
-		background-color: #f9eec0;
-	}
+	&.color-f9eec0 { background-color: #f9eec0; }
 
-	&.color-f7cda9 {
-		background-color: #f7cda9;
-	}
+	&.color-f7cda9 { background-color: #f7cda9; }
 
-	&.color-e8a19b {
-		background-color: #e8a19b;
-	}
+	&.color-e8a19b { background-color: #e8a19b; }
 
-	&.color-bdd1c8 {
-		background-color: #bdd1c8;
-	}
+	&.color-bdd1c8 { background-color: #bdd1c8; }
 
-	&.color-e1e7cd {
-		background-color: #e1e7cd;
-	}
+	&.color-e1e7cd { background-color: #e1e7cd; }
 
-	&.color-faf4d4 {
-		background-color: #faf4d4;
-	}
+	&.color-faf4d4 { background-color: #faf4d4; }
 
-	&.color-fbdfc9 {
-		background-color: #fbdfc9;
-	}
+	&.color-fbdfc9 { background-color: #fbdfc9; }
 
-	&.color-f1c1bd {
-		background-color: #f1c1bd;
-	}
+	&.color-f1c1bd { background-color: #f1c1bd; }
 } /* \.skin-boxes .location-options li */
 
 .skin-boxes .location-options span {
@@ -520,7 +404,7 @@ div.skin-underline {
 	left: 0;
 	height: 3px;
 	width: 100%;
-	background-color: var(--color-theme-white);
+	background-color: var(--foreground);
 	transform: translate3d(200%, 0, 0);
 	transition: transform 0.3s;
 }
@@ -589,12 +473,11 @@ div.skin-elastic {
 }
 
 .skin-elastic > span {
-	background-color: var(--color-theme-white);
+	background-color: var(--foreground);
 	z-index: 100;
 
 	&::after {
 		content: "\25bc";
-		-webkit-backface-visibility: hidden;
 		backface-visibility: hidden;
 	}
 }
@@ -620,7 +503,7 @@ div.skin-elastic {
 	left: 0;
 	top: 0;
 	transform: scale3d(1, 0, 1);
-	background: var(--color-theme-white);
+	background: var(--foreground);
 	transform-origin: 50% 0%;
 	transition: transform 0.3s;
 }
@@ -644,31 +527,6 @@ div.skin-elastic {
 	animation: bounce 0.6s ease-out;
 }
 
-/* Optional delays (problematic in IE 11/Win) */
-/*
-.skin-elastic.location-active .location-options ul li:first-child {
-	-webkit-animation-delay: 0.1s;
-	animation-delay: 0.1s;
-}
-
-.skin-elastic.location-active .location-options ul li:nth-child(2) {
-	-webkit-animation-delay: 0.15s;
-	animation-delay: 0.15s;
-}
-
-.skin-elastic.location-active .location-options ul li:nth-child(3) {
-	-webkit-animation-delay: 0.2s;
-	animation-delay: 0.2s;
-}
-
-.skin-elastic.location-active .location-options ul li:nth-child(4) {
-	-webkit-animation-delay: 0.25s;
-	animation-delay: 0.25s;
-}
-
-/* with more items, more delays declarations are needed */
-
-
 .skin-elastic .location-options span {
 	background-repeat: no-repeat;
 	background-position: 1.5em 50%;
@@ -687,21 +545,11 @@ div.skin-elastic {
 }
 
 @keyframes expand {
-	0% {
-		transform: scale3d(1, 0, 1);
-	}
-	25% {
-		transform: scale3d(1, 1.2, 1);
-	}
-	50% {
-		transform: scale3d(1, 0.85, 1);
-	}
-	75% {
-		transform: scale3d(1, 1.05, 1);
-	}
-	100% {
-		transform: scale3d(1, 1, 1);
-	}
+	0% { transform: scale3d(1, 0, 1); }
+	25% { transform: scale3d(1, 1.2, 1); }
+	50% { transform: scale3d(1, 0.85, 1); }
+	75% { transform: scale3d(1, 1.05, 1); }
+	100% { transform: scale3d(1, 1, 1); }
 }
 
 @keyframes bounce {
@@ -709,15 +557,9 @@ div.skin-elastic {
 		transform: translate3d(0, -25px, 0);
 		opacity: 0;
 	}
-	25% {
-		transform: translate3d(0, 10px, 0);
-	}
-	50% {
-		transform: translate3d(0, -6px, 0);
-	}
-	75% {
-		transform: translate3d(0, 2px, 0);
-	}
+	25% { transform: translate3d(0, 10px, 0); }
+	50% { transform: translate3d(0, -6px, 0); }
+	75% { transform: translate3d(0, 2px, 0); }
 	100% {
 		transform: translate3d(0, 0, 0);
 		opacity: 1;
@@ -728,7 +570,7 @@ div.skin-elastic {
 
 /* SKIN SLIDE NO ICOMOON */
 div.skin-slide {
-	color: var(--color-theme-white);
+	color: var(--foreground);
 	font-size: 1.5em;
 	width: 300px;
 }
@@ -776,7 +618,6 @@ div.skin-slide::before {
 
 .skin-slide > span::after,
 .skin-slide.location-active > span::after {
-
 	content: "\0084";
 	color: #eb7e7f;
 	backface-visibility: hidden;
@@ -817,21 +658,11 @@ div.skin-slide::before {
 	transition-delay: 0.05s;
 }
 
-.skin-slide.location-active .location-options li:nth-child(2) {
-	transition-delay: 0.1s;
+@for $i from 2 to 12 {
+	.skin-slide.location-active .location-options li:nth-child($i) {
+		transition-delay: calc($i * 0.05s);
+	}
 }
-
-.skin-slide.location-active .location-options li:nth-child(3) {
-	transition-delay: 0.15s;
-}
-
-.skin-slide.location-active .location-options li:nth-child(4) {
-	transition-delay: 0.2s;
-}
-
-.skin-slide.location-active .location-options li:nth-child(5) {
-	transition-delay: 0.25s;
-} /* more options need more delay declaration */
 
 .skin-slide .location-options li span {
 	text-transform: uppercase;
@@ -855,7 +686,6 @@ div.skin-slide::before {
 /* END SKIN SLIDE NO ICOMOON */
 
 /* SKIN ROTATE NO ICOMOON */
-
 
 div.skin-rotate {
 	background: transparent;
@@ -917,7 +747,6 @@ div.skin-rotate {
 	content: "\2713";
 	font-size: 1.5em;
 	opacity: 0.5;
-	-webkit-transition: opacity 0.3s;
 	transition: opacity 0.3s;
 }
 
@@ -927,7 +756,6 @@ div.skin-rotate {
 	overflow: visible;
 	visibility: visible;
 	pointer-events: none;
-	-webkit-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
 
@@ -946,20 +774,10 @@ div.skin-rotate {
 	pointer-events: auto;
 }
 
-.skin-rotate .location-options li:nth-child(2) {
-	transition-delay: 0.05s;
-}
-
-.skin-rotate .location-options li:nth-child(3) {
-	transition-delay: 0.1s;
-}
-
-.skin-rotate .location-options li:nth-child(4) {
-	transition-delay: 0.15s;
-}
-
-.skin-rotate .location-options li:nth-child(5) {
-	transition-delay: 0.2s;
+@for $i from 2 to 12 {
+	.skin-rotate .location-options li:nth-child($i) {
+		transition-delay: calc($i * 0.05s);
+	}
 }
 
 .skin-rotate.location-active .location-options ul li {

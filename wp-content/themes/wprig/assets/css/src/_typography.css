@@ -10,8 +10,13 @@ optgroup,
 textarea {
 	color: var(--global-font-color);
 	font-family: var(--global-font-family);
-	font-size: 14px;
+	font-size: var(--global-font-size);
 	line-height: var(--global-font-line-height);
+}
+
+div,
+span {
+	font-size: var(--fontsize-m);
 }
 
 :--heading {
@@ -21,6 +26,15 @@ textarea {
 	clear: both;
 	color: var(--heading-color);
 	margin: 0 0 5px 0;
+}
+
+.light-text {
+	color: var(--foreground);
+
+	& :--heading,
+	& span {
+		color: var(--foreground);
+	}
 }
 
 .entry-header h1.entry-title,
@@ -105,10 +119,16 @@ acronym {
 
 mark,
 ins {
-	background: #fff9c0;
+	background: var(--yellow-200);
 	text-decoration: none;
 }
 
-big {
-	font-size: 125%;
+big { font-size: 125%; }
+
+strong { font-weight: 500; }
+
+p,
+li,
+span {
+	font-size: var(--fontsize-s);
 }

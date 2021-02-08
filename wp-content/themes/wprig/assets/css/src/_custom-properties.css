@@ -6,6 +6,52 @@
  **/
 /* stylelint-disable */
 :root {
+	/* LIGHT THEME */
+	--foreground: #f8f8f8; /* nearly white */
+	--background: #111; /* nearly black */
+
+	/* FONT RELATED */
+	/*#region*/
+
+	/* FONT FAMILIES */
+	--font-stack: 'fira code', monospace, sans-serif;
+	--highlight-font-family: 'roboto mono', ubuntu, system-ui, blinkmacsystemfont, sans-serif;
+	--global-font-family: -apple-system, ubuntu, serif;
+
+	/* FONT WEIGHTS */
+	--hairline: 100;
+	--thin: 200;
+	--light: 300;
+	--normal: 400;
+	--medium: 500;
+	--semibold: 600;
+	--heavy: 600;
+	--bold: 700;
+	--extrabold: 800;
+	--superbold: 900;
+
+	/* FONT SIZES */
+	--global-font-size: 62.5%;
+	--global-font-line-height: 1.4;
+
+	/* CUSTOM EDITOR FONT SIZES */
+	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
+	--font-size-regular: calc(12px + 0.698vw);
+	--font-size-large: calc(36 / var(--global-font-size) * 1rem);
+	--font-size-larger: calc((40 / var(--global-font-size) )* 1rem);
+	--font-size-largest: calc((48 / var(--global-font-size)) * 1.2rem);
+
+	/* @link https://www.fluiditype.com */
+	--fontsize-xxs: calc(6px + 0.698vw);
+	--fontsize-xs: calc(8px + 0.698vw);
+	--fontsize-s: var(--font-size-regular);
+	--fontsize-m: calc(var(--fontsize-s) * 2);
+	--fontsize-l: calc(var(--fontsize-s) * 2);
+	--fontsize-xl: calc(var(--fontsize-s) * 3);
+	--lineHeight: calc(var(--fontsize-s) * 1.4);
+	--letterSpacing: calc(var(--fontsize-s) * 0.0015);
+	/*#endregion*/
+
 	/* TAILWIND COLORS */
 	/*#region*/
 	--indigo-100: #ebf4ff;
@@ -24,7 +70,7 @@
 	--gray-500: #768aa4;
 	--gray-600: #677d9a;
 	--gray-700: #5c718b;
-	--gray-800: #52657c;
+	--gray-800: #777;
 	--gray-900: #515153;
 	--red-100: #fff5f5;
 	--red-200: #fed7d7;
@@ -108,50 +154,29 @@
 	--color-theme-yellow: var(--yellow-600);
 	--color-theme-black: var(--gray-900);
 	--color-theme-grey: var(--gray-500);
-	--color-theme-white: #ecf0f1;
+	--color-theme-white: var(--foreground);
 
 	/* CUSTOM EDITOR COLORS */
 	--color-custom-sun: var(--yellow-200);
-	--nav-ul-bg: var(--color-theme-white);
+	--nav-ul-bg: var(--foreground);
 	--color-link: var(--color-theme-primary);
 	--color-link-visited: var(--indigo-800);
 	--color-link-active: var(--blue-800);
 
-	/* FONT WEIGHTS */
-	/*#region*/
-	--hairline: 100;
-	--thin: 200;
-	--light: 300;
-	--normal: 400;
-	--medium: 500;
-	--semibold: 600;
-	--heavy: 600;
-	--bold: 700;
-	--extrabold: 800;
-	--superbold: 900;
-
-	/* FONT FAMILIES */
-	--font-stack: 'fira code', monospace, sans-serif;
-	--highlight-font-family: "Roboto Mono", ubuntu, system-ui, blinkmacsystemfont, sans-serif;
-	--global-font-family: -apple-system, ubuntu, serif;
-	/*#endregion*/
-
 	/* General */
-	--body-bg-color: var(--color-theme-white, #ecf0f1);
-	--bg-body-color: var(--color-theme-white, #ecf0f1);
+	--body-bg-color: var(--foreground);
+	--bg-body-color: var(--foreground);
 	--hr-color: var(--gray-400);
 
 	/* TEXT COLOR */
-	--text-color-dark-bg: var(--color-theme-white);
-	--has-dark-bg: var(--color-theme-white);
+	--text-color-dark-bg: var(--foreground);
+	--has-dark-bg: var(--foreground);
 	--text-color: var(--gray-800, #515153);
 	--global-font-color: var(--text-color);
 	--global-text-color: var(--text-color);
 
 	/* END Tailwind Colors */
 
-	--global-font-size: 14;
-	--global-font-line-height: 1.4;
 	--content-width: 60vw; /* initially 45 rem */
 	--nav-width: 100vw; /* initially 45 rem */
 	--dropdown-symbol-width: 0.7em;
@@ -170,35 +195,19 @@
 	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
 	/*#endregion*/
 
-	/* CUSTOM EDITOR FONT SIZES */
-	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
-	--font-size-regular: calc((24 / var(--global-font-size)) * 1rem);
-	--font-size-large: calc(36 / var(--global-font-size) * 1rem);
-	--font-size-larger: calc((40 / var(--global-font-size) )* 1rem);
-	--font-size-largest: calc((48 / var(--global-font-size)) * 1.2rem);
-
-	/* @link https://www.fluiditype.com */
-	--fontsize-xs: calc(8px + 0.698vw);
-	--fontsize-s: calc(12px + 0.698vw);
-	--fontsize-m: calc(16px + 0.698vw);
-	--fontsize-l: calc(20px + 0.698vw);
-	--fontsize-xl: calc(24px + 0.698vw);
-	--lineHeight: calc(var(--fontsize-m) * 1.4);
-	--letterSpacing: calc(var(--fontsize-s) * 0.0015);
-
 	/* ADMIN VARIABLES */
 	/*#region*/
 	--admin-theme-primary: var(--color-theme-primary);
 	--table-header-color: var(--yellow-600);
 	--table-header-bg: var(--admin-theme-primary);
-	--admin-font: 'fira code', monospace, sans-serif;
+	--admin-font: var(--font-stack);
 	--admin-font-size: 1.15rem;
 	--admin-row-actions-font-size: 8px;
 	--admin-heading-color: var(--global-font-color);
 	--admin-bg-color: var(--admin-theme-primary);
 	--admin-bg-darker: var(--color-link-visited);
 	--admin-bg-lighter: var(--indigo-400);
-	--admin-light-links: var(--color-theme-white);
+	--admin-light-links: var(--foreground);
 	--admin-dark-links: var(--global-font-color);
 	--admin-table-bg: var(--indigo-100);
 	--admin-link: var(--admin-theme-primary);
@@ -208,19 +217,20 @@
 	--star-rating-size: 1.25rem;
 	/*#endregion*/
 
-
 	/* LOGO */
+	/*#region*/
 	--jones-svg-fill: var(--blue-600);
 	--tagline-svg-fill: var(--gray-500);
-	--logo-letter-fill: var(--color-theme-white);
+	--logo-letter-fill: var(--foreground);
 	--logo-circle-fill: var(--gray-300);
 	--logo_text_fill: var(--logo-letter-fill);
 	--logotype-tagline-display: none;
 	--jonessign-text-svg-tagline-fill: var(--gray-500);
+	/*#endregion*/
 
 	/* PRE */
 	--pre-bg: var(--blue-700);
-	--pre-color: var(--color-theme-white);
+	--pre-color: var(--foreground);
 
 	/* Flickity */
 	--flickity-button-color: var(--gray-900);
@@ -231,7 +241,7 @@
 
 	/* FRONTPAGE PROJECTS */
 	--cb-color: var(--gray-900);
-	--projects-accent-color: var(--blue-600);
+	--projects-accent-color: var(--color-theme-primary);
 	--check-color: var(--blue-600);
 	--box-bg: var(--check-color);
 	--dark: var(--gray-900);
@@ -239,18 +249,15 @@
 	--border-type: dashed;
 	--border: var(--border-thicknesss) var(--border-type);
 	--card-bg: #fdfdfd;
-	--location-text-color: var(--color-theme-white);
+	--location-text-color: var(--foreground);
 	--more-info-bg: var(--check-color);
-	--flickity-button-color: var(--projects-accent-color);
+	--flickity-button-color: var(--color-theme-primary);
 
 	/* MENU */
 	--main-menu-bg: var(--color-theme-primary);
-
+	--sidemenu-width: 220px;
 	/* SIDE HAMBURGER MENU */
 	/*#region*/
-	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
-	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
 	--hamburger-menu-background-color-one: var(--color-theme-primary);
 	--hamburger-menu-background-color-two: rgba(40, 80, 120, 0.6);
 	--burger-div-height: 45px;
@@ -258,6 +265,14 @@
 	--shadow-one: 0 1px 3px rgba(0, 0, 0, 0.12);
 	--shadow-two: 0 1px 2px rgba(0, 0, 0, 0.24);
 	--hamburger-menu-box-shadow: var(--shadow-one), var(--shadow-two);
+	--inset-shadow: inset 0 0 10px rgba(0, 0, 15, 0.48);
+	--btn-box-shadow:
+		0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+		0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+		0 12.5px 10px rgba(0, 0, 0, 0.06),
+		0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+		0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+		0 100px 80px rgba(0, 0, 0, 0.12);
 	/*#endregion*/
 
 
@@ -267,7 +282,7 @@
 	--animation-delay: 2s;
 	--animation-duration: 10s;
 	--background-color: #0273b9;
-	--footer-text-color: var(--color-theme-white);
+	--footer-text-color: var(--foreground);
 	--link-color: #ce606f;
 	--map-m-top: 3em;
 	--map-max-width: 100%;
@@ -278,22 +293,29 @@
 	--state-stroke-width: 2;
 	--state-stroke: var(--blue-500);
 	--subline-color: var(--gray-500);
-	/* --width: 70%; */
 
 	/* FORMS */
 	--field-focus-text-color: var(--gray-600);
 }
 
+
 /* stylelint-enable */
-.dark {
-	--text-color: var(--color-theme-white, #f7f7f7);
-	--body-bg-color: var(--blue-900);
-	--jones-svg-fill: var(--color-theme-white);
-	--tagline-svg-fill: var(--gray-200);
+
+@media (prefers-color-scheme: dark ) {
+
+	:root {
+		--foreground: #f8f8f8; /* nearly white */
+		--background: #111; /* nearly black */
+
+		--text-color: var(--foreground);
+		--body-bg-color: var(--blue-900);
+		--jones-svg-fill: var(--foreground);
+		--tagline-svg-fill: var(--gray-200);
+	}
 }
 
 @media and (width > 768px ) {
 	:root {
-		--global-font-size: 20;
+		--global-font-size: 20px;
 	}
 }

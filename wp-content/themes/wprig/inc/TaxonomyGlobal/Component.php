@@ -181,7 +181,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		foreach ( $terms as $term ) {
 			$checkboxes[] = self::get_card_taxonomy_checkbox( $term );
 		}
-		$output .= wp_sprintf( '<div class="project_%s">', $taxonomy );
+		$output .= wp_sprintf( '<div class="project_%s contains-checkboxes">', $taxonomy );
 		$output .= implode( '', $checkboxes );
 		$output .= wp_sprintf( '</div><!-- end div.project_%s -->', $taxonomy );
 		return $output;

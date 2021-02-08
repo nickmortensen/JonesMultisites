@@ -18,6 +18,7 @@
 @import url(admin_partials/_taxonomies.css);
 @import url(admin_partials/_client.css);
 @import url(admin_partials/_taxonomy.css);
+@import url(admin_partials/_custom_post_types.css);
 
 /* stylelint-disable */
 textarea.cmb2-textarea-code .CodeMirror-wrap {

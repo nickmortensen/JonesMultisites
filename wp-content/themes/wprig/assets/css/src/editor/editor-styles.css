@@ -20,10 +20,13 @@
 --------------------------------------------------------------*/
 
 @import "../_custom-properties.css";
+
 @import "../_typography.css";
+
 @import "../_elements.css";
-@import "../_links.css";
+
 @import "../_media.css";
+
 @import "../_blocks.css";
 
 /*--------------------------------------------------------------
@@ -55,13 +58,16 @@ option {
 }
 
 .wp-block {
+
 	/* Main column width */
 	max-width: calc(var(--content-width) + 30px);
 }
+
 /* Width of "wide" blocks */
 .wp-block[data-align="wide"] {
 	max-width: calc(50% + var(--content-width) / 2 + 76px);
 }
+
 /* Width of "full-wide" blocks */
 .wp-block[data-align="full"] {
 	max-width: none;

@@ -1,0 +1,131 @@
+div[id$="-information-side-metabox"] {
+	background: var(--color-theme-primary);
+	color: var( --has-dark-bg);
+	height: 100%;
+
+	& > .postbox-header {
+
+		& h2 {
+			text-transform: uppercase;
+			font-weight: var(--bold);
+			leter-spacing: 1px;
+		}
+
+		& h2,
+		& .toggle-indicator::before {
+			color: var( --has-dark-bg);
+		}
+
+		& .toggle-indicator::before {
+			margin-top: 4px;
+			width: 20px;
+			border-radius: 50%;
+			text-indent: -1px;
+		}
+
+
+		& span[class*="-indicator"] {
+			cursor: pointer;
+
+			&::before {
+				color: var(--has-dark-bg);
+			}
+		}
+	}
+
+	& div[id$="-sideinfo"] {
+
+		padding-bottom: 0.3rem;
+	}
+
+	& div[class^="label_"] {
+		margin-top: 0.7rem;
+
+
+		& label {
+			font-weight: var(--superbold);
+			letter-spacing: 0.03rem;
+		}
+	}
+
+	& .label_left {
+		margin-right: 4px;
+		display: grid;
+		align-items: end;
+		justify-items: stretch;
+		grid-gap: 5px;
+		grid-template-columns: 30% 70%;
+		grid-template-areas: 'label input';
+
+
+		& > label {
+			grid-area: label;
+		}
+	}
+
+	& .label_top {
+
+		height: 3.5rem;
+		margin-top: 0.2rem;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: flex-start;
+		align-items: flex-start;
+
+		& input {
+			width: 100%;
+		}
+
+	}
+}
+
+[id$="-sortables"] > div {
+	cursor: inherit;
+
+	&:hover,
+	&:focus,
+	&:focus-within {
+		box-shadow: var(--btn-box-shadow);
+		transition: box-shadow 0.3s ease;
+	}
+}
+/* =====================
+CLIENT POST TYPE STYLES
+======================== */
+div#client_projects {
+	margin-bottom: 2vmax;
+	background: var(--indigo-600);
+	color: var(--color-theme-white);
+	transition: height 0.5s var(--transition-timing-function);
+}
+
+div#client_projects:not(.closed) {
+	height: 14vmax;
+	overflow-y: scroll;
+	transition: height 0.5s var(--transition-timing-function);
+}
+
+div#client_projects h2 {
+	color: var(--color-theme-white);
+}
+
+#project-checkboxes label {
+	font-weight: 900;
+	margin-left: 0.5em;
+	font-size: 1.4em;
+}
+
+div#client_projects .toggle-indicator::before {
+	margin-top: 4px;
+	width: 20px;
+	border-radius: 50%;
+	text-indent: -1px;
+	color: var(--color-theme-white);
+}
+
+.label_callback {
+	color: var(--color-theme-white);
+	background: var(--color-theme-primary);
+	font-weight: var(--semibold);
+	font-size: clamp(22px, 1.9rem, 38px);
+}

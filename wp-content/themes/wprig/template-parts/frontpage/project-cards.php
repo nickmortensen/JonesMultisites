@@ -11,6 +11,8 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
+
+<?php wp_rig()->print_styles( 'wp-rig-flickity' ); ?>
 	<!-- project cards -->
 	<section id="fp-projects" class="frontpage-projects full-grid">
 		<h2 class="section-title">Recent Projects</h2>

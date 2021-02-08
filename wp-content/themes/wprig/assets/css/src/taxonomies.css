@@ -5,6 +5,4 @@
 	background: var(--yellow-600);
 }
 
-.taxonomy-data {
-	border: 2px dotted var(--gray-700);
-}
+.taxonomy-data { border: 2px dotted var(--gray-700); }

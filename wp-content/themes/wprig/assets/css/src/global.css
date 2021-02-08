@@ -15,6 +15,12 @@
 # Content navigation
 # Footer
 # Infinite scroll
+# Unicode Primer
+	# "\2714" = ✔
+	# "\2713" = ✓
+	# "\2706" = ✆
+	# "\25BE" = ▾
+	# "\002b" = +
 --------------------------------------------------------------*/
 
 /*---------------------------------------------------- ----------
@@ -25,20 +31,23 @@
 @import "_custom-selectors.css";
 @import "_custom-media.css";
 @import "_reset.css";
+@import "_grid.css";
+@import "_contact-form.css";
 @import "_site-search.css";
 @import "_navigation.css";
 @import "_keyframes.css";
 @import "_accessibility.css";
+@import "_media.css";
 @import "_header.css";
+@import "_footer.css";
 @import "_forms.css";
 @import "_typography.css";
 @import "_elements.css";
-@import "_links.css";
 @import "_flex.css";
-@import "_footer.css";
-
-/* @import "_select.css"; */
-
+@import "_select.css";
+@import "_buttons_icons.css";
+@import "_sidenav.css";
+@import "_safety-data.css";
 
 /*--------------------------------------------------------------
 # Layouts
@@ -55,21 +64,17 @@ html:focus-within {
 	}
 }
 
+/* any and all GRID behavior has been moved to _grid.css*/
+html,
 body {
-	min-height: 100%;
-	display: grid;
-	grid-template-columns: none;
-	grid-template-rows: none;
-	grid-template-areas: "content";
+	height: 100%;
 }
 
-@media (--sidebar-query) {
-	body {
-		grid-template-columns: var(--hamburger-menu-width) 1fr;
-		grid-template-areas:
-			"hamburger content"
-			"hamburger content"
-			"hamburger content";
+.hide-sidenav {
+
+	& > aside#sidenav {
+		transform: translateX(-100%);
+		transition: transform 0.3s var(--bg-bezier);
 	}
 }
 
@@ -77,38 +82,6 @@ body {
 	margin: 0;
 	width: 100%;
 	height: 100%;
-	display: grid;
-	grid-area: content;
-	grid-template-columns: 1fr;
-	grid-template-rows: 1fr 4fr auto;
-	grid-template-areas:
-		"header"
-		"main"
-		"footer";
-}
-
-#head.masthead {
-	grid-area: header;
-}
-
-.site-main {
-	grid-area: main;
-
-}
-
-.site-main.frontpage {
-	display: grid;
-	grid-area: main;
-	grid-template-rows: 220px repeat(3, 1fr);
-	grid-template-areas:
-		"search"
-		"form"
-		"about"
-		"projects";
-}
-
-.site-footer {
-	grid-area: footer;
 }
 
 /*--------------------------------------------------------------
@@ -150,9 +123,7 @@ body {
 
 /* When Infinite Scroll has reached its end we need to re-display elements that
 were hidden (via .neverending) before. */
-.infinity-end.neverending .site-footer {
-	display: block;
-}
+.infinity-end.neverending .site-footer { display: block; }
 
 
 /*--------------------------------------------------------------
@@ -162,7 +133,7 @@ were hidden (via .neverending) before. */
 .site-main .posts-navigation,
 .site-main .post-navigation,
 .site-main .pagination {
-	border-bottom: 1px solid #111;
+	border-bottom: 1px solid var(--background);
 	margin: 0 auto 2em;
 	overflow: hidden;
 	padding: 0 1.5rem 2em;
@@ -171,7 +142,6 @@ were hidden (via .neverending) before. */
 }
 
 @media screen and (width > 768px) {
-
 	.site-main .comment-navigation,
 	.site-main .posts-navigation,
 	.site-main .post-navigation,
@@ -295,43 +265,14 @@ Drag indicator for flickity
 	}
 }
 
-/*--------------------------------------------------------------
-# Utility
---------------------------------------------------------------*/
-
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-
-	&::before,
-	&::after {
-		box-sizing: inherit;
-	}
-}
-
-/* unicode icon for phone */
-span[itemprop="streetAddress"] {
-	display: block;
-}
-
 /* NOTE THAT THIS WILL STILL BE SEEN BY SCREEN READERS & Will take up whitespace */
 .hide,
 .hidden {
 	visibility: hidden;
 }
 
-/* Removes the element from the DOOM altogether */
+/* Removes the element from the DOM altogether */
 .display_none,
 .remove {
 	display: none;
-}
-
-.light-text {
-	color: var(--color-theme-white);
-
-	& :--heading,
-	& span {
-		color: var(--color-theme-white);
-	}
 }
