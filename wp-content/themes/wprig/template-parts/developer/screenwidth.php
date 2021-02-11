@@ -13,10 +13,10 @@ namespace WP_Rig\WP_Rig;
 
 <script>
 	function reportWindowSize() {
-		devScreenWidth.textContent = `${window.innerWidth}px`;
+		devScreenWidth.textContent = `${window.innerWidth}`;
 	}
 	window.addEventListener( 'DOMContentLoaded', event => {
-		devScreenWidth.textContent = window.innerWidth + 'px';
+		devScreenWidth.textContent = window.innerWidth;
 	})
 	window.addEventListener( 'resize', reportWindowSize )
 </script>

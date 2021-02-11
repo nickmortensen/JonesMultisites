@@ -27,6 +27,7 @@ use function wp_nav_menu;
 class Component implements Component_Interface, Templating_Component_Interface {
 
 	const PRIMARY_NAV_MENU_SLUG = 'primary';
+	const ASIDE_NAV_MENU_SLUG   = 'aside';
 
 	/**
 	 * Gets the unique identifier for the theme component.
@@ -66,6 +67,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		register_nav_menus(
 			array(
 				static::PRIMARY_NAV_MENU_SLUG => esc_html__( 'Primary', 'wp-rig' ),
+				static::ASIDE_NAV_MENU_SLUG   => esc_html__( 'Aside', 'wp-rig' ),
 			)
 		);
 	}
@@ -106,12 +108,56 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Adds a dropdown symbol to nav menu items with children.
+	 *
+	 * Adds the dropdown markup after the menu link element,
+	 * before the submenu.
+	 *
+	 * Javascript converts the symbol to a toggle button.
+	 *
+	 * @TODO:
+	 * - This doesn't work for the page menu because it
+	 *   doesn't have a similar filter. So the dropdown symbol
+	 *   is only being added for page menus if JS is enabled.
+	 *   Create a ticket to add to core?
+	 *
+	 * @param string  $item_output The menu item's starting HTML output.
+	 * @param WP_Post $item        Menu item data object.
+	 * @param int     $depth       Depth of menu item. Used for padding.
+	 * @param object  $args        An object of wp_nav_menu() arguments.
+	 * @return string Modified nav menu HTML.
+	 */
+	public function filter_aside_nav_menu_dropdown_symbol( string $item_output, WP_Post $item, int $depth, $args ) : string {
+
+		// Only for our primary menu location.
+		if ( empty( $args->theme_location ) || static::ASIDE_NAV_MENU_SLUG !== $args->theme_location ) {
+			return $item_output;
+		}
+
+		// Add the dropdown for items that have children.
+		if ( ! empty( $item->classes ) && in_array( 'menu-item-has-children', $item->classes ) ) {
+			return $item_output . '<span class="dropdown"><i class="dropdown-symbol"></i></span>';
+		}
+
+		return $item_output;
+	}
+
+	/**
 	 * Checks whether the primary navigation menu is active.
 	 *
 	 * @return bool True if the primary navigation menu is active, false otherwise.
 	 */
 	public function is_primary_nav_menu_active() : bool {
 		return (bool) has_nav_menu( static::PRIMARY_NAV_MENU_SLUG );
+	}
+
+	/**
+	 * Checks whether the aside navigation menu is active.
+	 *
+	 * @return bool True if the aside navigation menu is active, false otherwise.
+	 */
+	public function is_aside_nav_menu_active() : bool {
+		return (bool) has_nav_menu( static::ASIDE_NAV_MENU_SLUG );
 	}
 
 	/**
@@ -126,6 +172,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$args['theme_location'] = static::PRIMARY_NAV_MENU_SLUG;
+
+		wp_nav_menu( $args );
+	}
+
+	/**
+	 * Displays the aside navigation menu.
+	 *
+	 * @param array $args Optional. Array of arguments. See `wp_nav_menu()` documentation for a list of supported
+	 *                    arguments.
+	 */
+	public function display_aside_nav_menu( array $args = array() ) {
+		if ( ! isset( $args['container'] ) ) {
+			$args['container'] = '';
+		}
+
+		$args['theme_location'] = static::ASIDE_NAV_MENU_SLUG;
 
 		wp_nav_menu( $args );
 	}

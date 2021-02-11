@@ -12,12 +12,7 @@ $locations = wp_rig()->get_location_ids( 75 );
 ?>
 	<div id="map-container">
 
-		<div>
-			<h2>Jones Sign Company</h2>
-			<h3><?= count( $locations ); ?> Locations across the United States</h3>
-		</div>
-
-		<div class="map">
+		<div id="exampleMAP" class="map">
 
 			<ul class="map-markers">
 				<?php

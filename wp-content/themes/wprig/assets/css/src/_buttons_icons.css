@@ -4,6 +4,7 @@
 
 a {
 	color: var(--color-link);
+	text-decoration: none;
 
 	/**
 	* Remove the gray background on active links in IE 10.

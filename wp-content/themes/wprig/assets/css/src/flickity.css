@@ -3,6 +3,12 @@ https://flickity.metafizzy.co
 ---------------------------------------------- */
 
 .flickity-enabled {
+	--flickity-button-blendmode: normal;
+	--flickity-button-icon-color: var(--foreground);
+	--flickity-button-border-color: var(--gray-800);
+	--flickity-button-background-color: var(--blue-400);
+	--flickity-button-border-color: var(--background);
+	--flickity-button-size: 44px;
 	position: relative;
 
 	&:focus {
@@ -46,17 +52,17 @@ https://flickity.metafizzy.co
 /* ---- flickity-button ---- */
 .flickity-button {
 	position: absolute;
-	background: var(--blue-400);
-	color: var(--gray-100);
-	mix-blend-mode: luminosity;
+	background: var(--flickity-button-background-color);
+	color: var(--flickity-button-icon-color);
+	mix-blend-mode: var(--flickity-button-blendmode);
 	transition: all 0.4s ease;
-	border: 3px solid #000;
+	border: 3px solid var(--flickity-button-border-color);
+	padding: unset;
 
 	&:hover {
 		cursor: pointer;
-		mix-blend-mode: overlay;
 		transition: all 0.4s ease;
-		border: 4px solid #fff;
+		border: 4px solid var(--foreground);
 	}
 
 	&:focus {
@@ -85,8 +91,8 @@ https://flickity.metafizzy.co
 /* ---- previous/next buttons ---- */
 .flickity-prev-next-button {
 	top: 50%;
-	width: 44px;
-	height: 44px;
+	width: var(--flickity-button-size);
+	height: var(--flickity-button-size);
 	border-radius: 50%;
 
 	/* vertically center */

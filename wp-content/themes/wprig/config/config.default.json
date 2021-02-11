@@ -29,7 +29,7 @@
 	  }
     },
     "debug": {
-      "styles": true,
+      "styles": false,
       "scripts": true,
       "phpcs": true
     }

@@ -14,13 +14,425 @@
 
 
 --------------------------------------------------------------*/
-a[href^="tel:"]::before {
-	content: "\2706"; /* ✆*/
-	margin-right: 0.5em;
+
+a.telephone_link {
+	position: relative;
+	text-decoration: none;
+	font-size: clamp(2rem, 3.4vw, 6rem);
+	line-height: 1;
+
+	&::before {
+		content: "\2706"; /*✆*/
+		position: absolute;
+		left: -3.9rem;
+		top: -0.25rem;
+	}
 }
 
 footer {
+	--mapwidth: clamp(280px, 60vw, 840px);
+
+
+	/*
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 3fr auto;
+	grid-template-areas:
+		"explainer"
+		"map"
+		"locationaddress";
+*/
 	& :--heading { color: var(--foreground); }
+
+
+}
+
+/*--------------------------------------------------------------
+======================== EXPLAINER ==========================
+--------------------------------------------------------------*/
+
+#explainer {
+	grid-area: explainer;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+/*--------------------------------------------------------------
+======================== LOCATION MAP ==========================
+--------------------------------------------------------------*/
+#location-map {
+	grid-area: map;
+	place-self: center center;
+
+	& svg {
+		height: auto;
+		max-width: var(--map-max-width);
+	}
+
+	& .state {
+		fill: var(--state-fill);
+		stroke: var(--state-stroke);
+		stroke-width: var(--state-stroke-width);
+	}
+
+	& .map {
+		margin-top: var(--map-m-top);
+		position: relative;
+		width: clamp(280px, 44vw, 840px);
+	}
+
+	& .map-markers {
+		--marker-left: 64.5%;
+		--marker-top: 22%;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		& .grb,
+		& .nat {
+			left: var(--marker-left);
+			top: var(--marker-top);
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .msp {
+			--marker-left: 55%;
+			--marker-top: 20%;
+			--animation-delay: 2.5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .tpa {
+			--marker-left: 79%;
+			--marker-top: 86%;
+			--animation-delay: 3s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .mia {
+			--marker-left: 85%;
+			--marker-top: 91%;
+			--animation-delay: 3.5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .rno {
+			--marker-left: 7%;
+			--marker-top: 36%;
+			--animation-delay: 4s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .las {
+			--marker-left: 14%;
+			--marker-top: 54%;
+			--animation-delay: 4.5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .phl {
+			--marker-left: 89%;
+			--marker-top: 35%;
+			--animation-delay: 5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .lax {
+			--marker-left: 6%;
+			--marker-top: 56%;
+			--animation-delay: 5.5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .san {
+			--marker-left: 7%;
+			--marker-top: 62%;
+			--animation-delay: 6s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .mxt {
+			--marker-left: 9%;
+			--marker-top: 65%;
+			--animation-delay: 6.5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .mxz {
+			--marker-left: 29%;
+			--marker-top: 72%;
+			--animation-delay: 7s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .ric {
+			--marker-left: 84%;
+			--marker-top: 45%;
+			--animation-delay: 7.5s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+		& .vab {
+			--marker-left: 88%;
+			--marker-top: 48%;
+			--animation-delay: 8s;
+			left: var(--marker-left);
+			top: var(--marker-top);
+
+			&::after {
+				animation-delay: var(--animation-delay);
+			}
+		}
+
+	}/* /.map-markers */
+
+	& .map-marker {
+		--height: 1em;
+		--width: var(--height);
+		--margin-top-bottom: -0.35em;
+		position: absolute;
+		font-size: 0.7rem;
+
+		&::after {
+			animation: var(--animation-duration) infinite pop;
+			border-radius: 50%;
+			opacity: 0;
+			border: 1px solid var(--marker-color);
+			content: "";
+			height: var(--height);
+			width: var(--width);
+			position: absolute;
+			left: 0;
+			top: 0;
+			margin: var(--margin-top-bottom) 0 0 var(--margin-top-bottom);
+			font-size: 1.6rem;
+		}
+
+		& a[href="#"] {
+			--height: 1em;
+			--width: var(--height);
+
+			background-color: var(--marker-color);
+			border-radius: 50%;
+			height: var(--height);
+			display: block;
+			text-indent: -9999px;
+			width: var(--width);
+		}
+
+		/* ====== UNCOMMENT IF WE WISH LOCATION INFORMATION TO BE VISIBLE ON HOVER MARKER HOVER ==== */
+		& .map-marker:hover .map-marker-info {
+			display: block;
+			display: flex;
+		}
+
+
+	}/* \.map-marker */
+
+	& .map-marker-info {
+		--bg-border-color: var(--bg-body-color);
+		--marker-width: 300px;
+
+		/* display: none; */
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		transform: translate(-50%, -2em);
+		width: var(--marker-width);
+		z-index: 1200;
+
+		& .inner {
+			flex-flow: column nowrap;
+			border-radius: 0.5em;
+			box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.3);
+			font-size: 0.875em;
+
+			&.hidden {
+				display: none;
+			}
+
+			/* QUOTE TEPEE */
+			&::after {
+				border-left: 0.75em solid transparent;
+				border-right: 0.75em solid transparent;
+				border-top: 1em solid var(--bg-border-color);
+				content: "";
+				height: 0;
+				width: 0;
+				position: absolute;
+				top: 99%; /* gets rid of the 1px gap */
+				left: 50%;
+				transform: translateX(-50%); /* places tepee in midle */
+			}
+
+			& > div {
+				background-color: var(--color-theme-primary);
+				border-radius: 0.5em 0.5em 0 0;
+
+				& > h2 {
+					font-size: var(--fontsize-s);
+					color: var(--foreground);
+					margin-bottom: 0;
+					padding: 0.5vw 8px;
+					letter-spacing: 1px;
+				}
+			}/* \.heading */
+
+			& main {
+				display: block;
+				width: 100%;
+				background-color: var(--bg-border-color);
+				color: var(--text-color);
+				border: 1px solig var(--bg-border-color);
+				border-radius: 0 0 0.5em 0.5em;
+				padding: 0.5em 1em;
+
+				& > address {
+					--fontsize-xs: calc(7px + 0.698vw);
+					color: inherit;
+
+					& > span {
+						font-size: 0.9em;
+						font-size: var(--fontsize-xs);
+
+						&:first-of-type {
+							display: block; /* Street Address appears ona  single line */
+						}
+					}
+
+					& a {
+						font-size: var(--fontsize-xs);
+					}
+				} /* \address */
+			} /* \main */
+
+		} /* \.inner */
+	}
+
+}/* /#location-map */
+
+/*--------------------------------------------------------------
+======================== LOCATION ADDRESS =======================
+--------------------------------------------------------------*/
+#location-address {
+	color: var(--foreground);
+	overflow: hidden;
+	grid-area: locationaddress;
+	width: 100%;
+	position: relative;
+
+	& .single_jones_address {
+		color: var(--foreground);
+		height: 100%;
+		min-height: 160px;
+		width: 100%;
+
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-size: clamp(var(--fontsize-s), 1.2vw, 38px);
+
+		&.address-hidden {
+			opacity: 0;
+		}
+
+		& h2 {
+			font-size: clamp(24px, 3.84vw, 108px);
+			line-height: 0.8;
+			flex-basis: max-content;
+		}
+
+		& div {
+			flex-basis: auto;
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: space-around;
+
+			& > a {
+				color: var(--foreground);
+				flex-basis: 40%;
+			}
+			& > address {
+				color: var(--foreground);
+				display: flex;
+				flex-flow: row wrap;
+				align-content: center;
+				flex-basis: 60%;
+
+				& > div {
+					display: flex;
+					flex-flow: row nowrap;
+					justify-content: flex-start;
+				}
+			}
+		}
+
+
+	}
 }
 
 /*--------------------------------------------------------------
@@ -276,344 +688,6 @@ div.location-select-element {
 }
 
 /*#endregion*/
-
-/*--------------------------------------------------------------
-======================== LOCATION MAP ==========================
---------------------------------------------------------------*/
-#location-map {
-	grid-area: map;
-	place-self: center center;
-
-	& svg {
-		height: auto;
-		max-width: var(--map-max-width);
-	}
-
-	& .state {
-		fill: var(--state-fill);
-		stroke: var(--state-stroke);
-		stroke-width: var(--state-stroke-width);
-	}
-
-	& .map {
-		margin-top: var(--map-m-top);
-		position: relative;
-	}
-
-	& .map-markers {
-		--marker-left: 64.5%;
-		--marker-top: 22%;
-		list-style: none;
-		margin: 0;
-		padding: 0;
-
-		& .grb,
-		& .nat {
-			left: var(--marker-left);
-			top: var(--marker-top);
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .msp {
-			--marker-left: 55%;
-			--marker-top: 20%;
-			--animation-delay: 2.5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .tpa {
-			--marker-left: 79%;
-			--marker-top: 86%;
-			--animation-delay: 3s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .mia {
-			--marker-left: 85%;
-			--marker-top: 91%;
-			--animation-delay: 3.5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .rno {
-			--marker-left: 7%;
-			--marker-top: 36%;
-			--animation-delay: 4s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .las {
-			--marker-left: 14%;
-			--marker-top: 54%;
-			--animation-delay: 4.5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .phl {
-			--marker-left: 89%;
-			--marker-top: 35%;
-			--animation-delay: 5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .lax {
-			--marker-left: 6%;
-			--marker-top: 56%;
-			--animation-delay: 5.5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .san {
-			--marker-left: 7%;
-			--marker-top: 62%;
-			--animation-delay: 6s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .mxt {
-			--marker-left: 9%;
-			--marker-top: 65%;
-			--animation-delay: 6.5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .mxz {
-			--marker-left: 29%;
-			--marker-top: 72%;
-			--animation-delay: 7s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .ric {
-			--marker-left: 84%;
-			--marker-top: 45%;
-			--animation-delay: 7.5s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-		& .vab {
-			--marker-left: 88%;
-			--marker-top: 48%;
-			--animation-delay: 8s;
-			left: var(--marker-left);
-			top: var(--marker-top);
-
-			&::after {
-				animation-delay: var(--animation-delay);
-			}
-		}
-
-	}/* /.map-markers */
-
-	& .map-marker {
-		--height: 2em;
-		--width: var(--height);
-		--margin-top-bottom: -0.5em;
-		position: absolute;
-
-		&::after {
-			animation: var(--animation-duration) infinite pop;
-			border-radius: 50%;
-			opacity: 0;
-			border: 1px solid var(--marker-color);
-			content: "";
-			height: var(--height);
-			width: var(--width);
-			position: absolute;
-			left: 0;
-			top: 0;
-			margin: var(--margin-top-bottom) 0 0 var(--margin-top-bottom);
-		}
-
-		& a[href="#"] {
-			--height: 1em;
-			--width: var(--height);
-
-			background-color: var(--marker-color);
-			border-radius: 50%;
-			height: var(--height);
-			display: block;
-			text-indent: -9999px;
-			width: var(--width);
-		}
-
-		/*
-		====== UNCOMMENT IF WE WISH LOCATION INFORMATION TO BE VISIBLE ON HOVER MARKER HOVER ====
-		 & .map-marker:hover .map-marker-info {
-			display: block;
-			display: flex;
-		}
-		*/
-
-	}/* \.map-marker */
-
-	& .map-marker-info {
-		--bg-border-color: var(--bg-body-color);
-		--marker-width: 300px;
-
-		/* display: none; */
-		position: absolute;
-		left: 50%;
-		bottom: 0;
-		transform: translate(-50%, -2em);
-		width: var(--marker-width);
-		z-index: 1200;
-
-		& .inner {
-			flex-flow: column nowrap;
-			border-radius: 0.5em;
-			box-shadow: 0 0 0.25em rgba(0, 0, 0, 0.3);
-			font-size: 0.875em;
-
-			/* QUOTE TEPEE */
-			&::after {
-				border-left: 0.75em solid transparent;
-				border-right: 0.75em solid transparent;
-				border-top: 1em solid var(--bg-border-color);
-				content: "";
-				height: 0;
-				width: 0;
-				position: absolute;
-				top: 99%; /* gets rid of the 1px gap */
-				left: 50%;
-				transform: translateX(-50%); /* places tepee in midle */
-			}
-
-			& > div {
-				background-color: var(--color-theme-primary);
-				border-radius: 0.5em 0.5em 0 0;
-
-				& > h2 {
-					font-size: var(--fontsize-s);
-					color: var(--foreground);
-					margin-bottom: 0;
-					padding: 0.5vw 8px;
-					letter-spacing: 1px;
-				}
-			}/* \.heading */
-
-			& main {
-				display: block;
-				width: 100%;
-				background-color: var(--bg-border-color);
-				color: var(--text-color);
-				border: 1px solig var(--bg-border-color);
-				border-radius: 0 0 0.5em 0.5em;
-				padding: 0.5em 1em;
-
-				& > address {
-					--fontsize-xs: calc(7px + 0.698vw);
-					color: inherit;
-
-					& > span {
-						font-size: 0.9em;
-						font-size: var(--fontsize-xs);
-
-						&:first-of-type {
-							display: block; /* Street Address appears ona  single line */
-						}
-					}
-
-					& a {
-						font-size: var(--fontsize-xs);
-					}
-				} /* \address */
-			} /* \main */
-
-		} /* \.inner */
-	}
-
-}/* /#location-map */
-
-
-/*--------------------------------------------------------------
-======================== LOCATION ADDRESS =======================
---------------------------------------------------------------*/
-#location-address {
-	grid-area: locationaddress;
-	width: 100%;
-
-	& .single_jones_address {
-		color: var(--foreground);
-		display: flex;
-		align-items: center;
-		justify-content: space-around;
-		padding: 0 2vw;
-		min-width: 320px;
-		font-size: clamp(var(--fontsize-s), 1.2vw, 38px);
-
-		& h2 {
-			font-size: clamp(46px, 2.84vw, 88px);
-			max-width: 40%;
-		}
-
-		& div {
-			max-width: 40%;
-		}
-
-		& a {
-			color: var(--foreground);
-		}
-	}
-}
-
 /*--------------------------------------------------------------
 END Footer
 --------------------------------------------------------------*/

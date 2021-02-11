@@ -102,7 +102,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		global $template;
 		if ( $this->is_primary_sidebar_active() ) {
 			if ( ! in_array( basename( $template ), [ '404.php', '500.php', 'offline.php' ], true ) ) {
-				$classes[] = 'hide-sidenav';
+				$classes[] = 'hide-sidemenu';
 			}
 		}
 

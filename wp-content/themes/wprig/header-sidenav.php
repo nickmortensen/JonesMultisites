@@ -33,7 +33,7 @@ namespace WP_Rig\WP_Rig;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<aside id="sidenav-open">
+<aside id="sidemenu">
 	<nav>
 		<h4>Backend</h4>
 		<a href="#">Dashboard</a>

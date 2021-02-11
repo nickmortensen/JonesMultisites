@@ -202,7 +202,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
-		// add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_googlesheets_script' ] );   ?
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_admin_columns' ], 10, 1 );
 		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
@@ -500,32 +499,32 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'address'           => $address,
 			'capabilities'      => $capabilities,
 		]        = wp_rig()->get_location_info( $term_id );
-		$branch  = 'nat' === $slug ? 'Jones Sign CO.' : ucwords( $name );
+		$branch  = 'nat' === $slug ? 'Jones Sign Co.' : ucwords( $name );
 		$output  = '';
 		$output .= wp_sprintf( '<li data-branch-marker="%s" class="map-marker %s">', $slug, $slug );
-		$output .= "\n\t";
+		// $output .= "\n\t";
 		$output .= wp_sprintf( '<a href="#">%s</a>', $name );
-		$output .= "\n\t";
-		$output .= '<div class="map-marker-info">';
-		$output .= "\n\t\t";
-		$output .= wp_sprintf( '<div data-location-info="%s" class="inner %s">', $slug, 'nat' === $slug ? '' : 'hidden' );
-		$output .= "\n\t\t\t";
-		$output .= wp_sprintf( '<div class="heading"><h2>%s</h2></div>', $branch );
-		$output .= "\n\t\t\t";
-		$output .= '<main>';
+		// $output .= "\n\t";
+		// $output .= '<div class="map-marker-info">';
+		// $output .= "\n\t\t";
+		// $output .= wp_sprintf( '<div data-location-info="%s" class="inner %s">', $slug, 'hidden' );
+		// $output .= "\n\t\t\t";
+		// $output .= wp_sprintf( '<div class="heading"><h2>%s</h2></div>', $branch );
+		// $output .= "\n\t\t\t";
+		// $output .= '<main>';
 
 		/*
 		 * WAIT UNTIL YOU HAVE GOOD PHOTOS OF ALL LOCATIONS.
 		 * $output .= wp_sprintf( '<img src="%s" />', wp_get_attachment_image_src( $location_image, 'medium' )[0]);
 		*/
-		$output .= "\n\t\t\t\t";
-		$output .= $this->get_single_location_address( $term_id );
-		$output .= '</main>';
-		$output .= "\n\t\t";
-		$output .= '</div><!-- end div.inner animate-bounce-in -->';
-		$output .= "\n\t";
-		$output .= '</div><!-- end div.map-marker-info -->';
-		$output .= "\n";
+		// $output .= "\n\t\t\t\t";
+		// $output .= $this->get_single_location_address( $term_id );
+		// $output .= '</main>';
+		// $output .= "\n\t\t";
+		// $output .= '</div><!-- end div.inner animate-bounce-in -->';
+		// $output .= "\n\t";
+		// $output .= '</div><!-- end div.map-marker-info -->';
+		// $output .= "\n";
 		$output .= wp_sprintf( '</li><!-- end li.map-marker-%s -->', $slug );
 		$output .= "\n";
 		return $output;

@@ -480,10 +480,13 @@ const outputAddress = location => {
 	let { address, city, email, fax, googleCID, latitude, longitude, phone, state, zip } = location;
 	let output = `
 <address itemscope itemtype="https://schema.org/PostalAddress">
-	<span itemprop="streetAddress">${address.replace( /-/, '<br>')}</span>
-	<span itemprop="addressLocality">${city}</span>,
-	<span itemprop="addressRegion">${state} </span>
-	<span itemprop="postalCode"> ${zip}</span>
+	<span itemprop="streetAddress">${address.replace( /-/, '<br>')}&nbsp;&nbsp;</span>
+	<span class="city-state-zip">
+		<span itemprop="addressLocality">${city},&nbsp;</span>
+		<span itemprop="addressRegion">${state}</span>
+		<span itemprop="postalCode">&nbsp;&nbsp;${zip}</span>
+	</span>
+
 </address>
 `;
 	return output;
@@ -502,7 +505,7 @@ locations.forEach( location => {
 	let telephone                            = outputPhone( address );
 
 	let output = `
-<div data-location-id="${id}" data-blog-id="${blog_id}" data-slug="${slug}" class="single_jones_address">
+<div data-location-id="${id}" data-blog-id="${blog_id}" data-slug="${slug}" class="single_jones_address address-hidden">
 	<h2>${name.toUpperCase()}</h2>
 	<div>
 		${streetAddress}

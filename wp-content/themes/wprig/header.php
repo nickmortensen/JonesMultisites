@@ -31,16 +31,16 @@ namespace WP_Rig\WP_Rig;
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-	<div class="nav-icons">
-		<a title="Connect with us!" id="sidenav-mail-button" class="material-icons button"> mail_outline </a>
-		<a title="Search the site." id="sidenav-search-button" class="material-icons button"> search </a>
-		<a title="Open/Close side navigation menu" id="sidenav-toggle-button" class="material-icons button"> menu </a>
+	<div class="floating-navigation-buttons">
+		<a title="Connect with us!" id="sidemenu-mail-button" class="material-icons button"> mail_outline </a>
+		<a title="Search the site." id="sidemenu-search-button" class="material-icons button"> search </a>
+		<a title="Open/Close side navigation menu" id="sidemenu-toggle-button" class="material-icons button"> menu </a>
 	</div>
 
 
-	<aside id="sidenav">
-		<a id="close-sidenav" class="material-icons button reversed" title="close side menu"> close </a>
-		<nav id="internalNav">
+	<aside id="sidemenu">
+		<a id="close-sidemenu" class="material-icons button reversed" title="close side menu"> close </a>
+		<nav id="sidemenu-navigation">
 		<?= implode( "\n\t\t\t", wp_rig()->get_project_sidemenu_items( 8 ) ); ?>
 		</nav>
 	</aside>
@@ -53,19 +53,19 @@ if ( 'development' === ENVIRONMENT ) {
 ?>
 <!-- toggle side menu script -->
 <script>
-const sideNavToggler = document.getElementById( 'sidenav-toggle-button' );
-const sideNavCloser  = document.querySelector( '#close-sidenav' );
+const sideNavToggler = document.getElementById( 'sidemenu-toggle-button' );
+const sideNavCloser  = document.querySelector( '#close-sidemenu' );
 [ a, b ] = [ 'menu', 'close' ];
 sideNavToggler.addEventListener( 'click', function() {
-	document.body.classList.toggle( 'hide-sidenav' );
-	this.textContent = document.body.classList.contains( 'hide-sidenav' ) ? a : b;
-	let title = document.body.classList.contains( 'hide-sidenav' ) ? 'Open Side Menu' : 'Close Side Menu';
+	document.body.classList.toggle( 'hide-sidemenu' );
+	this.textContent = document.body.classList.contains( 'hide-sidemenu' ) ? a : b;
+	let title = document.body.classList.contains( 'hide-sidemenu' ) ? 'Open Side Menu' : 'Close Side Menu';
 	this.setAttribute( 'title', title );
 	window.focus( document.body ); // so you can still scroll
 }, false);
 
 sideNavCloser.addEventListener( 'click', function() {
-	document.body.classList.add( 'hide-sidenav' );
+	document.body.classList.toggle( 'hide-sidemenu' );
 	sideNavToggler.textContent = 'menu';
 }, true);
 </script>
@@ -76,7 +76,7 @@ sideNavCloser.addEventListener( 'click', function() {
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
 
-	<header id="masthead" class="site-header" style="background: var(--blue-300);">
+	<header id="masthead" class="site-header">
 		<?php get_template_part( 'template-parts/header/custom_header' ); ?>
 
 		<?php get_template_part( 'template-parts/header/branding' ); ?>

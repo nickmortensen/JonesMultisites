@@ -1,24 +1,32 @@
 /*--------------------------------------------------------------
 # Tutorial from https://cdpn.io/nickmortensen/debug/bGepRww
 --------------------------------------------------------------*/
-.nav-icons {
-	z-index: 1000;
-	position: absolute;
-	top: 15px;
-	right: 15px;
-	display: flex;
-	flex-flow: row nowrap;
-	min-width: 220px;
-	justify-content: center;
-	align-items: flex-end;
-}
 
-#sidenav {
+:root {
 	--sidemenu-width: 220px;
 	--blendMode: normal;
 	--easeOutExpo: cubic-bezier(0.16, 1, 0.3, 1);
 	--duration: 0.6s;
+	--flexflow: column nowrap;
+	--iconmenu-top: 15px;
+}
 
+@media (max-width: 599px) {
+	:root {
+		--flexflow: column nowrap;
+		--sidemenu-width: 90%;
+	}
+}
+
+@media (min-width: 600px) {
+	:root {
+		--flexflow: row nowrap;
+		--sidemenu-width: 90%;
+	}
+}
+
+
+aside#sidemenu {
 	mix-blend-mode: var(--blendMode);
 	background: var(--color-theme-primary);
 	width: var(--sidemenu-width);
@@ -26,13 +34,13 @@
 	z-index: 10;
 	transition: transform 0.3s var(--alternate-bezier-transition);
 
-	& > a#close-sidenav {
+	& > a#close-sidemenu {
 		position: sticky;
 		top: 8px;
 		left: 60%;
 	}
 
-	& #internalNav {
+	& > nav {
 		position: sticky;
 		color: var(--foreground);
 		top: 15vh;
@@ -69,16 +77,6 @@
 		font-size: 1.25rem;
 		color: var(--text);
 
-		@media (min-width: 540px) {
-			padding-block-start: 4.5rem;
-		}
-
-		@media (max-width: 540px) {
-			background-color: var(--surface2);
-			border-inline-end: 1px var(--surface1);
-			box-shadow: 5px 0 40px hsla(0 0% 0% / 0.45);
-			font-size: 1.5rem;
-		}
 
 		& > h4 {
 			text-transform: uppercase;
@@ -97,19 +95,15 @@
 
 /* end #sidenav */
 
-/*  Only appears on development */
-#devScreenWidth {
-	position: fixed;
-	bottom: 10%;
-	left: 5%;
-	z-index: 1211;
-	line-height: 4;
-	font-size: 12px;
-	font-weight: 900;
-	color: var(--background);
-	background: var(--yellow-600);
-	border-radius: 50%;
-	padding: 18px;
-	box-shadow: 5px 5px 10px 3px var(--gray-500);
-	mix-blend-mode: difference;
+
+.floating-navigation-buttons {
+	z-index: 1000;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	display: flex;
+	flex-flow: var(--flexflow);
+	min-width: 220px;
+	justify-content: center;
+	align-items: flex-end;
 }

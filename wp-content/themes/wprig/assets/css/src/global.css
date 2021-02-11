@@ -30,20 +30,15 @@
 @import "_custom-properties.css";
 @import "_custom-selectors.css";
 @import "_custom-media.css";
-@import "_reset.css";
 @import "_grid.css";
 @import "_contact-form.css";
 @import "_site-search.css";
 @import "_navigation.css";
-@import "_keyframes.css";
-@import "_accessibility.css";
-@import "_media.css";
 @import "_header.css";
 @import "_footer.css";
 @import "_forms.css";
-@import "_typography.css";
 @import "_elements.css";
-@import "_flex.css";
+
 @import "_select.css";
 @import "_buttons_icons.css";
 @import "_sidenav.css";
@@ -70,9 +65,9 @@ body {
 	height: 100%;
 }
 
-.hide-sidenav {
+.hide-sidemenu {
 
-	& > aside#sidenav {
+	& > aside#sidemenu {
 		transform: translateX(-100%);
 		transition: transform 0.3s var(--bg-bezier);
 	}

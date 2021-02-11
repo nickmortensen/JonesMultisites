@@ -86,7 +86,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_jonessign_style' ], 9 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ], 10 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 40 );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
@@ -544,5 +545,18 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$version      = '9';
 		$footer       = true;
 		wp_enqueue_script( 'material-design-javascript', $script_uri, $dependencies, $version, $footer );
+	}
+
+	/**
+	 * Enqueue style.min.css.
+	 *
+	 * @see These are just the stylesheet files that change very rarely.
+	 */
+		public function enqueue_jonessign_style() {
+		$handle   = 'baseline';
+		$filepath = get_theme_file_path( '/style.min.css' ); // outputs a path --needed for asset version.
+		$fileurl  = get_theme_file_uri( '/style.min.css' ); // outputs a path --needed for asset version.
+		$version  = wp_rig()->get_asset_version( $filepath );
+		wp_enqueue_style( $handle, $fileurl, [], $version, 'all' );
 	}
 }

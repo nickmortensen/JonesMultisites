@@ -6,7 +6,9 @@
 
 :root {
 	--page-grid-template-areas: "header" "main" "footer";
-	--header-grid-template-areas: "branding contact searchfield";
+	--header-grid-template-areas:
+		"branding contact searchfield floatingbuttons"
+		"headermenu headermenu headermenu headermenu";
 }
 
 
@@ -26,7 +28,7 @@ body {
 	grid-template-areas: "content";
 }
 
-#sidenav,
+#sidemenu,
 #page { grid-area: content; }
 
 #page {
@@ -38,7 +40,8 @@ body {
 header {
 	max-height: 300px;
 	grid-area: header;
-	grid-template-columns: 30% repeat(2, 1fr);
+	grid-template-columns: 30% repeat(3, 1fr);
+	grid-template-rows: 40% auto;
 	grid-template-areas: var(--header-grid-template-areas);
 
 	& #branding {
@@ -56,12 +59,12 @@ header {
 
 footer {
 	grid-area: footer;
-	grid-template-columns: 2fr 5fr;
-	grid-template-rows: auto auto;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 3fr minmax(180px, auto);
 	grid-template-areas:
-		"locationselect map"
-		"locationselect locationaddress";
-
+		"explainer"
+		"map"
+		"locationaddress";
 }
 
 .site-main {

@@ -72,6 +72,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_city_state'              => [ $this, 'get_city_state' ],
 			'get_payment_link'            => [ $this, 'get_payment_link' ],
 			'get_project_sidemenu_items'  => [ $this, 'get_project_sidemenu_items' ],
+			'make_drilldown_links'        => [ $this, 'make_drilldown_links' ],
 		];
 	}
 
@@ -312,7 +313,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return string HTML for an individual project card.
 	 */
 	public function get_secondary_project_card( int $project_id ) : string {
-		$output = '';
+		$signtypes = $industries = $expertise = '';
+
 		[
 			'signtypes'     => $signtypes,
 			'expertise'     => $expertise,
@@ -333,24 +335,60 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'partners'      => $partners_array,
 			'client'        => $client,
 			'alt_name'      => $alternate_name,
-		]       = $this->get_all_project_info( $project_id );
+		] = $this->get_all_project_info( $project_id );
 		if ( str_word_count( $project_name ) === 2 ) {
 			$name         = explode( ' ', $project_name, 2 );
 			$rest         = ltrim( $project_name, $name[0] . ' ' );
 			$project_name = $name[0] . '<br />' . $name[1];
 		}
-		$output .= wp_sprintf( '<figure data-project-id="%d" class="card">', $project_id );
+		if ( 'array' === gettype( $signtypes ) ) {
+			$signterms = [];
+			foreach ( $signtypes as $term ) {
+				$signterms[] = get_term( $term )->slug;
+			}
+		}
+		if ( 'array' === gettype( $industries ) ) {
+			$industryterms = [];
+			foreach ( $industries as $term ) {
+				$industryterms[] = get_term( $term )->slug;
+			}
+		}
+		if ( 'array' === gettype( $expertise ) ) {
+			$expertiseterms = [];
+			foreach ( $expertise as $term ) {
+				$expertiseterms[] = get_term( $term )->slug;
+			}
+		}
+
+		$allterms = array_merge( $signterms, $industryterms, $expertiseterms );
+
+		$output  = '';
+		$output .= wp_sprintf( '<figure data-tags="%s" data-project-id="%d" class="card secondary-project-card">', join( ' ', $allterms ), $project_id );
+		$output .= wp_sprintf( '<a href="%s">', $link );
 		$output .= wp_sprintf( '<img src="%s">', $featured ?? wp_get_attachment_image_src( 761, 'medium' )[0] );
 		$output .= wp_sprintf( '<div data-project-id="%d" class="overlay"></div>', $project_id );
 		$output .= wp_sprintf( '<figcaption data-project-id="%d">', $project_id );
 		$output .= wp_sprintf( '<h3>%s</h3>', $project_name );
 		$output .= wp_sprintf( '<span>%s</span>', $tease );
 		$output .= '</figcaption><!-- end div.card-->';
+		$output .= '</a>';
 		$output .= '</figure><!-- end div.card-->';
 
 		return $output;
 	}
 
+	/**
+	 * Output the menu for the All Project Page.
+	 *
+	 * @param str $taxonomy_slug Either 'signtype', 'industry', or 'expertise'.
+	 */
+	public function make_drilldown_links( $taxonomy_slug ) {
+		$terms = [];
+		foreach ( Taxonomies::get_all_terms_in_taxonomy( $taxonomy_slug, true ) as $term ) {
+			$terms[] = [ $term->name, $term->slug ];
+		}
+		return $terms;
+	}
 
 	/**
 	 * Create the extra fields for the post type.

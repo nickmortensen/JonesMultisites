@@ -12,13 +12,13 @@
 namespace WP_Rig\WP_Rig;
 
 global $blog_id;
-global $locations;
 $fp_photos = [ 661, 662 ];
 
 $bgsrcs = [];
 foreach ( $fp_photos as $header_photo ) {
 	$bgsrcs[] = wp_get_attachment_image_src( 662, 'medium_large' )[0];
 }
+$locations = wp_rig()->get_location_ids( 75 );
 ?>
 
 
@@ -26,13 +26,13 @@ foreach ( $fp_photos as $header_photo ) {
 		id="colophon"
 		class="site-footer"
 		style="
-			background: center / cover no-repeat url(<?= $bgsrcs[1]; ?>),
-			linear-gradient( var(--blue-900) 20%, var(--gray-900) 60%);
+			background: center / cover no-repeat url(<?= $bgsrcs[1]; ?>), linear-gradient( var(--blue-900) 20%, var(--gray-900) 60%);
 			background-blend-mode: multiply;">
 
-			<div id="location-select">
-				<?php get_template_part( 'template-parts/footer/location', 'select' ); ?>
-			</div><!-- /#location-select -->
+			<div id="explainer">
+				<h2>Jones Sign Company</h2>
+				<h3><?= count( $locations ); ?> Locations across the United States</h3>
+			</div>
 
 			<div id="location-map">
 				<?php get_template_part( 'template-parts/footer/location', 'map' ); ?>
@@ -44,56 +44,39 @@ foreach ( $fp_photos as $header_photo ) {
 
 		</footer><!-- #colophon -->
 
-	</div><!-- div#page-->
 <?php wp_footer(); ?>
+	</div><!-- div#page-->
 
 <script>
 	const show = element => element.style.display = 'flex';
 	const hide = element => element.style.display = 'none';
-	// target the map markers
-	const locationMap    = document.querySelector('.map');
-	const markerInfoDivs = document.querySelectorAll( '.inner' );
 
+// new SelectAlternative( selectToAlter, options );
 
+function showHideLocationInfo(e) {
+	const slug = e.target.dataset.branchMarker;
 
-	// document.querySelector( '#location_addresses' ).innerHTML = eachAddress.join('');
-	let branches = document.querySelectorAll( 'div.single_jones_address' );
+	const addressDivs = document.querySelectorAll( `.single_jones_address` );
+	addressDivs.forEach( location => {
+		if ( location.dataset.slug === slug && ! location.classList.contains( 'address-hidden') ) {
+			return;
+		}
 
+		if ( location.dataset.slug !== slug && ! location.classList.contains( 'address-hidden') ) {
+			location.classList.toggle( 'address-hidden' );
+		}
 
-branches.forEach( branch => {
-	hide( branch );
-	if ( 'nat' === branch.dataset.slug ) show( branch );
-});
+		if ( location.dataset.slug === slug && location.classList.contains( 'address-hidden') ) {
+			location.classList.toggle( 'address-hidden' );
+		}
+	})
 
-const selectToAlter  = document.querySelector( '.location-select-element' );
-// selectToAlter.classList.add( 'skin-boxes')
-const options = {
-	onChange( val ) {
-		console.log( 'value is ', val );
-		const markerInfoDivs = document.querySelectorAll( '.inner' );
-		let branches         = document.querySelectorAll( '.single_jones_address' );
-		let infoBox           = document.querySelector( `[data-location-info="${val}"]` );
-		let target           = document.querySelector('[data-slug="grb"]');
-		branches.forEach( branch => {
-			hide( branch );
-			show(infoBox);
-			if ( branch.dataset.slug === val ) {
-				show( branch );
-			}
-		})
-		markerInfoDivs.forEach( location => {
-			let slug = location.dataset.locationInfo;
-			if (slug !== val && ! location.classList.contains( 'hidden' ) ) {
-				location.classList.add( 'hidden' );
-			}
-			if ( slug === val && location.classList.contains( 'hidden' ) ) {
-				location.classList.remove( 'hidden' );
-			}
-		})
-	}
-};
+}
+const mapMarkers = [...document.querySelectorAll( '.map-markers > li' ) ];
 
-new SelectAlternative( selectToAlter, options );
+mapMarkers.forEach( marker => {
+	marker.addEventListener( 'mouseover', showHideLocationInfo )
+} );
 
 </script>
 

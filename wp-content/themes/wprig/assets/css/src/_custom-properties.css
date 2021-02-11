@@ -50,6 +50,14 @@
 	--fontsize-xl: calc(var(--fontsize-s) * 3);
 	--lineHeight: calc(var(--fontsize-s) * 1.4);
 	--letterSpacing: calc(var(--fontsize-s) * 0.0015);
+
+	--fontsize-xxs: clamp(0.8rem, 2.60vw, 1.10rem);
+	--fontsize-xs: clamp(0.98rem, 2.60vw, 1.30rem);
+	--fontsize-s: clamp(1.30rem, 2.93vw, 1.56rem);
+	--fontsize-m: clamp(1.43rem, 3.58vw, 2.27rem);
+	--fontsize-l: clamp(1.63rem, 3.90vw, 2.60rem);
+	--fontsize-xl: clamp(1.95rem, 4.55vw, 3.25rem);
+	--fontsize-xxl: clamp(2.27rem, 5.20vw, 3.90rem);
 	/*#endregion*/
 
 	/* TAILWIND COLORS */
@@ -238,6 +246,7 @@
 	/* Gradient */
 	--admin-gradient: linear-gradient(45deg, var(--indigo-400) 0%, var(--indigo-600) 50%, var(--indigo-800) 100%);
 	--wesbos-gradient: linear-gradient(110deg, var(--pink-700), var(--indigo-500) );
+	--header-gradient: linear-gradient(110deg, var(--blue-700), var(--indigo-600) );
 
 	/* FRONTPAGE PROJECTS */
 	--cb-color: var(--gray-900);
@@ -279,8 +288,8 @@
 	/* FOOTER */
 	--address-color: var(--gray-900);
 	--address-font-size: 1.1rem;
-	--animation-delay: 2s;
-	--animation-duration: 10s;
+	--animation-delay: 3s;
+	--animation-duration: 6s;
 	--background-color: #0273b9;
 	--footer-text-color: var(--foreground);
 	--link-color: #ce606f;

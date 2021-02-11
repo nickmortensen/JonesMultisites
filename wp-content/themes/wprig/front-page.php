@@ -22,7 +22,7 @@ if ( is_home() ) {
 
 
 		<section id="safetydata">
-			<?php get_template_part( 'template-parts/frontpage/safety' ); ?>
+			<?php// get_template_part( 'template-parts/frontpage/safety' ); ?>
 		</section>
 
 		<section data-scrollto="contact" id="contact-form" class="frontpage">
@@ -32,7 +32,7 @@ if ( is_home() ) {
 			</div>
 		</section>
 
-		<?php get_template_part( 'template-parts/frontpage/project-cards' ); ?>
+		<?php// get_template_part( 'template-parts/frontpage/project-cards' ); ?>
 
 	</main><!-- #primary -->
 

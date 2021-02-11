@@ -4,6 +4,7 @@
 
 header {
 	border-bottom: 9px solid var(--yellow-600);
+	background: var(--header-gradient);
 
 	& #branding,
 	& #connect {
@@ -72,6 +73,7 @@ header {
 	}
 
 	& > .main-navigation {
+		background: var(--green-600);
 		justify-content: flex-end;
 		align-items: flex-end;
 	}
@@ -90,7 +92,6 @@ header {
 	display: inline-block;
 	margin: 0 auto 1em;
 }
-
 
 .site-title {
 	margin: 0 auto;
@@ -118,235 +119,85 @@ header {
 }
 
 /*--------------------------------------------------------------
-## Basic navigation menus - handles submenu and small screen toggle
+## HEADER MENU
 --------------------------------------------------------------*/
-.nav--toggle-small {
-	font-family: var(--highlight-font-family);
 
-	& .menu-toggle {
-		color: var(--foreground);
-		display: block;
-		padding: 8px;
-		font-stretch: condensed;
-		font-size: var(--fontsize-l);
-		text-transform: uppercase;
-		border: 2px solid var(--foreground);
-		border-radius: 0;
-		width: 40vw;
-		margin: 0 auto;
-		background: transparent;
-	}
+nav#site-navigation {
+	--flex-flow: column nowrap;
+	--justify-content: center;
+	--align-items: flex-start;
+	--color-link: var(--foreground);
+	--color-link-visited: var(--color-link);
+	--color-link-active: var(--color-link);
 
-	& .menu { display: none; }
-
-}/* /nav--toggle-small */
-
-.primary-menu-container { display: none; }
-
-@media screen and (width > 768px ) {
-	.primary-menu-container { display: flex; }
-}
-
-.nav--toggled-on > .primary-menu-container {
-	transform: translateY(0) translateX(35%);
-	transition: transform 0.5s var(--transition-timing-function);
-}
-
-.nav--toggle-sub .dropdown,
-.nav--toggle-sub .dropdown-toggle { display: none; }
-
-/* Styles only appear on screens smaller than 525px */
-
-@media screen and (width < 769px) {
-
-	.nav--toggle-small.nav--toggled-on .menu { display: block; }
-}
-
-@media screen and (width > 768px) {
-
-	.nav--toggle-small .menu-toggle { display: none; }
-
-	.nav--toggle-small .menu { display: block; }
-
-	.nav--toggle-sub ul ul {
-		display: none;
-		position: absolute;
-		top: 100%;
-		flex-direction: column;
-		background: #fff;
-		margin-left: 0;
-		box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-		z-index: 1;
-	}
-
-	.nav--toggle-sub .dropdown,
-	.nav--toggle-sub .dropdown-toggle {
-		display: block;
-		background: transparent;
-		position: absolute;
-		right: 0;
-		top: 50%;
-		width: var(--dropdown-symbol-width);
-		height: var(--dropdown-symbol-width);
-		font-size: inherit;
-		line-height: inherit;
-		margin: 0;
-		padding: 0;
-		border: none;
-		border-radius: 0;
-		transform: translateY(-50%);
-		overflow: visible;
-	}
-
-	.nav--toggle-sub .dropdown-symbol {
-		display: block;
-		background: transparent;
-		position: absolute;
-		right: 20%;
-		top: 35%;
-		width: 60%;
-		height: 60%;
-		border: solid #000;
-		border-width: 0 2px 2px 0;
-		transform: translateY(-50%) rotate(45deg);
-	}
-
-	.nav--toggle-sub ul ul .dropdown,
-	.nav--toggle-sub ul ul .dropdown-toggle {
-		top: 40%;
-		right: 0.2em;
-	}
-
-	.nav--toggle-sub ul ul .dropdown-symbol {
-		transform: rotate(-45deg);
-	}
-
-	.nav--toggle-sub .dropdown-toggle:hover,
-	.nav--toggle-sub .menu-item--has-toggle:hover .dropdown-toggle {
-		pointer-events: none;
-	}
-
-	/* Need menu-item-has-children for non-JS */
-	.nav--toggle-sub li.menu-item-has-children,
-	.nav--toggle-sub li.menu-item--has-toggle {
-		position: relative;
-		padding-right: var(--dropdown-symbol-width);
-	}
-
-	/*
-	 * If the dropdown toggle is active with JS, then
-	 * we'll take care of showing the submenu with JS.
-	 */
-	.nav--toggle-sub li:hover > ul,
-	.nav--toggle-sub li.menu-item--toggled-on > ul,
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus > ul { display: block; }
-
-	/*
-	 * "focus-within" is an alternative to focus class for
-	 * supporting browsers (all but IE/Edge) for no-JS context
-	 * (e.g. AMP) See https://caniuse.com/#feat=css-focus-within
-	 *
-	 * This selector needs to stay separated, otherwise submenus
-	 * will not be displayed with IE/Edge.
-	 */
-	.nav--toggle-sub li:not(.menu-item--has-toggle):focus-within > ul { display: block; }
-
-}
-
-/*--------------------------------------------------------------
-## Main navigation menu
---------------------------------------------------------------*/
-.main-navigation {
-	grid-column: 1 / -1;
+	grid-area: headermenu;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding: 0 1em;
-	font-family: var(--highlight-font-family);
-}
+	flex-flow: var(--flex-flow);
+	justify-content: flex-end;
 
-@media screen and (width > 768px ) {
-	.main-navigation {
-		padding: 1em;
-		grid-column-start: 5;
-		grid-column-end: 13;
-	}
-}
-
-.main-navigation a {
-	text-decoration: none;
-	color: #000;
-}
-
-.main-navigation a:hover,
-.main-navigation a:focus {
-	text-decoration: underline;
-}
-
-.main-navigation ul {
-	display: block;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-@media screen and (width > 768px) {
-	.main-navigation ul {
-		color: inherit;
-	}
-}
-
-.main-navigation a {
-	display: block;
-
-	padding: 0.5em 1em 0.5em 0;
-	text-decoration: none;
-	color: var(--gray-800);
-}
-
-.main-navigation a:hover,
-.main-navigation a:focus { text-decoration: underline; }
-
-.main-navigation ul {
-	display: block;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.main-navigation ul ul li { padding-left: 1em; }
-
-@media (--wide-menu-query) {
-
-	.main-navigation ul li a { padding: 0.4em 0.5em; }
-
-	.main-navigation ul li { margin: 0 0 0 0.5em; }
-
-	.main-navigation ul li:first-child { margin-left: 0; }
-
-	.main-navigation ul ul a { width: 200px; }
-
-	/* stylelint-disable */
-	.main-navigation ul ul li {
-		padding-left: 0;
-		margin-left: 0;
-	}
-	/* stylelint-enable */
-
-	.main-navigation ul ul li a {
-		width: 218px;
-		background: none;
-	}
-
-	.main-navigation ul ul ul {
-		top: 0;
-		left: 100%;
-		min-height: 100%;
-	}
-
-	.main-navigation .menu {
+	& > ul {
+		width: 100%;
+		list-style: none;
 		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
+		flex-flow: var(--flex-flow);
+		justify-content: var(--justify-content);
+		align-items: var(--align-items);
+		padding-right: 1vw;
+
+		& li {
+			padding-right: 0.85vw;
+		}
 	}
+
+	& .menu-item > a {
+		margin-right: 0.5vw;
+		color: var(--color-link);
+		font-family: var(--highlight-font-family);
+		font-size: var(--fontsize-xs);
+		font-weight: var(--semibold);
+
+		&:focus,
+		&:hover,
+		&:active {
+			color: var(--color-link-active);
+		}
+
+		&:visited {
+			color: var(--color-link-visited);
+		}
+
+
+	}
+}
+
+/* greater than 37.5em or 525px */
+
+@media screen and (width > 525px) {
+	nav#site-navigation {
+		--justify-content: flex-end;
+		--flex-flow: row wrap;
+		--align-items: center;
+
+	}
+}
+
+/* \@media screen and (width > 525px) */
+
+/*-----------------------------------------------------------------
+### Only appears on development - gives update of width
+------------------------------------------------------------------*/
+#devScreenWidth {
+	position: fixed;
+	top: 85%;
+	left: 90%;
+	z-index: 1211;
+	line-height: 2;
+	font-size: clamp(18px, 2vw, 28px);
+	font-weight: 900;
+	color: var(--background);
+	background: var(--yellow-600);
+	border-radius: 50%;
+	padding: clamp(14px, 2.5vw, 22px);
+	box-shadow: 3px 3px 6px 3px var(--gray-500);
+	mix-blend-mode: difference;
 }
