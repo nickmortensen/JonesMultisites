@@ -1,0 +1,334 @@
+/* ================================
+	convert to postcss
+===================================*/
+
+/**
+ * Contact Form
+ */
+
+@media screen and (max-width: 799px) {
+	#contact {
+		--grid-area: maincontact;
+		--register-width: 70vw;
+		--contact-area-height: 580px;
+		--incorrect: var(--red-700);
+		--items-width: 100%;
+		--previous-width: var(--items-width);
+		--next-width: var(--items-width);
+		--input-container-width: var(--items-width);
+		--previous-button-height: 30px;
+		--input-container-height: 150px;
+		--error-text-height: 40px;
+		--register-width: 90vw;
+		--register-width-transition: width 0.3s ease-in;
+	}
+}
+@media screen and (min-width: 800px) {
+	#contact {
+		--contact-area-height: 580px;
+		--grid-area: maincontact;
+		--register-width: 50vw;
+		--register-div-height: 160px;
+		--register-width-transition: width 0.6s var(--transition-timing-function);
+	}
+}
+
+#contact {
+	--progress-transition-function: cubic-bezier(0, 1.35, 0.47, 1.11);
+	--lightest: var(--foreground);
+	--contact-area-height: 580px;
+	--icbg: var(--indigo-200);
+	--section-bg: var(--color-theme-primary);
+	--progress-bg: var(--blue-800);
+	--icon-hover-color: var(--progress-bg);
+	--forward-hover-bg: var(--progress-bg);
+	--section-height: 580px;
+	--form-background: var(--foreground);
+	--single-field-width: clamp(380px, 75vw, 900px);
+	--input-text-size: clamp(12px, 2vw, 32px);
+	--container-left-padding: 30px;
+	--box-shadow:
+		0 16px 24px 2px rgba(0, 0, 0, 0.14),
+		0 6px 30px 5px rgba(0, 0, 0, 0.12),
+		0 8px 10px -5px rgba(0, 0, 0, 0.3);
+	--general-color: var(--color-theme-primary);
+	--input-field-height: 250px;
+	--icon-color: var(--gray-400);
+	--incorrect: var(--red-700);
+	--global-line-height: 1;
+}
+
+.contact-form-style1 {
+	grid-area: maincontact;
+	overflow-x: hidden;
+	background: var(--section-bg);
+	position: relative;
+	height: var(--section-height);
+	z-index: 1;
+
+	& h1 {
+		position: relative;
+		color: var(--foreground);
+		opacity: 0;
+		transition: 0.8s ease-in-out;
+	}
+
+	& #progress {
+		z-index: 1;
+		position: absolute;
+		left: 0;
+		min-height: 100%;
+		width: 0;
+		background: var(--progress-bg);
+		transition: width 0.3s var(--progress-transition-function);
+	} /* \#progress */
+
+	& div.center {
+		position: relative;
+		z-index: 2;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		& div#register {
+			background: var(--foreground);
+			position: relative;
+			width: var(--register-width);
+			height: 100px;
+			box-shadow: var(--box-shadow);
+			transition: transform 0.1s ease-in-out;
+
+			&.close {
+				width: 0;
+				padding: 0;
+				overflow: hidden;
+				transition: 0.8s ease-in-out;
+				box-shadow: 0 16px 24px rgba(0, 0, 0, 0);
+			}
+
+			&.close #forwardButton,
+			&.close #previousButton {
+				color: var(--foreground);
+			}
+
+			& #previousButton,
+			& #forwardButton {
+				color: var(--global-font-color);
+				position: absolute;
+				cursor: pointer;
+				float: right;
+				font-size: 40px;
+				z-index: 4;
+
+				&:hover {
+					color: var(--icon-hover-color);
+				}
+			}
+
+			& #forwardButton {
+				right: 20px;
+				bottom: 5px;
+			}
+
+			& #previousButton {
+				font-size: 18px;
+				left: 30px;
+				top: 12px;
+			}
+
+			&.wrong #forwardButton { color: var(--incorrect); }
+
+			&.wrong div#inputContainer > #inputProgress {
+				--progress-border-color: var(--incorrect);
+				color: var(--incorrect);
+				font-size: 12px;
+			}
+
+			& div#inputContainer {
+				position: relative;
+				padding: 12px 20px 20px 20px;
+				margin: 5px 60px 10px 10px;
+				opacity: 0;
+				transition: opacity 0.3s ease-in-out;
+
+				& input {
+					position: relative;
+					width: 100%;
+					border: none;
+					font-size: 20px;
+					font-weight: var(--bold);
+					outline: 0;
+					background: transparent;
+					box-shadow: none;
+					border-radius: 0;
+					padding: 0 0 0 0;
+					top: 8px;
+				}
+
+				& > #inputLabel {
+					position: absolute;
+					pointer-events: none;
+					top: 34px;
+					left: 20px;
+					font-size: 20px;
+					font-weight: var(--bold);
+					transition: all 0.2s ease-in-out;
+				}
+
+				& input:valid + #inputLabel {
+					top: 8px;
+					left: 42px;
+					margin-left: 0 !important;
+					font-size: 12px;
+					font-weight: var(--lightest);
+					color: var(--gray-400);
+				}
+
+				& > #inputProgress {
+					border-top: 3px solid #0273b9;
+					border-top: 3px solid var(--section-bg);
+					width: 0;
+					transition: width 1.6 ease-in-out;
+					font-size: 0;
+					text-align: right;
+					font-style: italic;
+					color: transparent;
+				} /* \ #inputProgress */
+
+			}/* \div#inputContainer */
+
+		} /* \#register */
+	} /* \div.center */
+
+} /* \#contact */
+
+
+.close-acknowledgement {
+	text-decoration: none;
+	font-size: var(--fontsize-xl);
+	position: absolute;
+	right: 50%;
+	top: 140px;
+	transition: all 0.3s var(--reverse-timing-function);
+	transform-origin: center center;
+	text-shadow: none;
+
+	&:hover,
+	&:focus {
+		color: var(--foreground);
+		transform: scale(1.2) rotateZ(210deg);
+		transition: all 0.9s var(--transition-timing-function);
+	}
+
+	&:active {
+		text-shadow: 2px 1px 3px var(--foreground);
+	}
+} /* .close-acknowledgement */
+
+
+h1.acknowledgement {
+	font-size: clamp(28px, 4vmin, 60px);
+}
+
+
+#closeContactArea {
+	color: var(--foreground);
+	align-self: flex-start;
+}
+
+/* END CONTACT postcss */
+
+/* ================================
+	.contact-form-style2;
+===================================*/
+
+.contact-form-style2 {
+	overflow-x: hidden;
+	background: var(--color-theme-primary);
+	font-family: var(--font-stack);
+	height: var(--section-height);
+
+	& #progress {
+		position: absolute;
+		z-index: 1;
+		background: var(--progress-bg);
+		min-height: 100%;
+		left: 0;
+		width: 0;
+		transition: width 0.3s var(--progress-transition-function);
+	} /*  \#progress */
+
+	& .center {
+		position: absolute;
+		z-index: 2;
+
+		& #register {
+			background: var(--foreground);
+			box-shadow: var(--box-shadow);
+			height: 140px;
+			width: 50vw;
+			min-width: 400px;
+
+			& #inputContainer {
+				height: 100%;
+				display: grid;
+
+				grid-template-columns: 10% 1fr 60px;
+				grid-template-rows: 1fr 5fr 3fr;
+				grid-template-areas:
+					"inputgap inputback inputforward"
+					"inputgap inputlabel inputforward"
+					"inputgap inputprogress inputforward";
+			}
+
+			& #previousButton,
+			& #forwardButton {
+				color: var(--icon-color);
+				&:hover {
+					color: inherit;
+				}
+
+				&:focus {
+					color: inherit;
+				}
+
+				&:active {
+					color: inherit;
+				}
+			}
+
+			& #previousButton {
+				grid-area: inputback;
+			}
+
+			& #forwardButton {
+				grid-area: inputforward;
+			}
+
+			&.close {
+
+				& #previousButton,
+				& #forwardButton {
+					color: inherit;
+				}
+			}
+
+			&.wrong {
+				--icon-color: var(--incorrect);
+
+				& #previousButton,
+				& #forwardButton {
+					color: var(--icon-color);
+				}
+
+				& #forwardButton {
+					color: inherit;
+				}
+			}
+
+		}
+	} /*  \.center */
+
+
+} /* \.contact-form-style2  */
