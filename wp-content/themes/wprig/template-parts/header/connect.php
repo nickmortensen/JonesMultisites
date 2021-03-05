@@ -8,6 +8,7 @@
 namespace WP_Rig\WP_Rig;
 
 /*
+ * NOT ENTIRELY SURE.
 if ( ! has_header_image() ) {
 	return;
 }

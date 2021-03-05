@@ -13,10 +13,19 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
+<footer data-gridarea="footer">
 
-		<footer> </footer>
+	<div data-gridarea="footerbottom" class="copyright">
+		<div>
+			<span style="width: 40px;"><?= wp_rig()->get_jones_icon(); ?></span>
+			<span> <?= wp_rig()->get_copyright_notice(); ?> </span>
+		</div>
+	</div>
 
-	</div><!-- div#page-->
+
+</footer>
+
+
 <?php wp_footer(); ?>
 
 

@@ -19,13 +19,7 @@ import { pipeline } from 'mississippi';
  * Internal dependencies
  */
 import { rootPath, paths, gulpPlugins, isProd } from './constants';
-import {
-	getThemeConfig,
-	getStringReplacementTasks,
-	logError,
-	configValueDefined,
-	appendBaseToFilePathArray,
-} from './utils';
+import { getThemeConfig, getStringReplacementTasks, logError, configValueDefined, appendBaseToFilePathArray } from './utils';
 import { server } from './browserSync';
 
 export function stylesBeforeReplacementStream() {
@@ -38,8 +32,8 @@ export function stylesBeforeReplacementStream() {
 			extra: [ paths.config.themeConfig ],
 		} ),
 		gulpPlugins.phpcs( {
-			bin: `${ rootPath }/vendor/bin/phpcs`,
-			standard: 'WordPress',
+			bin: `/Users/nickmortensen/.composer/vendor/bin/phpcs`,
+			standard: `/Users/nickmortensen/utilities/mortensen`,
 			warningSeverity: 0,
 		} ),
 		// Log all problems that were found.
@@ -51,7 +45,7 @@ export function stylesAfterReplacementStream() {
 	const config = getThemeConfig();
 
 	const postcssPlugins = [
-		stylelint(),
+		// stylelint(),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
@@ -72,23 +66,16 @@ export function stylesAfterReplacementStream() {
 				configValueDefined( 'config.dev.styles.features' ) ?
 					config.dev.styles.features :
 					{
-						'custom-media-queries': {
-							preserve: false,
-						},
-						'custom-properties': {
-							preserve: false,
-						},
-						'custom-selectors': {
-							preserve: false,
-						},
+						'custom-media-queries': { preserve: false },
+						'custom-properties': { preserve: false },
+						'custom-selectors': { preserve: false },
 						'nesting-rules': true,
 					}
 			),
 		} ),
-		require('postcss-for'),
-		calc( {
-			preserve: false,
-		} ),
+		// require('postcss-for'),
+		postCssFor(),
+		calc( { preserve: false } ),
 		cssnano(),
 	];
 
@@ -110,7 +97,7 @@ export function stylesAfterReplacementStream() {
 			AtImport( {
 				path: [ paths.styles.srcDir ],
 				plugins: [
-					stylelint(),
+					// stylelint(),
 				],
 			} ),
 		] ),

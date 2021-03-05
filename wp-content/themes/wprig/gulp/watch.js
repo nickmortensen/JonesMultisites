@@ -28,7 +28,7 @@ export default function watch() {
 	 * valid for Windows paths in a NodeJS context.
 	 */
 	const PHPwatcher = gulpWatch( backslashToForwardSlash( paths.php.src ), reload );
-	const config = getThemeConfig();
+	const config     = getThemeConfig();
 
 	// Only code sniff PHP files if the debug setting is true
 	if ( config.dev.debug.phpcs ) {
@@ -44,6 +44,11 @@ export default function watch() {
 	}
 
 	gulpWatch( backslashToForwardSlash( paths.styles.src[ 0 ] ), series( styles, editorStyles ) );
+
+	gulpWatch( backslashToForwardSlash( paths.styles.src[ 3 ] ), reload );
+
+	gulpWatch( backslashToForwardSlash( paths.styles.src[ 4 ] ), reload );
+
 
 	gulpWatch( backslashToForwardSlash( paths.scripts.src[ 0 ] ), series( scripts, reload ) );
 

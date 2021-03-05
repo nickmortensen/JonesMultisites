@@ -1,12 +1,3 @@
-#company-info {
-	grid-area: about;
-}
-
-.frontpage {
-
+#footer {
 	color: inherit;
-
-	& > h2 {
-		place-self: center;
-	}
 }

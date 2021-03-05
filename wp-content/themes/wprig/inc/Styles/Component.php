@@ -88,7 +88,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'init', [ $this, 'disable_the_goddamned_emoji' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_jonessign_style' ], 9 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ], 10 );
-		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 40 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 12 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_style_overrides' ], 15 );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
 		add_filter( 'wp_resource_hints', [ $this, 'filter_resource_hints' ], 10, 2 );
@@ -311,6 +312,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'   => 'side_hamburger_menu.min.css',
 				'global' => true,
 			],
+			'wp-rig-contact-form'   => [
+				'file'             => 'contact.min.css',
+				'preload_callback' => '__return_true',
+			],
 			'wp-rig-comments'       => [
 				'file'             => 'comments.min.css',
 				'preload_callback' => function() {
@@ -341,6 +346,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'preload_callback' => function() {
 					global $template;
 					return 'project' === get_post_type() && 'single-project.php' === basename( $template ) || 'front-page.php' === basename( $template );
+				},
+			],
+			// Preload only in the development environment.
+			'wp-rig-developer'      => [
+				'file'             => 'developer.min.css',
+				'preload_callback' => function() {
+					return 'development' === ENVIRONMENT;
 				},
 			],
 		];
@@ -558,5 +570,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$fileurl  = get_theme_file_uri( '/style.min.css' ); // outputs a path --needed for asset version.
 		$version  = wp_rig()->get_asset_version( $filepath );
 		wp_enqueue_style( $handle, $fileurl, [], $version, 'all' );
+	}
+
+	/**
+	 * Add Overrides CSS to the frontend of the site.
+	 *
+	 * @see Use admin_enqueue_scripts hook.
+	 */
+	public function add_style_overrides() {
+		$handle       = 'overrides';
+		$filepath     = get_theme_file_path( '/overrides.min.css' );
+		$fileurl      = get_theme_file_uri( '/overrides.min.css' );
+		$dependencies = [ 'baseline'];
+		$version      = wp_rig()->get_asset_version( $filepath );
+		wp_enqueue_style( $handle, $fileurl, $dependencies, $version, 'all' );
 	}
 }

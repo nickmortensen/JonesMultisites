@@ -37,7 +37,6 @@ export function serve( done ) {
 		port: config.dev.browserSync.bypassPort,
 		liveReload: true,
 		https: false,
-		ws: true,
 	};
 
 	// Only setup HTTPS certificates if HTTPS is enabled
@@ -76,6 +75,7 @@ export function serve( done ) {
 
 	// Start the BrowserSync server
 	server.init( serverConfig );
+	log( colors.red( `Starting Browsersync` ) );
 
 	done();
 }
@@ -88,10 +88,10 @@ export function reload( done ) {
 		if ( server.paused ) {
 			server.resume();
 		}
+		log( colors.red( `Reloading Browsersync` ) );
 		server.reload();
 	} else {
 		server.pause();
 	}
-
 	done();
 }

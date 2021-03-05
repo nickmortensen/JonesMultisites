@@ -1,31 +1,108 @@
 
-#joneslocations {
+@media screen and (min-width: 700px) {
+	:root {
+		--facilities-section-height: 380px;
+		--pin-size: var(--fontsize-s);
+
+		--grb-left: 61%;
+		--grb-top: 15%;
+
+		--msp-left: 52%;
+		--msp-top: 13%;
+
+		--tpa-left: 79%;
+		--tpa-top: 80%;
+
+		--mia-left: 82%;
+		--mia-top: 83%;
+
+		--rno-left: 5%;
+		--rno-top: 32%;
+
+		--las-left: 12%;
+		--las-top: 45%;
+
+		--phl-left: 86%;
+		--phl-top: 35%;
+
+		--lax-left: 6%;
+		--lax-top: 50%;
+
+		--san-left: 8%;
+		--san-top: 58%;
+
+		--mxt-left: 14%;
+		--mxt-top: 61%;
+
+		--mxz-left: 27%;
+		--mxz-top: 63%;
+
+		--ric-left: 84%;
+		--ric-top: 40%;
+
+		--vab-left: 88%;
+		--vab-top: 43%;
+	}
+}
+@media screen and (max-width: 699px) {
+	:root {
+
+		--pin-size: var(--fontsize-xs);
+		--grb-left: 63%;
+		--grb-top: 17%;
+		--msp-left: 53%;
+		--msp-top: 14%;
+		--tpa-left: 79%;
+		--tpa-top: 82%;
+		--mia-left: 84%;
+		--mia-top: 86%;
+		--rno-left: 5%;
+		--rno-top: 32%;
+		--las-left: 12%;
+		--las-top: 47%;
+		--phl-left: 86%;
+		--phl-top: 35%;
+		--lax-left: 6%;
+		--lax-top: 53%;
+		--san-left: 9%;
+		--san-top: 60%;
+		--mxt-left: 11%;
+		--mxt-top: 63%;
+		--mxz-left: 27%;
+		--mxz-top: 67%;
+		--ric-left: 84%;
+		--ric-top: 40%;
+		--vab-left: 88%;
+		--vab-top: 43%;
+	}
+}
+
+#jones-facility-locations {
+	--locations-height: 440px;
+	--facilities-section-grid-layout:
+		"facilities_header"
+		"facilities_map"
+		"facilities_information";
 	--locations-background: var(--gray-200);
 	--map-m-top: 0;
 	--location-pins-color: var(--yellow-600);
-
-	background: var(--locations-background);
-	place-self: center center;
+	--perforated: true;
+	background: var(--blue-gradient);
 	width: 100%;
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-
-	& #map-container {
-		display: flex;
-		justify-content: flex-start;
-		align-items: flex-start;
-	}
+	height: var(--locations-height);
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 40px, 600px, 40px;
+	grid-template-areas: var(--facilities-section-grid-layout);
 
 	& svg#usa {
 		height: auto;
 		max-width: var(--map-max-width);
-
 	}
 
 	& .state {
-		fill: var(--state-fill);
-		stroke: var(--state-stroke);
+		fill: var(--blue-800);
+		stroke: var(--gray-400);
 		stroke-width: var(--state-stroke-width);
 	}
 
@@ -36,9 +113,7 @@
 	}
 }
 
-.locationpins {
-	--marker-left: 64.5%;
-	--marker-top: 22%;
+.jones_facility_pins {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -48,15 +123,15 @@
 	min-height: 100%;
 	min-width: 100%;
 	transform-origin: bottom center;
-	transform: translate(-1%, -3%);
 
-	& > a.material-icons {
+	& > .material-icons {
 		position: absolute;
 		color: var(--location-pins-color);
-		transform-origin: bottom center;
-		transform: scale(1.6);
-		transition: all 0.2s var(--reverse-timing-function);
-		-webkit-text-stroke: 1px var(--yellow-700);
+		transform-origin: center bottom;
+		font-size: var(--pin-size);
+		transition: all 1.2s 1s var(--reverse-timing-function);
+		-webkit-text-stroke: 1px var(--gray-500);
+		will-change: transform;
 
 		&:visited {
 			color: var(--location-pins-color:);
@@ -65,29 +140,30 @@
 
 		&:active {
 			color: var(--background);
+			transform: scale(2.3);
 		}
 
-		&:hover {
-			transform: scale(2.9);
-			transition: all 0.2s var(--transition-timing-function);
+		&:hover,
+		&:focus {
+			transform: scale(2.3);
+			transition: all 0.4s var(--transition-timing-function);
+			outline: unset;
 		}
 	}
 
 	& .grb,
 	& .nat {
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--grb-left);
+		top: var(--grb-top);
 		&::after {
 			animation-delay: var(--animation-delay);
 		}
 	}
 
 	& .msp {
-		--marker-left: 55%;
-		--marker-top: 20%;
 		--animation-delay: 2.5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--msp-left);
+		top: var(--msp-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -95,11 +171,9 @@
 	}
 
 	& .tpa {
-		--marker-left: 79%;
-		--marker-top: 86%;
 		--animation-delay: 3s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--tpa-left);
+		top: var(--tpa-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -107,11 +181,9 @@
 	}
 
 	& .mia {
-		--marker-left: 85%;
-		--marker-top: 91%;
 		--animation-delay: 3.5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--mia-left);
+		top: var(--mia-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -119,11 +191,9 @@
 	}
 
 	& .rno {
-		--marker-left: 7%;
-		--marker-top: 36%;
 		--animation-delay: 4s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--rno-left);
+		top: var(--rno-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -131,11 +201,9 @@
 	}
 
 	& .las {
-		--marker-left: 14%;
-		--marker-top: 54%;
 		--animation-delay: 4.5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--las-left);
+		top: var(--las-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -143,11 +211,9 @@
 	}
 
 	& .phl {
-		--marker-left: 89%;
-		--marker-top: 35%;
 		--animation-delay: 5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--phl-left);
+		top: var(--phl-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -155,11 +221,9 @@
 	}
 
 	& .lax {
-		--marker-left: 8%;
-		--marker-top: 56%;
 		--animation-delay: 5.5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--lax-left);
+		top: var(--lax-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -167,11 +231,9 @@
 	}
 
 	& .san {
-		--marker-left: 9%;
-		--marker-top: 62%;
 		--animation-delay: 6s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--san-left);
+		top: var(--san-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -179,11 +241,9 @@
 	}
 
 	& .mxt {
-		--marker-left: 11%;
-		--marker-top: 64%;
 		--animation-delay: 6.5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--mxt-left);
+		top: var(--mxt-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -191,11 +251,9 @@
 	}
 
 	& .mxz {
-		--marker-left: 29%;
-		--marker-top: 72%;
 		--animation-delay: 7s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--mxz-left);
+		top: var(--mxz-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -203,11 +261,9 @@
 	}
 
 	& .ric {
-		--marker-left: 84%;
-		--marker-top: 45%;
 		--animation-delay: 7.5s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--ric-left);
+		top: var(--ric-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -215,11 +271,9 @@
 	}
 
 	& .vab {
-		--marker-left: 88%;
-		--marker-top: 48%;
 		--animation-delay: 8s;
-		left: var(--marker-left);
-		top: var(--marker-top);
+		left: var(--vab-left);
+		top: var(--vab-top);
 
 		&::after {
 			animation-delay: var(--animation-delay);
@@ -228,21 +282,52 @@
 
 }/* /.map-markers */
 
+.facilities_map {
+	grid-area: facilities_map;
+	place-self: center center;
+}
 
-#jones-locations-listed {
-	position: relative;
-	height: 100%;
+.facilities_information {
+	grid-area: facilities_information;
+
 	width: 100%;
-
-	background: var(--yellow-600);
-
-	& > div {
-		position: absolute;
-		top: 0;
-		min-height: 1400%;
-		display: flex;
-	}
-
+	height: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-around;
+	align-items: center;
 
 }
 
+.facilities_header {
+	place-self: center center;
+	grid-area: facilities_header;
+	color: var(--foreground);
+}
+
+
+#single-facility-information {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: center;
+	align-content: flex-end;
+	width: 100%;
+
+	&.remove {
+		display: none;
+	}
+
+	& > a {
+		font-size: var(--fontsize-xl);
+		color: var(--foreground);
+
+		&:hover,
+		&:focus,
+		&:visited,
+		&:active {
+			color: var(--foreground);
+		}
+	}
+
+}

@@ -1,8 +1,8 @@
 {
 	"rules": {
 		"at-rule-empty-line-before": [ "always", {
-				"except": [ "after-same-name", "first-nested" ],
-				"ignore": [ "after-comment", "blockless-after-same-name-blockless", "inside-block" ]
+				"except": [ "after-same-name", "blockless-after-blockless", "blockless-after-same-name-blockless", "first-nested" ],
+				"ignore": [ "after-comment", "inside-block", "blockless-after-same-name-blockless" ]
 			} ],
 		"at-rule-name-case": "lower",
 		"at-rule-name-space-after": "always-single-line",

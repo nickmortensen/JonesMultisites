@@ -7,18 +7,22 @@
 
 namespace WP_Rig\WP_Rig;
 
-
 ?>
 
 <?php
 	$titletext = 'Go to the Jones Sign Company Homepage';
-if ( is_home() ) {
-	$titletext = 'You are on the Jones Sign Homepage';
-}
+	if ( is_home() ) {
+		$titletext = 'You are on the Jones Sign Homepage';
+	}
+$attributes = [
+	'logo'       => 'sign',
+	'background' => '#e6e6e6',
+	'foreground' => '#0273b9',
+];
 
 ?>
-<div id="branding">
-	<a href="<?= esc_url( home_url() ); ?>" title="<?= $titletext; ?>">
-		<img src="<?= get_theme_file_uri( '/assets/images/jonessign_circular_symbol.png' ); ?>" alt="jones sign company" />
-	</a>
+<div id="branding" class="logo_container">
+<a href="<?= esc_url( home_url() ); ?>" title="<?= $titletext; ?>">
+<?= wp_rig()->get_jones_icon( $attributes ); ?>
+</a>
 </div><!-- .site-branding -->

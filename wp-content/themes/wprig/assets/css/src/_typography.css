@@ -1,6 +1,60 @@
+/* ================================
+	#4 @import "_reset.css";
+===================================*/
+/*
+CSS normalization based in part on normalize.css by
+Nicolas Gallagher and Jonathan Neal http://necolas.github.io/normalize.css/
+*/
+
 /*--------------------------------------------------------------
-# Typography
+# Normalize
 --------------------------------------------------------------*/
+
+/* Sections
+	========================================================================== */
+
+link { display: none; }
+
+h1 {
+	font-size: 2em;
+	margin: 0.67em 0;
+}
+
+abbr[title] {
+	border-bottom: none; /* 1 */
+	text-decoration: underline; /* 2 */
+	text-decoration: underline dotted; /* 2 */  /* phpcs:ignore */
+}
+
+b,
+strong { font-weight: bolder; }
+
+samp {
+	font-family: monospace; /* 1 */
+	font-size: 1em; /* 2 */
+}
+
+small { font-size: 80%; }
+
+sub,
+sup {
+	font-size: var(--fontsize-xxs);
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+
+sub { bottom: -0.25em; }
+
+sup { top: -0.5em; }
+
+details { display: block; }
+
+summary { display: list-item; }
+
+/* ================================
+	#5 @import "_typography.css";
+===================================*/
 
 body,
 button,
@@ -47,9 +101,7 @@ span {
 dfn,
 cite,
 em,
-i {
-	font-style: italic;
-}
+i { font-style: italic; }
 
 blockquote,
 q {
@@ -83,18 +135,50 @@ blockquote cite {
 	font-style: normal;
 }
 
-address {
-	margin: 0 0 0.25em;
+address { margin: 0 0 0.25em; }
+
+/**
+ * 1. Add the correct box sizing in Firefox.
+ * 2. Show the overflow in Edge and IE.
+ */
+hr {
+	background-color: var(--hr-color);
+	border: 0;
+	height: 1px;
+	margin-bottom: 1.5em;
+	box-sizing: content-box; /* 1 */
+	overflow: visible; /* 2 */
 }
+
+ul,
+ol { margin: 0 0 1.5em 3em; }
+
+ul {
+	list-style: disc;
+	padding: 0 1.5em;
+}
+
+ol { list-style: decimal; }
+
+li > ul,
+li > ol {
+	margin-bottom: 0;
+	margin-left: 1.5em;
+}
+
+dt { font-weight: var(--bold); }
+
+dd { margin: 0 1.5em 1.5em; }
 
 /*--------------------------------------------------------------
 # PRE
 --------------------------------------------------------------*/
 pre {
-	background: var(--gray-200);
-	font-family: sans-serif, monospace; /* 1 */
+	background: var(--gray-900);
+	color: var(--yellow-500);
+	font-family: var(--highlight-font-family), monospace; /* 1 */
 	font-size: 0.9375rem; /* 2 */
-	line-height: 1.6;
+	line-height: 1.1;
 	margin-bottom: 1.5em;
 	width: 100%;
 	max-width: 100%;
@@ -132,3 +216,46 @@ li,
 span {
 	font-size: var(--fontsize-s);
 }
+
+table {
+	margin: 0 0 1.5em;
+	width: 100%;
+}
+
+/* ================================
+	#6 @import "_accessibility.css";
+===================================*/
+
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+	bottom: 0;
+	left: 0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	word-wrap: normal !important;
+
+	&:focus {
+		background-color: var(--gray-200);
+		border-radius: 3px;
+		box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+		clip: auto !important;
+		color: var(--teal-800);
+		display: block;
+		font-size: 0.875rem;
+		font-weight: 700;
+		height: auto;
+		left: 5px;
+		line-height: normal;
+		padding: 15px 23px 14px;
+		text-decoration: none;
+		top: 5px;
+		width: auto;
+		z-index: 100000; /* Above WP toolbar. */
+	}
+}
+
+
+/* Do not show the outline on the skip link target. */
+#primary[tabindex="-1"]:focus { outline: 0; }

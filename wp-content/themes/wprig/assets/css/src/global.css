@@ -31,24 +31,30 @@
 @import "_custom-selectors.css";
 @import "_custom-media.css";
 @import "_grid.css";
-@import "_contact-form.css";
+@import "_typography.css";
+
+
+/*
+@import "_blocks.css";
+@import "_flex.css";
+@import "_keyframes.css";
+@import "_media.css";
+@import "_svg.css";*/
 @import "_site-search.css";
 @import "_navigation.css";
 @import "_header.css";
 @import "_footer.css";
 @import "_forms.css";
-@import "_elements.css";
-
+@import "_locations.css";
 @import "_select.css";
 @import "_buttons_icons.css";
 @import "_sidenav.css";
-@import "_safety-data.css";
 
 /*--------------------------------------------------------------
 # Layouts
 --------------------------------------------------------------*/
 
-/* @link https://css-tricks.com/fixing-smooth-scrolling-with-find-on-page/ */
+/* @link css-tricks.com/fixing-smooth-scrolling-with-find-on-page/ */
 html:focus-within {
 	scroll-behavior: smooth;
 }
@@ -59,11 +65,38 @@ html:focus-within {
 	}
 }
 
-/* any and all GRID behavior has been moved to _grid.css*/
 html,
 body {
+	scroll-behavior: smooth;
 	height: 100%;
+	max-width: 100%;
+	overflow-x: hidden;
 }
+
+/**
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in iOS.
+ */
+html {
+	height: 100%;
+	box-sizing: border-box;
+	line-height: 1.15; /* 1 */
+}
+
+/**
+ * Inherit box-sizing to make it easier to change the property for
+ * components that leverage other behavior; see
+ * http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ */
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 
 .hide-sidemenu {
 
@@ -112,7 +145,6 @@ body {
 .infinite-scroll .pagination,
 .infinite-scroll.neverending .site-footer {
 
-	/* Theme Footer (when set to scrolling) */
 	display: none;
 }
 
@@ -222,23 +254,259 @@ were hidden (via .neverending) before. */
 }
 
 
-/*--------------------------------------------------------------
-# Infinite scroll
---------------------------------------------------------------*/
+/* NOTE THAT THIS WILL STILL BE SEEN BY SCREEN READERS & Will take up whitespace */
+.invisible { visibility: hidden; }
 
-/* Globally hidden elements when Infinite Scroll is supported and in use. */
-.infinite-scroll .posts-navigation,
-.infinite-scroll .pagination,
-.infinite-scroll.neverending .site-footer {
-
-	/* Theme Footer (when set to scrolling) */
+/* Removes the element from the DOM altogether */
+template,
+[hidden],
+.display_none,
+.remove {
 	display: none;
 }
 
-/* When Infinite Scroll has reached its end we need to re-display elements that
-were hidden (via .neverending) before. */
-.infinity-end.neverending .site-footer {
-	display: block;
+.no-js .lazy { display: none !important; }
+
+.show_as_block { display: block; }
+
+/* ================================
+	#7 @import "_blocks.css";
+===================================*/
+
+/* ================================
+	#8 @import "_flex.css";
+===================================*/
+.show_as_flex,
+.flex { display: flex; }
+
+/* flex flow displays the direction and the wrap styles, but this is just the plain old flex direction styles*/
+.direction-column,
+.column,
+.col {
+	flex-direction: column;
+}
+
+.direction-column-reverse,
+.column-reverse,
+.col-reverse {
+	flex-direction: column-reverse;
+}
+
+.direction-row,
+.row { flex-direction: row; }
+
+.direction-row-reverse,
+.row-reverse { flex-direction: row-reverse; }
+
+/*---------- MAIN AXIS ROW= X-Axis aligned, COLUMN = Y Axis Aligned----------*/
+.row-nw,
+.row-nowrap { flex-flow: row nowrap; }
+
+.col-nw,
+.col-nowrap,
+.column-nowrap { flex-flow: column nowrap; }
+
+.row-wrap { flex-flow: row wrap; }
+
+.column-wrap,
+.col-wrap { flex-flow: column wrap; }
+
+.column-reverse-wrap,
+.col-reverse-wrap { flex-flow: column-reverse wrap; }
+
+.column-reverse-nowrap,
+.col-reverse-nowrap { flex-flow: column-reverse nowrap; }
+
+.row-reverse-wrap { flex-flow: row-reverse wrap; }
+
+.row-reverse-nowrap { flex-flow: row-reverse nowrap; }
+
+
+/*===========================================
+=      MAIN / PRIMARY AXIS STYLES      =
+===========================================*/
+.justify-content-space-around,
+.justify-space-around,
+.justify-around { justify-content: space-around; }
+
+.justify-content-space-between,
+.justify-space-between,
+.justify-between { justify-content: space-between; }
+
+.justify-start,
+.justify-content-start { justify-content: flex-start; }
+
+.justify-end,
+.justify-content-end { justify-content: flex-end; }
+
+.justify-center,
+.justify-content-center { justify-content: center; }
+
+/*===== End of MAIN / PRIMARY AXIS STYLES ======*/
+
+/*=============================================
+=      SECONDARY AXIS STYLES      =
+=============================================*/
+.align-items-space-around,
+.align-space-around { align-items: space-around; }
+
+.align-items-space-between,
+.align-space-between { align-items: space-between; }
+
+.align-items-start,
+.align-start { align-items: flex-start; }
+
+.align-items-end,
+.align-end { align-items: flex-end; }
+
+.align-items-center,
+.align-center { align-items: center; }
+
+.align-items-stretch,
+.align-stretch { align-items: stretch; }
+
+
+.align-items-baseline,
+.align-baseline { align-items: baseline; }
+
+/* ===== End of SECONDARY AXIS STYLES ====== */
+
+/*--- ALIGN CONTENT FOR CONTENT THAT WRAPS:Applies When a Wrapped Item has Extra Space ----------*/
+.align-content-space-around,
+.content-space-around { align-content: space-around; }
+
+.align-content-space-between,
+.content-space-between { align-content: space-between; }
+
+.align-content-start,
+.content-start { align-content: flex-start; }
+
+.align-content-end,
+.content-end { align-content: flex-end; }
+
+.align-content-center,
+.content-center { align-content: center; }
+
+
+/* ========== CHILD ITEM STYLES ==========*/
+
+/*---------- Align Self is for CHILD ITEMS , it OVERRIDES 'Align-Items' ----------*/
+.align-self-start,
+.self-start { align-self: start; }
+
+.align-self-end,
+.self-end { align-self: end; }
+
+.align-self-center,
+.self-center { align-self: center; }
+
+.align-self-stretch,
+.self-stretch { align-self: stretch; }
+
+/*---------- HOW SHOULD THIS CHILD ITEM GROW IN PROPORTION -- defaults to one, proportionate to one ----------*/
+.grow-1 { flex-grow: 1; }
+
+.grow-2 { flex-grow: 2; }
+
+.grow-3 { flex-grow: 3; }
+
+.grow-4 { flex-grow: 4; }
+
+/*---------- ORDER of a CHILD ITEM
+defaults to 1, so a negative number would go first ----------*/
+.order-minus-one { order: -1; }
+
+.order-one { order: 1; }
+
+.order-two { order: 2; }
+
+.order-three { order: 3; }
+
+.order-last { order: 25; }
+
+/* ================================
+	#9 @import "_keyframes.css";
+===================================*/
+@keyframes leftToRight {
+	0% { transform: translate3d(5px, 0, 0); }
+	50% { transform: translate3d(-5px, 0, 0); }
+	100% { transform: translate3d(5px, 0, 0); }
+}
+
+@keyframes bounce-in {
+	0%,
+	20%,
+	40%,
+	60%,
+	80%,
+	100% { transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+	0% {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+	20% { transform: scale3d(1.1, 1.1, 1.1); }
+	40% { transform: scale3d(0.9, 0.9, 0.9); }
+	60% {
+		opacity: 1;
+		transform: scale3d(1.03, 1.03, 1.03);
+	}
+	80% { transform: scale3d(0.97, 0.97, 0.97); }
+	100% {
+		opacity: 1;
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@keyframes pop {
+	0% { transform: scale(0); }
+	8% { opacity: 0.4; }
+	10% {
+		opacity: 0;
+		transform: scale(1);
+	}
+}
+
+.animate {
+	animation-duration: 1s;
+	animation-fill-mode: both;
+}
+
+.animate-bounce-in {
+	animation-duration: 4.75s;
+	animation-name: bounce-in;
+}
+
+.animate-pop {
+	animation-duration: 6s;
+	animation-name: pop;
+}
+
+
+@keyframes throb {
+	from {
+		opacity: 1;
+		transform: scale3d(0.75, 0.75, 1);
+	}
+	to {
+		opacity: 0;
+		transform: scale3d(1.5, 1.5, 1);
+	}
+}
+
+/* ================================
+	1#0 @import "_media.css";
+===================================*/
+
+/* ================================
+	1#1 @import "_reset.css";
+===================================*/
+/* ================================
+	#12 @import "_svg.css";
+===================================*/
+img[src*=".svg"] {
+	width: 60%;
+	height: auto;
+	background: rgba(0, 0, 0, 0.25);
 }
 
 /*--------------------------------------------------------------
@@ -260,14 +528,51 @@ Drag indicator for flickity
 	}
 }
 
-/* NOTE THAT THIS WILL STILL BE SEEN BY SCREEN READERS & Will take up whitespace */
-.hide,
-.hidden {
-	visibility: hidden;
+/* ================================
+	1#1 @import "_reset.css";
+===================================*/
+/* ================================
+	#12 @import "_svg.css";
+===================================*/
+img[src*=".svg"] {
+	width: 60%;
+	height: auto;
+	background: rgba(0, 0, 0, 0.25);
 }
 
-/* Removes the element from the DOM altogether */
-.display_none,
-.remove {
-	display: none;
-}
+/* ================================
+	#13 @import "";
+===================================*/
+/* ================================
+	#14 @import "_contact-form.css";
+===================================*/
+/* ================================
+	#15 @import "_site-search.css";
+===================================*/
+/* ================================
+	#16 @import "_navigation.css";
+===================================*/
+/* ================================
+	#17 @import "_header.css";
+===================================*/
+/* ================================
+	#18 @import "_footer.css";
+===================================*/
+/* ================================
+	#19 @import "_forms.css";
+===================================*/
+/* ================================
+	#20 @import "_elements.css";
+===================================*/
+/* ================================
+	#21 @import "_locations.css";
+===================================*/
+/* ================================
+	#22 @import "_select.css";
+===================================*/
+/* ================================
+	#23 @import "_buttons_icons.css";
+===================================*/
+/* ================================
+	#24 @import "_sidenav.css";
+===================================*/

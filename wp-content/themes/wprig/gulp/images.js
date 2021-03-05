@@ -21,7 +21,7 @@ export default function images( done ) {
 	return pump( [
 		src( paths.images.src ),
 		gulpPlugins.newer( paths.images.dest ),
-		gulpPlugins.imagemin(),
+		// gulpPlugins.imagemin(),
 		dest( paths.images.dest ),
 	], done );
 }

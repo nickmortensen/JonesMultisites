@@ -9,7 +9,7 @@
 
 namespace WP_Rig\WP_Rig;
 
-get_header( 'experimental' );
+get_header();
 
 // Use grid layout if blog index is displayed.
 if ( is_home() ) {
@@ -18,16 +18,16 @@ if ( is_home() ) {
 	wp_rig()->print_styles( 'wp-rig-content' );
 }
 ?>
-	<main data-gridarea="main" class="frontpage">
+	<main id="primary" class="site-main frontpage">
+		<?php get_template_part( 'template-parts/frontpage/locations' ); ?>
+		<?php get_template_part( 'template-parts/frontpage/project-cards' ); ?>
+		<?php get_template_part( 'template-parts/frontpage/contact' ); ?>
 
-	<?php get_template_part( 'template-parts/frontpageoptions/projectcards' ); ?>
-	<?php get_template_part( 'template-parts/frontpageoptions/contact' ); ?>
-	<?php get_template_part( 'template-parts/frontpageoptions/locations' ); ?>
-	</main>
+	</main><!-- #primary -->
 
-		<!-- always on widget to show me how wide the screen is -->
 
 
 
 <?php
-get_footer( 'experimental' );
+get_template_part( 'template-parts/developer/scrolltotop' );
+get_footer();

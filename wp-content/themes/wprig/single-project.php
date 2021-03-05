@@ -20,8 +20,6 @@ global $post;
 global $post_type;
 global $template;
 
-echo $post_type;
-
 [
 	'svg'           => $svg,
 	'slideshow'     => $slideshow_images,
@@ -41,6 +39,8 @@ echo $post_type;
 	'client'        => $client,
 	'year_complete' => $year_complete,
 ] = wp_rig()->get_all_project_info( $post->ID );
+
+$tags = array_merge( $signtypes, $expertise, $industries );
 
 [
 	'vertical' => $vertical,
@@ -64,23 +64,28 @@ $vertical_src = wp_get_attachment_image_src( $vertical, 'medium_large' )[0] ?? '
 $featured_src = wp_get_attachment_image_src( $featured, 'medium_large' )[0];
 
 
-wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project', 'wp-rig-flickity' );
+wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project' );
 ?>
 
-<main id="single-item" class="site-main project">
+<main class="project_profile">
 
 	<style>
 
-		.single_project_profile {
+	:root {
+		--project-header-image: url( <?= $vertical_src; ?>);
+	}
+
+		.single_project_profile > section:first-of-type {
 			background: center / cover no-repeat url(<?= $featured_src; ?>), var(--blue-700);
 			background-blend-mode: multiply;
+			min-height: 451px;
+			min-width: 100%;
 		}
 
 		.svg-contain {
-			background: #efefef;
+			background: transparent;
 			width: 300px;
 			height: 300px;
-			border-radius: 50%;
 		}
 
 		.client_logo {
@@ -88,20 +93,83 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project', 'wp-rig-flickity' );
 			height: 10vw;
 		}
 
+		.project-header {
+			position: relative;
+			display: grid;
+			grid-template-columns: repeat(6, 1fr);
+			grid-template-rows: repeat(10, 1fr);
+		}
+
+		.project_title {
+			grid-column: 4 / -1;
+			grid-row: 1 / span 10;
+			background: var(--blue-600);
+			z-index: 7;
+			mix-blend-mode: color-burn;
+		}
+
+		.project_initial_image {
+			grid-column: 1 / span 3;
+			grid-row: 1 / span 10;
+			z-index: 6;
+			background-image: var(--project-header-image);
+			background-size: cover;
+		}
+
+		@media screen and (max-width: 600px) {
+			.project_header {
+				min-height: 660px;
+			}
+			.project_initial_image {
+				grid-column: 1 / -1;
+				grid-row: 1 / span 10;
+				z-index: 6;
+				background-image: var(--project-header-image);
+				background-size: cover;
+			}
+
+			.project_title {
+				grid-column: 1 / -1;
+				grid-row: 7 / span 3;
+				background: var(--blue-600);
+				z-index: 7;
+				mix-blend-mode: multiply;
+			}
+		}
+
 	</style>
 
-<section class="single_project_profile">
-	<div>
-		<?php the_title( '<h1 class="light-text">', '</h1>' ); ?>
-		<span class="light-text excerpt project_excerpt"><?= $excerpt; ?></span>
-	</div>
-	<object data="<?= $svg; ?>" type="image/svg+xml" class="client_logo">Client Logo</object>
+<section class="project-header">
+
+	<div class="project_title"><?php the_title( '<h1 class="light-text">', '</h1>' ); ?></div>
+	<div class="project_initial_image"></div>
+
 </section>
 
-<style>
-	figure.flickity {
-		min-width:600px;
+
+<section class="project_profile">
+
+<?php
+	foreach ( $tags as $term_to_link ) {
+		echo wp_rig()->get_term_hyperlink( $term_to_link );
 	}
+?>
+
+	<div>
+		<span class="light-text excerpt project_excerpt"><?= $excerpt; ?></span>
+	</div>
+	<div class="client_logo"> <img src="<?= $svg; ?>" /> </div>
+
+
+
+<?php
+	if ( 'development' !== ENVIRONMENT ) {
+		get_template_part( 'template-parts/developer/bgblend' );
+	}
+?>
+
+</section>
+<style>
 
 	#sliding-element {
 		grid-column: 1 / -1;
@@ -112,22 +180,24 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project', 'wp-rig-flickity' );
 	}
 </style>
 
-<?php if ( $slideshow_images ) : ?>
-<div id="sliding-element">
 
+
+<!-- Draggable slideshow to display photos -->
+<?php if ( $slideshow_images ) : ?>
+<?php wp_rig()->print_styles( 'wp-rig-flickity' ); ?>
+
+<section id="sliding-element">
 <?php
 	foreach ( $slideshow_images as $identifier => $url ) {
 		$caption = '' !== get_the_excerpt( $id ) ? get_the_excerpt( $identifier ) : '';
 		$options = [
 			'data-caption' => $caption,
-			'class'        => 'flickity-image',
+			'class'        => '',
 		];
 		echo wp_get_attachment_image( $identifier, 'large', false, $options );
 }
 ?>
-
-</div>
-
+</section>
 
 <script>
 	const slider   = document.querySelector( '#sliding-element' );
@@ -135,9 +205,12 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project', 'wp-rig-flickity' );
 		cellAlign: 'left',
 		contain: true,
 		freeScroll: true,
-		wrapAround: true
+		wrapAround: true,
+
 	} );
 </script>
+<!-- END Draggable slideshow to display photos -->
+
 
 <?php endif; ?>
 
@@ -153,31 +226,27 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-project', 'wp-rig-flickity' );
 	}
 </style>
 
+<section id="project-page-related-projects" class="related_projects"></section>
 
-<section id="project-page-related-projects" class="related-projects"></section>
+<!-- project tags here for signtypes, expertise, and industry -->
+<section id="misc" class="project_misc">
+<?php
+if ( 'development' === ENVIRONMENT ) {
+	// phpcs:disable
+	/* wp_rig()->wrap_pre( wp_rig()->get_all_project_info( $post->ID ) );*/
+	wp_rig()->wrap_pre( $tags );
+	foreach ( $tags as $term_to_link ) {
+		// echo wp_rig()->get_term_hyperlink( $term_to_link );
+	}
+}
+	// phpcs:enable
+
+?>
+</section>
+
 </main><!-- #single-project -->
-<?php wp_rig()->wrap_pre( wp_rig()->get_all_project_info( $post->ID ) ); ?>
 
 
-
-
-<?php if ( 'development' !== ENVIRONMENT ) : ?>
-	<script>
-	const bgBlendOptions = document.querySelector( '#blend' );
-	bgBlendOptions.addEventListener( 'change', function(e) {
-		console.log( 'project header blend mode is now', e.target.value );
-		document.querySelector( '.single_project_profile' ).style.backgroundBlendMode = e.target.value;
-		document.querySelector( '#vertical' ).style.backgroundBlendMode = e.target.value;
-	} );
-
-	const textBlendOptions = document.querySelector( '#headingblend' );
-	textBlendOptions.addEventListener( 'change', function(e) {
-		document.querySelector('.hide-on-wide h1').style.mixBlendMode = e.target.value;
-	})
-</script>
-
-
-<?php endif; ?>
 
 
 <?php

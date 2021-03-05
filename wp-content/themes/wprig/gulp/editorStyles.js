@@ -6,6 +6,7 @@
  */
 import { src, dest } from 'gulp';
 import postcssPresetEnv from 'postcss-preset-env';
+import postCssFor from 'postcss-for';
 import AtImport from 'postcss-import';
 import pump from 'pump';
 import cssnano from 'cssnano';
@@ -18,13 +19,7 @@ import { pipeline } from 'mississippi';
  * Internal dependencies
  */
 import { rootPath, paths, gulpPlugins, isProd } from './constants';
-import {
-	getThemeConfig,
-	getStringReplacementTasks,
-	logError,
-	configValueDefined,
-	appendBaseToFilePathArray,
-} from './utils';
+import { getThemeConfig, getStringReplacementTasks, logError, configValueDefined, appendBaseToFilePathArray } from './utils';
 import { server } from './browserSync';
 
 export function editorStylesBeforeReplacementStream() {
@@ -83,6 +78,7 @@ export function editorStylesAfterReplacementStream() {
 					}
 			),
 		} ),
+		postCssFor(),
 		calc( {
 			preserve: false,
 		} ),
@@ -107,7 +103,7 @@ export function editorStylesAfterReplacementStream() {
 			AtImport( {
 				path: [ paths.styles.srcDir ],
 				plugins: [
-					stylelint(),
+					// stylelint(),
 				],
 			} ),
 		] ),

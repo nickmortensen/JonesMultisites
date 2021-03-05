@@ -129,6 +129,7 @@ nav#site-navigation {
 	--color-link: var(--foreground);
 	--color-link-visited: var(--color-link);
 	--color-link-active: var(--color-link);
+	--menu-item-fontsize: var(--fontsize-xxs);
 
 	grid-area: headermenu;
 	display: flex;
@@ -142,6 +143,7 @@ nav#site-navigation {
 		flex-flow: var(--flex-flow);
 		justify-content: var(--justify-content);
 		align-items: var(--align-items);
+		align-content: flex-start;
 		padding-right: 1vw;
 
 		& li {
@@ -152,8 +154,8 @@ nav#site-navigation {
 	& .menu-item > a {
 		margin-right: 0.5vw;
 		color: var(--color-link);
-		font-family: var(--highlight-font-family);
-		font-size: var(--fontsize-xs);
+		font-family: var(--global-font-family);
+		font-size: var(--menu-item-fontsize);
 		font-weight: var(--semibold);
 
 		&:focus,
@@ -183,21 +185,3 @@ nav#site-navigation {
 
 /* \@media screen and (width > 525px) */
 
-/*-----------------------------------------------------------------
-### Only appears on development - gives update of width
-------------------------------------------------------------------*/
-#devScreenWidth {
-	position: fixed;
-	top: 85%;
-	left: 90%;
-	z-index: 1211;
-	line-height: 2;
-	font-size: clamp(18px, 2vw, 28px);
-	font-weight: 900;
-	color: var(--background);
-	background: var(--yellow-600);
-	border-radius: 50%;
-	padding: clamp(14px, 2.5vw, 22px);
-	box-shadow: 3px 3px 6px 3px var(--gray-500);
-	mix-blend-mode: difference;
-}

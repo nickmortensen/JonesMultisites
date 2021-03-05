@@ -32,9 +32,9 @@ namespace WP_Rig\WP_Rig;
 <?php wp_body_open(); ?>
 
 	<div class="floating-navigation-buttons">
-		<a title="Connect with us!" id="sidemenu-mail-button" class="material-icons button"> mail_outline </a>
-		<a title="Search the site." id="sidemenu-search-button" class="material-icons button"> search </a>
-		<a title="Open/Close side navigation menu" id="sidemenu-toggle-button" class="material-icons button"> menu </a>
+		<a href="#frontpage-email-cta" title="Connect with us!" id="sidemenu-mail-button" class="material-icons floating-btn"> mail_outline </a>
+		<a id="sidemenu-search-button" class="material-icons floating-btn" title="Search the site." > search </a>
+		<a id="sidemenu-toggle-button" title="Open/Close side navigation menu" class="material-icons floating-btn"> menu </a>
 	</div>
 
 
@@ -53,23 +53,56 @@ if ( 'development' === ENVIRONMENT ) {
 ?>
 <!-- toggle side menu script -->
 <script>
-const sideNavToggler = document.getElementById( 'sidemenu-toggle-button' );
+const sideNavToggler = document.querySelector( '#sidemenu-toggle-button' );
 const sideNavCloser  = document.querySelector( '#close-sidemenu' );
-[ a, b ] = [ 'menu', 'close' ];
-sideNavToggler.addEventListener( 'click', function() {
+
+sideNavToggler.addEventListener( 'click', toggleSideMenu, false);
+
+
+function toggleSideMenu( e ) {
 	document.body.classList.toggle( 'hide-sidemenu' );
-	this.textContent = document.body.classList.contains( 'hide-sidemenu' ) ? a : b;
-	let title = document.body.classList.contains( 'hide-sidemenu' ) ? 'Open Side Menu' : 'Close Side Menu';
-	this.setAttribute( 'title', title );
-	window.focus( document.body ); // so you can still scroll
-}, false);
+	let textContent = document.body.classList.contains( 'hide-sidemenu' ) ? 'menu' : 'close'
+	e.target.textContent = textContent;
+}
 
 sideNavCloser.addEventListener( 'click', function() {
 	document.body.classList.toggle( 'hide-sidemenu' );
 	sideNavToggler.textContent = 'menu';
 }, true);
+
+
+// {
+
+// document.body.classList.toggle( 'hide-sidemenu' );
+// this.textContent = document.body.classList.contains( 'hide-sidemenu' ) ? a : b;
+// let title = document.body.classList.contains( 'hide-sidemenu' ) ? 'Open Side Menu' : 'Close Side Menu';
+// this.setAttribute( 'title', title );
+// window.focus( document.body ); // so you can still scroll
+// }
+
+
 </script>
 <!-- END toggle side menu script -->
+
+
+
+
+
+
+<script>
+const emailButton = document.querySelector( '#sidemenu-mail-button' );
+
+function onClickEmailButton() {
+	console.log( 'this should take you to the email call to action');
+	document.querySelector( '#contact-form' ).scrollIntoView( {
+		behavior: 'smooth',
+		block: 'center'
+	} );
+}
+
+emailButton.addEventListener( 'click', onClickEmailButton );
+</script>
+
 
 
 
@@ -83,7 +116,3 @@ sideNavCloser.addEventListener( 'click', function() {
 
 		<?php get_template_part( 'template-parts/header/navigation' ); ?>
 	</header><!-- #masthead -->
-
-
-
-

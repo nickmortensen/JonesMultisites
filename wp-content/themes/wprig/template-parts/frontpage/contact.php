@@ -9,29 +9,29 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-				<!-- <form style="padding-left: 40%;" action="get" name="experimentalForm" id="experimentalForm"></form> -->
-				<form action="get" name="experimentalForm" id="experimentalForm"></form>
-				<div id="progress"></div>
-				<div class="center">
+<a href="frontpage-email-cta"></a>
+<section data-scrollto="contact" id="contact-form" class="frontpage">
+	<div id="single-field-form" class="frontpage">
+		<!-- <form style="padding-left: 40%;" action="get" name="experimentalForm" id="experimentalForm"></form> -->
+		<form action="get" name="experimentalForm" id="experimentalForm"></form>
+		<div id="progress"></div>
 
-					<div id="register">
+		<div class="center">
+			<div id="register">
+				<span id="previousButton" class="material-icons">person</span>
+				<span id="forwardButton" class="material-icons" title="advance to the next form field" >arrow_forward</span>
+				<div id="inputContainer">
+					<input data-identifier="" id="inputField" required />
+					<label for="inputField" id="inputLabel"></label>
+					<div id="inputProgress" class="underline">
+						<span class="hide error-text"></span>
+					</div>
+				</div><!-- end div#inputcontainer -->
+			</div><!-- end div#register -->
 
-						<span id="previousButton" class="material-icons">person</span>
-						<span class="material-icons" title="advance to the next form field" id="forwardButton">arrow_forward</span>
-
-						<div id="inputContainer">
-							<input data-identifier="" id="inputField" required />
-							<label for="inputField" id="inputLabel"></label>
-							<div id="inputProgress" class="underline">
-								<span class="hide error-text"></span>
-							</div>
-						</div><!-- end div#inputcontainer -->
-
-					</div><!-- end div#register -->
-
-				</div><!-- end div.center -->
-
-
+		</div><!-- end div.center -->
+	</div>
+</section>
 <script>
 
 const material = [ 'arrow_forward', 'arrow_backward', 'person' ];
@@ -84,7 +84,7 @@ let questions = [
 			form: 'experimentalForm',
 			tabIndex: 30,
 			name: 'companyName',
-			title: 'the name of the company you are with.',
+			title: 'your company name.',
 			description: 'Company Name',
 		},
 		answer: 'General Industrial Inc',
@@ -97,7 +97,7 @@ let questions = [
 			form: 'experimentalForm',
 			tabIndex: 40,
 			name: 'jobTitle',
-			title: 'your job title or position within your company.',
+			title: 'your job title.',
 			description: 'Position',
 		},
 		answer: 'Logistics Specialist',
@@ -170,7 +170,7 @@ let onComplete = function( formData ) {
 	// init
 	// --------------
 	// guard clause - if there are no questions, then return.
-	if ( 0 == questions.length ) {
+	if ( 0 === questions.length ) {
 		return;
 	}
 
@@ -203,6 +203,10 @@ let onComplete = function( formData ) {
 		// Gaurd clause - don't do anything if we are still on the first question and it is clicked -- ( though it should not be there anyway )
 		if ( position === 0 ) {
 			return;
+		}
+		// Should a person want to go to the previous field when the current field has been determined as 'invalid', remove the wrong from the register div
+		if ( register.classList.contains( 'wrong' ) ) {
+			register.classList.remove( 'wrong' );
 		}
 		// Set the position variable to one less than it currently is and move to that question as the input
 		position -= 1;
@@ -264,8 +268,6 @@ let onComplete = function( formData ) {
 
 	}
 
-
-
 function makeResponseObject( formData ) {
 	return Object.fromEntries( formData );
 }
@@ -286,7 +288,7 @@ function validate() {
 	// check if the pattern matches
 	if ( ! questions[position].validate() ) {
 		wrong( inputField.focus.bind( inputField ) );
-		let spanInvalid = inputProgress.querySelector( 'span' );
+		let spanInvalid       = inputProgress.querySelector( 'span' );
 		spanInvalid.innerText = `Please input ${questions[position].attributes.title}`;
 		spanInvalid.classList.remove( 'hide' );
 		spanInvalid.classList.add( 'opacity-full' );

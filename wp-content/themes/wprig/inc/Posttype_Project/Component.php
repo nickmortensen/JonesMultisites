@@ -244,7 +244,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$project['partners']   = $this->get_project_partners( $project_id );
 		$project['address']    = $this->get_project_address( $project_id );
 		$project['alt_name']   = $project['address']['alternate'] ?? '';
-		$additional_info_array = $this->get_additional_project_info( $project_id );
+		$additional_info_array = $this->get_additional_project_info( $project_id ) ?? [];
 		return array_merge( $project, $additional_info_array );
 	}
 

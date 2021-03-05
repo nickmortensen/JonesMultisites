@@ -1,0 +1,12 @@
+
+/*-----------------------------------------------------------------
+#  Items only appear when ENVIRONMENT === 'development' - gives update of width
+------------------------------------------------------------------*/
+
+.showGridInfo {
+	position: relative;
+
+	&::after {
+		content: attr(data-gridarea);
+	}
+}

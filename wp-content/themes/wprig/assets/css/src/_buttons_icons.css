@@ -23,21 +23,76 @@ a {
 	&:active { outline: 0; }
 }
 
+.taxonomy_tag {
+	--tag-font-size: clamp(8px, 1.1vw, 22px);
+	--color: var(--foreground);
+	--hover-color: var(--color);
+	--height: var(--fontsize-s);
+	--padding: 14px;
+	--hover-background: var(--blue-800);
+	font-size: var(--tag-font-size);
+	background: var(--color-theme-primary);
+	height: var(--height);
+	font-family: var(--highlight-font-family);
+	color: var(--color);
+	padding: var(--padding);
+	transition: all 1.6s 0.2s var(--reverse-timing-function);
+	box-shadow: 1px 1px 1px var(--gray-500);
+
+	display: inline-flex;
+	letter-spacing: 1px;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+	line-height: 1.9;
+	margin: 20px 10px;
+	border-radius: 15px;
+
+	&:hover {
+		background: var(--hover-background);
+		box-shadow: 1px 2px 3px var(--gray-700);
+	}
+
+	&:hover,
+	&:active,
+	&:focus,
+	&:visited {
+		color: var(--hover-color);
+		transition: all 0.6s var(--transition-timing-function);
+	}
+
+	& > span {
+		margin-right: 4px;
+		font-size: var(--fontsize-xxxs);
+		color: var(--foreground);
+	}
+
+}
+
 .material-icons {
-	--timing-function: var(--reverse-timing-function);
-	--shadow-color: var(--gray-900);
-	--h-offset: 2px;
-	--v-offset: var(--h-offset);
-	--blur-radius: 4px;
-	--spread-radius: 1px;
-	--button-size: 80px;
-	--fixed-offset: calc(var(--button-size) / 4);
-	--button-shadow: var(--h-offset) var(--v-offset) var(--blur-radius) var(--shadow-color);
-	--button-xl: var(--fontsize-xl);
-	--button-m: var(--fontsize-m);
+	/* Colors */
 	--button-active-background: var(--blue-800);
 	--button-color: var(--foreground);
 	--button-background: var(--color-theme-blue);
+	--button-hover-background: var(--blue-800);
+	--shadow-color: rgba(0, 0, 0, 0.4);
+
+	/* Eases */
+	--timing-function-out: var(--transition-timing-function);
+	--timing-function: var(--reverse-timing-function);
+
+	/* Shadow */
+	--h-offset: 2px;
+	--v-offset: var(--h-offset);
+	--blur-radius: 6px;
+	--spread-radius: 1px;
+	--button-shadow: var(--h-offset) var(--v-offset) var(--blur-radius) var(--shadow-color);
+
+	/* Button Sizing */
+	--button-size: var(--fontsize-xl);
+	--fixed-offset: calc(var(--button-size) / 4);
+	--button-xl: var(--fontsize-xl);
+	--button-m: var(--fontsize-m);
 
 
 	&.button {
@@ -77,45 +132,50 @@ a {
 			--button-hover-background: var(--gray-300);
 			--button-active-background: var(--gray-700);
 		}
-	}
+	} /* \.button */
 
 	&.floating-btn {
+		color: var(--button-color);
+		background: var(--button-background);
+		font-size: calc(var(--button-size) / 2);
+		border-radius: 50%;
+		margin: 0.8vw;
+
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
 		text-decoration: none;
-		font-size: calc(var(--button-size) / 2);
-		position: fixed;
-		right: var(--fixed-offset);
-		top: var(--fixed-offset);
 		width: var(--button-size);
 		height: var(--button-size);
 		cursor: pointer;
-		border-radius: 50%;
 		box-shadow: var(--button-shadow);
-		background: var(--button-bg);
-		color: var(--button-color);
-		transition: all 0.25s var(--reverse-timing-function);
 		will-change: box-shadow;
+
+		transition: all 0.25s var(--reverse-timing-function);
+		outline: none;
 
 		&:active,
 		&:focus,
 		&:focus-within {
 			--h-offset: -1px;
-			--button-bg: var(--indigo-800);
+			--button-background: var(--indigo-600);
 			outline: none;
 		}
 
 		&:hover {
-			--button-bg: var(--indigo-800);
+			--button-background: var(--indigo-600);
+			transform: scale(1.1);
+			transition: all 0.25s var(--transition-timing-function);
+
 		}
 
 		&:visited {
 			--v-offset: 2px;
 		}
 
-	}
-}
+	} /* \.floating-btn */
+} /* \.material-icons */
 
 
 [anim="ripple"] {

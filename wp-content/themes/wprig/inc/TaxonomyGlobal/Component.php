@@ -96,6 +96,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_card_taxonomy_row'      => [ $this, 'get_card_taxonomy_row' ],
 			'get_related_images'         => [ $this, 'get_related_images' ],
 			'get_related'                => [ $this, 'get_related' ],
+			'get_term_hyperlink'         => [ $this, 'get_term_hyperlink' ],
 		];
 	}
 
@@ -691,6 +692,20 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			);
 
 		} // end is_tax()
+	}
+
+	/**
+	 * Ouput a term html tag.
+	 *
+	 * @param int $term_id The term ID.
+	 *
+	 * @return string The HTML for the link to a term page.
+	 */
+	public function get_term_hyperlink( $term_id ) {
+		$link = get_term_link( $term_id );
+		//phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+		extract( get_object_vars( get_term( $term_id ) ) );
+		return "<a href=\"$link\" class=\"taxonomy_tag\" data-slug=\"$slug\"><span class=\"material-icons\">sell</span>$name</a>";
 	}
 
 

@@ -1,4 +1,7 @@
 **/*.min.css
+style.min.css
+*.min.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/style.min.css
 assets/css/*.min.css
 assets/**/*.min.css
 
@@ -15,11 +18,17 @@ assets/css/src/_custom-properties.css
 
 
 **/assets/css/src/editor/editor-styles.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/editor/editor-styles.css
 **/assets/css/src/admin.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/admin.css
 **/assets/css/admin/admin.min.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/admin/admin.min.css
 **/assets/css/src/admin/admin.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/admin/admin.css
 **/assets/css/src/admin/admin_partials/_*.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/admin/admin_partials/_*.css
 **/assets/css/src/_custom-properties.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/_custom-properties.css
 
 /Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/admin/admin.css
 /Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/admin/admin_partials/_about.css

@@ -7,13 +7,12 @@
 }
 
 .frontpage-projects {
-	grid-area: projects;
-	margin-bottom: 2vw;
-	order: 5;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-flow: column nowrap;
+
+	padding-bottom: 2vw;
 
 	& > h2 {
 		color: var(--gray-600);
@@ -236,21 +235,82 @@
 ========= PROJECT PROFILE SINGLE PAGE ===========
 */
 /*#region*/
-.single_project_profile {
-	padding-bottom: 4vw;
-	grid-column: 1 / -1;
-	color: var(--foreground);
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: flex-start;
-	align-items: center;
-	& h1 {
-		font-size: calc(46px + 0.698vw);
-		font-size: clamp(28px, 2.3vw, 88px);
+
+/* body class for a single project page*/
+
+.single-project {
+
+	& .client_logo {
+		width: 10vw;
+		height: 10vw;
 	}
 
-	& .excerpt {
-		font-size: var(--fontsize-m);
+	& section {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 599px) {
+	.single-project {
+
+		--project-grid-template-columns: repeat(3, 1fr);
+		--project-grid-template-rows: 50vw 1fr 1fr 1fr 1fr;
+		--project-grid-template-areas:
+			"projecthead projecthead projecthead"
+			"projectprofile projectprofile projectprofile"
+			"projectslides projectslides projectslides"
+			"projectrelated projectrelated projectrelated"
+			"projectmisc projectmisc projectmisc";
+		--sliding-element-area: projectslides;
+		--project-header-area: projecthead;
+	}
+}
+
+@media screen and (min-width: 600px) {
+	.single-project {
+		--project-grid-template-columns: repeat(3, 1fr);
+		--project-grid-template-rows: 50vw 1fr 1fr 1fr 1fr;
+		--project-grid-template-areas:
+			"projecthead projecthead projecthead"
+			"projectprofile projectprofile projectprofile"
+			"projectslides projectslides projectslides"
+			"projectrelated projectrelated projectrelated"
+			"projectmisc projectmisc projectmisc";
+	}
+}
+
+main.project_profile {
+	width: 100%;
+	display: grid;
+	grid-area: main;
+	grid-template-columns: 1 / -1;
+	grid-template-rows: var(--project-grid-template-rows);
+	grid-template-areas: var(--project-grid-template-areas);
+}
+
+#sliding-element {
+	grid-area: projectslides;
+	height: 100%;
+	min-height: 460px;
+}
+
+.project-header { grid-area: projecthead; }
+
+.project_profile { grid-area: projectprofile; }
+
+.related_projects { grid-area: projectrelated; }
+
+.project_misc { grid-area: projectmisc; }
+
+.project_misc {
+	color: var(--background);
+
+	& > pre {
+		font-family: var(--highlight-font-family);
+		color: rgb(225, 218, 95);
+		background: rgba(0, 0, 0, 0.8);
+		font-size: var(--fontsize-xxs);
+		line-height: var(--global-font-line-height);
 	}
 }
 

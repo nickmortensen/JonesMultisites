@@ -29,9 +29,10 @@ a.telephone_link {
 	}
 }
 
-footer {
+footer.mapped {
 	--mapwidth: clamp(280px, 60vw, 840px);
 
+	position: relative;
 
 	/*
 	grid-template-columns: 1fr;
@@ -61,6 +62,7 @@ footer {
 /*--------------------------------------------------------------
 ======================== LOCATION MAP ==========================
 --------------------------------------------------------------*/
+
 #location-map {
 	grid-area: map;
 	place-self: center center;

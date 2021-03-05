@@ -11,7 +11,12 @@
       "bypassPort": "7448",
       "https"     : true,
       "keyPath": "/Applications/MAMP/Library/OpenSSL/certs/jonessign.io.key",
-      "certPath": "/Applications/MAMP/Library/OpenSSL/certs/jonessign.io.cert"
+      "certPath": "/Applications/MAMP/Library/OpenSSL/certs/jonessign.io.crt"
+	},
+	"debug": {
+	  "styles": false,
+	  "scripts": true,
+	  "phpcs": false
 	},
 	"styles": {
 		"stage": 0,
