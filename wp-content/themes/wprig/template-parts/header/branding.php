@@ -14,15 +14,18 @@ namespace WP_Rig\WP_Rig;
 	if ( is_home() ) {
 		$titletext = 'You are on the Jones Sign Homepage';
 	}
-$attributes = [
-	'logo'       => 'sign',
-	'background' => '#e6e6e6',
-	'foreground' => '#0273b9',
-];
-
 ?>
+
+<style>
+
+a.svg_hyperlink {
+	display: inline-block;
+	width: clamp(40px, 8vmin, 160px);
+}
+
+</style>
 <div id="branding" class="logo_container">
-<a href="<?= esc_url( home_url() ); ?>" title="<?= $titletext; ?>">
-<?= wp_rig()->get_jones_icon( $attributes ); ?>
-</a>
-</div><!-- .site-branding -->
+	<a class="svg_hyperlink" href="<?= esc_url( home_url() ); ?>" title="<?= $titletext; ?>">
+		<?= wp_rig()->get_jones_icon( 'sign' ); ?>
+	</a>
+</div><!-- #branding -->

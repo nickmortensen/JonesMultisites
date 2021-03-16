@@ -1,0 +1,41 @@
+@media screen and (max-width: 677px) {
+	#safety {}
+}
+@media screen and (min-width: 678px) {
+	#safety {}
+}
+
+#safety {
+	--safety-label-color: var(--foreground);
+	--safety-bg: var(--blue);
+	--safety-grid-area: safetyformplusviz;
+	grid-area: var(--safety-grid-area);
+	background: var(--safety-bg);
+	border-bottom: 10px solid var(--background);
+}
+
+
+#safety {
+	position: relative;
+
+	& > .safetyform {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 440px;
+		z-index: 2;
+
+	}
+
+	& > .safetyviz {
+		grid-area: var(--safety-grid-area);
+		z-index: 1;
+	}
+
+	& > .formfield {
+
+		& > label {
+			color: var(--safety-label-color);
+		}
+	}
+}

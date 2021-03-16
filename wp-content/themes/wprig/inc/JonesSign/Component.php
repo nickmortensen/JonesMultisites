@@ -212,6 +212,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function initialize() {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_d3' ] );
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_admin_columns' ], 10, 1 );
 		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
@@ -949,29 +950,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Output all the Jones Location information into a json-encoded array to use on any of the sites -- saves calls to the database.
-	 *
-	 * @see the only reason to run this, would be that I've added new information to any of the items within the location taxonomy.
+	 * Enqueue D3 - a data visualization library for Javascript.
 	 */
-	public function action_enqueue_googlesheets_script() {
+	public function action_enqueue_d3() {
 
-		$handle    = 'jones-googlesheets-data'; // script handle.
-		$path      = get_theme_file_uri( '/assets/js/src/retrievesheetdata.js' ); // path to script.
-		$version   = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/retrievesheetdata.js' ) ); // script version.
+		$handle    = 'd3-data-visualization'; // script handle.
+		$path      = 'https://cdnjs.cloudflare.com/ajax/libs/d3/6.6.0/d3.min.js'; // path to script.
+		$version   = 6;
 		$in_footer = false; // Do we enqueue the script into the footer -- no.
 
 		wp_register_script( $handle, $path, $deps = [], $version, $in_footer );
 		wp_script_add_data( $handle, 'defer', false ); // if true - wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
 		wp_enqueue_script( $handle, $path, [], $version, false );
 
-		$deps    = [ 'jones-googlesheets-data' ]; // dependencies.
-		$version = '5.5.3';
-		$handle2 = 'google-spreadsheet-api';
-
-		wp_register_script( $handle2, 'https://apis.google.com/js/api.js', $handle, $version, false );
-		wp_script_add_data( $handle2, 'defer', true );
-		wp_enqueue_script( $handle2, 'https://apis.google.com/js/api.js', $handle, $version, false );
 	}
+
+
 
 
 	/**
@@ -1077,20 +1071,21 @@ class Component implements Component_Interface, Templating_Component_Interface {
 JSONLD;
 		return $output;
 	}
-
-
 	/**
 	 * Output an SVG With the icon for Jones Sign Company.
 	 *
-	 * @param array $attributes Associative array with the following keys; 'logo', 'background', 'foreground', 'container', 'link'.
-	 * @note $attributes['logo']       string The type of logo - 'sign' or 'letter' works here.
-	 * @note $attributes['background'] string The color of the circle.
-	 * @note $attributes['foreground'] string The color of the letter or the sign silhouette.
+	 * @param string $type Icon defaults to sign logo, but any other string gives us the letter option.
 	 */
-	public function get_jones_icon( $attributes ) {
-		$logo       = $attributes['logo'] ?? 'sign';
-		$background = $attributes['background'] ?? '#e6e6e6';
-		$foreground = $attributes['foreground'] ?? '#0273b9';
+	public function get_jones_icon( $type = 'sign' ) {
+		$style = '
+		<style type="text/css">
+		circle {
+			fill: var(--logo-background);
+		}
+		path {
+			fill: var(--logo-foreground);
+		}
+		</style>';
 
 		$letter = '
 		<svg
@@ -1105,36 +1100,26 @@ JSONLD;
 		viewBox="0 0 500 500"
 		style="enable-background:new 0 0 500 500;"
 		xml:space="preserve">
-		<style type="text/css"> circle { fill: ' . $background . '; } path { fill: ' . $foreground . '; }</style>
-			<circle id="circle-bg" class="signicon" cx="251" cy="250" r="240"/>
-			<path id="letter" class="signicon" d="M187.3,328.6h103.8V107H364v215.6c0,17.9-2.1,42-15.2,55.1c-13.1,13.4-37.6,15.3-54.9,15.3H184.1 c-17.3,0-41.9-1.9-55.1-15.3c-13-13.2-15.1-37.3-15.1-55.1v-59.2h73.3V328.6z"/>
 		</svg>';
 		$pylon  = '
-		<style type="text/css">
-		circle {
-			fill: var(--logo-circle-fill);
-		}
-		path {
-			fill: var(--logo-sign-fill);
-		}</style>
 		<svg
 		xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink"
 		version="1.1"
 		id="jones_icon"
 		class="icon_pylon"
-		x="0px"y="0px"
+		x="0px"
+		y="0px"
 		viewBox="0 0 500 500"
 		style="enable-background:new 0 0 500 500;"
 		xml:space="preserve">
-
 		<circle id="circle-bg" class="signicon" cx="250" cy="250" r="245"/>
 		<path id="pylon" class="signicon" d="M450.5,215c8.6,0,15.5-8,15.5-16.6v-59.7c0-8.6-6.9-15.7-15.5-15.7H258.2c-8.6,0-15.2,7.1-15.2,15.7 V166h-29.8c-2.6-13-12.9-21-25.3-21c-14.3,0-25.9,11.2-25.9,25.5c0,7.5,3.2,13.8,8.3,18.6L43.8,382.7c4.3,6.5,8.8,12.8,13.7,18.8 L188.9,196c10.8-0.4,20-8,23.5-17H243v19.4c0,8.6,6.6,16.6,15.2,16.6L450.5,215L450.5,215z"/>
 		</svg>
 		';
 
-		$icon = 'sign' === $logo ? $pylon : $letter;
-		return $icon;
+		$icon = 'sign' === $type ? $pylon : $letter;
+		return $style . $icon;
 	}
 	/**
 	 * Output an SVG with Jones Sign Company written in outlined bank gothic font

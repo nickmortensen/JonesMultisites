@@ -2,6 +2,7 @@
 style.min.css
 *.min.css
 /Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/style.min.css
+/Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/global.min.css
 assets/css/*.min.css
 assets/**/*.min.css
 
@@ -11,11 +12,13 @@ assets/css/src/_custom-media.css
 
 assets/css/src/editor/editor-styles.css
 assets/css/src/admin.css
+assets/css/admin.css
 assets/css/admin/admin.min.css
 assets/css/src/admin/admin.css
 assets/css/src/admin_partials/_*.css
 assets/css/src/_custom-properties.css
 
+assets/css/*.min.css
 
 **/assets/css/src/editor/editor-styles.css
 /Applications/MAMP/htdocs/jonessign.io/wp-content/themes/wprig/assets/css/src/editor/editor-styles.css

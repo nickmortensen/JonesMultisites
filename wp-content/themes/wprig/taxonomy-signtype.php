@@ -9,6 +9,16 @@
 
 namespace WP_Rig\WP_Rig;
 
+/**
+ * Show inside of pre tags
+ *
+ * @param [string] $content The content to show.
+ *
+ */
+function display_in_pre( $content ) {
+	return "<pre>$content</pre>";
+}
+
 $signtype = get_queried_object();
 
 [
@@ -38,15 +48,16 @@ $cinematic_src    = wp_get_attachment_image_src( $cinematic_id, $size )[0];
 $vertical_srcset  = wp_get_attachment_image_srcset( $vertical_id, $size )[0];
 $cinematic_srcset = wp_get_attachment_image_srcset( $cinematic_id, $size )[0];
 
-get_header();
+get_header( 'experimental' );
 
 wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-taxonomy', 'wp-rig-project' );
+
 
 
 ?>
 
 
-	<main id="single-item" class="taxonomy signtype">
+	<main data-gridarea="main" id="single-item" class="taxonomy signtype">
 
 		<header class="entry-header">
 			<div class="single-header hide-on-wide" style="background: var(--blue-900) center / cover no-repeat url( <?= $cinematic_src; ?>);">
@@ -71,8 +82,8 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-taxonomy', 'wp-rig-project' );
 			<h2>Related Images</h2>
 			<?php
 				foreach ( $related_images as $index => $identifier ) {
-					$size = 'medium';
-					print_r( wp_get_attachment_image_src( $identifier, $size )[0] );
+					// $size = 'medium';
+					// print_r( wp_get_attachment_image_src( $identifier, $size )[0] );
 					// echo '<img src="' . wp_get_attachment_image_src( $identifier, $size )[0] . '"/>'; full stop.
 				}
 			?>
@@ -97,14 +108,12 @@ wp_rig()->print_styles( 'wp-rig-content', 'wp-rig-taxonomy', 'wp-rig-project' );
 
 
 <?php
-echo '<h2> get_queried_object() data -></h2>';
-wrap( get_queried_object() );
-echo '<h2> Signtype Data -></h2>';
-wrap( wp_rig()->get_all_signtype_info( get_queried_object()->term_id ) );
-echo '<h2> Related Images By ID</h2>';
+// echo '<h2> get_queried_object() data -></h2>';
+// wrap( get_queried_object() );
+// echo '<h2> Signtype Data -></h2>';
+// wrap( wp_rig()->get_all_signtype_info( get_queried_object()->term_id ) );
+// echo '<h2> Related Images By ID</h2>';
 
-
-?>
 
 
 

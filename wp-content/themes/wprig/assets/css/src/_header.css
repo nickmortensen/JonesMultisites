@@ -6,7 +6,6 @@ header {
 	border-bottom: 9px solid var(--yellow-600);
 	background: var(--header-gradient);
 
-	& #branding,
 	& #connect {
 		display: flex;
 		flex-flow: row nowrap;
@@ -15,20 +14,49 @@ header {
 	}
 
 	& #branding {
+		margin: 1vmin;
 
-		& > a {
-			color: var(--foreground);
-			margin: 2vw 8vw;
+		/*Need both a display property of inline-block anda width to ensure svg stays 100% of the containing element*/
+		& > a.svg_hyperlink {
+			text-decoration: none;
+			display: inline-block;
+			width: clamp(40px, 8vmin, 160px);
+			transform: scale(0.9);
+			transition: transform 0.7s ease-in;
 
-			& > img {
-				--blendmode: hard-light;
-				--filter: drop-shadow(5px 5px 5px #fff);
-				--filter: drop-shadow(5px 5px 5px #fff) drop-shadow(-5px -5px 5px var(--yellow-300));
-				--backdrop-filter: brightness(60%);
-				height: clamp(44px, 7.4vw, 240px);
-				width: clamp(44px, 7.4vw, 240px);
-				filter: var(--filter);
-				mix-blend-mode: var(--blendmode);
+			&:hover {
+				transform: scale(1.1);
+				transition: transform 0.4s var(--transition-timing-function);
+			}
+
+			& > svg {
+				width: 100%;
+
+				& > circle {
+					fill: var(--logo-background);
+					transition: fill 0.4s ease-in;
+				}
+
+				& > path {
+					fill: var(--logo-foreground);
+					transition: fill 0.4s ease-in;
+				}
+			}
+		}
+
+		& > a.svg_hyperlink:hover > svg {
+			--logo-background: var(--blue);
+			--logo-foreground: var(--gray-100);
+
+
+			& > circle {
+				fill: var(--logo-background);
+				transition: fill 0.4s ease-in;
+			}
+
+			& > path {
+				fill: var(--logo-foreground);
+				transition: fill 0.4s ease-in;
 			}
 		}
 	}

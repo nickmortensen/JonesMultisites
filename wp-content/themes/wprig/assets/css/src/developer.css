@@ -1,12 +1,39 @@
-
 /*-----------------------------------------------------------------
 #  Items only appear when ENVIRONMENT === 'development' - gives update of width
 ------------------------------------------------------------------*/
-
-.showGridInfo {
-	position: relative;
-
+[data-gridarea] {
+	--content: var(--gray-900);
+	--gridarea-reveal-background: var(--yellow-600);
 	&::after {
+		font-size: 11px;
+		padding: 0.15rem 1.5rem;
+		border-radius: 25px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		opacity: 0;
 		content: attr(data-gridarea);
+		z-index: 5;
+		color: var(--content);
+		background: var(--gridarea-reveal-background);
+		transform: translate(-50%, 50%);
 	}
+
+}
+
+.showTheDetails {
+	position: relative;
+	&::after {
+		transform: translate(-50%, 50%);
+		opacity: 1;
+		transition: opacity 0.6s ease;
+	}
+}
+
+.floating-navigation-buttons.showTheDetails {
+	position: fixed;
+
+	/* &::after {
+		transform: translate(-100px, 50%);
+	} */
 }

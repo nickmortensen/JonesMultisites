@@ -40,8 +40,7 @@
 	--icbg: var(--indigo-200);
 	--section-bg: var(--color-theme-primary);
 	--progress-bg: var(--blue-800);
-	--icon-hover-color: var(--progress-bg);
-	--forward-hover-bg: var(--progress-bg);
+
 	--section-height: 580px;
 	--form-background: var(--foreground);
 	--single-field-width: clamp(380px, 75vw, 900px);
@@ -55,6 +54,8 @@
 	--input-field-height: 250px;
 	--icon-color: var(--gray-400);
 	--incorrect: var(--red-700);
+	--icon-hover-color: var(--progress-bg);
+	--forward-hover-bg: var(--progress-bg);
 	--global-line-height: 1;
 }
 
@@ -128,7 +129,7 @@
 
 			& #forwardButton {
 				right: 20px;
-				bottom: 5px;
+				bottom: 10px;
 			}
 
 			& #previousButton {
@@ -137,12 +138,15 @@
 				top: 12px;
 			}
 
-			&.wrong #forwardButton { color: var(--incorrect); }
+			&.wrong #forwardButton {
+				color: var(--incorrect);
+			}
 
 			&.wrong div#inputContainer > #inputProgress {
 				--progress-border-color: var(--incorrect);
 				color: var(--incorrect);
 				font-size: 12px;
+				border-top: 3px solid var(--incorrect);
 			}
 
 			& div#inputContainer {
@@ -187,9 +191,8 @@
 
 				& > #inputProgress {
 					border-top: 3px solid #0273b9;
-					border-top: 3px solid var(--section-bg);
 					width: 0;
-					transition: width 1.6 ease-in-out;
+					transition: width 0.6s ease-in-out;
 					font-size: 0;
 					text-align: right;
 					font-style: italic;
@@ -242,21 +245,80 @@ h1.acknowledgement {
 /* ================================
 	.contact-form-style2;
 ===================================*/
+@media screen and (max-width: 540px) {
+	#contact-two {
+		--contact-two-columns: 1fr 8fr 1fr;
+		--contact-two-rows: 1fr 120px 1fr;
+		--contact-two-grid-template-areas:
+			"c2top c2top c2top"
+			"c2left c2form c2right"
+			"c2bottom c2bottom c2bottom";
+		--register-grid-template-columns: 20px 1fr clamp(30px, 12vw, 80px);
+		--register-grid-template-rows: 30px 1fr;
+		--register-grid-areas:
+			"c2top c2top c2top"
+			"c2rblank c2rcontent c2rfwd";
+		--register-width: clamp(400px, 90vw, 520px);
+	}
+}
+@media screen and (min-width: 1001px) {
+	#contact-two {
+		--contact-two-columns: 1fr 8fr 1fr;
+		--contact-two-rows: 1fr 120px 1fr;
+		--contact-two-grid-template-areas:
+			"c2top c2top c2top"
+			"c2left c2form c2right"
+			"c2bottom c2bottom c2bottom";
+		--register-width: clamp(400px, 60vw, 900px);
+		--register-grid-template-columns: 20px 1fr clamp(40px, 10vw, 140px);
+		--register-grid-template-rows: 30px 1fr;
+		--register-grid-areas:
+			"c2rblank c2rback c2rfwd"
+			"c2rblank c2rcontent c2rfwd";
+	}
+}
+
+#contact-two {
+	--progress-transition-function: cubic-bezier(0.47, 1.6, 0.36, 1);
+	--input-progress-color: transparent;
+	font-size: unset;
+	--label-bg: var(--red);
+	--input-bg: var(--green);
+	--incorrect: var(--red-700);
+	--icon-color: var(--blue);
+	--contact-section-bg: var(--blue);
+	--contact-section-height: 440px;
+	--register-height: 140px;
+	--register-width: clamp(400px, 80vw, 900px);
+	--register-grid-template-columns: 20px 1fr clamp(40px, 10vw, 140px);
+	--register-grid-template-rows: 30px 1fr;
+	--register-grid-areas:
+		"c2rblank c2rback c2rfwd"
+		"c2rblank c2rcontent c2rfwd";
+	grid-area: fpmaincontact;
+	position: relative;
+	display: grid;
+	grid-template-columns: var(--contact-two-columns);
+	grid-template-rows: var(--contact-two-rows);
+	grid-template-areas: var(--contact-two-grid-template-areas);
+	place-items: center;
+}
 
 .contact-form-style2 {
 	overflow-x: hidden;
-	background: var(--color-theme-primary);
-	font-family: var(--font-stack);
-	height: var(--section-height);
+	background: var(--contact-section-bg);
+	height: var(--contact-section-height);
 
 	& #progress {
+		grid-area: fpmaincontact;
 		position: absolute;
 		z-index: 1;
-		background: var(--progress-bg);
-		min-height: 100%;
+		background: var(--blue-900);
+		height: 100%;
 		left: 0;
-		width: 0;
-		transition: width 0.3s var(--progress-transition-function);
+		top: 0;
+		min-width: 10%;
+		transition: width 0.9s var(--progress-transition-function);
 	} /*  \#progress */
 
 	& .center {
@@ -264,50 +326,122 @@ h1.acknowledgement {
 		z-index: 2;
 
 		& #register {
+			font-size: 10px;
+
+			/*
+		--register-height: 140px;
+		--register-width: clamp(400px, 60vw, 900px);
+		--register-grid-template-columns: 20px 5fr 1fr;
+		--register-grid-template-rows: 20px 1fr;
+		--register-grid-areas:
+			"c2rblank c2rback c2rfwd"
+			"c2rblank c2rcontent c2rfwd";
+*/
+			position: relative;
+			overflow: hidden;
+			grid-area: c2form;
+			display: grid;
+			grid-template-columns: var(--register-grid-template-columns);
+			grid-template-rows: var(--register-grid-template-rows);
+			grid-template-areas: var(--register-grid-areas);
 			background: var(--foreground);
-			box-shadow: var(--box-shadow);
-			height: 140px;
-			width: 50vw;
-			min-width: 400px;
+			box-shadow: var(--contact-form-shadow);
+			height: var(--register-height);
+			width: var(--register-width);
+
+			/* This makes the jitter animation in an invalid input a bit more smooth*/
+			transition:
+				transform 0.1s ease-in-out,
+				-webkit-transform 0.1s ease-in-out;
+
+			&.wrong {
+				--icon-color: var(--incorrect);
+				--input-progress-color: var(--incorrect);
+
+			}
 
 			& #inputContainer {
-				height: 100%;
+				grid-area: c2rcontent;
 				display: grid;
-
-				grid-template-columns: 10% 1fr 60px;
-				grid-template-rows: 1fr 5fr 3fr;
+				grid-template-rows: 60px 1fr;
 				grid-template-areas:
-					"inputgap inputback inputforward"
-					"inputgap inputlabel inputforward"
-					"inputgap inputprogress inputforward";
+					"c2icfield"
+					"c2ichelper";
+				opacity: 0;
+				transition: opacity 0.3s ease-in-out;
+
+				& > label {
+					color: var(--field-focus-text-color);
+					grid-area: c2icfield;
+					transition: all 0.5s var(--transition-timing-function);
+					padding-left: 4px;
+					align-self: flex-end;
+				}
+				& > input {
+					background: transparent;
+					color: var(--field-focus-text-color);
+
+					grid-area: c2icfield;
+					border: none;
+					box-shadow: none;
+					border-radius: 0;
+					outline: 0;
+					max-height: 5rem;
+					transform: translate(0, 0.3rem);
+				}
+
+				& input:valid + label {
+					font-size: 1.4rem;
+					transform: translate(1.4rem, -3.5rem);
+					transition: all 0.5s var(--transition-timing-function);
+				}
+
+				& #inputProgress {
+					width: 0;
+					transition: width 0.6s ease-in-out;
+					grid-area: c2ichelper;
+					font-size: 1rem;
+					text-align: right;
+					font-style: italic;
+					color: var(--input-progress-color);
+					border-top: 4px solid var(--icon-color);
+					margin-top: -6px;
+
+				}
 			}
 
 			& #previousButton,
 			& #forwardButton {
 				color: var(--icon-color);
-				&:hover {
-					color: inherit;
-				}
+				&:hover { color: inherit; }
 
-				&:focus {
-					color: inherit;
-				}
+				&:focus { color: inherit; }
 
-				&:active {
-					color: inherit;
-				}
+				&:active { color: inherit; }
 			}
 
 			& #previousButton {
-				grid-area: inputback;
+				grid-area: c2rback;
+				align-self: flex-end;
 			}
 
 			& #forwardButton {
-				grid-area: inputforward;
+				--fwd-button-size: 6rem;
+				top: calc((140px - var(--fwd-button-size)) / 2);
+				position: absolute;
+				font-size: var(--fwd-button-size);
+				grid-area: c2rfwd;
+				transform: translateY(16px);
+
+				&:active {
+					text-shadow: 2px 2px 3px var(--gray-700);
+					transform: translateY(18px);
+					transition: all 0.3s ease;
+				}
+
 			}
 
 			&.close {
-
 				& #previousButton,
 				& #forwardButton {
 					color: inherit;
@@ -322,9 +456,6 @@ h1.acknowledgement {
 					color: var(--icon-color);
 				}
 
-				& #forwardButton {
-					color: inherit;
-				}
 			}
 
 		}

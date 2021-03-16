@@ -42,23 +42,3 @@ if ( ! wp_rig()->is_primary_nav_menu_active() ) {
 <!-- KEEP THIS </nav>-- it is needed, the Walker Class isn't -->
 </nav>
 
-
-<aside id="projectMenuContainer" style="display: none;">
-<?php
-/**
- * Sample
- */
-wp_nav_menu( array(
-	'walker'     => new Aside_Walker_Nav_Menu(),
-	'menu'       => 'aside-menu',
-	'menu_class' => 'EXAMPLE_MENU_CLASS',
-	'menu_id'    => 'EXAMPLE_MENU_ID',
-	'container'  => false,
-	'items_wrap' => '%3$s',
-	'depth'      => 0,
-) );
-
-?>
-</aside>
-
-<!-- #projects-navigation -->

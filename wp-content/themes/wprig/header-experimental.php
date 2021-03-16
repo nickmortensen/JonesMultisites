@@ -49,13 +49,6 @@ namespace WP_Rig\WP_Rig;
 
 STY;
 
-// echo '<pre style="grid-area: header; z-index: 5;">';
-// print_r($headers);
-
-// print_r($random_integer);
-// print_r( $headers[$random_integer][0] . $headers[$random_integer][1] . '-1000x750.jpg' );
-// echo '</pre>';
-
 	?>
 
 	<?php wp_head(); ?>
@@ -81,53 +74,23 @@ STY;
 		--frontpage-header-blendmode: multiply;
 	}
 
-	<?php if ( 'development' === ENVIRONMENT ) : ?>
-		.developer {
-			grid-area: dev;
-			display: flex;
-			justify-content: space-around;
-			align-items: center;
-			background: var(--indigo-700);
-		}
-	<?php endif; ?>
+
 </style>
 
 
 <?php
-	// if ( 'development' === ENVIRONMENT ) {
-	// 	get_template_part( 'template-parts/header/navigation' );
-	// }
-	?>
-<!-- <?php //get_template_part( 'template-parts/header/custom_header' ); ?> -->
+if ( is_front_page() ) {
+	$header_class = 'masthead frontpage';
+	get_template_part( 'template-parts/header/aside_menu' );
+} else {
+	$header_class = 'masthead';
+}
+?>
+<header data-gridarea="header" class="<?= $header_class; ?>" id="main-header" role="banner">
 
-
-
-<header data-gridarea="header" data-idr="header" class="banner" id="main-header" role="banner">
 	<?php get_template_part( 'template-parts/header/navigation' ); ?>
 	<?php get_template_part( 'template-parts/header/branding' ); ?>
-
-	<!------------------------------------------------
-	------ Navigation Buttons FLOAT ------------------
-	------------------------------------------------->
-	<div data-idr="floating-nav-buttons" class="floating-navigation-buttons" style="--flexflow: column nowrap;">
-		<a href="#frontpage-email-cta" title="Connect with us!" id="sidemenu-mail-button" class="material-icons floating-btn"> mail_outline </a>
-		<a id="sidemenu-search-button" class="material-icons floating-btn" title="Search the site." > search </a>
-		<a id="sidemenu-toggle-button" title="Open/Close side navigation menu" class="material-icons floating-btn"> menu </a>
-
-		<!---------------- DEVELOPMENT ONLY NAV BUTTONS ------------------------>
-		<?php
-		if ( 'development' === ENVIRONMENT ) {
-			wp_rig()->print_styles( 'wp-rig-developer' );
-			get_template_part( 'template-parts/developer/scrolltotop' ); // Scroll to top Button Currently Does Not work.
-			get_template_part( 'template-parts/developer/screenwidth' ); // shows the screenwidth at the bottom.
-		}
-		?>
-		<!---------------- END DEVELOPMENT ONLY ------------------------>
-	</div>
-	<!------------------------------------------------
-	------ END Navigation Buttons ------------------
-	------------------------------------------------->
-
+	<?php get_template_part( 'template-parts/header/floating-nav-buttons' ); ?>
 
 </header>
 

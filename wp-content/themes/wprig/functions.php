@@ -74,9 +74,10 @@ call_user_func( 'WP_Rig\WP_Rig\wp_rig' );
  * @param bool   $wrap_with_pre_tag  Should we wrap this in an html pre tag? Default is true.
  */
 function show( $content, $wrap_with_pre_tag = true ) {
-	echo '<pre>';
-	print_r( $content );
-	echo '</pre>';
-
+	if ( 'development' === ENVIRONMENT ) {
+		echo '<pre>';
+		print_r( $content );
+		echo '</pre>';
+	}
 }
 

@@ -10,26 +10,26 @@ namespace WP_Rig\WP_Rig;
 wp_rig()->print_styles( 'wp-rig-contact-form' );
 ?>
 
-
 <!-- <section data-scrollto="contact" id="contact-form" class="frontpage"> -->
-<section data-scrollto="contact" id="contact" class="frontpage contact-form-style1">
+<section data-scrollto="contact" id="contact-two" class="frontpage contact-form-style2">
 	<!-- <form style="padding-left: 40%;" action="get" name="experimentalForm" id="experimentalForm"></form> -->
 	<form action="get" name="experimentalForm" id="experimentalForm"></form>
 	<div id="progress"></div>
 
 	<div class="center">
-		<div id="register" class="">
-			<span id="previousButton" class="material-icons">person</span>
-			<span id="forwardButton" class="material-icons" title="advance to the next form field" >arrow_forward</span>
-			<div id="inputContainer">
-				<input data-identifier="" id="inputField" required />
-				<label for="inputField" id="inputLabel"></label>
-				<div id="inputProgress" class="underline"> </div>
+		<div data-gridarea="form" id="register" class="">
+			<span data-gridarea="c2rback" id="previousButton" class="material-icons">person</span>
+			<span data-gridarea="c2fwd" id="forwardButton" class="material-icons" title="advance to the next form field" >arrow_forward</span>
+			<div data-gridarea="c2rcontent" id="inputContainer">
+				<input data-gridarea="" data-identifier="" id="inputField" required />
+				<label data-gridarea="" for="inputField" id="inputLabel"></label>
+				<div data-gridarea="" id="inputProgress" class="underline"> </div>
 			</div><!-- end div#inputcontainer -->
 		</div><!-- end div#register -->
 
 	</div><!-- end div.center -->
 </section>
+
 <script>
 
 const material = [ 'arrow_forward', 'arrow_backward', 'person', 'send' ];
@@ -46,6 +46,9 @@ const sheetInfo = {
 	sheetUrl: '',
 };
 
+/**
+ * Initialize an empty forData array to add to as we advance through the form.
+ */
 let formData = [];
 let questions = [
 	{
@@ -145,7 +148,7 @@ let onComplete = function( formData ) {
 	// Instantiate a FormData Object
 	// @link https://developer.mozilla.org/en-US/docs/Web/API/FormData
 	// @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
-	let newData    = new FormData();
+	let newData = new FormData();
 
 	// Place newly collected data into the newData object.
 	formData.forEach( datum => newData.append( datum[0], datum[1] ) );
@@ -214,7 +217,7 @@ let onComplete = function( formData ) {
 
 	// Go back a field if you hit the back arrow.
 	previousButton.addEventListener( 'click', function( e ) {
-		// Gaurd clause - don't do anything if we are still on the first question and it is clicked -- ( though it should not be there anyway )
+		// Back arrow should not exist on the initial form field (it would have a 'person' icon), but if it somehow should then we just return
 		if ( position === 0 ) {
 			return;
 		}
@@ -281,99 +284,126 @@ let onComplete = function( formData ) {
 		showCurrent();
 	}
 
-function makeResponseObject( formData ) {
-	return Object.fromEntries( formData );
-}
-
-// Validate what the people have inputted
-function validate() {
-
-	// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
-	let validateCore = function() {
-		return inputField.value.match( questions[position].attributes.pattern || /.+/ );
+	/**
+	 * Create Object with field names as key and added responses as the values using the built in FormData object.
+	 */
+	function makeResponseObject( formData ) {
+		return Object.fromEntries( formData );
 	}
 
-	// If the question object does not have a validate attribute (none do), then use the validateCore function.
-	if ( ! questions[position].validate ) {
-		questions[position].validate = validateCore;
+	/**
+	 * As it is entered, add the inputted information to the FormData object
+	 */
+	function addData() {
+		let {name, value} = inputField;
+		formData.push([name, value]);
+		console.log(formData, 'is the current formData');
 	}
 
-	// check if the pattern matches
-	if ( ! questions[position].validate() ) {
-		wrong( inputField.focus.bind( inputField ) );
-		let spanInvalid       = inputProgress;
-		spanInvalid.innerText = `Please input ${questions[position].attributes.title}`;
-		spanInvalid.classList.remove( 'hide' );
-		spanInvalid.classList.add( 'opacity-full' );
-	}
+	// Validate what the people have inputted
+	function validate() {
 
-	else ok( function() {
-
-		questions[position].answer = inputField.value;
-		++position;
-
-		// if there is a new question, hide current and load next
-		if ( questions[position] ) {
-			addData();
-			hideCurrent( putQuestion );
-		} else {
-			hideCurrent( function() {
-				// remove the box if there is no next question
-				register.className   = 'close';
-				progress.style.width = '100%';
-				addData();
-				onComplete( formData );
-			})
+		// @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
+		let validateCore = function() {
+			return inputField.value.match( questions[position].attributes.pattern || /.+/ );
 		}
-	})
 
-} //end validate()
+		// If the question object does not have a validate attribute (none do), then use the validateCore function.
+		if ( ! questions[position].validate ) {
+			questions[position].validate = validateCore;
+		}
 
-function addData() {
-	let {name, value} = inputField;
-	formData.push([name, value]);
-	console.log(formData, 'is the current formData');
-}
+		// check if the pattern matches
+		if ( ! questions[position].validate() ) {
+			wrong( inputField.focus.bind( inputField ) );
+			let spanInvalid       = inputProgress;
+			spanInvalid.innerText = `Please input ${questions[position].attributes.title}`;
+			spanInvalid.classList.remove( 'hide' );
+			spanInvalid.classList.add( 'opacity-full' );
+		}
 
+		else ok( function() {
 
-// Helpers
-function hideCurrent( callback ) {
-	inputContainer.style.opacity   = 0;
-	inputLabel.style.marginLeft    = 0;
-	inputProgress.style.width      = 0;
-	inputProgress.style.transition = 'none';
-	inputContainer.style.border    = null;
-	setTimeout( callback, waitTime );
-}
+			questions[position].answer = inputField.value;
+			++position;
 
-function showCurrent( callback ) {
-	inputContainer.style.opacity   = 1;
-	inputProgress.style.transition = '';
-	inputProgress.style.width      = '100%';
-	setTimeout( callback, waitTime );
-}
+			// if there is a new question, hide current and load next
+			if ( questions[position] ) {
+				addData();
+				hideCurrent( putQuestion );
+			} else {
+				hideCurrent( function() {
+					// remove the box if there is no next question
+					register.className   = 'close';
+					progress.style.width = '100%';
+					addData();
+					onComplete( formData );
+				})
+			}
+		})
 
-function transform( x, y ) {
-	register.style.transform = `translate(${x}px, ${y}px)`;
-}
+	} //end validate()
 
-function ok( callback, transformTime = 100 ) {
-	register.className = '';
-	setTimeout( transform, transformTime * 0, 0, 10 );
-	setTimeout( transform, transformTime * 1, 0, 0 );
-	setTimeout( callback, transformTime * 2 );
-}
-
-function wrong( callback, transformTime = 100 ) {
-	register.className = 'wrong';
-
-	// shaking motion
-	for ( var i = 0; i < 6; i++ ) {
-		setTimeout( transform, transformTime * i, ( i % 2 * 2 - 1 ) * 20, 0 );
-		setTimeout( transform, transformTime * 6, 0, 0 );
-		setTimeout( callback, transformTime * 7 );
+	/**
+	 * Hide current field prior to advancing to the next
+	 */
+	function hideCurrent( callback ) {
+		inputContainer.style.opacity   = 0;
+		inputLabel.style.marginLeft    = 0;
+		inputProgress.style.width      = 0;
+		inputProgress.style.transition = 'none';
+		inputContainer.style.border    = null;
+		setTimeout( callback, waitTime );
 	}
-}
+
+	/**
+	 * Show the new field that has yet to have data inputted into it.
+	 * Has a sort of fancy line drawn from left to right, courtesy of the inputProgress div's top border
+	 */
+	function showCurrent( callback ) {
+		inputContainer.style.opacity   = 1;
+		inputProgress.style.transition = '';
+		inputProgress.style.width      = '100%';
+		setTimeout( callback, waitTime );
+	}
+
+	/**
+	 * Basis for the little wiggle we see when a field is advanced AND when the inputted data within the field is invalid
+	 */
+	function transform( x, y ) {
+		register.style.transform = `translate(${x}px, ${y}px)`;
+	}
+
+	/**
+	 * On OK, remove any class name added to the form (.wrong will be added when the inputted data isn't validated)
+	 */
+	function ok( callback, transformTime = 100 ) {
+		register.className = '';
+		setTimeout( transform, transformTime * 0, 0, 10 );
+		setTimeout( transform, transformTime * 1, 0, 0 );
+		setTimeout( callback, transformTime * 2 );
+	}
+
+	/**
+	 * On wrong, add class of 'wrong' to the form and wiggle back and forth
+	 * 'wrong' class reveals helper text in red and shifts the line under the input to red.
+	 */
+	function wrong( callback, transformTime = 100 ) {
+		register.className = 'wrong';
+
+		// shaking motion
+		for ( var i = 0; i < 6; i++ ) {
+			setTimeout( transform, transformTime * i, ( i % 2 * 2 - 1 ) * 20, 0 );
+			setTimeout( transform, transformTime * 6, 0, 0 );
+			setTimeout( callback, transformTime * 7 );
+		}
+	}
+
+	/**
+	 * @todo Get the city and the state based on the zip code and add to the form data
+	 *
+	 * @note We COULD just do this in the Google Apps Script function?
+	 */
 
 
 }( questions, onComplete ))

@@ -90,6 +90,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ], 10 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 12 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'add_style_overrides' ], 15 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_sheetrock' ], 16 );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
 		add_filter( 'wp_resource_hints', [ $this, 'filter_resource_hints' ], 10, 2 );
@@ -297,43 +298,50 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		$css_files = [
 			// Only need to load this on certain pages, but how is a fella supposed to do that?
-			'wp-rig-global'         => [
+			'wp-rig-global'       => [
 				'file'   => 'global.min.css',
 				'global' => true,
 			],
-			'wp-rig-front-page'     => [
+			'wp-rig-safety'       => [
+				'file'             => 'safety.min.css',
+				'preload_callback' => function() {
+					global $template;
+					return 'front-page.php' === basename( $template );
+				},
+			],
+			'wp-rig-front-page'   => [
 				'file'             => 'front-page.min.css',
 				'preload_callback' => function() {
 					global $template;
 					return 'front-page.php' === basename( $template );
 				},
 			],
-			'wp-rig-side-hamburger' => [
-				'file'   => 'side_hamburger_menu.min.css',
+			'wp-sidebar-menus'    => [
+				'file'   => 'sidebar_menus.min.css',
 				'global' => true,
 			],
-			'wp-rig-contact-form'   => [
+			'wp-rig-contact-form' => [
 				'file'             => 'contact.min.css',
 				'preload_callback' => '__return_true',
 			],
-			'wp-rig-comments'       => [
+			'wp-rig-comments'     => [
 				'file'             => 'comments.min.css',
 				'preload_callback' => function() {
 					return ! post_password_required() && is_singular() && ( comments_open() || get_comments_number() );
 				},
 			],
-			'wp-rig-content'        => [
+			'wp-rig-content'      => [
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
 			],
-			'wp-rig-taxonomy'       => [
+			'wp-rig-taxonomy'     => [
 				'file'             => 'taxonomies.min.css',
 				'preload_callback' => function() {
 					global $template;
 					return 'taxonomy-signtype.php' === basename( $template );
 				},
 			],
-			'wp-rig-project'        => [
+			'wp-rig-project'      => [
 				'file'             => 'project.min.css',
 				'preload_callback' => function() {
 					global $template;
@@ -341,7 +349,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				},
 			],
 			// Preload only on project post types using the single-project.php template.
-			'wp-rig-flickity'       => [
+			'wp-rig-flickity'     => [
 				'file'             => 'flickity.min.css',
 				'preload_callback' => function() {
 					global $template;
@@ -349,7 +357,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				},
 			],
 			// Preload only in the development environment.
-			'wp-rig-developer'      => [
+			'wp-rig-developer'    => [
 				'file'             => 'developer.min.css',
 				'preload_callback' => function() {
 					return 'development' === ENVIRONMENT;
@@ -551,12 +559,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Add material design javascript.
 	 */
-	public function enqueue_material_scripts() {
-		$script_uri   = 'https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js';
-		$dependencies = []; // location: wp-admin/js/inline-edit-post.js.
+	public function enqueue_sheetrock() {
+		$handle       = 'sheetrock';
+		$script_uri   = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-sheetrock/1.1.4/dist/sheetrock.min.js';
+		$dependencies = [ 'wp-rig-flickity' ]; // location: wp-admin/js/inline-edit-post.js.
 		$version      = '9';
-		$footer       = true;
-		wp_enqueue_script( 'material-design-javascript', $script_uri, $dependencies, $version, $footer );
+		$footer       = false;
+
+		wp_enqueue_script( $handle, $script_uri, $dependencies, $version, $footer );
 	}
 
 	/**
@@ -579,9 +589,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function add_style_overrides() {
 		$handle       = 'overrides';
-		$filepath     = get_theme_file_path( '/overrides.min.css' );
-		$fileurl      = get_theme_file_uri( '/overrides.min.css' );
-		$dependencies = [ 'baseline'];
+		$filepath     = get_theme_file_path( '/assets/css/overrides.min.css' );
+		$fileurl      = get_theme_file_uri( '/assets/css/overrides.min.css' );
+		$dependencies = [ 'baseline' ];
 		$version      = wp_rig()->get_asset_version( $filepath );
 		wp_enqueue_style( $handle, $fileurl, $dependencies, $version, 'all' );
 	}

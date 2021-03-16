@@ -20,6 +20,7 @@ if ( is_home() ) {
 ?>
 	<main data-gridarea="main" class="frontpage">
 
+	<!-- <?php //get_template_part( 'template-parts/frontpage/safety' ); ?> -->
 	<?php get_template_part( 'template-parts/frontpageoptions/projectcards' ); ?>
 	<?php get_template_part( 'template-parts/frontpageoptions/contact' ); ?>
 	<?php get_template_part( 'template-parts/frontpageoptions/locations' ); ?>

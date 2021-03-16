@@ -59,12 +59,15 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function template_tags() : array {
 		return array(
 			'is_primary_nav_menu_active'      => [ $this, 'is_primary_nav_menu_active' ],
-			'display_primary_nav_menu'        => [ $this, 'display_primary_nav_menu' ],
+			'is_aside_nav_menu_active'        => [ $this, 'is_aside_nav_menu_active' ],
 			'is_footer_one_nav_menu_active'   => [ $this, 'is_footer_one_nav_menu_active' ],
-			'display_footer_one_nav_menu'     => [ $this, 'display_footer_one_nav_menu' ],
 			'is_footer_two_nav_menu_active'   => [ $this, 'is_footer_two_nav_menu_active' ],
-			'display_footer_two_nav_menu'     => [ $this, 'display_footer_two_nav_menu' ],
 			'is_footer_three_nav_menu_active' => [ $this, 'is_footer_three_nav_menu_active' ],
+
+			'display_primary_nav_menu'        => [ $this, 'display_primary_nav_menu' ],
+			'display_aside_nav_menu'          => [ $this, 'display_aside_nav_menu' ],
+			'display_footer_one_nav_menu'     => [ $this, 'display_footer_one_nav_menu' ],
+			'display_footer_two_nav_menu'     => [ $this, 'display_footer_two_nav_menu' ],
 			'display_footer_three_nav_menu'   => [ $this, 'display_footer_three_nav_menu' ],
 		);
 	}

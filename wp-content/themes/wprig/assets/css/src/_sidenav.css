@@ -22,7 +22,6 @@
 		--sidemenu-width: 320px;
 	}
 }
-
 @media screen and (min-width: 600px) {
 	:root {
 		--flexflow: row nowrap;
@@ -107,11 +106,13 @@ aside#sidemenu {
 .floating-navigation-buttons {
 	z-index: 1000;
 	position: fixed;
-	top: 15px;
-	right: 15px;
+	top: 30px;
+	right: 0;
 	display: flex;
 	flex-flow: var(--flexflow);
-	min-width: 220px;
-	justify-content: center;
+	width: auto;
+	justify-content: flex-start;
 	align-items: flex-end;
+	border-left: 2px solid var(--gray-300);
+	height: 100%;
 }

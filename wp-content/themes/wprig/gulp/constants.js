@@ -89,7 +89,7 @@ const paths = {
 			// Ignore editor source css.
 			`!${ assetsDir }/css/src/editor/**/*.css`,
 			`${ assetsDir }/css/*.min.css`,
-			`${ rootPath }/overrides.min.css`,
+			`${ assetsDir }/css/src/overrides.css`,
 		],
 		srcDir: `${ assetsDir }/css/src`,
 		dest: `${ assetsDir }/css`,

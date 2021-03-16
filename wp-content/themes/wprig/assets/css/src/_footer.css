@@ -690,6 +690,114 @@ div.location-select-element {
 }
 
 /*#endregion*/
+
+/*--------------------------------------------------------------
+Footer Menus
+--------------------------------------------------------------*/
+footer > * {
+	margin: 0.3rem 0.6rem;
+	align-self: flex-start;
+	padding-top: 2rem;
+}
+
+.copyright > div {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.copyright svg {
+	padding-right: 15px;
+	max-width: 30px;
+}
+
+@media screen and (max-width: 667px) {
+	#footer-social-media {
+		--social-media-icon-container-width: 40px;
+	}
+}
+@media screen and (min-width: 668px) {
+	#footer-social-media {
+		--social-media-icon-container-width: 60px;
+	}
+}
+
+.social-media-icon-container {
+	--foreground: var(--blue);
+	--background: var(--gray-200);
+	display: inline-block;
+	max-width: var(--social-media-icon-container-width);
+
+	transition: all 0.3s linear;
+	&:hover {
+		transform: scale(1.2);
+		transition: transform 0.4s var(--transition-timing-function);
+	}
+
+	&:not(:first-of-type) {
+		margin-left: calc(var(--social-media-icon-container-width) / 4);
+	}
+}
+
+a > svg.social-media-icon {
+
+	& circle { fill: var(--background); }
+	& :is(polygon, rect, path) {
+		fill: var(--foreground);
+		transition: all 0.3s linear;
+	}
+}
+
+a:hover > svg.social-media-icon {
+	--foreground: var(--gray-200);
+	--background: var(--blue);
+
+	& > :is(circle, polygon, rect, path) { transition: fill 0.6s ease; }
+
+}
+
+
+/*===========================================
+  =========== FOOTER NAV MENUS ==============
+  ========================================= */
+.jones-footer-nav {
+	font-family: var(--highlight-font-family);
+	font-size: var(--footer-nav-font-size);
+	position: relative;
+
+	& span {
+		font-size: inherit;
+		display: block;
+		margin-top: 0.25rem;
+
+		& > a {
+			font-weight: var(--medium);
+			letter-spacing: 0.05em;
+
+			&:hover,
+			&:active {
+				color: var(--color-link-active);
+				text-decoration: underline;
+			}
+
+			&:visited {
+				color: var(--color-link);
+			}
+		}
+	}
+
+	/* This is the menu name at the top of the menu items */
+	&::before {
+		border-bottom: 1px solid var(--text-color);
+		padding-bottom: 2px;
+		position: absolute;
+		top: -1px;
+		font-size: calc(var(--footer-nav-font-size) * 1.05);
+		content: attr(aria-label);
+	}
+}
+
 /*--------------------------------------------------------------
 END Footer
 --------------------------------------------------------------*/

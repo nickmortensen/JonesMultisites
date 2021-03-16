@@ -14,7 +14,7 @@
       "certPath": "/Applications/MAMP/Library/OpenSSL/certs/jonessign.io.crt"
 	},
 	"debug": {
-	  "styles": false,
+	  "styles": true,
 	  "scripts": true,
 	  "phpcs": false
 	},

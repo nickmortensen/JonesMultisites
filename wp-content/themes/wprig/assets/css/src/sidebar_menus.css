@@ -16,6 +16,7 @@
 }
 
 nav#side-hamburger-nav {
+	--hamburger-menu-width-on-hover: 480px;
 	display: block;
 	z-index: 140;
 	position: fixed;
@@ -47,7 +48,7 @@ nav#side-hamburger-nav {
 
 	&:hover::before {
 		width: calc(100 + var(--hamburger-menu-width));
-		width: 240px;
+		width: var(--hamburger-menu-width-on-hover, 240px);
 		transition: width 0.4s var(--alternate-bezier-transition);
 	}
 
@@ -65,7 +66,8 @@ nav#side-hamburger-nav {
 
 		& li {
 			font-size: 14px;
-			width: calc(var(--hamburger-menu-width) * 3);
+			font-size: var(--fontsize-s);
+			width: calc(var(--hamburger-menu-width-on-hover) - 100px);
 			height: 40px;
 			cursor: pointer;
 			position: relative;
@@ -75,7 +77,7 @@ nav#side-hamburger-nav {
 
 			& a {
 				min-width: 100%;
-				color: var(--has-dark-bg);
+				color: var(--background);
 				position: relative;
 				z-index: 0;
 				opacity: 0;
@@ -89,18 +91,18 @@ nav#side-hamburger-nav {
 				&:visited,
 				&:focus {
 					background-color: transparent;
-					color: var(--has-dark-bg);
+					color: var(--background);
 				}
 			}
 
 			&:hover::before {
-				background-color: var(--has-dark-bg);
+				background-color: var(--background);
 			}
 
 			&.active::before,
 			&:hover::before {
 				transform: scale(1.5) translate3d(0, 0, 0);
-				background-color: var(--has-dark-bg);
+				background-color: var(--background);
 			}
 
 			/* dots that precede the links */
@@ -114,7 +116,7 @@ nav#side-hamburger-nav {
 				left: 26px;
 				top: 16px;
 				border-radius: 50%;
-				border: 2px solid var(--has-dark-bg);
+				border: 2px solid var(--background);
 				transform: scale(1) translate3d(0, 0, 0);
 				transition: all 0.2s ease-in-out;
 			}
@@ -185,7 +187,7 @@ nav#side-hamburger-nav:hover li a {
 		width: 24px;
 		height: 4px;
 		background: var(--hamburger-menu-background-color-one);
-		background: var(--has-dark-bg);
+		background: var(--background);
 		transition: all 0.3s;
 	}
 
@@ -204,3 +206,104 @@ nav#side-hamburger-nav:hover li a {
 	}
 
 } /* \.nav-burger */
+
+.make-text-transparent {
+	color: var(--blue);
+	transition: color 0.1s linear;
+}
+
+/*
+==== Sidebar shows o
+*/
+
+.sidebar-projects {
+	position: absolute;
+	width: 460px;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background: var(--color-theme-primary);
+	transform: translateX(-100%);
+	transition: transform 0.9s linear;
+	z-index: 3;
+	&.show-sidebar-menu {
+		transform: translateX(0);
+		transition: transform 0.9s linear;
+	}
+	& > #sidemenu-close {
+		transform-origin: center center;
+		position: absolute;
+		right: 2px;
+		color: var(--foreground);
+		font-size: clamp(22px, 4vw, 90px);
+		transform: rotateZ(0);
+		transition: transform 0.9s linear;
+
+		&:hover {
+			transform: rotateZ(270deg);
+			transition: transform 0.8s var(--transition-timing-function);
+		}
+	}
+	& > .menu-projects-container {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		margin-top: 50vh;
+		transform: translateY(-50%);
+	}
+
+
+	& a {
+		color: var(--foreground);
+		font-size: clamp(22px, 2.5vw, 40px);
+
+		&:hover,
+		&:focus,
+		&:active,
+		&:visited {
+			color: var(--foreground);
+		}
+
+	}
+}
+
+@keyframes sideMenuItem {
+	from { transform: translateX(-100%); }
+	to { transform: translateX(0); }
+}
+
+
+
+.menu-item-object-project {
+	transform: translateX(-100%);
+
+	& > a {
+		font-size: var(--fontsize-s);
+		margin-top: 1vw;
+		margin-left: 4vw;
+	}
+}
+
+.show-sidebar-menu .menu-item-object-project {
+	animation-name: sideMenuItem;
+	animation-duration: 0.9s;
+	animation-fill-mode: forwards;
+	animation-timing-function: var(--transition-timing-function);
+}
+
+.menu-item-object-project {
+
+	& > a {
+		font-size: var(--fontsize-s);
+		margin-top: 1vw;
+		margin-left: 4vw;
+	}
+
+
+}
+/* stylelint-disable */
+@for $i from 1 to 12 {
+	nav.menu-projects-container > span:nth-of-type($(i)n) {
+		animation-delay: calc(($(i)s * 0.05) + 0.2s);
+	}
+}
