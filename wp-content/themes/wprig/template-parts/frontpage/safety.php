@@ -7,6 +7,7 @@
 
 namespace WP_Rig\WP_Rig;
 
+[ 'requested_by' => $request_from ] = $args;
 wp_rig()->print_styles( 'wp-rig-safety' );
 
 ?>
@@ -51,11 +52,23 @@ wp_rig()->print_styles( 'wp-rig-safety' );
 		color: var(--foreground);
 		transition: all 0.3s ease;
 	}
+
+	#shownOnSuccess {
+		opacity: 0.2;
+		transition: opacity 0.4s ease;
+		color: var(--foreground);
+	}
+	.fadeIn {
+		opacity: 1;
+		transition: opacity 0.4s ease;
+
+	}
 </style>
 
-<section data-gridarea="safetyformplusviz" id="safety">
+<section data-gridarea="safetyformplusviz" id="safety" class="<?= $request_from; ?>">
 	<div data-gridarea="safetyform" class="safety-form-container">
-		<form class="horizontal-form" action="" name="daySinceTimeLostByLocation">
+
+		<form class="horizontal-form" action="" id="daySinceTimeLostByLocation" name="daySinceTimeLostByLocation">
 			<div id="date-container" class="formfield">
 				<label for="date-last-incident">Last Incident</label>
 				<input
@@ -85,13 +98,14 @@ wp_rig()->print_styles( 'wp-rig-safety' );
 			</div>
 		</form>
 	</div><!-- .safety-form-container -->
+			<h2 id="shownOnSuccess">HERE</h2>
 	<div data-gridarea="safetyviz" id="safetyVisualizationBlock" class="safety-visualization">
 
 	</div><!-- end div.safety-visualization -->
 </section>
 
 	<script>
-
+const shownOnSuccess = document.querySelector('#shownOnSuccess');
 	const safetyVisualizationBlock = document.querySelector( '#safetyVisualizationBlock' );
 
 	const facilities = {
@@ -113,7 +127,7 @@ wp_rig()->print_styles( 'wp-rig-safety' );
 
 	let injuryData = [];
 
-	const { webApp, getDataURL } = spreadsheet;
+	const { webApp, getDataURL, publishedURL } = spreadsheet;
 
 	let timeLossForm                      = document.forms.daySinceTimeLostByLocation;
 	let injuryFormData                    = new FormData( timeLossForm );
@@ -153,43 +167,47 @@ wp_rig()->print_styles( 'wp-rig-safety' );
 	};
 
 
-// let onComplete = formData => {
-
-// }
-
 /**
  * Submit the data from the form to a Google Spreadsheet on click of the submit button;
  */
 timeLossForm.addEventListener('submit', e => {
+
 	e.preventDefault()
-	fetch( webApp, { method: 'POST', body: formData } )
+	fetch( webApp, { method: 'POST', body: new FormData(timeLossForm) } )
 		.then( response => console.log( 'Success!', response ) )
-		.catch( error => console.error( 'Error!', error.message ) )
+		.catch( error => console.error( 'Error!', error.message ) );
 })
 
+const getPercentageOfLargest = ( largest, current ) => Math.floor( (current / largest) * 100 );
 
 function individualLocationHTML( injuryDetail ) {
-	const { name, sinceInjury: { days, hours, minutes } , minutes: totalminutes } = injuryDetail;
+	const { name, sinceInjury: { days, hours, minutes }, minutes: totalminutes, percentage } = injuryDetail;
 	return `
-		<div data-msli="${totalminutes}" class="single-location-injury-time-elapsed">
-			<span class="light-text">${name}</span>
-			<span class="light-text">${days} DAYS ${hours} HOURS ${minutes} MINUTES</span>
+		<div style="background: var(--orange); width: ${percentage}%; border: 2px solid var(--yellow);" data-msli="${totalminutes}" data-percentage="${percentage}" data-joneslocationname="${name}" class="single-location-injury-time-elapsed">
+			<span class="light-text">${name} = ${days} DAYS </span>
 		</div>`;
 }
 
-let safetyLocations = [];
+function onSuccess() {
+	const shownOnSuccess = document.querySelector('#shownOnSuccess');
+	shownOnSuccess.textContent = 'SENT';
+}
 
 var publishInjuryData = function( error, options, response ) {
 	let injuryDetails           = []; // Empty array to add information into
 	let injuriesSpreadsheetData = []; // Empty array to add information into
 	if ( ! error ) {
 		let rows = response.rows.slice(1); // lose the header row from the spreadsheet
+
 		/* Take the most recent injury from each location */
 		// Reversing the array ensures we only select the most recent entry for a given city/location within the spreadsheet
 		rows.forEach( row => injuriesSpreadsheetData.push( row.cellsArray.reverse() ) );
-
+		injuriesSpreadsheetData = injuriesSpreadsheetData; // only need the last eight
+		// console.table(injuriesSpreadsheetData);
 		const injuriesObject = Object.fromEntries( injuriesSpreadsheetData );
+		console.table(injuriesObject);
 		const abbreviates    = Object.keys( facilities );
+
 		abbreviates.forEach( abbrev => {
 			let fullname          = facilities[ abbrev.toString() ];
 			let lastInjury        = injuriesObject[ abbrev.toString() ];
@@ -199,7 +217,12 @@ var publishInjuryData = function( error, options, response ) {
 				sinceInjury: convertLastIncident( lastInjury ),
 				minutes: intervalInMinutes,
 			});
-		})
+		});
+		// Sort the Objects in the injuryDetails array by the quantity of minutes since last reportable injury Largest to smallest
+		injuryDetails = injuryDetails.sort( (a, b) => (b.minutes > a.minutes ) ? 1 : -1 );
+		let largest = injuryDetails[0].minutes;
+		// add a percentage key/value pair to each injury details object
+		injuryDetails.forEach( detail => detail.percentage = getPercentageOfLargest(largest, detail.minutes) );
 	}
 
 	let arrayOfInjuryHTML = [];

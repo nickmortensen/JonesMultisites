@@ -4,3 +4,143 @@
  *
 */
 
+:root {
+	--footer-height: 240px;
+}
+
+section.off-canvas {
+	position: fixed;
+	z-index: 4;
+	top: 88px;
+	left: 0;
+	height: 100%;
+	width: calc(50vw - 80px);
+	background: var(--frosted);
+	border-right: var(--standard-border);
+	backdrop-filter: blur(30px);
+	transform: translateX(-100%);
+
+	@media (--slim) {
+		width: 100vw;
+	}
+	@media (--wide) {
+		top: 0;
+	}
+}
+
+.sidebar,
+.off-canvas {
+	transition: transform 0.7s 0.3s ease-in;
+	overflow: hidden;
+}
+
+
+.sidebar-open {
+	& .sidebar,
+	& .off-canvas {
+		--transition-delay: 0.6s;
+		--transition-duration: 0.9s;
+		--transition-property: transform;
+		transition: var(--transition-property) var(--transition-duration) var(--transition-delay) var(--ttf);
+	}
+
+	@media (--wide) {
+		& .sidebar {
+			transform: translateX(calc(50vw - 80px));
+		}
+	}
+	& .off-canvas {
+		transform: translateX(0);
+	}
+}
+
+.content-wrapper {
+	z-index: 3;
+	position: absolute;
+	top: 0;
+	left: 0;
+	min-height: 440px;
+	height: 100vh;
+	width: 100vw;
+	display: grid;
+	grid-template-rows: 1px 1fr 1px;
+	grid-template-columns: 1fr;
+	grid-template-areas:
+		"indicator"
+		"blocks"
+		"invisible";
+}
+
+.load-indicator {
+	grid-area: indicator;
+}
+
+.block-invisible {
+	display: none;
+}
+
+.content-blocks {
+	position: relative;
+	grid-area: blocks;
+	display: grid;
+	grid-template-rows: 780px 9fr 1fr;
+	grid-template-areas:
+		"block-left"
+		"block-right"
+		"block-footer";
+
+	@media (--wide) {
+		grid-template-rows: min(auto-fit, var(--contact-section-min-height)) var(--footer-height);
+		grid-template-columns: 50vw 1fr;
+		grid-template-areas:
+			"block-left block-right"
+			"block-left block-footer";
+	}
+}
+
+.block-content {
+	border: var(--standard-border);
+	min-height: 440px;
+}
+
+.block-left {
+	position: relative;
+	grid-area: block-left;
+
+	@media (--wide) {
+		min-height: 100vh;
+		position: fixed;
+		max-width: 50vw;
+	}
+}
+
+.block-right {
+	grid-area: block-right;
+	margin-left: 0;
+
+	@media (--wide) { min-height: 100vh; }
+}
+
+.block-footer {
+	grid-area: block-footer;
+	place-self: flex-end;
+	min-height: 280px;
+	border-bottom: none;
+
+	& > footer {
+		padding: 2vw 2vw 0.5vw 2vw;
+
+		& > .section-content {
+			font-size: 16px;
+			height: 100%;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: flex-start;
+
+			@media (--slim), (--wide) {
+				justify-content: flex-end;
+				font-size: min(14px, 1.21vw);
+			}
+		}
+	}
+}

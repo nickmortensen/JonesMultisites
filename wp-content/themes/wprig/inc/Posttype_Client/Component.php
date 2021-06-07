@@ -22,6 +22,8 @@ use function register_post_type;
 
 /**
  * Clientele posts.
+ *
+ * 1. get_project_details
  */
 class Component implements Component_Interface, Templating_Component_Interface {
 	/**
@@ -42,7 +44,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	private $plural_name = 'clientele';
 
-
 	/**
 	 * Adds the action and filter hooks to integrate with WordPress.
 	 */
@@ -52,9 +53,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_filter( 'cmb2_types_esc_testimonial', [ $this, 'types_esc_testimonial_field' ], 10, 4 );
 		add_action( 'manage_client_posts_columns', [ $this, 'make_new_admin_columns' ], 10, 1 ); // Add empty columns for the admin edit screens.
 		add_action( 'manage_client_posts_custom_column', [ $this, 'manage_new_admin_columns' ], 10, 2 ); // Add data to the new admin columns.
-		add_action( 'add_meta_boxes', [ $this, 'add_metabox_to_client' ], 10, 2 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'action_enqueue_client_script' ] );
 		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
+		add_action( 'cmb2_init', [ $this, 'add_related_projects_field' ] );
 	}
 
 	/**
@@ -67,155 +68,52 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function template_tags() : array {
 		return [
 			'get_client_info'         => [ $this, 'get_client_info' ],
-			'build_project_selectbox' => [ $this, 'build_project_selectbox' ],
-			'get_project_details'     => [ $this, 'get_project_details' ],
 		];
-	}
-
-	/**
-	 * Build the selectbox options for project.
-	 *
-	 * @todo Create Project Post Type Component.
-	 */
-	public function get_project_details() {
-		return Projects::get_all_projects();
-	}
-
-	/**
-	 * Build the outer selectbox for project posts.
-	 */
-	public function build_project_selectbox() {
-		$select  = '<select name="clientProjects" id="clientProjects" size="1" multiple>';
-		$select .= '<option value="">-- Select Projects --</option>';
-		$select .= $this->build_project_options(); // Can this function live inside this class and not be public.
-		$select .= '</select>';
-		$select .= '<label class="after" for="project-select">Select Multiple: <kbd class="key">Shift</kbd> + click</label>';
-		return $select;
-	}
-
-	/**
-	 * Build options to be added to the select input element for project posts.
-	 */
-	public function build_project_options() {
-		$details  = [];
-		$projects = $this->get_project_details();
-		$total    = count( $projects );
-		for ( $i = 0; $i < $total; $i++ ) {
-			$details[] = "<option value=\"{$projects[ $i ]->ID}\">{$projects[ $i ]->post_title}</option>";
-		}
-		return implode( "\n", $details );
-	}
-
-	/**
-	 * Add a new metabox on the post type's edit screen. Shows up on the side.
-	 *
-	 * @param string $post_type The Type of post - in our case.
-	 * @param int    $post The identifier of the post - the number.
-	 *
-	 * @link https://developer.wordpress.org/reference/functions/add_meta_box/
-	 * @link https://generatewp.com/managing-content-easily-quick-edit/
-	 * @link https://github.com/CMB2/CMB2/wiki/Field-Types
-	 * @link https://ducdoan.com/add-custom-field-to-quick-edit-screen-in-wordpress/
-	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
-	 */
-	public function add_metabox_to_client( $post_type, $post ) {
-		$id       = 'client-information-side-metabox';
-		$title    = 'Project Partnership';
-		$callback = [ $this, 'display_client_metabox_output_checkboxes' ];
-		$screen   = $this->get_slug();
-		$context  = 'side';
-		$priority = 'high';
-		add_meta_box( $id, $title, $callback, $screen, $context, $priority );
-	}
-
-	/**
-	 * Display additional fields within the client post type, populating as needed.
-	 *
-	 * @param int $post The post ID.
-	 * @link https://developer.wordpress.org/reference
-	 */
-	public function display_client_metabox_output( $post ) {
-		$html = '<div id="client_side_metadata">';
-		wp_nonce_field( 'post_metadata', 'client_metadata_field' );
-		$html .= $this->build_project_selectbox();
-		$html .= '</div>';
-		echo $html;
-	}
-
-	/**
-	 * Displays projects textbox so that we can check the projects the client was involved with.
-	 *
-	 * @param int $post The post ID.
-	 * @link https://developer.wordpress.org/reference
-	 */
-	public function display_client_metabox_output_checkboxes( $post ) {
-		$id_labels  = [];
-		$checkboxes = [];
-		$projects   = $this->get_project_details();
-		$total      = count( $projects );
-		$name       = 'clientProjects';
-		for ( $i = 0; $i < $total; $i++ ) {
-			$project = explode( ' ', $projects[ $i ]->post_title, 3 )[0];
-				if ( isset( explode( ' ', $projects[ $i ]->post_title, 3 )[1] ) ) {
-					$project .= ' ' . explode( ' ', $projects[ $i ]->post_title, 3 )[1];
-				}
-			$id_labels[]  = [
-				'id'      => $projects[ $i ]->ID,
-				'project' => $projects[ $i ]->post_title,
-			];
-			$checkboxes[] = '<div id="project-checkboxes">';
-			$checkboxes[] = '<input type="checkbox" id="' . $projects[ $i ]->ID . '" name="' . $name . '" value="' . $projects[ $i ]->ID . '">';
-			$checkboxes[] = '<label for="' . $projects[ $i ]->ID . '" title="' . $projects[ $i ]->post_title . '">' . $project . '</label>';
-			$checkboxes[] = '</div>';
-		}
-		wp_nonce_field( 'post_metadata', 'client_metadata_field' );
-		$html  = '<div id="client_side_metadata" class="inline-edit-group wp-clearfix">';
-		$html .= implode( '', $checkboxes );
-		$html .= '</div>';
-		echo $html;
 	}
 
 	/**
 	 * Saving meta info (used for both traditional and quick-edit saves)
 	 *
 	 * @param int $post_id The id of the post.
+	 *
+	 * @link https://wordpress.stackexchange.com/questions/236922/how-to-save-multiple-checkboxes-value-in-wordpress-dynamically
 	 */
-	public function save_post( $post_id ) {
-
-		$post_type = get_post_type( $post_id );
-
-		if ( 'client' === $post_type ) {
-			// wp_nonce_field( 'post_metadata', 'client_metadata_field' );
-			// check nonce set.
-			if ( ! isset( $_POST['client_metadata_field'] ) ) return false;
-
-			// verify nonce.
-			if ( ! wp_verify_nonce( $_POST['client_metadata_field'], 'post_metadata' ) ) return false;
-
-			// If not autosaving.
-			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return false;
-
-			$client_projects = $_POST['clientProjects'];
-
-			$jobs = isset ( $client_projects ) ? sanitize_text_field( $client_projects ) : '';
-
-			// This field is saved as serialized data, so I need to use wp_parse_args to get to it.
-			update_post_meta( $post_id, 'clientProjects', wp_parse_args( $jobs, get_post_meta( $post_id, 'clientProjects', true ) ) );
-		}
-
-	}//end save_post()
+	public function add_related_projects_field( $post_id ) {
+		global $post;
+		$metabox_args = [
+			'context'      => 'before_permalink',
+			'id'           => 'clientProjectMetabox',
+			'object_types' => [ 'client', 'attachment' ],
+			'show_in_rest' => \WP_REST_Server::ALLMETHODS,
+			'show_names'   => true,
+			'title'        => 'Related Projects',
+			'show_title'   => false,
+			'cmb_styles'   => false,
+		];
+		$metabox = new_cmb2_box( $metabox_args );
+				// Hidden field to collect the projects.
+				$args = [
+					'id'      => 'clientProjects',
+					'desc'    => __( 'Drag posts from the left column to the right column to attach them to this page.<br />You may rearrange the order of the posts in the right column by dragging and dropping.', 'yourtextdomain' ),
+					'type'    => 'custom_attached_posts',
+					'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column has more.
+					'options' => [
+						'show_thumbnails' => true, // Show thumbnails on the left.
+						'filter_boxes'    => true, // Show a text box for filtering the results.
+						'query_args'      => [
+							'posts_per_page' => 10,
+							'post_type'      => 'project',
+						], // override the get_posts args.
+					],
+				];
+		$metabox->add_field( $args );
+	}
 
 	/**
 	 * Get all the published clientele.
 	 */
 	public function get_all_clientele() {
-
-		$args = [
-			'post_type'   => 'client',
-			'post_status' => 'publish',
-		];
-
-		return new \WP_QUERY( $args );
+		return PostTypes::get_all_posttype( 'client' );
 	}
 
 
@@ -229,13 +127,37 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Retrieve the postmeta for the year this project completed, started, or is expected to complete.
+	 * Retrieve the additional fields added to the client post.
 	 *
 	 * @param int $post_id Project post type id.
 	 * @return string 4 digit year that the post either completes, was started, or begins.
 	 */
 	public function get_client_info( $post_id ) {
-		return get_post_meta( $post_id, 'clientInformation' ); // false is default, true if I want only the first value within the array.
+		// set all the variables to be an empty string so nothing errors out.
+		// $svg = $company = $website = $client_since = $testimonial = $name = $position = $linkedin = '';
+		$svg = get_post_meta( $post_id, 'clientInformationLogo' ) ?? '';
+		[
+			'company' => $company,
+			'website' => $website,
+			'since'   => $client_since,
+		] = get_post_meta( $post_id, 'clientInformation', true );
+		[
+			'testimonial' => $testimonial,
+			'name'        => $name,
+			'position'    => $position,
+			'linkedin'    => $linkedin,
+
+		] = get_post_meta( $post_id, 'clientTestimonial', true );
+		return [
+			'svg'          => $svg,
+			'company'      => $company,
+			'website'      => $website,
+			'client_since' => $client_since,
+			'testimonial'  => $testimonial,
+			'source'       => $name,
+			'position'     => $position,
+			'linkedin'     => $linkedin,
+		];
 	}
 
 	/**
@@ -288,31 +210,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		// Client Basic Information Field.
 		$args = [
-			'name'       => 'Client',
 			'id'         => 'clientInformation', // Name of the custom field type we setup.
+			'name'       => 'Client',
 			'type'       => 'client',
 			'label_cb'   => get_label_cb( 'client' ),
 			'show_names' => false, // false removes the left cell of the table -- this is worth understanding.
 			'classes'    => [ 'client_fields' ],
-		];
-		$metabox->add_field( $args );
-
-		// Hidden field to collect the projects.
-		$args = [
-			'name'    => 'clProject',
-			'id'      => 'clientProjectHidden',
-			'name'    => __( 'Attached Posts', 'yourtextdomain' ),
-			'desc'    => __( 'Drag posts from the left column to the right column to attach them to this page.<br />You may rearrange the order of the posts in the right column by dragging and dropping.', 'yourtextdomain' ),
-			'type'    => 'custom_attached_posts',
-			'column'  => true, // Output in the admin post-listing as a custom column. https://github.com/CMB2/CMB2/wiki/Field-Parameters#column has more.
-			'options' => [
-				'show_thumbnails' => true, // Show thumbnails on the left.
-				'filter_boxes'    => true, // Show a text box for filtering the results.
-				'query_args'      => [
-					'posts_per_page' => 10,
-					'post_type'      => 'project',
-				], // override the get_posts args.
-			],
 		];
 		$metabox->add_field( $args );
 
@@ -543,10 +446,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		wp_enqueue_script( $handle, $script_uri, $depend, $version, $footer );
 	}
 
-
-
 	/**
-	 * Enqueues javascript that will allow me to access project posts.
+	 * Enqueues javascript that will allow me to access client posts.
 	 */
 	public function action_enqueue_client_script() {
 
@@ -579,7 +480,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'wp-rig-client',
 			'clientProjectsAll',
 			[
-				'projects' => $this->get_project_details(),
 				'selected' => get_post_meta( $post->ID, $metakey, true ),
 			]
 		);

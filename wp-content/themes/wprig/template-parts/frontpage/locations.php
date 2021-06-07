@@ -7,11 +7,14 @@
 
 namespace WP_Rig\WP_Rig;
 
+
+
+[ 'requested_by' => $request_from ] = $args;
 $locations = wp_rig()->get_location_ids( 75 );
 
 ?>
 
-<section id="jones-facility-locations">
+<section id="jones-facility-locations" class="<?= $request_from; ?>">
 <div class="facilities_header">
 	<?= count( wp_rig()->get_location_ids( 75, 72 ) ); ?> Locations Across North America
 </div>

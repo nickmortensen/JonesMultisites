@@ -9,6 +9,13 @@
 	# Links
 # Accessibility
 # Layout
+# About
+# Infinite scroll
+# Content navigation
+# Flexbox styles
+# SVG
+# Flickity Overrides
+# Show & Hide Styles
 # Forms
 # Header
 	# Main navigation menu
@@ -26,32 +33,28 @@
 /*---------------------------------------------------- ----------
 # Imports
 --------------------------------------------------------------*/
-/* stylelint-disable at-rule-empty-line-before */
 @import "_custom-properties.css";
 @import "_custom-selectors.css";
 @import "_custom-media.css";
-@import "_grid.css";
+
 @import "_typography.css";
+@import "_grid.css";
 @import "_keyframes.css";
 
 
-/*
-@import "_blocks.css";
-@import "_flex.css";
-@import "_media.css";
-@import "_svg.css";*/
 @import "_site-search.css";
+
 @import "_navigation.css";
 @import "_header.css";
-@import "_footer.css";
+@import "_masthead.css";
 @import "_forms.css";
 @import "_locations.css";
 @import "_select.css";
-@import "_buttons_icons.css";
 @import "_sidenav.css";
+@import "_buttons_icons.css";
 
 /*--------------------------------------------------------------
-# Layouts
+# Layout
 --------------------------------------------------------------*/
 
 /* @link css-tricks.com/fixing-smooth-scrolling-with-find-on-page/ */
@@ -65,22 +68,18 @@ html:focus-within {
 	}
 }
 
-html,
-body {
-	scroll-behavior: smooth;
-	height: 100%;
-	max-width: 100%;
-	overflow-x: hidden;
-}
-
 /**
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 html {
-	height: 100%;
 	box-sizing: border-box;
 	line-height: 1.15; /* 1 */
+	scroll-behavior: smooth;
+	height: 100%;
+	width: 100%;
+	overflow-y: visible;
+	overflow-x: hidden;
 }
 
 /**
@@ -97,19 +96,9 @@ html {
 	box-sizing: border-box;
 }
 
-
-.hide-sidemenu {
-
-	& > aside#sidemenu {
-		transform: translateX(-100%);
-		transition: transform 0.3s var(--bg-bezier);
-	}
-}
-
-#page {
-	margin: 0;
-	width: 100%;
+body {
 	height: 100%;
+	margin: 0;
 }
 
 /*--------------------------------------------------------------
@@ -144,7 +133,6 @@ html {
 .infinite-scroll .posts-navigation,
 .infinite-scroll .pagination,
 .infinite-scroll.neverending .site-footer {
-
 	display: none;
 }
 
@@ -269,13 +257,9 @@ template,
 
 .show_as_block { display: block; }
 
-/* ================================
-	#7 @import "_blocks.css";
-===================================*/
-
-/* ================================
-	#8 @import "_flex.css";
-===================================*/
+/* --------------------------------
+	# Flexbox styles
+-----------------------------------*/
 .show_as_flex,
 .flex { display: flex; }
 
@@ -298,7 +282,7 @@ template,
 .direction-row-reverse,
 .row-reverse { flex-direction: row-reverse; }
 
-/*---------- MAIN AXIS ROW= X-Axis aligned, COLUMN = Y Axis Aligned----------*/
+/*---------- MAIN AXIS ROW = X-Axis aligned, COLUMN = Y Axis Aligned----------*/
 .row-nw,
 .row-nowrap { flex-flow: row nowrap; }
 
@@ -322,9 +306,9 @@ template,
 .row-reverse-nowrap { flex-flow: row-reverse nowrap; }
 
 
-/*===========================================
+/*------------------------------------------=
 =      MAIN / PRIMARY AXIS STYLES      =
-===========================================*/
+------------------------------------------=*/
 .justify-content-space-around,
 .justify-space-around,
 .justify-around { justify-content: space-around; }
@@ -342,11 +326,11 @@ template,
 .justify-center,
 .justify-content-center { justify-content: center; }
 
-/*===== End of MAIN / PRIMARY AXIS STYLES ======*/
+/*---== End of MAIN / PRIMARY AXIS STYLES ------*/
 
-/*=============================================
+/*---------------------------------------------
 =      SECONDARY AXIS STYLES      =
-=============================================*/
+---------------------------------------------*/
 .align-items-space-around,
 .align-space-around { align-items: space-around; }
 
@@ -369,9 +353,9 @@ template,
 .align-items-baseline,
 .align-baseline { align-items: baseline; }
 
-/* ===== End of SECONDARY AXIS STYLES ====== */
+/* --- End of Secondary Axis Styles ------ */
 
-/*--- ALIGN CONTENT FOR CONTENT THAT WRAPS:Applies When a Wrapped Item has Extra Space ----------*/
+/* --- Align Content For Content That Wraps:Applies When a Wrapped Item has Extra Space ----------*/
 .align-content-space-around,
 .content-space-around { align-content: space-around; }
 
@@ -388,9 +372,9 @@ template,
 .content-center { align-content: center; }
 
 
-/* ========== CHILD ITEM STYLES ==========*/
+/* ---------= CHILD ITEM STYLES ---------=*/
 
-/*---------- Align Self is for CHILD ITEMS , it OVERRIDES 'Align-Items' ----------*/
+/* ---------- Align Self is for CHILD ITEMS , it OVERRIDES 'Align-Items' ----------*/
 .align-self-start,
 .self-start { align-self: start; }
 
@@ -403,7 +387,7 @@ template,
 .align-self-stretch,
 .self-stretch { align-self: stretch; }
 
-/*---------- HOW SHOULD THIS CHILD ITEM GROW IN PROPORTION -- defaults to one, proportionate to one ----------*/
+/* ---------- HOW SHOULD THIS CHILD ITEM GROW IN PROPORTION -- defaults to one, proportionate to one ----------*/
 .grow-1 { flex-grow: 1; }
 
 .grow-2 { flex-grow: 2; }
@@ -412,7 +396,7 @@ template,
 
 .grow-4 { flex-grow: 4; }
 
-/*---------- ORDER of a CHILD ITEM
+/* ---------- ORDER of a CHILD ITEM
 defaults to 1, so a negative number would go first ----------*/
 .order-minus-one { order: -1; }
 
@@ -424,19 +408,19 @@ defaults to 1, so a negative number would go first ----------*/
 
 .order-last { order: 25; }
 
-
-/* ================================
-	#12 @import "_svg.css";
-===================================*/
+/* ------------------------------
+	# SVG
+--------------------------------- */
 img[src*=".svg"] {
 	width: 60%;
 	height: auto;
 	background: rgba(0, 0, 0, 0.25);
 }
 
-/*--------------------------------------------------------------
-Drag indicator for flickity
---------------------------------------------------------------*/
+
+/* ------------------------------
+	# Flickity Overrides
+--------------------------------- */
 
 .drag-svg {
 	width: 60px;
@@ -453,48 +437,79 @@ Drag indicator for flickity
 	}
 }
 
-/* ================================
-	#12 @import "_svg.css";
-===================================*/
-img[src*=".svg"] {
-	width: 60%;
-	height: auto;
-	background: rgba(0, 0, 0, 0.25);
+/* ------------------------------
+	# Show & Hide Styles
+--------------------------------- */
+.hide { display: none; }
+
+[hidden] { display: none; }
+
+.hide-on-wide { display: var(--block-until-hide); }
+
+.grid-until-hide { display: var(--grid-until-hide); }
+
+.inline-until-hide { display: var(--inline-until-hide); }
+
+.block-until-hide { display: var(--block-until-hide); }
+
+.flex-until-hide { display: var(--flex-until-hide); }
+
+.hide-until-wide { display: var(--hide-until-wide); }
+
+.hide-until-flex { display: var(--hide-until-flex); }
+
+.hide-until-block { display: var(--hide-until-block); }
+
+.hide-until-grid { display: var(--hide-until-grid); }
+
+.hide-grid-hide { display: var(--hide-grid-hide); }
+
+.grid-hide-grid { display: var(--grid-hide-grid); }
+
+.block-hide-block { display: var(--block-hide-block); }
+
+.hide-block-hide { display: var(--hide-block-hide); }
+
+.flex-hide-flex { display: var(--flex-hide-flex); }
+
+.hide-flex-hide { display: var(--hide-flex-hide); }
+
+
+.highlight {
+	background: var(--blue);
+
+	& > .section-title {
+		z-index: 1;
+		width: var(--title-container-width);
+		padding: var(--header-padding-top-bottom) var(--header-padding-left-right);
+		color: var(--foreground);
+
+		& > h4 {
+			color: var(--foreground);
+		}
+	}
+	& > .section-content {
+		color: var(--foreground);
+	}
 }
 
-/* ================================
-	#13 @import "";
-===================================*/
-/* ================================
-	#14 @import "_contact-form.css";
-===================================*/
-/* ================================
-	#15 @import "_site-search.css";
-===================================*/
-/* ================================
-	#16 @import "_navigation.css";
-===================================*/
-/* ================================
-	#17 @import "_header.css";
-===================================*/
-/* ================================
-	#18 @import "_footer.css";
-===================================*/
-/* ================================
-	#19 @import "_forms.css";
-===================================*/
-/* ================================
-	#20 @import "_elements.css";
-===================================*/
-/* ================================
-	#21 @import "_locations.css";
-===================================*/
-/* ================================
-	#22 @import "_select.css";
-===================================*/
-/* ================================
-	#23 @import "_buttons_icons.css";
-===================================*/
-/* ================================
-	#24 @import "_sidenav.css";
-===================================*/
+.entry-header {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+
+.entry-header > h1.entry-title {
+	margin: 10px auto;
+}
+
+.inner_taxonomy_definition_list {}
+
+#open_space > h3.developer {
+	transform-origin: center center;
+	color: #fff;
+
+	@media (--wide) {
+		transform: rotateZ(-90deg);
+	}
+}

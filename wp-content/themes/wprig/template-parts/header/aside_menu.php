@@ -13,34 +13,61 @@ if ( ! wp_rig()->is_aside_nav_menu_active() ) {
 
 ?>
 
-
-<nav id="side-hamburger-nav" role="navigation">
-		<div class="hamburger-top-header">
-			<div class="nav-burger"><div class="burger"></div> </div><!-- end div.nav-burger -->
-		</div><!-- end div.top-header -->
-		<ul id="hamburger-vertical-menu-list" class="nav">
-<?php
-$aside_menu_args = [
-	'walker'               => new Hamburger_Walker_Nav_Menu(),
-	'menu'                 => 'projects',
-	'menu_class'           => 'side',
-	'menu_id'              => 'projects',
-	'container'            => 'ul',
-	'items_wrap'           => '%3$s',
-	'depth'                => 1,
-	'container_aria_label' => 'Project Profiles',
-];
-wp_rig()->display_aside_nav_menu( $aside_menu_args );
-?>
-</ul>
+<div id="hamburger-menu-toggle">
+	<i class="material-icons">menu</i>
+</div>
+<nav id="hamburger_navigation" role="navigation" class="">
+	<ul id="hamburger_vertical_menu">
+		<?php
+		$aside_menu_args = [
+			'walker'               => new Hamburger_Walker_Nav_Menu(),
+			'menu'                 => 'projects',
+			'menu_class'           => 'side',
+			'menu_id'              => 'projects',
+			'container'            => 'ul',
+			'items_wrap'           => '%3$s',
+			'depth'                => 1,
+			'container_aria_label' => 'Project Profiles',
+		];
+		wp_rig()->display_aside_nav_menu( $aside_menu_args );
+		?>
+	</ul>
 </nav><!-- end nav#side-hamburger-nav -->
 
 <!-- #projects-navigation -->
 <script>
-const hamburgerNav = document.querySelector( '#side-hamburger-nav' );
+const hamburgerNav          = document.querySelector( '#hamburger_navigation' );
 
-hamburgerNav.addEventListener( 'mouseover', function() {
-	this.classList.add('iopened');
-}, false);
+const sideMenuIcon          = document.querySelector( '#hamburger-menu-toggle > i' );
+const sideMenuIconContainer = document.querySelector( '#hamburger-menu-toggle' );
+
+
+const checkBodyClasses = className => document.body.classList.contains( className );
+
+function handleMenuMouseOver() {
+	let isMenuOpen = checkBodyClasses( 'sidemenu__open' );
+	let buttonText = !isMenuOpen ? 'menu_open' : 'menu';
+	if ( ! isMenuOpen ) {
+		document.body.classList.add( 'sidemenu__open' );
+		setTimeout(function() {
+			document.querySelector( '#hamburger-menu-toggle > i' ).textContent = buttonText;
+		}, 300);
+	}
+}
+
+
+function handleMouseExit() {
+	let isMenuOpen = checkBodyClasses( 'sidemenu__open' );
+	let buttonText = !isMenuOpen ? 'menu_open' : 'menu';
+	if ( isMenuOpen ) {
+		document.body.classList.remove( 'sidemenu__open' );
+		setTimeout(function() {
+			document.querySelector( '#hamburger-menu-toggle > i' ).textContent = buttonText;
+		}, 300);
+	}
+}
+hamburgerNav.addEventListener( 'mouseover', handleMenuMouseOver, false );
+hamburgerNav.addEventListener( 'mouseleave', handleMouseExit, false );
+
 
 </script>

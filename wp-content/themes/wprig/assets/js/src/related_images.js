@@ -86,22 +86,24 @@ function sendRESTquery() {
 
 const when = 'load'; // When to activate the event listener.
 // Trigger event only when related posts are scrolled into view.
-window.addEventListener( when,
-	function( event ) { /* eslint-disable-line */
-		const observer = new IntersectionObserver( function( entries, self ) {
-			entries.forEach( entry => {
-				if ( entry.isIntersecting ) {
-					sendRESTquery();
-					// console.log( entry );
-					// disconnect after first reveal.
-					self.disconnect();
-				}
-			});
-		});
-		observer.observe( document.querySelector( '#related_images' ) );
-	},
-	false
-);
+
+
+// window.addEventListener( when,
+// 	function( event ) { /* eslint-disable-line */
+// 		const observer = new IntersectionObserver( function( entries, self ) {
+// 			entries.forEach( entry => {
+// 				if ( entry.isIntersecting ) {
+// 					sendRESTquery();
+// 					// console.log( entry );
+// 					// disconnect after first reveal.
+// 					self.disconnect();
+// 				}
+// 			});
+// 		});
+// 		observer.observe( document.querySelector( '#related_images' ) );
+// 	},
+// 	false
+// );
 
 /**
  * Get the image ID for the image object

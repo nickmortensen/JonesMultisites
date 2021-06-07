@@ -251,7 +251,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'name'       => 'longer description',
 			'desc'       => 'a longer, keyword-laden description -- may use html markup',
 			'id'         => $prefix . 'Indepth',
-			'type'       => 'textarea_code',
+			'type'       => 'wysiwyg',
 			'attributes' => [
 				'data-richsnippet' => 'long-description',
 			],
@@ -364,7 +364,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_all_signtype_info( $term_id, $taxonomy = 'signtype' ) {
 		$base_info          = (array) get_term( $term_id, $taxonomy, ARRAY_A );
 		$info               = [];
-		$info['alt_names']  = Taxonomies::get_term_aliases( $term_id, $taxonomy );
+		$info['alt_names']  = Taxonomies::get_the_term_aliases( $term_id, $taxonomy );
 		$info['indepth']    = Taxonomies::get_term_indepth( $term_id, $taxonomy );
 		$info['images_id']  = Taxonomies::get_term_images( $term_id, $taxonomy );
 		$info['images_url'] = Taxonomies::get_term_images( $term_id, $taxonomy, false );

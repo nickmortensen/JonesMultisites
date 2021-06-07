@@ -18,23 +18,24 @@ namespace WP_Rig\WP_Rig;
  */
 $search_unique_id  = wp_unique_id( 'jones-search-form-' );
 $search_aria_label = ! empty ( $args['aria-label'] ) ? 'aria-label="' . esc_attr( $args['aria_label'] ) . '"' : '';
-
+$action            = "esc_url( home_url( '/' ) )";
+$types             = [ 'project', 'client', 'staffmember', 'inquiry' ];
 ?>
 <form
+name="sitesearch"
+id="single-search-form"
 	role="search"
 	<?= $search_aria_label; ?>
 	method="get"
-	action="<?= esc_url( home_url( '/' ) ); ?>"
+	class="mono"
 	>
-	<input type="checkbox" id="trigger" class="checkbox" />
-	<label class="label-initial" title="click here to open a search form" for="trigger"></label>
-	<label class="label-active" title="hit 'enter' to search or click the 'x' to close" for="trigger"></label>
-	<div class="border"></div>
-	<input
-	class="input"
-	type="search"
-	id="<?= esc_attr( $search_unique_id ); ?>"
-	value="<?= get_search_query(); ?>" name="s"
-	/>
-	<div class="close"></div>
+	<input type="search" name="s" class="search_input" placeholder="What are you looking for?" id="<?= esc_attr( $search_unique_id ); ?>" value="<?= get_search_query(); ?>" />
+	<input type="hidden" name="post_type[]" value="project">
+	<input type="hidden" name="post_type[]" value="client">
+	<input type="hidden" name="post_type[]" value="staffmember">
+	<input type="hidden" name="post_type[]" value="inquiry">
+	<input name="submit" id="searchformsubmit" class="searchbutton material-icons" type="submit" value="search" content="pageview">
+	<div class="searchexplainer"></div>
 </form>
+
+

@@ -1,104 +1,72 @@
-/* Star Rating Styles */
-div#cmb2-metabox-media_rating {
-	display: flex;
-	justify-content: center;
+.star-rating-container {
+	width: 100%;
+	background: var(--yellow);
+
+	& > * {
+		float: right;
+	}
+
+	& label {
+		height: 40px;
+		width: 20%;
+		display: block;
+		position: relative;
+		cursor: pointer;
+
+		&::after {
+			transition: all 0.4s ease-out;
+			-webkit-font-smoothing: antialiased;
+			position: absolute;
+			content: "☆";
+			color: #444;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			text-align: center;
+			font-size: 50px;
+			animation: 1s starpulse ease;
+		}/* label::after */
+
+		&:hover::after {
+			color: #5e5e5e;
+			text-shadow: 0 0 15px #5e5e5e;
+		}
+
+		&:nth-of-type(1)::after {
+			animation-delay: 0.05s;
+		}
+		&:nth-of-type(2)::after {
+			animation-delay: 0.1s;
+		}
+		&:nth-of-type(3)::after {
+			animation-delay: 0.15s;
+		}
+		&:nth-of-type(4)::after {
+			animation-delay: 0.2s;
+		}
+		&:nth-of-type(5)::after {
+			animation-delay: 0.25s;
+		}
+	}/* label */
+
+	& input {
+		display: none;
+
+		&:checked + label::after,
+		&:checked ~ label::after {
+			content: "★";
+			color: #f9bf3b;
+			text-shadow: 0 0 10px #f9bf3b;
+		}
+	}/* input */
+
 }
 
-div#media_rating {
-	background: var(--gray-100);
-}
 
-/* star rating custom field for media properties */
-#cmb2-star-rating-metabox .star-cb-group {
-	/* remove inline-block whitespace */
-	font-size: 0;
-
-	/* flip the order so we can use the + and ~ combinators */
-	unicode-bidi: bidi-override;
-	direction: rtl;	/* the hidden clearer */
-}
-
-#cmb2-star-rating-metabox .star-cb-group * {
-	font-size: 1.4rem;
-}
-
-#cmb2-star-rating-metabox .star-cb-group > input {
-	display: none;
-}
-
-#cmb2-star-rating-metabox .star-cb-group > input + label {
-	/* only enough room for the star */
-	display: inline-block;
-	overflow: hidden;
-	text-indent: 9999px;
-	width: 1.75em;
-	white-space: nowrap;
-	cursor: pointer;
-}
-
-#cmb2-star-rating-metabox .star-cb-group > input + label::before {
-	display: inline-block;
-	text-indent: -9999px;
-	content: "\f154";
-	font-family: dashicons, serif;
-	color: var(--global-font-color);
-	font-size: 1.75em;
-}
-
-#cmb2-star-rating-metabox .star-cb-group > input:checked ~ label::before,
-#cmb2-star-rating-metabox  .star-cb-group > input + label:hover ~ label::before,
-#cmb2-star-rating-metabox .star-cb-group > input + label:hover::before {
-	content: "\f155";
-	font-family: dashicons, serif;
-	color: var(--yellow-600);
-	text-shadow: 0 0 1px var(--global-font-color);
-	font-size: 1.75em;
-}
-
-#cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label {
-	text-indent: -9999px;
-	width: 0.5em;
-	margin-left: -0.5em;
-}
-
-#cmb2-star-rating-metabox .star-cb-group > .star-cb-clear + label::before {
-	width: 0.5em;
-}
-
-#cmb2-star-rating-metabox .star-cb-group:hover > input + label::before {
-	content: "\f154";
-	font-family: dashicons, serif;
-	color: var(--global-font-color);
-	text-shadow: none;
-	font-size: 1.75em;
-}
-
-#cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover ~ label::before,
-#cmb2-star-rating-metabox .star-cb-group:hover > input + label:hover::before {
-	content: "\f155";
-	font-family: dashicons, serif;
-	color: var(--yellow-600);
-	text-shadow: 0 0 1px var(--global-font-color);
-	font-size: 1.75em;
-}
-
-#cmb2-star-rating-metabox fieldset {
-	border: 0;
-	background: transparent;
-	border-radius: 1px;
-}
-
-.dashicons-star-filled::before {
-	color: var(--yellow-500);
-	text-shadow:
-		1px 1px 1px var(--global-font-color),
-		-1px -1px 1px var(--global-font-color),
-		1px -1px 1px var(--global-font-color),
-		-1px 1px 1px var(--global-font-color);
-}
-
-.dashicons-star-empty::before,
-.dashicons-star-filled::before {
-	font-size: 0.9rem;
-	font-size: 0.4rem;
+@keyframes starpulse {
+	50% {
+		color: #5e5e5e;
+		text-shadow: 0 0 15px #777;
+	}
 }

@@ -1,6 +1,7 @@
 <?php
 /**
  * WP_Rig\WP_Rig\Posttype_Project\Component class
+ * Last Update 29_April_2021.
  *
  * @package wp_rig
  */
@@ -12,6 +13,7 @@ use WP_Rig\WP_Rig\Templating_Component_Interface;
 use WP_Rig\WP_Rig\AdditionalFields\Component as AdditionalFields;
 use WP_Rig\WP_Rig\Posttype_Global\Component as PostTypes;
 use WP_Rig\WP_Rig\TaxonomyGlobal\Component as Taxonomies;
+use WP_Rig\WP_Rig\TaxonomyIndustry as IndustryTaxonomy;
 
 use function WP_Rig\WP_Rig\wp_rig;
 
@@ -52,27 +54,37 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function template_tags() : array {
 		return [
-			'get_project_card'            => [ $this, 'get_project_card' ],
-			'get_secondary_project_card'  => [ $this, 'get_secondary_project_card' ],
-			'get_all_projects'            => [ $this, 'get_all_projects' ],
-			'get_project_slideshow'       => [ $this, 'get_project_slideshow' ],
-			'get_project_square_images'   => [ $this, 'get_project_square_images' ],
-			'get_project_vertical_image'  => [ $this, 'get_project_vertical_image' ],
-			'the_projects_menu'           => [ $this, 'the_projects_menu' ],
-			'the_project_menu_items'      => [ $this, 'the_project_menu_items' ],
-			'get_recent_project_ids'      => [ $this, 'get_recent_project_ids' ],
-			'get_additional_project_info' => [ $this, 'get_additional_project_info' ],
-			'get_all_project_info'        => [ $this, 'get_all_project_info' ],
-			'get_project_address'         => [ $this, 'get_project_address' ],
-			'get_project_alt'             => [ $this, 'get_project_alt' ],
-			'get_project_partners'        => [ $this, 'get_project_partners' ],
-			'get_project_svg'             => [ $this, 'get_project_svg' ],
-			'get_project_header_images'   => [ $this, 'get_project_header_images' ],
-			'get_project_narrative'       => [ $this, 'get_project_narrative' ],
-			'get_city_state'              => [ $this, 'get_city_state' ],
-			'get_payment_link'            => [ $this, 'get_payment_link' ],
-			'get_project_sidemenu_items'  => [ $this, 'get_project_sidemenu_items' ],
-			'make_drilldown_links'        => [ $this, 'make_drilldown_links' ],
+			'get_project_card'             => [ $this, 'get_project_card' ],
+			'get_secondary_project_card'   => [ $this, 'get_secondary_project_card' ],
+			'get_all_projects'             => [ $this, 'get_all_projects' ],
+			'get_project_slideshow'        => [ $this, 'get_project_slideshow' ],
+			'the_projects_menu'            => [ $this, 'the_projects_menu' ],
+			'the_project_menu_items'       => [ $this, 'the_project_menu_items' ],
+			'get_recent_project_ids'       => [ $this, 'get_recent_project_ids' ],
+			'get_additional_project_info'  => [ $this, 'get_additional_project_info' ],
+			'get_all_project_info'         => [ $this, 'get_all_project_info' ],
+			'get_project_address'          => [ $this, 'get_project_address' ],
+			'get_project_alt'              => [ $this, 'get_project_alt' ],
+			'get_project_partners'         => [ $this, 'get_project_partners' ],
+			'get_project_svg'              => [ $this, 'get_project_svg' ],
+			'get_project_narrative'        => [ $this, 'get_project_narrative' ],
+			'get_city_state'               => [ $this, 'get_city_state' ],
+			'get_payment_link'             => [ $this, 'get_payment_link' ],
+			'get_project_sidemenu_items'   => [ $this, 'get_project_sidemenu_items' ],
+			'make_drilldown_links'         => [ $this, 'make_drilldown_links' ],
+			'get_definitive_project_info'  => [ $this, 'get_definitive_project_info' ],
+			'get_packed_project'           => [ $this, 'get_packed_project' ],
+			'get_all_the_tags'             => [ $this, 'get_all_the_tags' ],
+			'get_featured_image_set'       => [ $this, 'get_featured_image_set' ],
+			'simple_grid_item'             => [ $this, 'simple_grid_item' ],
+			'get_data_attribute'           => [ $this, 'get_data_attribute' ],
+			'get_figure_caption'           => [ $this, 'get_figure_caption' ],
+			'get_adjacent_project_link'    => [ $this, 'get_adjacent_project_link' ],
+			'get_the_project_navigation'   => [ $this, 'get_the_project_navigation' ],
+			'get_project_tag_ids'          => [ $this, 'get_project_tag_ids' ],
+			'get_related_project_ids'      => [ $this, 'get_related_project_ids' ],
+			'get_project_taxonomies_aside' => [ $this, 'get_project_taxonomies_aside' ],
+			'get_project_vertical_image_id' => [ $this, 'get_project_vertical_image_id' ],
 		];
 	}
 
@@ -81,6 +93,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function initialize() {
 		add_action( 'cmb2_init', [ $this, 'additional_fields' ] );
+		add_action( 'cmb2_init', [ $this, 'additional_image_fields' ] );
 		// Enqueue a frontend script to utilize for project post types.
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_projects_script' ] );
 		add_action( 'add_meta_boxes', [ $this, 'add_metabox_to_project' ], 10, 2 );
@@ -94,7 +107,114 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_project_quickedit' ] );
 	}
 
+	/**
+	 * Get an array of taxonomy tag IDs for a given post.
+	 *
+	 * @param array $taxonomies An array of the taxonomies I want the tag ids from.
+	 * @note Default is an aray of 'industry', 'expertise', 'signtype', but I can add 'post_tag' or 'category' if I want to.
+	 */
+	public function get_project_tag_ids( $taxonomies = [ 'industry', 'expertise', 'signtype' ] ) {
+		return Taxonomies::get_post_tag_ids( $taxonomies );
+	}
 
+	/**
+	 * Get all the other published projects that have any of the same taxonomy tags as the current project.
+	 *
+	 * @return An array of published project ids that contain any of the same taxonomy tags as the current post;
+	 */
+	public function get_related_project_ids() : array {
+		global $post;
+		global $wpdb;
+		$related_project_ids = [];
+		$project_tag_ids     = $this->get_project_tag_ids( [ 'industry', 'expertise' ] );
+
+		$sql = $wpdb->prepare( " SELECT ID FROM $wpdb->posts WHERE `post_status` = 'publish' AND `ID` IN ( SELECT distinct object_id FROM $wpdb->term_relationships WHERE `term_taxonomy_id` IN (%1s) AND `object_id` IN ( SELECT `ID` FROM $wpdb->posts WHERE `post_type` = 'project' ) ) ORDER BY `ID` %2s ", implode( ', ', $project_tag_ids ), 'ASC' );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+		if ( is_array( $results ) ) {
+			foreach ( $results as $result ) {
+				$related_project_ids[] = intval( $result['ID'] );
+			}
+		}
+		return $related_project_ids;
+	}
+	/**
+	 * Hook into adjacent_post_lin filter. Only on Project pages that are single.
+	 *
+	 * @param bool $is_next If true, link is to the next project. If false, link is to the previous.
+	 *@link https://developer.wordpress.org/reference/hooks/adjacent_post_link/
+	 *
+	 */
+	public function get_adjacent_project_link( $next = true ) {
+
+		global $post;
+		global $wpdb;
+		$class         = $next ? 'next' : 'prev';
+		$material_icon = $next ? 'arrow_forward' : 'arrow_back';
+
+		$related_project_ids    = $this->get_related_project_ids();
+		$total_related_projects = count( $related_project_ids );
+		$last                   = $total_related_projects - 1;
+		$last_project_id        = $related_project_ids[ $last ];
+		$current_project_index  = array_search( $post->ID, $related_project_ids );
+
+		switch ( $current_project_index ) {
+			case $last:
+				$next_index          = 0;
+				$previous_index      = $last - 1;
+				$next_project_id     = $related_project_ids[$next_index];
+				$previous_project_id = $related_project_ids[ $previous_index ];
+				break;
+			case 0:
+				$next_index          = 1;
+				$previous_index      = $last;
+				$next_project_id     = $related_project_ids[$next_index];
+				$previous_project_id = $related_project_ids[ $previous_index ];
+				break;
+			default:
+				$next_index          = $current_project_index + 1;
+				$previous_index      = $current_project_index - 1;
+				$next_project_id     = $related_project_ids[$next_index];
+				$previous_project_id = $related_project_ids[ $previous_index ];
+		}
+
+
+		// If the current project is the last project listed in the array, then the next project is the first project.
+		$project_id = $next ? $next_project_id : $previous_project_id;
+
+		$project_title = get_the_title( $project_id );
+
+		$link = wp_sprintf(
+			'<span class="project-navigation-%1$s">
+				<span class="material-icons-round %1$s">%2$s</span>
+					<a data-project-id="%3$d" class="%1$s" title="Project Profile: %4$s" href="%5$s" rel="%1$s">%4$s</a>
+				</span><!-- end span.project-navigation-%1$s -->',
+			$class,
+			$material_icon,
+			$project_id,
+			get_the_title( $project_id ),
+			get_the_permalink( $project_id) ,
+		);
+		return $link;
+	}
+	/**
+	 * Hook into adjacent_post_lin filter. Only on Project pages that are single.
+	 *
+	 *@link https://developer.wordpress.org/reference/hooks/adjacent_post_link/
+	 *
+	 */
+	public function get_the_project_navigation() {
+
+		global $post;
+
+		if ( 'project' !== $post->post_type ) return;
+
+		$previous_link = $this->get_adjacent_project_link( false );
+		$next_link     = $this->get_adjacent_project_link( true );
+
+		$output = wp_sprintf( '<div class="project-header-image-navigation"> %s %s</div>', $previous_link, $next_link );
+		return $output;
+	}
 	/**
 	 * Get all the published projects.
 	 */
@@ -167,7 +287,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return array An array of entries containing the name, url, and type of the partner.
 	 */
 	public function get_project_partners( int $project_id ) {
-		return get_post_meta( $project_id, 'projectPartners', false );
+		return get_post_meta( $project_id, 'projectPartners', true );
 	}
 	/**
 	 * Get project svg logo.
@@ -196,22 +316,21 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @param int $project_id ID of the project post.
 	 *
-	 * @return array Associative array of squareimages $key is the post id of the photo and $value is the url.
+	 * @return int Vertical image id for this project.
 	 */
-	public function get_project_square_images( int $project_id ) {
-		return get_post_meta( $project_id, 'projectSquareImages', true );
+	public function get_project_square_image_id( int $project_id ) {
+		return PostTypes::get_posttype_square_image( $project_id, 'project' );
 	}
 
 	/**
 	 * Get vertical image for post type.
 	 *
-	 * @param int  $project_id ID of the project post.
-	 * @param bool $as_id Should we return the data as the images id or the url, default is true, so it will return the id instead a url for the image.
+	 * @param int $project_id ID of the project post.
 	 *
-	 * @return string Vertical image.
+	 * @return int Vertical image id for this project.
 	 */
-	public function get_project_vertical_image( int $project_id, $as_id = true ) {
-		return PostTypes::get_posttype_vertical_image( $project_id, 'project', $as_id );
+	public function get_project_vertical_image_id( int $project_id ) {
+		return PostTypes::get_posttype_vertical_image_id( $project_id, 'project' );
 	}
 
 	/**
@@ -221,30 +340,156 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @return array An array of the project data within the project post.
 	 */
-	public function get_all_project_info( int $project_id ) {
-		$size                  = 'medium';
-		$project               = [];
-		$project['thumbnail']  = get_post_thumbnail_id( $project_id );
-		$project['thumb_url']  = wp_get_attachment_image_src( get_post_thumbnail_id( $project_id ), $size )[0] ?? wp_get_attachment_image_src( 761, 'medium' )[0];
-		$project['type']       = get_post( $project_id )->post_type;
-		$project['signtypes']  = wp_get_post_terms( $project_id, 'signtype', [ 'fields' => 'ids' ] );
-		$project['expertise']  = wp_get_post_terms( $project_id, 'expertise', [ 'fields' => 'ids' ] );
-		$project['industries'] = wp_get_post_terms( $project_id, 'industry', [ 'fields' => 'ids' ] );
-		$project['slug']       = get_post( $project_id )->post_name;
-		$project['url']        = WP_HOME . '/' . $project['type'] . '/' . $project['slug'] . '/';
-		$project['job']        = get_post( $project_id )->post_title;
-		$project['ID']         = $project_id;
-		$project['link']       = get_post( $project_id )->guid;
-		$project['modified']   = get_post( $project_id )->post_modified;
-		$project['excerpt']    = get_post( $project_id )->post_excerpt;
-		$project['square']     = $this->get_project_square_images( $project_id );
-		$project['vertical']   = $this->get_project_vertical_image( $project_id );
-		$project['slideshow']  = $this->get_project_slideshow( $project_id );
-		$project['svg']        = $this->get_project_svg( $project_id );
-		$project['partners']   = $this->get_project_partners( $project_id );
-		$project['address']    = $this->get_project_address( $project_id );
-		$project['alt_name']   = $project['address']['alternate'] ?? '';
-		$additional_info_array = $this->get_additional_project_info( $project_id ) ?? [];
+	public function get_all_project_info( int $project_id, string $size = 'large' ) {
+		$project                    = [];
+		$project['featured_images'] = PostTypes::get_posttype_featured_images( $project_id, 'project', $size );
+		$project['type']            = get_post( $project_id )->post_type;
+		$project['signtypes']       = wp_get_post_terms( $project_id, 'signtype', [ 'fields' => 'ids' ] );
+		$project['expertise']       = wp_get_post_terms( $project_id, 'expertise', [ 'fields' => 'ids' ] );
+		$project['industries']      = wp_get_post_terms( $project_id, 'industry', [ 'fields' => 'ids' ] );
+		$project['slug']            = get_post( $project_id )->post_name;
+		$project['url']             = WP_HOME . '/' . $project['type'] . '/' . $project['slug'] . '/';
+		$project['job']             = get_post( $project_id )->post_title;
+		$project['ID']              = $project_id;
+		$project['link']            = get_post( $project_id )->guid;
+		$project['modified']        = get_post( $project_id )->post_modified;
+		$project['excerpt']         = get_post( $project_id )->post_excerpt;
+		$project['slideshow']       = $this->get_project_slideshow( $project_id );
+		$project['svg']             = $this->get_project_svg( $project_id );
+		$project['partners']        = $this->get_project_partners( $project_id );
+		$project['address']         = $this->get_project_address( $project_id );
+		$project['alt_name']        = $project['address']['alternate'] ?? '';
+		$additional_info_array      = $this->get_additional_project_info( $project_id ) ?? [];
+		return array_merge( $project, $additional_info_array );
+	}
+
+/**
+ *
+ * Get all the tags for a project
+ *
+ * @param int $project_id The ID of the project post.
+ * @return array Array of tag information.
+ */
+public function get_all_the_tags( $project_id ) {
+	return array_merge( wp_get_post_terms( $project_id, 'signtype', [ 'fields' => 'all' ] ), wp_get_post_terms( $project_id, 'expertise', [ 'fields' => 'all' ] ), wp_get_post_terms( $project_id, 'industry', [ 'fields' => 'all' ] ) );
+}
+
+/**
+ * Get the taxonomies aside that shows only on single project pages.
+ */
+public function get_project_taxonomies_aside() {
+	global $post;
+	if ( ! is_single() || 'project' !== get_post_type() ) {
+		return;
+	}
+
+	/* translators: separator between taxonomy terms */
+	$separator  = ', ';
+	$taxonomies = [
+		[ 'name' => 'expertise', 'plural' => 'expertises' ],
+		[ 'name' => 'industry', 'plural' => 'industries' ],
+		[ 'name' => 'signtype', 'plural' => 'signtypes' ],
+	];
+
+	$html = '<aside class="entry-taxonomies main_six">';
+	$html .= '<dl>';
+	foreach ( $taxonomies as $taxonomy ) {
+
+		$class    = str_replace( '_', '-', $taxonomy['name'] ) . '-links term-links';
+		$list     = get_the_term_list( $post->ID, $taxonomy['name'], '', $separator, '' );
+		$quantity = get_the_terms( $post->ID, $taxonomy['name'] ) ? count ( get_the_terms( $post->ID, $taxonomy['name'] ) ) : 1;
+		// If it has more than one tag, the taxonomy should be in the plural format.
+		$placeholder_text = ( 1 < $quantity ) ? ucwords( $taxonomy['plural'] ) : ucwords( $taxonomy['name'] );
+
+
+		if ( empty( $list ) ) {
+			continue;
+		}
+		$html .= '<div class="inner_taxonomy_definition_list">';
+		$html .= '<dt class="' . esc_attr( $class ) . '">';
+		$html .= esc_html( $placeholder_text );
+		$html .= '</dt>';
+		$html .= '<dd>';
+		$html .= $list;
+		$html .= '</dd>';
+		$html .= '</div>';
+	}
+
+	$html .= '</dl>';
+	$html .= '</aside><!-- .entry-taxonomies -->';
+	return $html;
+
+}
+
+/**
+ * Outputs a string that would be used in a data attribute.
+ *
+ * @param int $project_id Project post ID.
+ * @param string $taxonomy  The taxonomy - choose among signtype, industry, or expertise.
+ *
+ * @return A string of hte slug or slugs that represent the tags assigned to this post.
+ */
+public function get_data_attribute( int $project_id, $taxonomy = 'signtype' ) : string {
+	$term_ids = wp_get_post_terms( $project_id, $taxonomy, [ 'fields' => 'ids' ] );
+	$output   = [];
+	foreach ( $term_ids as $identifier ) {
+		$output[] = get_term( $identifier )->slug;
+	}
+	return implode( ' ', $output );
+}
+
+	/**
+	 * Get the vertical, square, and featured images of a project based on id.
+	 *
+	 * @param int $project_id Project identification or post_id.
+	 * @param string $size Image size - Options are full, medium_large, large, wp-rig-featured, medium, thumbnail;
+	 * @return array An array of the project images, first by id, then by url.
+	 */
+	public function get_featured_image_set( $project_id, $size = 'medium_large' ) {
+		return PostTypes::get_posttype_featured_images( $project_id, 'project', $size );
+	}
+	/**
+	 * Get all project information.
+	 *
+	 * @param int    $project_id Project identification or post_id.
+	 * @param string $size - Choose among: 'full', 'medium_large', 'wp-rig-featured', 'large', 'medium', or 'thumbnail'.
+	 * @return array An array of the project data within the project post.
+	 */
+	public function get_definitive_project_info( int $project_id, string $size = 'medium_large' ) {
+		$project                    = [];
+		$project['type']            = get_post( $project_id )->post_type;
+		$project['featured_images'] = PostTypes::get_posttype_featured_images( $project_id, 'project', $size );
+		$project['orientation']     = $this->get_grid_orientation( $project_id );
+		$project['signtypes']       = wp_get_post_terms( $project_id, 'signtype', [ 'fields' => 'ids' ] );
+		$project['expertise']       = wp_get_post_terms( $project_id, 'expertise', [ 'fields' => 'ids' ] );
+		$project['industries']      = wp_get_post_terms( $project_id, 'industry', [ 'fields' => 'ids' ] );
+		$project['attributes']      = [
+			'signtype'  => $this->get_data_attribute( $project_id, 'signtype' ),
+			'expertise' => $this->get_data_attribute( $project_id, 'expertise' ),
+			'industry'  => $this->get_data_attribute( $project_id, 'industry' ),
+			'all'       => implode( ' ', [
+				$this->get_data_attribute( $project_id, 'signtype' ),
+				$this->get_data_attribute( $project_id, 'expertise' ),
+				$this->get_data_attribute( $project_id, 'industry' ),
+			]
+			),
+		];
+		$project['tags']             = $this->get_all_the_tags( $project_id );
+		$project['tag_ids']          = array_merge( $project['signtypes'], $project['expertise'], $project['industries'] );
+		$project['slug']             = get_post( $project_id )->post_name;
+		$project['url']              = WP_HOME . '/' . 'project' . '/' . $project['slug'] . '/';
+		$project['project_name']     = get_post( $project_id )->post_title;
+		$project['ID']               = $project_id;
+		$project['alt']              = $this->get_project_alt( $project_id );
+		$project['link']             = get_post( $project_id )->guid;
+		$project['modified']         = get_post( $project_id )->post_modified;
+		$project['excerpt']          = get_post( $project_id )->post_excerpt;
+		$project['slideshow']        = $this->get_project_slideshow( $project_id );
+		$project['svg']              = $this->get_project_svg( $project_id );
+		$project['partners']         = $this->get_project_partners( $project_id );
+		$project['address']          = $this->get_project_address( $project_id );
+		$project['alt_name']         = $project['address']['alternate'] ?? '';
+		$additional_info_array       = $this->get_additional_project_info( $project_id ) ?? [];
 		return array_merge( $project, $additional_info_array );
 	}
 
@@ -260,26 +505,49 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function get_project_card( int $project_id ) : string {
 		$output = '';
 		[
-			'signtypes'     => $signtypes,
-			'expertise'     => $expertise,
-			'industries'    => $industries,
-			'thumb_url'     => $featured,
-			'year_complete' => $year,
-			'tease'         => $tease,
-			'job_id'        => $jobid,
-			'address'       => $address,
-			'svg'           => $svg,
-			'thumbnail'     => $thumbnail_id,
-			'modified'      => $last_modified,
-			'job'           => $project_name,
-			'link'          => $link,
-			'vertical'      => $vertical_img_url,
-			'slideshow'     => $slides_array,
-			'square'        => $square_images_array,
-			'partners'      => $partners_array,
-			'client'        => $client,
-			'alt_name'      => $alternate_name,
-		]       = $this->get_all_project_info( $project_id );
+			'featured_images' => [
+				'horizontal' => [
+					'url' => $horizontal_url,
+					'id'  => $horizontal_id,
+				],
+				'vertical'    => [
+					'url' => $vertical_url,
+					'id'  => $vertical_id,
+				],
+				'square'      => [
+					'url' => $square_url,
+					'id'  => $square_id,
+				],
+			],
+			'attributes' => [
+				'all' => $data_attributes,
+			],
+			'orientation'     => $orientation,
+			'slideshow'       => $slides,
+			'signtypes'       => $signtypes,
+			'expertise'       => $expertise,
+			'industries'      => $industries,
+			'tags'            => $tags,
+			'attributes'      => $attributes,
+			'year_complete'   => $year,
+			'tease'           => $tease,
+			'job_id'          => $jobid,
+			'address'         => $address,
+			'svg'             => $svg,
+			'modified'        => $last_modified,
+			'project_name'    => $project_name,
+			'link'            => $link,
+			'partners'        => $partners_array,
+			'client'          => $client,
+			'alt_name'        => $alternate_name,
+			'modified'        => $last_update,
+			'slug'            => $project_slug,
+			'url'             => $project_link,
+		] = $this->get_definitive_project_info( $project_id, 'wp-rig-featured' );
+
+		$size = 'large';
+
+
 		if ( str_word_count( $project_name ) === 2 ) {
 			$name         = explode( ' ', $project_name, 2 );
 			$rest         = ltrim( $project_name, $name[0] . ' ' );
@@ -287,16 +555,16 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 		$output .= '<div data-project-id="' . $project_id . '" class="single-project-card">';
 		$output .= '<div class="open"></div>';
-		$output .= wp_sprintf( '<div class="project_completion"><strong>%s</strong></div>', $year );
-		$output .= wp_sprintf( '<span class="project_title"><a href="%1$s" title="link to the project page for %2$s" >%2$s</a></span>', $link, $project_name );
-		$output .= wp_sprintf( '<div class="project_tease">%s</div>', $tease );
-		$output .= wp_sprintf( '<div class="project_image" style="background:center/cover no-repeat url(%s);"></div>', $featured );
+		$output .= wp_sprintf( '<div class="date"><strong>%s</strong></div>', $year );
+		$output .= wp_sprintf( '<span class="title"><a href="%1$s" title="link to the project page for %2$s" >%2$s</a></span>', $link, $project_name );
+		$output .= wp_sprintf( '<div class="tease">%s</div>', $tease );
+		$output .= wp_sprintf( '<div class="image" style="background:center/cover no-repeat url(%s);"></div>', $horizontal_url );
 		$output .= $signtypes ? Taxonomies::get_card_taxonomy_row( $signtypes ) : ''; // Class of 'project_signtype'.
 		$output .= $expertise ? Taxonomies::get_card_taxonomy_row( $expertise ) : ''; // Class of 'project_expertise'.
 		$output .= $industries ? Taxonomies::get_card_taxonomy_row( $industries ) : ''; // Class of 'project_industry'.
-		$output .= wp_sprintf( '<div class="project_location"><span class="side-title">%s, %s</span></div>', $address['city'], $address['state'] );
-		$output .= wp_sprintf( '<div class="project_footnote">%s</div>', $alternate_name );
-		$output .= wp_sprintf( '<div class="more_information"><a href="%s">more info</a></div>', $link );
+		$output .= wp_sprintf( '<div class="location"><span class="side-title">%s, %s</span></div>', $address['city'], $address['state'] );
+		// $output .= wp_sprintf( '<div class="footnote">%s</div>', $alternate_name );
+		$output .= wp_sprintf( '<div class="more"><a href="%s">more info</a></div>', $link );
 		$output .= '</div>';
 
 		return $output;
@@ -327,7 +595,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'svg'           => $svg,
 			'thumbnail'     => $thumbnail_id,
 			'modified'      => $last_modified,
-			'job'           => $project_name,
+			'project_name'  => $project_name,
 			'link'          => $link,
 			'vertical'      => $vertical_img_url,
 			'slideshow'     => $slides_array,
@@ -361,7 +629,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 
 		$allterms = array_merge( $signterms, $industryterms, $expertiseterms );
-
 		$output  = '';
 		$output .= wp_sprintf( '<figure data-tags="%s" data-project-id="%d" class="card secondary-project-card">', join( ' ', $allterms ), $project_id );
 		$output .= wp_sprintf( '<a href="%s">', $link );
@@ -390,6 +657,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return $terms;
 	}
 
+
 	/**
 	 * Create the extra fields for the post type.
 	 *
@@ -397,10 +665,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *
 	 * @since    1.0.0
 	 */
+
+
 	public function additional_fields() {
 		$metabox_args = [
 			'context'      => 'normal',
-			'id'           => 'project-information-metabox',
+			'id'           => 'projectInfoMetabox',
 			'object_types' => [ $this->get_slug() ],
 			'show_in_rest' => \WP_REST_Server::ALLMETHODS,
 			'show_names'   => true,
@@ -411,9 +681,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		$metabox = new_cmb2_box( $metabox_args );
 
-		/**
-		 * Get the label for the project address field;
-		 */
 		function get_label_cb() {
 			$html = '<div class="additional_fields project_post"><span>Project Information</span></div>';
 			return $html;
@@ -444,6 +711,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$metabox->add_field( $args );
 
 		/**
+		 * Video URL
+		 * URL to a Video on the project
+		 */
+		$args = [
+			'classes' => [ 'input-full-width' ],
+			'name'    => 'Video NextLink',
+			'desc'    => 'Link to a video on this project',
+			'default' => '',
+			'id'      => 'projectVideo',
+			'type'    => 'text_url',
+		];
+		$metabox->add_field( $args );
+		/**
 		 * ID projectAltName: Returns string.
 		 * The alternative name for this project.
 		 */
@@ -462,22 +742,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * The alternative name for this project.
 		 */
 		$args = [
-			'classes'    => [ 'input-full-width', 'codemirror' ],
-			'name'       => 'Narrative',
+			'classes'    => [ 'input-full-width' ],
+			'name'       => '',
 			'desc'       => 'Construct a project narrative - each new line is a new p element.',
 			'default'    => '',
 			'id'         => 'projectNarrative',
-			'type'       => 'textarea_code',
-			'attributes' => [
-				'data-codeeditor' => wp_json_encode( [
-					'codemirror' => [
-						'indentWithTabs' => true,
-						'autofocus'      => true,
-						'spellcheck'     => true,
-						'theme'          => 'jonessign',
-					],
-				] ),
-			],
+			'type'       => 'wysiwyg',
+
 		];
 		$metabox->add_field( $args );
 
@@ -521,15 +792,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		 * SVG Image or Logo of the Client
 		 */
 		$args = [
-			'id'         => 'projectSVGLogo',
-			'name'       => 'SVG Logo',
-			'type'       => 'file',
-			'text'       => [
-				'add_upload_file_text' => 'add svg logo',
+			'id'          => 'projectSVGLogo',
+			'name'        => 'logo',
+			'type'        => 'file',
+			'options'     => [
+				'url' => false,
 			],
-			'query_args' => [
+			'text'        => [
+				'add_upload_file_text' => 'add svg',
+			],
+			'query_args'  => [
 				'type' => 'image/svg',
 			],
+			'preview_size' => 'medium',
 		];
 		$metabox->add_field( $args );
 		/**
@@ -547,7 +822,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'type' => 'image',
 			],
 			'text'         => [
-				'add_upload_files_text' => 'add images (4x3)',
+				'add_upload_files_text' => 'add slideshow images (4x3)',
 				'remove_image_text'     => 'remove',
 				'file_text'             => 'image',
 				'file_download_text'    => 'download',
@@ -555,6 +830,93 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			],
 		];
 		$metabox->add_field( $args );
+
+	}//end additional_fields()
+
+	/**
+	 * Add a new metabox on the post type's edit screen. Shows up on the side.
+	 *
+	 * @param string $post_type The Type of post - in our case.
+	 * @param int    $post The dentifier of the post - the number.
+	 *
+	 * @link https://generatewp.com/managing-content-easily-quick-edit/
+	 * @link https://github.com/CMB2/CMB2/wiki/Field-Types
+	 * @link https://ducdoan.com/add-custom-field-to-quick-edit-screen-in-wordpress/
+	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
+	 */
+	public function add_metabox_to_project( $post_type, $post ) {
+		$id       = 'projectInfoSideMetabox';
+		$title    = 'Project Info';
+		$callback = [ $this, 'display_project_metabox_output' ];
+		$screen   = $this->get_slug();
+		$context  = 'side';
+		$priority = 'high';
+		add_meta_box( $id, $title, $callback, $screen, $context, $priority );
+	}
+
+	/**
+	 * Create the extra fields for the post type.
+	 *
+	 * Use CMB2 to create additional fields for the client post type.
+	 *
+	 * @since    1.0.0
+	 */
+	public function additional_image_fields() {
+		$metabox_args = [
+			'context'      => 'side',
+			'id'           => 'ProjectImagesSidebox',
+			'object_types' => [ $this->get_slug() ],
+			'show_in_rest' => \WP_REST_Server::ALLMETHODS,
+			'show_names'   => true,
+			'title'        => 'Project Images',
+			'show_title'   => false,
+			'cmb_styles'   => false,
+		];
+
+		$metabox = new_cmb2_box( $metabox_args );
+				/**
+		 * Appearance within a grid.
+		 */
+		$args = [
+			'name'    => 'Appearance in Grid',
+			'id'      => 'projectOrientation',
+			'type'    => 'radio',
+			'options' => [
+				'vertical'   => __( 'Vertical', 'cmb2' ),
+				'horizontal' => __( 'Horizontal', 'cmb2' ),
+				'square'     => __( 'Square', 'cmb2' ),
+			],
+			'default' => 'square',
+		];
+		$metabox->add_field( $args );
+
+		/**
+		 * Square 1x1 image for use within the open graph tags.
+		 */
+		$args = [
+			'show_names'   => false,
+			'classes'      => [ 'make-button-centered' ],
+			'before'       => get_general_label_cb( 'Square Images' ),
+			'id'           => 'projectSquareImage',
+			'name'         => 'Square Images',
+			'desc'         => 'needs at least one',
+			'button_side'  => 'right',
+			'type'         => 'file',
+			'preview_size' => [ 150, 150 ],
+			'query_args'   => [
+				'type' => 'image',
+				// @TODO: figure out a way you only get images that have a size ratio of 1x1.
+			],
+			'text'         => [
+				'add_upload_files_text' => 'add square image',
+				'remove_image_text'     => 'remove square image',
+				'file_text'             => 'image',
+				'file_download_text'    => 'download',
+				'remove_text'           => 'standard',
+			],
+		];
+		$metabox->add_field( $args );
+
 		/**
 		 * Vertical 3x4 image for tablet display;
 		 */
@@ -579,64 +941,40 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			],
 		];
 		$metabox->add_field( $args );
-
-		/**
-		 * Square 1x1 image for use within the open graph tags.
-		 */
-		$args = [
-			'show_names'   => false,
-			'classes'      => [ 'make-button-centered' ],
-			'before'       => get_general_label_cb( 'Square Images' ),
-			'id'           => 'projectSquareImages',
-			'name'         => 'Square Images',
-			'desc'         => 'needs at least one',
-			'button_side'  => 'right',
-			'type'         => 'file_list',
-			'preview_size' => [ 150, 150 ],
-			'query_args'   => [
-				'type' => 'image',
-				// @TODO: figure out a way you only get images that have a size ratio of 1x1.
-			],
-			'text'         => [
-				'add_upload_files_text' => 'add image(s)',
-				'remove_image_text'     => 'remove',
-				'file_text'             => 'image',
-				'file_download_text'    => 'download',
-				'remove_text'           => 'standard',
-			],
-		];
-		$metabox->add_field( $args );
-	}//end additional_fields()
-
-	/**
-	 * Add a new metabox on the post type's edit screen. Shows up on the side.
-	 *
-	 * @param string $post_type The Type of post - in our case.
-	 * @param int    $post The dentifier of the post - the number.
-	 *
-	 * @link https://generatewp.com/managing-content-easily-quick-edit/
-	 * @link https://github.com/CMB2/CMB2/wiki/Field-Types
-	 * @link https://ducdoan.com/add-custom-field-to-quick-edit-screen-in-wordpress/
-	 * @link https://www.sitepoint.com/extend-the-quick-edit-actions-in-the-wordpress-dashboard/
-	 */
-	public function add_metabox_to_project( $post_type, $post ) {
-		$id       = 'project-information-side-metabox';
-		$title    = 'Project Info';
-		$callback = [ $this, 'display_project_metabox_output' ];
-		$screen   = $this->get_slug();
-		$context  = 'side';
-		$priority = 'high';
-		add_meta_box( $id, $title, $callback, $screen, $context, $priority );
 	}
-
 	/**
-	 * Displays additional fields within the project post type, populating as needed.
+	 * Displays additional fields within the project post type, populating fields if the box has been filled out before.
 	 *
 	 * @param int $post The post ID.
 	 * @link https://developer.wordpress.org/reference
 	 */
 	public function display_project_metabox_output( $post ) {
-		$html = '';
+		$html = '
+		<style>
+		#project-sideinfo {
+			min-height: 250px;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: space-between;
+		}
+		#project-sideinfo .input_container {
+			min-height: 28px;
+			display: grid;
+			grid-template-rows: 25% 75%;
+			grid-template-areas:
+				"label"
+				"input";
+				align-items: center;
+		}
+		.input_container > label {
+			grid-area: label;
+			font-weight: 500;
+		}
+		.input_container > input {
+			grid-area: input;
+		}
+		</style>
+		';
 		wp_nonce_field( 'post_metadata', 'project_metadata_field' );
 		$project_info = $this->get_additional_project_info( $post->ID );
 		$job_id       = $project_info['job_id'] ?? '1111';
@@ -646,23 +984,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$tease        = $project_info['tease'] ?? '7 word teaser';
 
 		$html .= '<div id="project-sideinfo" class="inline-edit-group wp-clearfix admin_side_information">';
-		$html .= '<div class="label_left">';
+		$html .= '<div class="input_container">';
 		$html .= wp_sprintf( '<label for="projectInfo[client]">%s</label>', 'Client' );
 		$html .= wp_sprintf( '<input type="text" class="regular_text" name="projectInfo[client]" id="projectInfo[client]" value="%s"/>', $client );
 		$html .= '</div>';
-		$html .= '<div class="label_left">';
+		$html .= '<div class="input_container">';
 		$html .= wp_sprintf( '<label for="projectInfo[job_id]">%s</label>', 'Job #' );
 		$html .= wp_sprintf( '<input type="text" class="regular_text" name="projectInfo[job_id]" id="projectInfo[job_id]" value="%s"/>', $job_id );
 		$html .= '</div>';
-		$html .= '<div class="label_left">';
+		$html .= '<div class="input_container">';
 		$html .= wp_sprintf( '<label for="projectInfo[year_complete]">%s</label>', 'Complete' );
 		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[year_complete]" id="projectInfo[year_complete]" value="%s"/>', $complete );
 		$html .= '</div>';
-		$html .= '<div class="label_top">';
+		$html .= '<div class="input_container">';
 		$html .= wp_sprintf( '<label for="projectInfo[tease]">%s</label>', 'Tease' );
 		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[tease]" id="projectInfo[tease]" value="%s"/>', $tease );
 		$html .= '</div>';
-		$html .= '<div class="label_top">';
+		$html .= '<div class="input_container">';
 		$html .= wp_sprintf( '<label for="projectInfo[local_folder]">%s</label>', 'Local Folder' );
 		$html .= wp_sprintf( '<input type="text" class="text_small" name="projectInfo[local_folder]" id="projectInfo[local_folder]" value="%s"/>', $local_folder );
 		$html .= '</div>';
@@ -703,6 +1041,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		return new \WP_QUERY( $args );
 	}
+
 
 	/**
 	 * Output a menu with the 6 most recently modified projects.
@@ -856,7 +1195,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			];
 
 			// This field is saved as serialized data, so I need to use wp_parse_args to get to it.
-			update_post_meta( $post_id, 'projectInfo', wp_parse_args( $newdata, get_post_meta( $post_id, 'projectInfo' ) ) );
+			// update_post_meta( $post_id, 'projectInfo', wp_parse_args( $newdata, get_post_meta( $post_id, 'projectInfo' ) ) );
+			update_post_meta( $post_id, 'projectInfo', $newdata );
 
 		}
 	} // end save_post()
@@ -930,17 +1270,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	} // end display_quickedit_custom()
 
 	/**
-	 * Get project Featured Image the way I want it to look.
-	 *
-	 * @param int $project_id The post id assigned to the project.
-	 *
-	 * @return array The IDs of the project thumbnail and the project vertical image.
-	 */
-	public function get_project_header_images( $project_id ) {
-		return PostTypes::get_header_images_ids( $project_id, 'project' );
-	}
-
-	/**
 	 * Enqueues javascript data that will allow me to access project posts over in assets/src/js/projects
 	 */
 	public function enqueue_projects_script() {
@@ -948,26 +1277,36 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		global $template;
 		global $post;
 
+		$recent_project_ids     = $this->get_recent_project_ids( 10 );
 		if ( wp_rig()->is_amp() ) {
 			return;
 		}
 
+		/**
+		 * Do not bother to load these scripts unless we are on the front page or a single project page.
+		 */
 		if ( ! ( 'single-project.php' === basename( $template ) || is_front_page() ) ) {
 			return;
 		}
 		wp_register_script( 'jQuery', 'https://code.jquery.com/jquery-3.5.1.slim.min.js', [], 9, false );
 
-		$in_footer = false;
+		$in_footer = false; // WANT THESE SCRIPTS TO LOAD IN HEADER
 		// Enqueue the flickity script. The last element asks whether to load the script within the footer. We don't want that.
 		$handle  = 'wp-rig-flickity';
 		$source  = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/flickity.js' ) : get_theme_file_uri( '/assets/js/flickity.min.js' );
 		$version = 'development' === ENVIRONMENT ? wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/flickity.js' ) ) : wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/flickity.min.js' ) );
 		wp_enqueue_script( $handle, $source, [ 'jQuery' ], $version, $in_footer );
 
+		/** PACKERY JAVASCRIPT */
+		$handle  = 'wp-rig-packery';
+		$source  = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/packery.js' ) : get_theme_file_uri( '/assets/js/packery.min.js' );
+		$version = 'development' === ENVIRONMENT ? wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/packery.js' ) ) : wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/packery.min.js' ) );
+		wp_enqueue_script( $handle, $source, [ 'jQuery' ], $version, $in_footer );
+
 		$handle  = 'wp-rig-projects';
 		$source  = 'development' === ENVIRONMENT ? get_theme_file_uri( '/assets/js/src/project.js' ) : get_theme_file_uri( '/assets/js/project.min.js' );
 		$version = 'development' === ENVIRONMENT ? wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/src/project.js' ) ) : wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/project.min.js' ) );
-		wp_enqueue_script( $handle, $source, [], $version, false );
+		wp_enqueue_script( $handle, $source, [], $version, $in_footer );
 
 		/*
 		 * Allows us to add the js right within the module.
@@ -987,11 +1326,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				$handle,
 				'projectData',
 				[
-					'identifiers' => array_values( array_diff( $this->get_recent_project_ids( 8 ), array( $post->ID ) ) ),
+					'identifiers' => array_values( array_diff( $this->get_recent_project_ids( 10 ), array( $post->ID ) ) ),
 					'current'     => $post->ID,
 					'resturl'     => rest_url( 'wp/v2/' ),
 				]
 			);
+
 	} // end enqueue_projects_script()
 
 	/**
@@ -1019,5 +1359,145 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		}
 		return $project_links;
 	}
+
+	/**
+	 * Pull Info about a project needed to create a grid.
+	 *
+	 * @param int $project_id ID of the project.
+	 *
+	 * @note Includes Title, link, industries, signtypes, expertises, featured image and vertical image
+	 */
+	public function get_grid_orientation( $project_id ) {
+		return get_post_meta( $project_id, 'projectOrientation', true );
+	}
+
+	/**
+	 * Pull Info about a project needed to create a grid.
+	 *
+	 * @param int $project_id ID of the project.
+	 *
+	 * @note Includes Title, link, industries, signtypes, expertises, featured image and vertical image
+	 */
+	public function simple_grid_item( $project_id ) {
+		$imageset    = $this->get_featured_image_set( $project_id );
+		$orientation = $this->get_gried_orientation( $project_id );
+
+
+		$output = <<<OTG
+		<div style="--grid-item-background: url($bg_image_url);" data-postid="$project_id" class="grid-item$item_class"><b>$project_id</b></div>
+OTG;
+return $output;
+	}
+
+	/**
+	 * Create a project as a grid item.
+	 *
+	 * @param int $project_id Project identification or post_id.
+	 *
+	 * @link https://codepen.io/nickmortensen/pen/yLOrxbW?editors=1100
+	 * @return string HTML for an individual project card.
+	 */
+	public function get_packed_project( int $project_id ) : string {
+
+		$size      = 'medium_large';
+		$post_type = 'project';
+
+		[
+			'featured_images' => [
+				'horizontal' => [
+					'url' => $horizontal_url,
+					'id'  => $horizontal_id,
+				],
+				'vertical'    => [
+					'url' => $vertical_url,
+					'id'  => $vertical_id,
+				],
+				'square'      => [
+					'url' => $square_url,
+					'id'  => $square_id,
+				],
+			],
+			'attributes' => [
+				'all' => $data_attributes,
+			],
+			'orientation'     => $orientation,
+			'slideshow'       => $slides,
+			'signtypes'       => $signtypes,
+			'expertise'       => $expertise,
+			'industries'      => $industries,
+			'tags'            => $tags,
+			'attributes'      => $attributes,
+			'year_complete'   => $year,
+			'tease'           => $tease,
+			'job_id'          => $jobid,
+			'address'         => $address,
+			'svg'             => $svg,
+			'modified'        => $last_modified,
+			'project_name'    => $project_name,
+			'link'            => $link,
+			'partners'        => $partners_array,
+			'client'          => $client,
+			'alt_name'        => $alternate_name,
+			'modified'        => $last_update,
+			'slug'            => $project_slug,
+			'url'             => $project_link,
+		] = $this->get_definitive_project_info( $project_id, 'wp-rig-featured' );
+
+
+		if ( 'vertical' === $orientation ) {
+			$figure_image_url = PostTypes::get_posttype_vertical_image_url( $project_id, $post_type, $size );
+		} else {
+			$figure_image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $project_id ), $size )[0];
+		}
+
+
+		$jobname       = $project_name;
+		$article_class = '';
+		if ( str_word_count( $project_name ) === 2 ) {
+			$name         = explode( ' ', $project_name, 2 );
+			$rest         = ltrim( $project_name, $name[0] . ' ' );
+			$project_name = $name[0] . '<br />' . $name[1];
+		}
+
+
+		$output  = wp_sprintf( '<div data-id="%d" class="single_p %s" data-attributes="%s">', $project_id, $orientation, $data_attributes );
+		$output .= wp_sprintf( '<figure data-id="%d">', $project_id );
+		$output .= wp_sprintf( '<img loading="lazy" src="%s" />', $figure_image_url );
+		$output .= $this->get_figure_caption( $project_id );
+		$output .= wp_sprintf( '</figure><!-- end of %s figure  -->', $jobname );
+
+		$output .= '</div><!-- end div.grid-item-->';
+		$output .= "\n";
+
+
+return $output;
+
+	}
+
+	/**
+	 * Create a figure caption element for previewing projects in packery/
+	 *
+	 * @param int $projects The number of projects to fetch. Gets the most recently updated projects.
+	 */
+	public function get_figure_caption( $project_id ) {
+		$permalink          = get_permalink( $project_id );
+		$orientation        = $this->get_grid_orientation( $project_id );
+		$title              = get_the_title( $project_id );
+		$industry_term_ids  = wp_get_post_terms( $project_id, 'industry', [ 'fields' => 'ids' ] );
+		$index              = ( 1 < count( $industry_term_ids ) ) ? $industry_term_ids[ wp_rand( 0, wp_rand( 0, count( $industry_term_ids ) - 1 ) ) ] : 0;
+		$industry_term_id   = $industry_term_ids[ $index ];
+		$industry_page_link = get_term_link( $industry_term_id, 'industry' );
+
+		$output  = '';
+		$output .= '<figcaption class="packed-project">';
+		$output .= wp_sprintf( '<span class="project_name"><a title="link to a project profile on %2$s" href="%s">%2$s</a></span>', get_permalink( $project_id ), get_the_title( $project_id ) );
+		$output .= wp_sprintf( '<span class="project_industry"><a title="%1$s" href="%2$s">%1$s</a></span>', get_term( $industry_term_id )->name, $industry_page_link );
+		$output .= '</figcaption>';
+
+
+		return $output;
+	}
+
+
 
 }//end class

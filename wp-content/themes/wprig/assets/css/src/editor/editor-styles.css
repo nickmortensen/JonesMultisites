@@ -20,6 +20,8 @@
 --------------------------------------------------------------*/
 
 @import "../_custom-properties.css";
+@import "../_custom-media.css";
+@import "../_custom-selectors.css";
 
 /* ================================
 	#5 @import "_typography.css";

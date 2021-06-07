@@ -17,8 +17,8 @@ get_header();
 wp_rig()->print_styles( 'wp-rig-content' );
 
 ?>
+<!-- main div closes after footer in footer.php fil -->
 	<main id="primary" class="site-main">
 		<?php get_template_part( 'template-parts/content/error', 'offline' ); ?>
-	</main><!-- #primary -->
 <?php
 get_footer();

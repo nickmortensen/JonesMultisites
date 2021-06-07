@@ -51,7 +51,7 @@ export function serve( done ) {
 
 		// Let the user know if we found a cert
 		if ( certFound ) {
-			log( colors.yellow( `Using the SSL certificate ${ colors.bold( certPath ) }` ) );
+			log( colors.black.bgYellow( `Using the SSL certificate ${ colors.bold( certPath ) }` ) );
 		} else {
 			log( colors.yellow( `No SSL certificate found, HTTPS will ${ colors.bold( 'not' ) } be enabled` ) );
 		}
@@ -75,7 +75,7 @@ export function serve( done ) {
 
 	// Start the BrowserSync server
 	server.init( serverConfig );
-	log( colors.red( `Starting Browsersync` ) );
+	log( colors.cyan( `Starting Browsersync` ) );
 
 	done();
 }
@@ -88,10 +88,12 @@ export function reload( done ) {
 		if ( server.paused ) {
 			server.resume();
 		}
-		log( colors.red( `Reloading Browsersync` ) );
+		log( colors.bgMagenta( `Reloading Browsersync` ) );
 		server.reload();
 	} else {
 		server.pause();
+		log( colors.bgCyan( `Browser Sync Paused` ) );
 	}
 	done();
+	log( colors.bgCyan( `Browser Sync Complate` ) );
 }

@@ -1281,9 +1281,6 @@ p.customize-section-description {
 	margin-right: 16px;
 	padding: 4px 5px;
 	border: 2px solid var(--color-theme-white);
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 }
 
@@ -2417,9 +2414,6 @@ body.cheatin p {
 	margin: 0;
 	margin-left: 10px;
 	transition: all 0.2s;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 	outline: none;
 }

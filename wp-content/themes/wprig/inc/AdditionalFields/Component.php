@@ -7,6 +7,8 @@
 
 namespace WP_Rig\WP_Rig\AdditionalFields;
 
+use WP_Rig\WP_Rig\Posttype_Project\Component as Projects;
+use WP_Rig\WP_Rig\Posttype_Global\Component as PostTypes;
 use WP_Rig\WP_Rig\Component_Interface;
 use function WP_Rig\WP_Rig\wp_rig;
 use function add_action;
@@ -191,10 +193,9 @@ class Component implements Component_Interface {
 	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
 	 * @param object $field_type         The `CMB2_Types` object.
 	 */
-	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+	public function cmb2_render_starrating_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
 		$output  = '<section id="cmb2-star-rating-metabox">';
-		$output .= '<fieldset>';
-		$output .= '<span class="star-cb-group">';
+		$output .= '<span class="star-cb-group" style="background: red;">';
 		$y       = 5;
 		while ( $y > 0 ) {
 			$checked = checked( $value, $y, false ); // false option returns, true option echos.
@@ -203,7 +204,6 @@ class Component implements Component_Interface {
 			$y--;
 		}
 		$output .= '</span>';
-		$output .= '</fieldset>';
 		$output .= '</section>';
 		$output .= $field_type->_desc( true );
 		echo $output;
@@ -936,5 +936,34 @@ class Component implements Component_Interface {
 	} //end render_clientele_field_callback()
 
 
+	/**
+	 * Render BETTER 'STAR RATING' custom field type
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param array  $field              The passed in `CMB2_Field` .
+	 * @param mixed  $value              The value of this field escaped. It defaults to `sanitize_text_field`.
+	 * @param int    $object_id          The ID of the current object.
+	 * @param string $object_type        The type of object you are working with. Most commonly, `post` (this applies to all post-types),but could also be `comment`, `user` or `options-page`.
+	 * @param object $field_type         The `CMB2_Types` object.
+	 */
+	public function cmb2_render_rating_field_callback( $field, $value, $object_id, $object_type, $field_type ) {
+		$output = '<div class="star-rating-container">';
+		$y      = 5;
+
+		while ( $y > 0 ) {
+			$checked = checked( $value, $y, false ); // false option returns, true option echos.
+			$output .= wp_sprintf( '<input type="radio" name="%2$s" id="rating-%1$s" value="%1$s" %3$s />', $y, $field_type->_id( false ), $checked );
+			$output .= wp_sprintf( '<label for="rating-%s">%s</label>', $y );
+			$y--;
+		}
+		$output .= '</div><!-- end div.star-rating-container -->';
+		$output .= $field_type->_desc( true );
+		echo $output;
+	}
+
+	public function render_related_projects_field() {
+		return null;
+	}
 
 }

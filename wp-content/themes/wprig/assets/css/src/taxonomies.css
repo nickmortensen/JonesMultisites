@@ -1,8 +1,0 @@
-#single-taxonomy-content {
-	display: grid;
-	grid-gap: 20px;
-	grid-template-columns: 4fr 4fr 8fr;
-	background: var(--yellow-600);
-}
-
-.taxonomy-data { border: 2px dotted var(--gray-700); }

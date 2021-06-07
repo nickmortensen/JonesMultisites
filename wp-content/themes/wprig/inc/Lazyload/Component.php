@@ -108,11 +108,11 @@ class Component implements Component_Interface {
 		$wp_customize->add_control(
 			'lazy_load_media',
 			[
-				'label'           => __( 'Lazy-load images', 'wp-rig' ),
-				'section'         => 'theme_options',
-				'type'            => 'radio',
-				'description'     => __( 'Lazy-loading images means images are loaded only when they are in view. Improves performance, but can result in content jumping around on slower connections.', 'wp-rig' ),
-				'choices'         => $lazyload_choices,
+				'label'       => __( 'Lazy-load images', 'wp-rig' ),
+				'section'     => 'theme_options',
+				'type'        => 'radio',
+				'description' => __( 'Lazy-loading images means images are loaded only when they are in view. Improves performance, but can result in content jumping around on slower connections.', 'wp-rig' ),
+				'choices'     => $lazyload_choices,
 			]
 		);
 	}

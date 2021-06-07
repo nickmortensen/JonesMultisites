@@ -1,5 +1,7 @@
+"use strict";
 /**
  * https://wordpress.stackexchange.com/questions/252256/svg-image-upload-stopped-working/305177#305177
+ * https://www.sitepoint.com/wordpress-svg/
  */
 /**
  * Imports data as script_vars from Media/Component.php
@@ -49,7 +51,7 @@ const mediaGridObserver = new MutationObserver( function( mutations ) {
 const attachmentPreviewObserver = new MutationObserver( function( mutations ) {
 	for ( let i = 0; i < mutations.length; i++ ) {
 		for ( let j = 0; j < mutations[ i ].addedNodes.length; j++ ) {
-			const element = document.querySelectorAll( mutations[ i ].addedNodes[ j ]);
+			const element = document.querySelectorAll( mutations[ i ].addedNodes[ j ] );
 			let onAttachmentPage = false;
 			if ( ( element.hasClass( 'attachment-details' ) ) || element.find( '.attachment-details' ).length !== 0 ) {
 				onAttachmentPage = true;

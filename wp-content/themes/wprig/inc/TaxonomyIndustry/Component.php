@@ -81,26 +81,22 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 	/**
 	 * Query for all the data and metadata assigned to any of the taxonomy.
-	 *
-	 * @param int $term_id The id for the taxonomy term.
-	 * @return array $info An associative array of all the data and metadata assigned to this taxonomy item.
 	 */
-	public function get_all_industry_info( int $term_id ) : array {
+	public function get_all_industry_info() : array {
+		$term_id               = get_queried_object()->term_id;
 		$additional            = [];
 		$additional['images']  = $this->get_industry_images( $term_id, true );
-		$additional['aliases'] = $this->get_industry_aliases( $term_id );
-		$additional['indepth'] = $this->get_industry_indepth( $term_id );
+		$additional['aliases'] = Taxonomies::get_the_term_aliases( $term_id );
+		$additional['indepth'] = Taxonomies::get_the_term_description_indepth( $term_id );
 		$base                  = get_term( $term_id, 'industry', ARRAY_A );
 		return array_merge( $base, $additional );
 	}
 
 	/**
 	 * Output the taxonomy term names as an array.
-	 *
-	 * @param bool $hide_empty Whether we should retreive the terms that have nothing assigned to them.
 	 */
-	public function get_industry_terms( bool $hide_empty = false ) : array {
-		return Taxonomies::get_all_terms_in_taxonomy( 'industry', $hide_empty );
+	public function get_industry_terms() : array {
+		return Taxonomies::get_all_terms_in_taxonomy( 'industry', false );
 	}
 
 	/**
@@ -171,6 +167,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		];
 		$metabox = new_cmb2_box( $args );
 
+		/* Longer Description */
+		$args = [
+			'name'       => 'longer description',
+			'desc'       => 'a longer, keyword-laden description -- may use html markup',
+			'id'         => $prefix . 'Indepth',
+			'type'       => 'wysiwyg',
+			'attributes' => [
+				'data-richsnippet' => 'long-description',
+			],
+		];
+		$metabox->add_field( $args );
 		/* Alternative Names */
 		$args = [
 			'classes'     => [ 'align-button-right' ],
@@ -270,17 +277,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 		];
 
-		/* Longer Description */
-		$args = [
-			'name'       => 'longer description',
-			'desc'       => 'a longer, keyword-laden description -- may use html markup',
-			'id'         => $prefix . 'Indepth',
-			'type'       => 'textarea_code',
-			'attributes' => [
-				'data-richsnippet' => 'long-description',
-			],
-		];
-		$metabox->add_field( $args );
+
 	}//end create_extra_fields()
 
 	/**
@@ -358,21 +355,6 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$columns['slug']  = 'Slug';
 		$columns['total'] = '<span style="color:var(--table-header-color);" title="count of tagged photos" class="material-icons">camera_enhance</span>';
 		return $columns;
-	}
-
-	/**
-	 * Retrieve the taxonomy meta for 'industry AltNames' for the given sign type.
-	 * This is always an array.
-	 *
-	 * @param int $term_id Taxonomy term Id.
-	 * @return array The sudomain of this location's homepage.
-	 */
-	private function get_industry_aliases( $term_id ) {
-		$prefix = $this->get_slug();
-		$key    = $prefix . 'AltNames';
-		$single = false;
-		$output = get_term_meta( $term_id, $key, $single );
-		return $output;
 	}
 
 	/**

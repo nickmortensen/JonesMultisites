@@ -6,10 +6,7 @@
 }
 
 #safety {
-	--safety-label-color: var(--foreground);
-	--safety-bg: var(--blue);
-	--safety-grid-area: safetyformplusviz;
-	grid-area: var(--safety-grid-area);
+
 	background: var(--safety-bg);
 	border-bottom: 10px solid var(--background);
 }
@@ -28,7 +25,6 @@
 	}
 
 	& > .safetyviz {
-		grid-area: var(--safety-grid-area);
 		z-index: 1;
 	}
 

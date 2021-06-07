@@ -16,14 +16,37 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.io/normalize.css/
 link { display: none; }
 
 h1 {
-	font-size: 2em;
+	font-size: var(--font-size-h1);
 	margin: 0.67em 0;
+}
+
+h2 {
+	font-size: var(--font-size-h2);
+}
+
+h3 {
+	font-size: var(--font-size-h3);
+}
+
+h4 {
+	font-size: var(--font-size-h4);
 }
 
 abbr[title] {
 	border-bottom: none; /* 1 */
-	text-decoration: underline; /* 2 */
-	text-decoration: underline dotted; /* 2 */  /* phpcs:ignore */
+	text-decoration: underline; /* 2 */  /* phpcs:ignore */
+}
+
+p,
+span,
+li {
+	font-size: var(--fontsize-s);
+	font-weight: var(--thin);
+}
+article {
+	font-size: var(--article-font-size);
+	font-weight: lighter;
+	line-height: 1.2;
 }
 
 b,
@@ -68,10 +91,6 @@ textarea {
 	line-height: var(--global-font-line-height);
 }
 
-div,
-span {
-	font-size: var(--fontsize-m);
-}
 
 :--heading {
 	--heading-color: var(--gray-800);
@@ -174,10 +193,11 @@ dd { margin: 0 1.5em 1.5em; }
 # PRE
 --------------------------------------------------------------*/
 pre {
-	background: var(--gray-900);
-	color: var(--yellow-500);
+	background: var(--pre-bg);
+	color: var(--pre-color);
+	height: 1400px;
 	font-family: var(--highlight-font-family), monospace; /* 1 */
-	font-size: 0.9375rem; /* 2 */
+	font-size: 16px;
 	line-height: 1.1;
 	margin-bottom: 1.5em;
 	width: 100%;
@@ -211,11 +231,6 @@ big { font-size: 125%; }
 
 strong { font-weight: 500; }
 
-p,
-li,
-span {
-	font-size: var(--fontsize-s);
-}
 
 table {
 	margin: 0 0 1.5em;
@@ -259,3 +274,116 @@ table {
 
 /* Do not show the outline on the skip link target. */
 #primary[tabindex="-1"]:focus { outline: 0; }
+
+/* Shows a definition list of the various taxonomies belonging to this entry */
+.entry-taxonomies {
+	margin: 10px auto;
+	width: 600px;
+
+	& dl {
+		border: var(--dashed-border);
+		& > div {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: start;
+			align-items: stretch;
+
+			&:not(:last-of-type) {
+				border-bottom: var(--dashed-border);
+			}
+
+			& > dd,
+			& > dt {
+				height: 100%;
+				line-height: 1;
+				font-size: 16px;
+				font-weight: var(--hairline);
+				padding: 9px;
+			}
+
+			& > dt {
+				flex: 2;
+				font-weight: var(--normal);
+				border-right: var(--dashed-border);
+			}
+			& > dd {
+				flex: 9;
+				margin-inline-start: 0;
+				margin: 0 0 0 0;
+
+				& > a {
+					text-transform: capitalize;
+
+				}
+			}
+		}
+	}
+}
+
+/* ======== ALERTS ====== */
+
+.alert {
+	--aside-content: "settings";
+	--aside-background-color: var(--gray-100);
+	--aside-color: var(--gray-700);
+	--aside-icon-width: 54px;
+	--aside-content-width: calc(100% - var(--aside-icon-width));
+	--aside-border-left: 12px solid var(--aside-color);
+	--aside-icon-size: 48px;
+
+	position: relative;
+	min-height: 60px;
+	margin: 8px 0;
+	box-shadow: 0 3px 6px 0 var(--gray-700);
+
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	color: var(--aside-color);
+	background: var(--aside-background-color);
+	border-left: var(--aside-border-left);
+
+	& span {
+		font-style: italic;
+		position: relative;
+		padding-left: 10%;
+
+		&::before {
+			position: absolute;
+			top: 50%;
+			left: 2px;
+			font-style: normal;
+			content: var(--aside-content);
+			font-size: var(--aside-icon-size);
+			font-family: "Material Icons", sans-serif;
+			transform: translateY(-50%);
+			min-height: 100%;
+		}
+	}
+	&.info {
+		--aside-content: "info";
+		--aside-background-color: var(--indigo-300);
+		--aside-color: var(--indigo-600);
+	}
+	&.error {
+		--aside-content: "block";
+		--aside-background-color: var(--gray-100);
+		--aside-color: var(--gray-500);
+	}
+	&.warning {
+		--aside-content: "warning_amber";
+		--aside-background-color: var(--yellow-300);
+		--aside-color: var(--yellow-700);
+	}
+	&.danger {
+		--aside-content: "emergency";
+		--aside-background-color: var(--red-200);
+		--aside-color: var(--red-600);
+	}
+	&.success {
+		--aside-content: "check_circle";
+		--aside-background-color: var(--blue-200);
+		--aside-color: var(--blue-600);
+	}
+}

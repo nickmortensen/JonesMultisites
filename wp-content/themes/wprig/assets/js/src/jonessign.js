@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable */
-const locations = JSON.parse( jonesignInfo.locations ); // the PHP outputs the data as json-like, but it is really a string.
+const locations = JSON.parse( jonessignInfo.locations ); // the PHP outputs the data as json-like, but it is really a string.
 const locationsArray = [
 	{
 	"id": 75,
@@ -539,4 +539,44 @@ const getRandomNumber = ( min = 0, max = 5 ) => {
 	return Number( Math.floor( Math.random() * ( max - min ) ) + min );
 }
 
+/**
+ * Equivalent to $(document).ready in JQuery - runs function when the document has been loaded
+ */
+function ready( fn ) {
+	if ( document.readyState != 'loading' ){
+		fn();
+	} else {
+		document.addEventListener( 'DOMContentLoaded', fn );
+	}
+}
 
+/**
+ * Returns true if body has the class we are searching for
+ * last focusable element in the container.
+
+ * @param {string} term The css class in question
+ * @return {boolean} whether or not the body has the specified class attached to it
+ */
+/* eslint-disable */
+const bodyHasClass = () => document.body.classList.contains( 'hide-sidemenu' );
+
+/**
+ * Toggles a class on the body htmlElement
+ *
+ * @param { string } input The CSS class to add to the body
+ */
+const toggleBodyClass = input => document.body.classList.toggle( input );
+
+function nice_r_toggle( pfx, id ) {
+	var elp = document.getElementById( pfx + '_v' + id );
+	var elc = document.getElementById( pfx + '_a' + id );
+	if ( elp ) {
+		if ( elp.style.display === 'block' ) {
+			elp.style.display = 'none';
+			if ( elc ) elc.innerHTML = '&#9658;';
+		} else {
+				elp.style.display = 'block';
+		if ( elc ) elc.innerHTML = '&#9660;';
+		}
+	}
+}

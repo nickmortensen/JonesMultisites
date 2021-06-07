@@ -266,7 +266,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'name'       => 'longer description',
 			'desc'       => 'a longer, keyword-laden description -- may use html markup',
 			'id'         => $prefix . 'Indepth',
-			'type'       => 'textarea_code',
+			'type'       => 'wysiwyg',
 			'attributes' => [
 				'data-richsnippet' => 'long-description',
 			],

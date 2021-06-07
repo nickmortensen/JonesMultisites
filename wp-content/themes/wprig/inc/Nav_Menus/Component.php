@@ -27,7 +27,7 @@ use function wp_nav_menu;
 class Component implements Component_Interface, Templating_Component_Interface {
 
 	const PRIMARY_NAV_MENU_SLUG      = 'primary';
-	const ASIDE_NAV_MENU_SLUG        = 'aside';
+	const SIDEBAR_NAV_MENU_SLUG      = 'sidebar';
 	const FOOTER_ONE_NAV_MENU_SLUG   = 'footermenuone';
 	const FOOTER_TWO_NAV_MENU_SLUG   = 'footermenutwo';
 	const FOOTER_THREE_NAV_MENU_SLUG = 'footermenuthree';
@@ -59,13 +59,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function template_tags() : array {
 		return array(
 			'is_primary_nav_menu_active'      => [ $this, 'is_primary_nav_menu_active' ],
-			'is_aside_nav_menu_active'        => [ $this, 'is_aside_nav_menu_active' ],
+			'is_sidebar_nav_menu_active'      => [ $this, 'is_sidebar_nav_menu_active' ],
 			'is_footer_one_nav_menu_active'   => [ $this, 'is_footer_one_nav_menu_active' ],
 			'is_footer_two_nav_menu_active'   => [ $this, 'is_footer_two_nav_menu_active' ],
 			'is_footer_three_nav_menu_active' => [ $this, 'is_footer_three_nav_menu_active' ],
 
 			'display_primary_nav_menu'        => [ $this, 'display_primary_nav_menu' ],
-			'display_aside_nav_menu'          => [ $this, 'display_aside_nav_menu' ],
+			'display_sidebar_nav_menu'        => [ $this, 'display_sidebar_nav_menu' ],
 			'display_footer_one_nav_menu'     => [ $this, 'display_footer_one_nav_menu' ],
 			'display_footer_two_nav_menu'     => [ $this, 'display_footer_two_nav_menu' ],
 			'display_footer_three_nav_menu'   => [ $this, 'display_footer_three_nav_menu' ],
@@ -79,7 +79,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		register_nav_menus(
 			array(
 				static::PRIMARY_NAV_MENU_SLUG      => esc_html__( 'Primary', 'wp-rig' ),
-				static::ASIDE_NAV_MENU_SLUG        => esc_html__( 'Aside', 'wp-rig' ),
+				static::SIDEBAR_NAV_MENU_SLUG      => esc_html__( 'Sidebar', 'wp-rig' ),
 				static::FOOTER_ONE_NAV_MENU_SLUG   => esc_html__( 'FooterOne', 'wp-rig' ),
 				static::FOOTER_TWO_NAV_MENU_SLUG   => esc_html__( 'FooterTwo', 'wp-rig' ),
 				static::FOOTER_THREE_NAV_MENU_SLUG => esc_html__( 'FooterThree', 'wp-rig' ),
@@ -142,10 +142,10 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @param object  $args        An object of wp_nav_menu() arguments.
 	 * @return string Modified nav menu HTML.
 	 */
-	public function filter_aside_nav_menu_dropdown_symbol( string $item_output, WP_Post $item, int $depth, $args ) : string {
+	public function filter_sidebar_nav_menu_dropdown_symbol( string $item_output, WP_Post $item, int $depth, $args ) : string {
 
 		// Only for our primary menu location.
-		if ( empty( $args->theme_location ) || static::ASIDE_NAV_MENU_SLUG !== $args->theme_location ) {
+		if ( empty( $args->theme_location ) || static::SIDEBAR_NAV_MENU_SLUG !== $args->theme_location ) {
 			return $item_output;
 		}
 
@@ -167,12 +167,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Checks whether the aside navigation menu is active.
+	 * Checks whether the sidebar navigation menu is active.
 	 *
-	 * @return bool True if the aside navigation menu is active, false otherwise.
+	 * @return bool True if the sidebar navigation menu is active, false otherwise.
 	 */
-	public function is_aside_nav_menu_active() : bool {
-		return (bool) has_nav_menu( static::ASIDE_NAV_MENU_SLUG );
+	public function is_sidebar_nav_menu_active() : bool {
+		return (bool) has_nav_menu( static::SIDEBAR_NAV_MENU_SLUG );
 	}
 
 	/**
@@ -219,17 +219,17 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Displays the aside navigation menu.
+	 * Displays the sidebar navigation menu.
 	 *
 	 * @param array $args Optional. Array of arguments. See `wp_nav_menu()` documentation for a list of supported
 	 *                    arguments.
 	 */
-	public function display_aside_nav_menu( array $args = array() ) {
+	public function display_sidebar_nav_menu( array $args = array() ) {
 		if ( ! isset( $args['container'] ) ) {
 			$args['container'] = '';
 		}
 
-		$args['theme_location'] = static::ASIDE_NAV_MENU_SLUG;
+		$args['theme_location'] = static::SIDEBAR_NAV_MENU_SLUG;
 
 		wp_nav_menu( $args );
 	}

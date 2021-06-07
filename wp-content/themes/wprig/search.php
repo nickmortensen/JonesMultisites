@@ -14,7 +14,8 @@ get_header();
 wp_rig()->print_styles( 'wp-rig-content' );
 
 ?>
-	<main id="primary" class="site-main">
+<!-- main div closes after footer in footer.php fil -->
+	<main>
 		<?php
 		if ( have_posts() ) {
 
@@ -31,7 +32,6 @@ wp_rig()->print_styles( 'wp-rig-content' );
 			get_template_part( 'template-parts/content/error' );
 		}
 		?>
-	</main><!-- #primary -->
 <?php
 
 get_footer();

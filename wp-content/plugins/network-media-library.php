@@ -168,7 +168,7 @@ function admin_post_thumbnail_html( string $content, $post_id, $thumbnail_id ) :
  * @param bool         $icon          Whether the image should be treated as an icon.
  * @return array|false Either array with src, width & height, icon src, or false.
  */
-add_filter( 'wp_get_attachment_image_src', function( $image, $attachment_id, $size, bool $icon ) {
+add_filter( 'wp_get_attachment_image_src', function( $image, $attachment_id, $size, bool $icon = false ) {
 	static $switched = false;
 
 	if ( $switched ) {
@@ -387,22 +387,22 @@ function allow_media_library_access( array $caps, string $cap, int $user_id, arr
  * @param string $content The raw post content to be filtered.
  * @return string Converted content with 'srcset' and 'sizes' attributes added to images.
  */
-function make_content_images_responsive( $content ) {
-	if ( is_media_site() ) {
-		return $content;
-	}
+// function make_content_images_responsive( $content ) {
+// 	if ( is_media_site() ) {
+// 		return $content;
+// 	}
 
-	switch_to_media_site();
+// 	switch_to_media_site();
 
-	$content = wp_make_content_images_responsive( $content );
+// 	$content = wp_make_content_images_responsive( $content );
 
-	restore_current_blog();
+// 	restore_current_blog();
 
-	return $content;
-}
+// 	return $content;
+// }
 
-remove_filter( 'the_content', 'wp_make_content_images_responsive' );
-add_filter( 'the_content', __NAMESPACE__ . '\make_content_images_responsive' );
+// remove_filter( 'the_content', 'wp_make_content_images_responsive' );
+// add_filter( 'the_content', __NAMESPACE__ . '\make_content_images_responsive' );
 
 /**
  * A class which encapsulates the filtering of ACF field values.

@@ -1,49 +1,81 @@
 <?php
 /**
- * The template for displaying all single posts
+ * The main template file
  *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
+ * This is the most generic template file in a WordPress theme
+ * and one of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query.
+ * E.g., it puts together the home page when no home.php file exists.
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ * @link https://codex.wordpress.org/Template_Hierarchy
  *
  * @package wp_rig
+ *
+ * @updated 05_May_2021
  */
 
 namespace WP_Rig\WP_Rig;
 
-global $template;
+[
+	'term_id'     => $term_identifier,
+	'name'        => $term_name,
+	'count'       => $count,
+	'description' => $description,
+	'slug'        => $slug,
+	'taxonomy'    => $taxonomy,
+] = get_object_vars( get_queried_object() );
 
+$header_images = wp_rig()->get_term_header_images( $term_identifier, 'medium' );
+
+$classes   = [];
+$classes[] = is_tax() ? 'taxonomy' : '';
+$classes[] = is_tax() ? get_queried_object()->taxonomy : '';
+$classes[] = is_tax() ? get_queried_object()->slug : '';
+
+$template_args['body_class'] = $classes;
+
+global $wp_query;
+
+// print_pre( $wp_query );
+// print_pre( get_queried_object() );
+$square = wp_rig()->get_term_images();
+
+// get_header( 'taxonomy' );
 get_header();
-wrap( get_queried_object() );
-wrap( basename( $template ) );
-wrap( get_post_type() );
-
 
 wp_rig()->print_styles( 'wp-rig-content' );
 
+$taxname = is_tax() ? 'is taxonomy' : 'not taxonomy';
 
 ?>
+	<main id="primary" <?php post_class( $classes ); ?>>
 
-<main id="primary" class="site-main">
-		<?php
+	<?php
 
-		echo 'The following posts are tied to this taxonomy: ';
-		while ( have_posts() ) {
-			the_post();
-			echo get_the_id() . "\r";
+		if ( is_tax() ) {
+
+			get_template_part( 'template-parts/content/taxonomy/page_header', 'taxonomy', $template_args );
+
+
+			while ( have_posts() ) {
+				//get_template_part( 'template-parts/content/entry', 'taxonomy', $template_args );
+				the_post();
+
+			}
+
+			if ( ! is_singular() ) {
+				get_template_part( 'template-parts/content/pagination' );
+			}
+		} else {
+			get_template_part( 'template-parts/content/error' );
 		}
 		?>
-	</main><!-- #primary -->
 
-<section id="single-taxonomy-content">
-<h2>this section</h2>
+		<?php get_footer(); ?>
+	</main>
 
-</section>
-	<main id="primary" class="site-main" style="color: var(--indigo-600);">
-	</main><!-- #primary -->
-<?php
+	<?php wp_footer(); ?>
 
-wrap( get_queried_object() );
-
-if ( is_super_admin() ) {
-	edit_tag_link();
-}
-get_footer();
+	</body><!--SANITY CHECK -->
+</html>

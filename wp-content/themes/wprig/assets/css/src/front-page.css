@@ -1,3 +1,85 @@
-#footer {
-	color: inherit;
+@import "_custom-properties.css";
+@import "_custom-selectors.css";
+@import "_custom-media.css";
+
+.home section:not(.off-canvas, .content-wrapper),
+.home footer {
+	overflow-x: unset;
+	position: relative;
 }
+
+
+.home footer { height: 320px; }
+
+
+.section-title {
+	--title-container-width: 100%;
+	z-index: 1;
+
+	@media (--wide) {
+		--title-container-width: 70px;
+		width: var(--title-container-width);
+		position: absolute;
+		top: 0;
+		height: 100%;
+		left: calc(-1 * var(--title-container-width));
+		background: var(--dark-frosty);
+		backdrop-filter: blur(20px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+		border-left: 1px solid rgba(255, 255, 255, 0.4);
+		line-height: 1.1;
+
+		z-index: 2;
+	}
+
+	& > h4 {
+		--fp-title-font-size: var(--fontsize-l);
+		font-size: var(--fp-title-font-size);
+		line-height: 1;
+
+		/* Slide section titles to the left and rotate them on screens larger than 1400px*/
+		@media (--wide) {
+			--fp-title-font-size: 26px;
+			position: absolute;
+			margin: 0;
+			left: 0;
+			right: 0;
+			top: 120px;
+			color: var(--foreground);
+			font-weight: var(--medium);
+			letter-spacing: 1.5px;
+			writing-mode: horizontal-tb;
+			transform: rotate(-90deg);
+		}
+	}
+}
+
+@media (--wide) {
+	.home footer .section-title > h4 {
+		--fp-title-font-size: 16px;
+		font-weight: var(--hairline);
+		top: unset;
+		bottom: min(60px, 50%);
+	}
+
+}
+
+.highlight {
+	background: var(--blue);
+
+	& .section-title > h4 {
+		color: var(--foreground);
+	}
+}
+
+/* FRONT PAGE ABOUT JONES SeCTION */
+#aboutjones {
+	& > .section-content { padding: 2vw; }
+	& h3 { font-size: var(--fontsize-xl); }
+	& p {
+		font-size: var(--fontsize-l);
+		font-weight: var(--thin);
+	}
+
+}
+

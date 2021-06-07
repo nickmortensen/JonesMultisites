@@ -21,3 +21,9 @@
 @custom-media --show-hamburger-menu screen and (min-width: 60em);
 
 @custom-media --hide-hamburger-menu screen and (max-width: 60em);
+
+@custom-media --wide screen and ( width >= 1400px );
+
+@custom-media --slim screen and ( width < 768px );
+
+@custom-media --narrow screen and ( width < 451px );

@@ -12,7 +12,9 @@ namespace WP_Rig\WP_Rig;
 get_header();
 
 wp_rig()->print_styles( 'wp-rig-content' );
-
+$template_args = [
+	'template' => 'single',
+];
 ?>
 	<main id="primary" class="site-main">
 		<?php
@@ -20,10 +22,13 @@ wp_rig()->print_styles( 'wp-rig-content' );
 		while ( have_posts() ) {
 			the_post();
 
-			get_template_part( 'template-parts/content/entry', get_post_type() );
+			get_template_part( 'template-parts/content/entry', get_post_type(), $template_args );
 		}
 		?>
-	</main><!-- #primary -->
-<?php
-get_sidebar();
-get_footer();
+		<?php get_footer(); ?>
+	</main>
+
+<?php wp_footer(); ?>
+
+</body><!--SANITY CHECK -->
+</html>

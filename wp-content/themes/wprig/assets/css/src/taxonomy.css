@@ -1,0 +1,190 @@
+@import "_custom-properties.css";
+@import "_custom-selectors.css";
+@import "_custom-media.css";
+
+.taxonomy {
+
+	& section {
+		min-height: 10px;
+	}
+
+}
+
+main.taxonomy {
+	width: 100%;
+}
+
+/* Contains the name of the taxonomy as well as the longer description */
+.taxonomy-description {
+	padding: 2vw;
+
+	& article {
+		font-size: var(--article-font-size);
+		font-weight: lighter;
+		line-height: 1.4;
+		max-width: 700px;
+	}
+
+}
+
+
+.related-projects {
+	background-color: var(--foreground);
+	padding: 0;
+}
+
+.related-projects {
+	min-height: 600px;
+	min-width: 100%;
+
+	--vertical-z-index: -1;
+	--horizontal-z-index: 1;
+	--figure-width: calc(32.9vw);
+	--figure-height: calc(0.5625 * var(--figure-width));
+	--link-size: clamp(20px, 2.25vw, 38px);
+	--article-font-size: var(--font-size-regular);
+	/* stylelint-disable */
+
+	--figcaption-gradient:
+		linear-gradient(
+			to bottom,
+			hsla(0, 0%, 35.29%, 0) 0%,
+			hsla(0, 0%, 34.53%, 0.034375) 16.36%,
+			hsla(0, 0%, 32.42%, 0.125) 33.34%,
+			hsla(0, 0%, 29.18%, 0.253125) 50.1%,
+			hsla(0, 0%, 24.96%, 0.4) 65.75%,
+			hsla(0, 0%, 19.85%, 0.546875) 79.43%,
+			hsla(0, 0%, 13.95%, 0.675) 90.28%,
+			hsla(0, 0%, 7.32%, 0.765625) 97.43%,
+			hsla(0, 0%, 0%, 0.8) 100% );
+	/* stylelint-enable */
+
+	@media (--wide) {
+		--vertical-z-index: 1;
+		--horizontal-z-index: -1;
+		--figure-width: calc((100vw - 715px) / 2);
+		--figure-height: calc(1.333 * var(--figure-width));
+		--link-size: clamp(20px, 2.25vw, 28px);
+	}
+
+	@media (--slim) {
+		--vertical-z-index: 1;
+		--horizontal-z-index: -1;
+		--figure-width: 100vw;
+		--figure-height: calc(1.333 * var(--figure-width));
+		--link-size: clamp(30px, 8vw, 40px);
+	}
+
+	& > div {
+
+		&:last-child {
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: space-around;
+			align-items: center;
+
+		}
+	}
+}
+
+
+/* Individual related projects */
+.project-preview {
+	width: var(--figure-width);
+	height: var(--figure-height);
+
+	z-index: 1;
+	position: relative;
+
+	min-height: 95px;
+
+	/* For when we widen and shrink screens */
+	will-change: width;
+	transition: width 0.4s ease;
+
+	& img {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		top: 0;
+		left: 0;
+
+		&.vertical { z-index: var(--vertical-z-index); }
+		&.horizontal { z-index: var(--horizontal-z-index); }
+	}
+
+	& > figcaption {
+		z-index: 3;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+
+		min-width: 100%;
+		background: var(--figcaption-gradient);
+
+		& > a {
+
+			position: absolute;
+			bottom: 15px;
+			left: 1vw;
+			color: var(--foreground);
+			font-size: var(--link-size);
+			display: block;
+		}
+	}
+}
+
+.related-gallery {
+	position: relative;
+	grid-area: main-four;
+
+
+	/* &::after {
+		font-size: 22px;
+		padding: 1vw;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		content: "taxonomy-gallery";
+		background: var(--yellow);
+	} */
+}
+
+.related-images-gallery {
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.taxonomy-next {
+	position: relative;
+	grid-area: main-five;
+	min-height: 320px;
+	min-width: 100%;
+	border-top: 1px solid var(--red);
+
+	&::after {
+		font-size: 22px;
+		padding: 1vw;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+		content: "taxonomy-next";
+		background: var(--yellow);
+	}
+}
+
+h3.developer {
+	color: #fff;
+	transform-origin: center center;
+
+	@media (--wide) {
+		transform: rotateZ(-90deg);
+	}
+
+}

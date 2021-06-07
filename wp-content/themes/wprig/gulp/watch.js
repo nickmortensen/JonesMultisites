@@ -43,11 +43,9 @@ export default function watch() {
 		} );
 	}
 
-	gulpWatch( backslashToForwardSlash( paths.styles.src[ 0 ] ), series( styles, editorStyles ) );
-
-	gulpWatch( backslashToForwardSlash( paths.styles.src[ 3 ] ), reload );
-
-	gulpWatch( backslashToForwardSlash( paths.styles.src[ 4 ] ), reload );
+	gulpWatch( backslashToForwardSlash( paths.styles.src[ 0 ] ), styles );
+	// gulpWatch( backslashToForwardSlash( paths.styles.src[ 1 ] ), styles );
+	gulpWatch( backslashToForwardSlash( paths.styles.editorSrc[ 0 ] ), editorStyles );
 
 
 	gulpWatch( backslashToForwardSlash( paths.scripts.src[ 0 ] ), series( scripts, reload ) );

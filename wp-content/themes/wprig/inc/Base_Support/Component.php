@@ -7,6 +7,8 @@
 
 namespace WP_Rig\WP_Rig\Base_Support;
 
+use WP_Rig\WP_Rig\JonesSign\Component as JonesSign;
+
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
 use function add_action;
@@ -88,6 +90,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_blend_modes'    => [ $this, 'get_blend_modes' ],
 			'select_html'        => [ $this, 'select_html' ],
 			'color_options'      => [ $this, 'color_options' ],
+			'easy_to_work_with'  => [ $this, 'easy_to_work_with' ],
 		];
 	}
 
@@ -131,6 +134,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 
 	/**
 	 * Adds a 'hfeed' class to the array of body classes for non-singular pages.
+	 * Adds 'developer class when constant ENVIRONMENT is defined as 'development' (on wp-config.php setup page)
 	 *
 	 * @param array $classes Classes for the body element.
 	 * @return array Filtered body classes.
@@ -138,6 +142,9 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public function filter_body_classes_add_hfeed( array $classes ) : array {
 		if ( ! is_singular() ) {
 			$classes[] = 'hfeed';
+		}
+		if ( 'development' === ENVIRONMENT ) {
+			$classes[] = 'developer';
 		}
 
 		return $classes;
@@ -285,17 +292,15 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function add_icons_to_header() {
 		$html = '';
-		foreach ( [ '32x32', '16x16' ] as $favicon ) {
-				$html .= '<link rel="icon" type="image/png" sizes="' . $favicon . '" href="/favicon-' . $favicon . '.png">';
-		}
+		$html .= '<link rel="icon" href="/circular_jones.svg">';
 
 		if ( $this->user_agent_matches( [ 'iphone', 'ipod', 'ipad' ] ) ) {
-			$html .= '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">';
+			$html .= '<link rel="apple-touch-icon" href="/apple-touch-icon.png">';
 		}
 		if ( $this->user_agent_matches( [ 'android' ] ) ) {
-			$html .= '<link rel="icon" type="image/png" sizes="192x192" href="/android-chome-192x192.png">';
+			$html .= '<link rel="icon" type="image/png" sizes="192x192" href="/google-touch-icon.png">';
 		}
-
+		$html .= '<meta name="theme-color" content="#fff">';
 		$html .= $this->add_site_manifest();
 
 		echo $html;
@@ -307,7 +312,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @link https://developer.wordpress.org/reference/functions/wp_head/
 	 */
 	private function add_site_manifest() {
-		return '<link rel="manifest" href="/site.webmanifest">';
+		return '<link rel="manifest" href="/manifest.json">';
 	}
 
 	/**
@@ -463,5 +468,31 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'pink'   => '#d53f8c',
 		];
 	}
+
+	/**
+	 * Copy for the Easy-to_workwith.
+	 *
+	 */
+	public function easy_to_work_with() {
+		$html = '';
+		$html .= '<div>';
+		$html .= '<h2>';
+		$html .= 'Your Easy-to-Work-With Solution Provider';
+		$html .= '</h2>';
+		$html .= '<p>';
+		$html .= 'With ';
+		$html .= JonesSign::count_jones_locations();
+		$html .= ' locations across North America, we handle large scale rebranding projects, ongoing sign programs, &  large venue projects like stadiums, shopping malls or campuses. We service any sign made by any manufacturer in the United States & create brilliantly unique Architectural Elements. Turnkey service allows you to leave  the sign aspect of any project to us without worry.';
+		$html .= '</p>';
+		$html .= '<p>';
+		$html .= 'Since 1910, Jones Sign Company has provided industry-leading design, manufacturing, installation, & maintenance of signage, lighting, & architectural elements to construction companies, design firms, national brands, & local clientele.';
+		$html .= '</p>';
+		$html .= '';
+		$html .= '';
+		$html .= '</div>';
+
+		return $html;
+	}
+
 
 }

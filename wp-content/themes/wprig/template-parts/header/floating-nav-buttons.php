@@ -58,6 +58,6 @@ namespace WP_Rig\WP_Rig;
 			sideMenuToggle.setAttribute( 'title', titleContent );
 		}, 800)
 	}
-	sideMenuToggle.addEventListener( 'click', toggleSideMenu, false );
-	document.getElementById( 'sidemenu-close' ).addEventListener('click', toggleSideMenu, false);
+	// sideMenuToggle.addEventListener( 'click', toggleSideMenu, false );
+	// document.getElementById( 'sidemenu-close' ).addEventListener('click', toggleSideMenu, false);
 </script>

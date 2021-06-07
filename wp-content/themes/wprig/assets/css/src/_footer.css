@@ -14,6 +14,18 @@
 
 
 --------------------------------------------------------------*/
+footer {
+	min-height: 200px;
+	border-top: 2px solid var(--gray-900);
+	--widescreen-menu-display: none;
+	--menu-display: initial;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-end;
+
+}
+
+
 
 a.telephone_link {
 	position: relative;
@@ -33,38 +45,18 @@ footer.mapped {
 	--mapwidth: clamp(280px, 60vw, 840px);
 
 	position: relative;
-
-	/*
-	grid-template-columns: 1fr;
-	grid-template-rows: 1fr 3fr auto;
-	grid-template-areas:
-		"explainer"
-		"map"
-		"locationaddress";
-*/
 	& :--heading { color: var(--foreground); }
 
 
 }
 
-/*--------------------------------------------------------------
-======================== EXPLAINER ==========================
---------------------------------------------------------------*/
 
-#explainer {
-	grid-area: explainer;
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: flex-start;
-	align-items: center;
-}
 
 /*--------------------------------------------------------------
 ======================== LOCATION MAP ==========================
 --------------------------------------------------------------*/
 
 #location-map {
-	grid-area: map;
 	place-self: center center;
 
 	& svg {
@@ -377,7 +369,6 @@ footer.mapped {
 #location-address {
 	color: var(--foreground);
 	overflow: hidden;
-	grid-area: locationaddress;
 	width: 100%;
 	position: relative;
 
@@ -445,7 +436,6 @@ footer.mapped {
 /* Default custom select styles */
 #location-select {
 	--options-bg: rgba(2, 115, 185, 0.7);
-	grid-area: locationselect;
 	align-self: flex-start;
 	z-index: 100;
 	-webkit-touch-callout: none;
@@ -694,11 +684,6 @@ div.location-select-element {
 /*--------------------------------------------------------------
 Footer Menus
 --------------------------------------------------------------*/
-footer > * {
-	margin: 0.3rem 0.6rem;
-	align-self: flex-start;
-	padding-top: 2rem;
-}
 
 .copyright > div {
 	display: flex;
@@ -710,51 +695,6 @@ footer > * {
 .copyright svg {
 	padding-right: 15px;
 	max-width: 30px;
-}
-
-@media screen and (max-width: 667px) {
-	#footer-social-media {
-		--social-media-icon-container-width: 40px;
-	}
-}
-@media screen and (min-width: 668px) {
-	#footer-social-media {
-		--social-media-icon-container-width: 60px;
-	}
-}
-
-.social-media-icon-container {
-	--foreground: var(--blue);
-	--background: var(--gray-200);
-	display: inline-block;
-	max-width: var(--social-media-icon-container-width);
-
-	transition: all 0.3s linear;
-	&:hover {
-		transform: scale(1.2);
-		transition: transform 0.4s var(--transition-timing-function);
-	}
-
-	&:not(:first-of-type) {
-		margin-left: calc(var(--social-media-icon-container-width) / 4);
-	}
-}
-
-a > svg.social-media-icon {
-
-	& circle { fill: var(--background); }
-	& :is(polygon, rect, path) {
-		fill: var(--foreground);
-		transition: all 0.3s linear;
-	}
-}
-
-a:hover > svg.social-media-icon {
-	--foreground: var(--gray-200);
-	--background: var(--blue);
-
-	& > :is(circle, polygon, rect, path) { transition: fill 0.6s ease; }
-
 }
 
 

@@ -2,11 +2,17 @@
 /**
  * Template part for displaying a post's featured image
  *
+ * Note the following about image sizes:
+ * wp-rig-featured: 720x480
+ * large: 800x 600
+ * medium: 400x 300
  * @package wp_rig
  */
 
 namespace WP_Rig\WP_Rig;
 
+?>
+<?php
 // Audio or video attachments can have featured images, so they need to be specifically checked.
 $support_slug = get_post_type();
 if ( 'attachment' === $support_slug ) {
@@ -26,37 +32,24 @@ if ( is_singular( get_post_type() ) ) {
 	<div class="post-thumbnail">
 		<?php the_post_thumbnail( 'wp-rig-featured', [ 'class' => 'skip-lazy' ] ); ?>
 	</div><!-- .post-thumbnail -->
-	<?php
-} else {
-	?>
+
+	<?php } else { ?>
+
 	<a class="post-thumbnail" href="<?php the_permalink(); ?>" aria-hidden="true">
 		<?php
 		global $wp_query;
 		if ( 0 === $wp_query->current_post ) {
-			the_post_thumbnail(
-				'post-thumbnail',
-				[
-					'class' => 'skip-lazy',
-					'alt'   => the_title_attribute(
-						[
-							'echo' => false,
-						]
-					),
-				]
-			);
+			the_post_thumbnail( 'post-thumbnail', [
+				'class' => 'skip-lazy',
+				'alt'   => the_title_attribute( [ 'echo' => false ] ),
+			] );
 		} else {
-			the_post_thumbnail(
-				'post-thumbnail',
-				[
-					'alt' => the_title_attribute(
-						[
-							'echo' => false,
-						]
-					),
-				]
-			);
+			the_post_thumbnail( 'post-thumbnail', [
+				'alt' => the_title_attribute( [ 'echo' => false ] ),
+			] );
 		}
 		?>
 	</a><!-- .post-thumbnail -->
+
 	<?php
 }

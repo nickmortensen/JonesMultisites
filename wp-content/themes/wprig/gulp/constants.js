@@ -82,17 +82,28 @@ const paths = {
 		],
 		editorSrcDir: `${ assetsDir }/css/src/editor`,
 		editorDest: `${ assetsDir }/css/editor`,
+		shared: [
+			`${ assetsDir }/css/stc/_custom-*.css`,
+		],
+		adminSrcDir: `${ assetsDir }/css/src/admin_partials`,
+		admin: [
+			`${ assetsDir }/css/src/admin.css`,
+		],
+		adminDest: process.cwd(),
 		src: [
 			`${ assetsDir }/css/src/**/*.css`,
+			`${ assetsDir }/css/src/_custom-*.css`,
 			// Ignore partial files.
 			`!${ assetsDir }/css/src/**/_*.css`,
+			`!${ assetsDir }/css/src/admin.css`,
 			// Ignore editor source css.
 			`!${ assetsDir }/css/src/editor/**/*.css`,
-			`${ assetsDir }/css/*.min.css`,
-			`${ assetsDir }/css/src/overrides.css`,
+			// ignore admin partials
+			`!${ assetsDir }/css/src/admin_partials/_*.css`,
 		],
 		srcDir: `${ assetsDir }/css/src`,
 		dest: `${ assetsDir }/css`,
+
 	},
 	scripts: {
 		src: [

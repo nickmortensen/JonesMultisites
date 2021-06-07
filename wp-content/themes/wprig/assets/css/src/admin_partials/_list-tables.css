@@ -1863,9 +1863,7 @@ div.action-links,
 
 	/* Make row actions more easy to select on mobile */
 	body:not(.plugins-php) .row-actions {
-		display: -ms-grid;
 		display: grid;
-		-ms-grid-columns: auto auto auto;
 		grid-template-columns: auto auto auto;
 		color: transparent;
 	}
@@ -2129,7 +2127,6 @@ div.action-links,
 
 	/* Drop row actions to two columns on a small screen */
 	.row-actions:not(.plugins-php) {
-		-ms-grid-columns: auto auto;
 		grid-template-columns: auto auto;
 	}
 

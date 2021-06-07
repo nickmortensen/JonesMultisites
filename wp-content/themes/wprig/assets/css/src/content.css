@@ -18,34 +18,76 @@
 /* ================================
 	@import "_blocks.css";
 ===================================*/
-.wp-block-quote.is-large,
-.wp-block-quote.is-style-large {
+@import "_custom-properties.css";
+@import "_custom-selectors.css";
+@import "_custom-media.css";
+
+.blockquote.is-large,
+.blockquote.is-style-large {
 	margin: 1.5em auto;
 	padding: 0 1em;
 }
 
-.entry-content > .wp-block-quote,
-.entry-content > .wp-block-quote.is-style-large {
-	margin-left: 1.5rem;
-}
+.entry-content {
+	padding: 1vw 4vw;
 
-/* min-width: 48em or 672px*/
+	& > p {
+		font-size: var(--fontsize-m);
 
-@media screen and (width > 672px) {
-
-	.entry-content > .wp-block-quote,
-	.entry-content > .wp-block-quote.is-style-large {
-		margin-left: auto;
+		&.intro {
+			font-size: 2.9em;
+		}
 	}
-}
 
-.wp-block-quote:not(.is-large):not(.is-style-large) {
+	& figure.blockquote,
+	& blockquote {
+		padding-right: 2.5em;
+		padding-left: 2.5em;
+
+		& p {
+			font-weight: var(--superbold);
+			font-size: var(--fontsize-l);
+		}
+	}
+
+	& ul,
+	& ol {
+		padding-right: 2.5em;
+		padding-left: 2.5em;
+	}
+
+	& li {
+		font-size: var(--fontsize-s);
+	}
+
+	& ul ul,
+	& ol ol {
+		margin-right: 0;
+		margin-left: 0;
+		padding-right: 1.5em;
+		padding-left: 1.5em;
+	}
+
+	/* Align .more-link with the content. */
+	& > .more-link {
+		display: block;
+	}
+
+
+	& > .blockquote,
+	& > .blockquote.is-style-large {
+		margin-left: 1.5rem;
+	}
+}/* \.entry-content */
+
+
+.blockquote:not(.is-large):not(.is-style-large) {
 	border-left-color: var(--color-quote-border);
 }
 
-.wp-block-quote__citation,
-.wp-block-quote cite,
-.wp-block-quote footer {
+.blockquote__citation,
+.blockquote cite,
+.blockquote footer {
 	border-left-color: var(--color-quote-citation);
 }
 
@@ -147,7 +189,7 @@ img {
 }
 
 /* Extra wide images within figure tags don't overflow the content area. */
-figure { margin: 0.5em 0; }
+figure { margin: 0; }
 
 .page-content .wp-smiley,
 .entry-content .wp-smiley,
@@ -236,11 +278,6 @@ object { max-width: 100%; }
 # Post and page content
 --------------------------------------------------------------*/
 
-/* Custom rule  for sticky posts:
-.sticky {
-
-}
-*/
 
 .entry { margin-bottom: 1rem; }
 
@@ -251,49 +288,51 @@ object { max-width: 100%; }
 	font-size: 80%;
 }
 
-.entry-meta { margin: 1em 0; }
+.entry-meta {
+	margin: 1em 0;
+	display: none;
+}
+
+.entry-footer {
+	margin-top: 28px;
+}
 
 /* Hides the update date and time. */
 .updated:not(.published) { display: none; }
 
-.post-thumbnail img { margin: 0 auto; }
+.post-thumbnail img {
+	margin: 0 auto;
+
+	@media (--wide) {
+		width: 80vw;
+		max-width: 600px;
+	}
+	@media (--slim) {
+		width: 80vw;
+		max-width: 600px;
+	}
+}
 
 .page-content,
-.entry-content,
 .entry-summary { margin: 1.5em 0 0; }
 
 .page-content > *,
-.entry-content > *,
 .entry-summary > * {
-
-	/* margin-right: auto;
-	margin-left: auto;
-	padding-right: 1.5rem;
-	padding-left: 1.5rem; */
 	max-width: var(--content-width);
 }
 
-.page-header,
-.entry-header,
 .entry-footer,
 .site-info,
 .post-navigation,
 .page-navigation,
 .comments-area {
-
-	/* margin: 1.5em auto; */
-	/* padding-right: 1.5rem;
-	padding-left: 1.5rem; */
 	max-width: var(--content-width);
 }
 
 @media screen and (width > 672px) {
 
 	.page-content > *,
-	.entry-content > *,
 	.entry-summary > *,
-	.page-header,
-	.entry-header,
 	.entry-footer,
 	.site-info,
 	.post-navigation,
@@ -304,24 +343,6 @@ object { max-width: 100%; }
 	}
 }
 
-.entry-content ul,
-.entry-content ol {
-	padding-right: 2.5em;
-	padding-left: 2.5em;
-}
-
-.entry-content ul ul,
-.entry-content ol ol {
-	margin-right: 0;
-	margin-left: 0;
-	padding-right: 1.5em;
-	padding-left: 1.5em;
-}
-
-/* Align .more-link with the content. */
-.entry-content > .more-link {
-	display: block;
-}
 
 .page-links {
 	clear: both;
@@ -334,7 +355,6 @@ object { max-width: 100%; }
 
 .entry-footer {
 	clear: both;
-	border-bottom: 1px solid #111;
 }
 
 @media screen and (width > 672px) {
@@ -375,118 +395,3 @@ object { max-width: 100%; }
 	max-width: 100%;
 	padding: 0;
 }
-
-/*--------------------------------------------------------------
-## Custom block colors.
---------------------------------------------------------------*/
-
-.has-theme-primary-color,
-.has-theme-primary-color a {
-	color: var(--color-theme-primary);
-}
-
-.has-theme-primary-background-color {
-	background-color: var(--color-theme-primary);
-}
-
-.has-theme-secondary-color,
-.has-theme-secondary-color a {
-	color: var(--color-theme-secondary);
-}
-
-.has-theme-secondary-background-color {
-	background-color: var(--color-theme-secondary);
-}
-
-.has-theme-red-color,
-.has-theme-red-color a {
-	color: var(--color-theme-red);
-}
-
-.has-theme-red-background-color {
-	background-color: var(--color-theme-red);
-}
-
-.has-theme-green-color,
-.has-theme-green-color a {
-	color: var(--color-theme-green);
-}
-
-.has-theme-green-background-color {
-	background-color: var(--color-theme-green);
-}
-
-.has-theme-blue-color,
-.has-theme-blue-color a {
-	color: var(--color-theme-blue);
-}
-
-.has-theme-blue-background-color {
-	background-color: var(--color-theme-blue);
-}
-
-.has-theme-yellow-color,
-.has-theme-yellow-color a {
-	color: var(--color-theme-yellow);
-}
-
-.has-theme-yellow-background-color {
-	background-color: var(--color-theme-yellow);
-}
-
-.has-theme-black-color,
-.has-theme-black-color a {
-	color: var(--color-theme-black);
-}
-
-.has-theme-black-background-color {
-	background-color: var(--color-theme-black);
-}
-
-.has-theme-grey-color,
-.has-theme-grey-color a {
-	color: var(--color-theme-grey);
-}
-
-.has-theme-grey-background-color {
-	background-color: var(--color-theme-grey);
-}
-
-.has-theme-white-color,
-.has-theme-white-color a {
-	color: var(--color-theme-white);
-}
-
-.has-theme-white-background-color {
-	background-color: var(--color-theme-white);
-}
-
-.has-custom-daylight-color,
-.has-custom-daylight-color a {
-	color: var(--color-custom-daylight);
-}
-
-.has-custom-daylight-background-color {
-	background-color: var(--color-custom-daylight);
-}
-
-.has-custom-sun-color,
-.has-custom-sun-color a {
-	color: var(--color-custom-sun);
-}
-
-.has-custom-sun-background-color {
-	background-color: var(--color-custom-sun);
-}
-
-/*--------------------------------------------------------------
-## Custom block font sizes.
---------------------------------------------------------------*/
-
-.has-small-font-size { font-size: var(--font-size-small); }
-
-.has-regular-font-size { font-size: var(--font-size-regular); }
-
-.has-large-font-size { font-size: var(--font-size-large); }
-
-.has-larger-font-size { font-size: var(--font-size-larger); }

@@ -21,7 +21,34 @@ a {
 
 	&:hover,
 	&:active { outline: 0; }
+
+
+	&.light-link {
+		color: var(--foreground);
+
+		&:hover,
+		&:active {
+			color: var(--foreground);
+			background: var(--dark-frosty);
+		}
+
+	}
+
 }
+
+.links_light {
+	--color: var(--foreground);
+	--hover: var(--foreground);
+	color: var(--foreground);
+
+	&:hover,
+	&:active {
+		color: var(--foreground);
+		background: var(--dark-frosty);
+	}
+
+}
+
 
 .taxonomy_tag {
 	--tag-font-size: clamp(8px, 1.1vw, 22px);
@@ -255,5 +282,140 @@ a {
 	}
 	&::before {
 		animation-delay: 0.5s;
+	}
+}
+
+/*--------------------------------------------------------------
+# 3D Button on Call to Action  on Homepage in header area.
+--------------------------------------------------------------*/
+.btn {
+	display: inline-block;
+	margin-bottom: 0;
+	text-align: center;
+	white-space: nowrap;
+	touch-action: manipulation;
+	cursor: pointer;
+	padding: 6px 12px;
+}
+
+.btn-flip-wrap .btn-flip-back,
+.btn-flip-wrap .btn-flip-front {
+	--line-height: 50px;
+	text-align: center;
+	backface-visibility: hidden;
+	position: absolute;
+	padding-top: 0;
+	padding-bottom: 0;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	line-height: var(--line-height);
+	font-weight: var(--bold);
+	transition: all 0.3s ease 0s;
+	transform-origin: 50% 50% 0;
+	border-radius: 0;
+	user-select: none;
+	border: 1px solid transparent;
+
+}
+
+.btn-flip-wrap {
+	--btn-height: 54px;
+	display: inline-block;
+	text-transform: uppercase;
+	color: var(--foreground);
+	font-size: 12px;
+	height: var(--btn-height);
+	line-height: var(--btn-height);
+	width: 180px;
+	perspective: 1000px;
+	position: relative;
+	transform-style: preserve-3d;
+
+	& .btn-flip-back {
+		background-color: var(--background);
+		backdrop-filter: blur(10px);
+		border-color: var(--background);
+		color: var(--foreground);
+		transform: rotateX(90deg) translateZ(27px);
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: var(--foreground);
+			border-color: var(--background);
+		}
+	}
+
+	& .btn-flip-front {
+		color: var(--foreground);
+		transform: rotateX(0deg) translateZ(27px);
+		border: 2px solid var(--foreground);
+		background: none;
+	}
+
+
+	&:hover {
+		color: var(--foreground);
+
+		& .btn-flip-front {
+			transform: rotateX(-90deg) translateZ(27px);
+			background-color: var(--frosty);
+			backdrop-filter: blur(10px);
+		}
+
+		& .btn-flip-back { transform: rotateX(0deg) translateZ(27px); }
+	}
+
+	&:visited {
+		color: var(--foreground);
+	}
+
+
+	& > span {
+		color: var(--foreground);
+	}
+
+
+}
+
+.btn-1 {
+	font-family: var(--highlight-font-family);
+	background: var(--blue-900);
+	color: #fff;
+	cursor: pointer;
+	font-size: 2em;
+	padding: 1.5rem;
+	border: 0;
+	transition: all 0.5s;
+	border-radius: 10px;
+	width: auto;
+	position: relative;
+
+	&::after {
+		content: "\e5cc";
+		font-family: "material icons", sans-serif;
+		font-weight: 400;
+		position: absolute;
+		left: 85%;
+		top: 31%;
+		right: 5%;
+		bottom: 0;
+		opacity: 0;
+
+	}
+
+	&:hover {
+		background: #2b2bff;
+		transition: all 0.5s;
+		border-radius: 10px;
+		box-shadow: 0 6px 15px #0000ff61;
+		padding: 1.5rem 3.5rem 1.5rem 1.5rem;
+
+		&::after {
+			opacity: 1;
+			transition: all 0.5s;
+
+		}
 	}
 }

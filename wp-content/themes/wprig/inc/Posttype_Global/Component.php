@@ -1,6 +1,7 @@
 <?php
 /**
- * WP_Rig\WP_Rig\Posttype_Global\Component class
+ * WP_Rig\WP_Rig\Posttype_Global\Component class.
+ * Last Update 29_April_2021.
  *
  * @package wp_rig
  */
@@ -9,6 +10,9 @@ namespace WP_Rig\WP_Rig\Posttype_Global;
 
 use WP_Rig\WP_Rig\Component_Interface;
 use WP_Rig\WP_Rig\Templating_Component_Interface;
+use WP_Rig\WP_Rig\TaxonomyGlobal\Component as Taxonomies;
+use WP_Rig\WP_Rig\Posttype_Project\Component as Projects;
+
 use WP_Query;
 use function add_action;
 use function get_terms;
@@ -88,16 +92,85 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 *               adding support for further arguments in the future.
 	 */
 	public function template_tags() : array {
-		return [];
+		return [
+			'get_recent_posttype_posts'            => [ $this, 'get_recent_posttype_posts' ],
+			'get_posttype_vertical_image_id'       => [ $this, 'get_posttype_vertical_image_id' ],
+			'get_posttype_featured_images'         => [ $this, 'get_posttype_featured_images' ],
+			'get_related_posts_linked_figures'     => [ $this, 'get_related_posts_linked_figures' ],
+			'get_related_post_linked_figure_array' => [ $this, 'get_related_post_linked_figure_array' ],
+			'get_all_posttype' => [ $this, 'get_all_posttype' ],
+		];
 	}
+
+/**
+ * Get related posts as html figure elements.
+ *
+ * @note Only to be used on Taxonomy Archive Pages.
+ *
+ * @param string $posttype The type of post - choose among: 'project', 'staffmember', 'client'.
+ */
+public function get_related_posts_linked_figures( $posttype = 'project' ) {
+	$related             = [];
+	$related_project_ids = Taxonomies::get_related();
+	$size = 'medium'; // Could also use 'large' or 'wp-rig-featured';
+	for ( $i = 0; $i < count( $related_project_ids ); $i++ ) {
+		[
+			'ID'           => $project_id,
+			'post_title'   => $title,
+			'post_excerpt' => $excerpt,
+			'post_type'    => $post_type,
+			'guid'         => $link,
+			'post_name'    => $slug,
+		] = get_post( $related_project_ids[ $i ], ARRAY_A );
+		$related[] = [
+			'id'         => $project_id,
+			'img_id'     => get_post_thumbnail_id( $related_project_ids[ $i ] ),
+			'img_url'    => wp_get_attachment_image_src( get_post_thumbnail_id( $related_project_ids[ $i ] ), $size )[0],
+			'post_title' => $title,
+			'link'       => $link,
+		];
+	}
+	return $related;
+}
+
+/**
+ * GET data array that will be used for the linked figure for projects/locations/clients/staffmembers
+ *
+ * @param int    $post_id The ID for the post that is related to this taxonomy.
+ * @param string $size    Choose among: 'full', 'medium_large', 'large', 'wp-rig-featured', 'medium', or 'thumbnail'.
+ *
+ */
+public static function get_related_post_linked_figure_array( $post_id, $size = 'medium' ) {
+	[
+		'ID'           => $post_id,
+		'post_title'   => $title,
+		'post_excerpt' => $excerpt,
+		'post_type'    => $post_type,
+		'guid'         => $link,
+		'post_name'    => $slug,
+	] = get_post( $post_id, ARRAY_A );
+	$vertical = [
+		'id'  => self::get_posttype_vertical_image_id( $post_id, $post_type ),
+		'url' => self:: get_posttype_vertical_image_url( $post_id, $post_type, $size )
+	];
+	return [
+		'id'         => $post_id,
+		'vertical'   => $vertical,
+		'img_id'     => get_post_thumbnail_id( $post_id ),
+		'img_url'    => wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), $size )[0],
+		'post_title' => $title,
+		'link'       => $link,
+	];
+
+}
 
 	/**
 	 * Create the posttypes: 'project', 'staffmember', 'client'.
 	 */
 	public function instantiate_the_posttypes() {
 		$posttypes = $this->create_jonessign_posttypes();
-		foreach ( $posttypes as $posttype ) {
-			register_post_type( $posttype['singular'], $posttype['args'] );
+		foreach ( $posttypes as $post_type ) {
+			register_post_type( $post_type['singular'], $post_type['args'] );
 		}
 	}
 
@@ -156,7 +229,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'label'                 => ucfirst( $singular ),
 			'description'           => $description,
 			'labels'                => $this->create_posttype_labels( $singular, $plural ),
-			'supports'              => [ 'title', 'thumbnail', 'excerpt', 'post-formats', 'page-attributes' ],
+			'supports'              => [ 'title', 'thumbnail', 'excerpt', 'post-formats', 'page-attributes', 'editor' ],
 			'taxonomies'            => (array) $taxonomies,
 			'hierarchical'          => false,
 			'public'                => in_array( $singular, [ 'project', 'client', 'staffmember' ], true ),
@@ -242,11 +315,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	/**
 	 * Get all the published items from a given post type.
 	 *
-	 * @param string $posttype Could be project, staffmember, or client.
+	 * @param string $post_typeCould be project, staffmember, or client.
 	 */
-	public static function get_all_posttype( $posttype ) {
+	public static function get_all_posttype( $post_type ) {
 		$args = [
-			'post_type'        => $posttype,
+			'post_type'        => $post_type,
 			'post_status'      => 'publish',
 			'posts_per_page'   => -1,
 			'orderby'          => 'title',
@@ -256,33 +329,123 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		return new \WP_QUERY( $args );
 	}
 
+
+	/**
+	 * Retrieve the square image information meta for 1 x 1 aspect image for the given sign type.
+	 *
+	 * @param int    $post_id ID value for the post.
+	 * @param string $post_type The custom post type, staffmember, project, client.
+	 *
+	 * @return mixed if $output_as_id is true, retrieve the (int) id of the image, otherwise retrieve the url as a string.
+	 */
+	public static function get_posttype_square_image_id( $post_id, $post_type ) {
+		$output = get_post_meta( $post_id, $post_type . 'SquareImage_id', true ) ? get_post_meta( $post_id, $post_type . 'SquareImage_id', true ) : 773;
+		return $output;
+	}
+
+	/**
+	 * Retrieve the square image information meta for 1 x 1 aspect image for the given sign type.
+	 *
+	 * @param int    $post_id ID value for the post.
+	 * @param string $post_type The custom post type, staffmember, project, client.
+	 * @param string $size - Choose among: 'full', 'medium_large', 'wp-rig-featured', 'large', 'medium', or 'thumbnail'.
+	 *
+	 * @return string URL of the square image.
+	 */
+	public static function get_posttype_square_image_url( $post_id, $post_type, string $size ) {
+		$image_id = self::get_posttype_square_image_id( $post_id, $post_type );
+		return wp_get_attachment_image_src( $image_id, $size )[0];
+	}
+
 	/**
 	 * Get vertical image for a post.
 	 *
 	 * @param int    $post_id The id of the post.
-	 * @param string $posttype Could be 'project', 'client', 'staffmember' -- don't let it be staffmember as there are no vertical images for that post type being collected.
-	 * @param bool   $return_as_id Whether to return the vertical image as an ID or a url, default is true - so it returns an id.
+	 * @param string $post_type Could be 'project', 'client', 'staffmember' -- don't let it be staffmember as there are no vertical images for that post type being collected.
 	 *
-	 * @return mixed If $return_as_id = true, returns id of the vertical image, otherwise returns the url.
+	 * @return int Vertical Image id number.
 	 */
-	public static function get_posttype_vertical_image( int $post_id, string $posttype, bool $return_as_id = true ) {
-		$meta_field = $return_as_id ? $posttype . 'VerticalImage_id' : $posttype . 'VerticalImage';
-		return get_post_meta( $post_id, $meta_field, $single = true );
+	public static function get_posttype_vertical_image_id( int $post_id, string $post_type ) {
+		$output = get_post_meta( $post_id, $post_type . 'VerticalImage_id', true ) ? get_post_meta( $post_id, $post_type . 'VerticalImage_id', true ) : 809;
+		return $output;
 	}
 
 	/**
-	 * Get the vertical and the featured images.
+	 * Get vertical image for a post.
+	 *
+	 * @param int    $post_id The id of the post.
+	 * @param string $post_type Could be 'project', 'client', 'staffmember' -- don't let it be staffmember as there are no vertical images for that post type being collected.
+	 * @param string $size - Choose among: 'full', 'medium_large', 'wp-rig-featured', 'large', 'medium', or 'thumbnail'.
+	 *
+	 * @return string Vertical Image Url.
+	 */
+	public static function get_posttype_vertical_image_url( int $post_id, string $post_type, string $size ) {
+		$image_id = self::get_posttype_vertical_image_id( $post_id, $post_type );
+		return wp_get_attachment_image_src( $image_id, $size )[0];
+	}
+
+	/**
+	 * Get the vertical, square, and the featured images.
 	 *
 	 * @param int    $id The post id.
-	 * @param string $posttype Could be 'project', 'client', 'staffmember' -- don't let it be staffmember as there are no vertical images for that post type being collected.
+	 * @param string $post_type Could be 'project', 'client', 'staffmember' -- don't let it be staffmember as there are no vertical images for that post type being collected.
+	 * @param string $size - Choose among: 'full', 'medium_large', 'wp-rig-featured', 'large', 'medium', or 'thumbnail'.
 	 *
 	 * @return array Both the featured image and the vertical image ids
 	 */
-	public static function get_header_images_ids( int $id, string $posttype ) : array {
-		$images             = [];
-		$images['featured'] = get_post_thumbnail_id( $id );
-		$images['vertical'] = self::get_posttype_vertical_image( $id, $posttype, true );
+	public static function get_posttype_featured_images( int $post_id, string $post_type, string $size ) : array {
+		$images               = [];
+		$horizontal_id = ( get_post_thumbnail_id( $post_id ) ) ? get_post_thumbnail_id( $post_id ) : 771;
+
+		$images['horizontal'] = [
+			'id'  => $horizontal_id,
+			'url' => wp_get_attachment_image_src( $horizontal_id, $size )[0],
+		];
+		$images['vertical']   = [
+			'id'  => self::get_posttype_vertical_image_id( $post_id, $post_type ),
+			'url' => self::get_posttype_vertical_image_url( $post_id, $post_type, $size ),
+		];
+		$images['square']     = [
+			'id'  => self::get_posttype_square_image_id( $post_id, $post_type ),
+			'url' => self::get_posttype_square_image_url( $post_id, $post_type, $size ),
+		];
 		return $images;
 	}
 
+	/**
+	 * Get Recent posts of this post type.
+	 *
+	 * @param int  $quantity Number of projects we want.
+	 * @param bool $just_id Do we want to output objects for the post with all sorts of post information, or merely ID?
+	 *
+	 * @return array Either  an array of post ids or an array of the basic post data
+	 */
+	public function get_recent_posttype_posts( $quantity = 12, $just_ids = true ) {
+		global $post_type;
+		global $post;
+
+		$this_post_id         = [ $post->ID ];
+		$additional_arguments = [ 'fields' => 'ids' ];
+		$args = [
+			'post_type'        => $post_type,
+			'post_status'      => 'publish',
+			'posts_per_page'   => $quantity,
+			'orderby'          => 'modified',
+			'suppress_filters' => true,
+			'post__not_in'     => $this_post_id,
+		];
+
+		if ( $just_ids ) {
+			$args = wp_parse_args( $additional_arguments, $args );
+		}
+		$posts = new \WP_QUERY( $args );
+		return $posts->posts;
+	}
+
+	/**
+	 * Enhance the post navigation built into WordPress
+	 */
+	public function enhanced_post_havigation( $current_post_id ) {
+		global $post_type;
+	}
 }//end class

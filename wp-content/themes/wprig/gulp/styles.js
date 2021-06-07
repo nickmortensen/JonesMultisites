@@ -10,11 +10,17 @@ import postcssPresetEnv from 'postcss-preset-env';
 import AtImport from 'postcss-import';
 import pump from 'pump';
 import cssnano from 'cssnano';
-import stylelint from 'stylelint';
+// import stylelint from 'stylelint';
 import reporter from 'postcss-reporter';
-import calc from 'postcss-calc';
+// import calc from 'postcss-calc';
 import { pipeline } from 'mississippi';
+import log from 'fancy-log';
+import colors from 'ansi-colors';
 
+/** TEMPLATE FOR A LOG MESSAGE
+ * log( colors.yellow( `MESSAGE ${ colors.bold( 'INTER' ) } END` ) );
+ *
+*/
 /**
  * Internal dependencies
  */
@@ -31,13 +37,13 @@ export function stylesBeforeReplacementStream() {
 			dest: paths.styles.dest,
 			extra: [ paths.config.themeConfig ],
 		} ),
-		gulpPlugins.phpcs( {
-			bin: `/Users/nickmortensen/.composer/vendor/bin/phpcs`,
-			standard: `/Users/nickmortensen/utilities/mortensen`,
-			warningSeverity: 0,
-		} ),
+		// gulpPlugins.phpcs( {
+		// 	bin: `/Users/nickmortensen/.composer/vendor/bin/phpcs`,
+		// 	standard: `/Users/nickmortensen/utilities/mortensen`,
+		// 	warningSeverity: 0,
+		// } ),
 		// Log all problems that were found.
-		gulpPlugins.phpcs.reporter( 'log' ),
+		// gulpPlugins.phpcs.reporter( 'log' ),
 	] );
 }
 
@@ -46,6 +52,7 @@ export function stylesAfterReplacementStream() {
 
 	const postcssPlugins = [
 		// stylelint(),
+		postCssFor(),
 		postcssPresetEnv( {
 			importFrom: (
 				configValueDefined( 'config.dev.styles.importFrom' ) ?
@@ -66,16 +73,19 @@ export function stylesAfterReplacementStream() {
 				configValueDefined( 'config.dev.styles.features' ) ?
 					config.dev.styles.features :
 					{
-						'custom-media-queries': { preserve: false },
+						'custom-media-queries': { preserve: true },
 						'custom-properties': { preserve: false },
 						'custom-selectors': { preserve: false },
 						'nesting-rules': true,
 					}
 			),
 		} ),
-		// require('postcss-for'),
-		postCssFor(),
-		calc( { preserve: false } ),
+
+		// calc( {
+		// 	preserve: true,
+		// 	warnWhenCannotResolve: true,
+		// 	mediaQueries: true,
+		// } ),
 		cssnano(),
 	];
 
@@ -104,7 +114,7 @@ export function stylesAfterReplacementStream() {
 		gulpPlugins.postcss( postcssPlugins ),
 		gulpPlugins.if(
 			config.dev.debug.styles,
-			gulpPlugins.tabify( 4, true )
+			gulpPlugins.tabify( 2, false )
 		),
 		gulpPlugins.rename( {
 			suffix: '.min',

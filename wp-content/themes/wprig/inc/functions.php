@@ -37,6 +37,7 @@ function wrap( $input ) {
 }
 
 
+
 /**
  * Custom ASIDE walker class.
  */
@@ -156,7 +157,7 @@ class Aside_Walker_Nav_Menu extends \Walker_Nav_Menu {
 		$t = isset( $args->item_spacing ) && 'discard' === $args->item_spacing ? '' : "\t";
 		$n = isset( $args->item_spacing ) && 'discard' === $args->item_spacing ? '' : "\n";
 
-		$output .= "</span>";
+		$output .= '</span>';
 	}
 }
 // END Custom ASIDE walker class.
@@ -299,9 +300,9 @@ class Footer_Walker_Nav_Menu extends \Walker_Nav_Menu {
 
 
 /**
- * Custom Hamburger walker class.
+ * Custom Sidebar walker class.
  */
-class Hamburger_Walker_Nav_Menu extends \Walker_Nav_Menu {
+class Sidebar_Walker_Nav_Menu extends \Walker_Nav_Menu {
 
 	/**
 	 * Starts the list before the elements are added.
@@ -316,7 +317,8 @@ class Hamburger_Walker_Nav_Menu extends \Walker_Nav_Menu {
 		$t = isset( $args->item_spacing ) && 'discard' === $args->item_spacing ? '' : "\t";
 		$n = isset( $args->item_spacing ) && 'discard' === $args->item_spacing ? '' : "\n";
 
-		$indent = str_repeat( $t, $depth );
+		$indent        = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // Code indent.
+		$display_depth = $depth + 1; // Because it counts the first submenu as 0.
 
 		// class.
 		$classes = array( 'submenu' );
@@ -331,7 +333,7 @@ class Hamburger_Walker_Nav_Menu extends \Walker_Nav_Menu {
 		 * @param int      $depth   Depth of menu item. Used for padding.
 		 */
 		$class_names = implode( ' ', apply_filters( 'nav_menu_submenu_css_class', $classes, $args, $depth ) );
-		$class_names = $class_names ? ' class="submenu"' : '';
+		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
 		$output .= "{$n}{$indent}<ul$class_names>{$n}";
 	}
@@ -395,7 +397,7 @@ class Hamburger_Walker_Nav_Menu extends \Walker_Nav_Menu {
 		 * @param int      $depth   Depth of menu item. Used for padding.
 		 */
 		$class_names = implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args, $depth ) );
-		$class_names = $class_names ? ' class="menu_item"' : '';
+		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
 		/**
 		 * Filters the ID applied to a menu item's list item element.
@@ -411,17 +413,12 @@ class Hamburger_Walker_Nav_Menu extends \Walker_Nav_Menu {
 		$id = apply_filters( 'nav_menu_item_id', 'menu-item-' . $item->ID, $item, $args, $depth );
 		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
 
-		// $output .= $indent . '<li' . $id . $class_names . '>';
-		$output .= $indent . '<li>';
+		$output .= $indent . '<li' . $id . $class_names . '>';
 
-		$atts           = array();
-		$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
-		$atts['target'] = ! empty( $item->target ) ? $item->target : '';
-		if ( '_blank' === $item->target && empty( $item->xfn ) ) {
-			$atts['rel'] = 'noopener';
-		} else {
-			$atts['rel'] = $item->xfn;
-		}
+		$atts                 = [];
+		$atts['title']        = ! empty( $item->attr_title ) ? $item->attr_title : '';
+		$atts['target']       = ! empty( $item->target ) ? $item->target : '';
+		$atts['rel']          = ( '_blank' === $item->target && empty( $item->xfn ) ) ? 'noopener' : $item->xfn;
 		$atts['href']         = ! empty( $item->url ) ? $item->url : '';
 		$atts['aria-current'] = $item->current ? 'page' : '';
 
@@ -505,14 +502,9 @@ class Hamburger_Walker_Nav_Menu extends \Walker_Nav_Menu {
 	 * @param stdClass $args   An object of wp_nav_menu() arguments.
 	 */
 	public function end_el( &$output, $item, $depth = 0, $args = null ) {
-		if ( isset( $args->item_spacing ) && 'discard' === $args->item_spacing ) {
-			$t = '';
-			$n = '';
-		} else {
-			$t = "\t";
-			$n = "\n";
-		}
+		$t       = ( isset( $args->item_spacing ) && 'discard' === $args->item_spacing ) ? '' : "\t";
+		$n       = ( isset( $args->item_spacing ) && 'discard' === $args->item_spacing ) ? '' : "\n";
 		$output .= "</li>{$n}";
 	}
 }
-// END Custom HAMBURGER walker class.
+// END Custom SIDEBAR walker class.

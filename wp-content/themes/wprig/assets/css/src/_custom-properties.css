@@ -6,9 +6,17 @@
  **/
 /* stylelint-disable */
 :root {
+	/* Scoll the body? Normally, yes. Widescreens, no */
+	--body-overflow: initial;
+
 	/* LIGHT THEME */
 	--foreground: #f8f8f8; /* nearly white */
 	--background: #111; /* nearly black */
+	--frosty: rgba(255, 255, 255, 0.3);
+	--frosted: rgba(255, 255, 255, 0.3);
+	--dark-frosty: rgba(0, 0, 0, 0.3);
+	--dark-frosted: rgba(0, 0, 0, 0.3);
+	--standard-border: 1px solid var(--frosted);
 
 	/* FONT RELATED */
 	/*#region*/
@@ -16,7 +24,7 @@
 	/* FONT FAMILIES */
 	--font-stack: 'fira code', monospace, sans-serif;
 	--highlight-font-family: 'roboto mono', ubuntu, system-ui, blinkmacsystemfont, sans-serif;
-	--global-font-family: -apple-system, ubuntu, serif;
+	--global-font-family: ubuntu, -apple-system, serif;
 
 	/* FONT WEIGHTS */
 	--hairline: 100;
@@ -33,32 +41,44 @@
 	/* FONT SIZES */
 	--global-font-size: 10px;
 	--global-font-line-height: 1.4;
+	--article-font-size: clamp(18px, 1.17vw, 24px);
 
 	/* CUSTOM EDITOR FONT SIZES */
-	--font-size-small: calc(16 / var(--global-font-size) * 1rem);
+	--font-size-small: calc(6px / var(--global-font-size) * 1rem);
 	--font-size-regular: calc(12px + 0.698vw);
-	--font-size-large: calc(36 / var(--global-font-size) * 1rem);
-	--font-size-larger: calc((40 / var(--global-font-size) )* 1rem);
-	--font-size-largest: calc((48 / var(--global-font-size)) * 1.2rem);
+	--font-size-large: calc(22px + 0.698vw);
+	--font-size-larger: calc(32px + 0.698vw);
+	--font-size-largest: calc(48px + 0.698vw);
+
+	--font-size-h1: calc(48px + 0.698vw);
+	--font-size-h2: calc(32px + 0.698vw);
+	--font-size-h3: calc(22px + 0.698vw);
+	--font-size-h4: calc(12px + 0.698vw);
 
 	/* @link https://www.fluiditype.com */
 	--fontsize-xxxs: calc(2px + 0.698vw);
-	--fontsize-xxs: calc(6px + 0.698vw);
-	--fontsize-xs: calc(8px + 0.698vw);
-	--fontsize-s: var(--font-size-regular);
-	--fontsize-m: calc(var(--fontsize-s) * 2);
-	--fontsize-l: calc(var(--fontsize-s) * 2);
-	--fontsize-xl: calc(var(--fontsize-s) * 3);
 	--lineHeight: calc(var(--fontsize-s) * 1.4);
 	--letterSpacing: calc(var(--fontsize-s) * 0.0015);
 
-	--fontsize-xxs: clamp(0.8rem, 2.60vw, 1.10rem);
+	--fontsize-xxs: clamp(8px, 0.6vw, 12px);
+	--fontsize-xs: clamp(10px, 0.78vw, 16px);
+	--fontsize-s: clamp(14px, 1.95vw, 20px);
+	--fontsize-m: clamp(18px, 1.17vw, 24px);
+	--fontsize-l: clamp(22px, 2.5vw, 38px);
+	--fontsize-xl: clamp(30px, 5vw, 64px);
+	--fontsize-xxl: clamp(40px, 8vw, 90px);
+	--previous-next-font-size: clamp(20px, 3.5vw, 70px);
+
+	--masthead-text-largest: clamp(60px, 6vw, 80px);
+	--masthead-text-large: clamp(40px, 5vw, 60px);
+
+	/* --fontsize-xxs: clamp(0.8rem, 2.60vw, 1.10rem);
 	--fontsize-xs: clamp(0.98rem, 2.60vw, 1.30rem);
 	--fontsize-s: clamp(1.30rem, 2.93vw, 1.56rem);
 	--fontsize-m: clamp(1.43rem, 3.58vw, 2.27rem);
 	--fontsize-l: clamp(1.63rem, 3.90vw, 2.60rem);
-	--fontsize-xl: clamp(1.95rem, 4.55vw, 3.25rem);
-	--fontsize-xxl: clamp(2.27rem, 5.20vw, 3.90rem);
+	--fontsize-xl: clamp(1.95rem, 4.55vw, 3.25rem); */
+
 	/*#endregion*/
 
 	/* TAILWIND COLORS */
@@ -104,7 +124,7 @@
 	--yellow-300: #faf089;
 	--yellow-400: #f6e05e;
 	--yellow-500: #ecc94b;
-	--yellow-600: #ffc600;
+	--yellow-600: rgb(255,198,0);
 	--yellow-700: #b7791f;
 	--yellow-800: #975a16;
 	--yellow-900: #744210;
@@ -135,6 +155,7 @@
 	--blue-700: #2b6cb0;
 	--blue-800: #285078;
 	--blue-900: #2a4365;
+	--blue-highlight: rgb(39, 39, 164);
 	--purple-100: #faf5ff;
 	--purple-200: #e9d8fd;
 	--purple-300: #d6bcfa;
@@ -163,6 +184,8 @@
 	--grey: var(--gray-500);
 	--gray: var(--gray-500);
 	--primary: var(--blue-600);
+	--orange: var(--orange-600);
+	--indigo: var(--indigo-600);
 	--secondary: var(--indigo-600);
 	--color-theme-primary: var(--blue-600);
 	--color-theme-secondary: var(--indigo-600);
@@ -207,7 +230,9 @@
 	/* BEZIER TRANSITIONS */
 	/*#region*/
 	--transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	--ttf: var(--transition-timing-function);
 	--reverse-timing-function: cubic-bezier(0.53, -1.09, 0.44, 1.18);
+	--rtf: var(--reverse-timing-function);
 	--alternate-bezier-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
 	--bg-bezier: cubic-bezier(0.21, 1.47, 0.89, 1.51);
@@ -268,6 +293,7 @@
 	--border-thicknesss: 0.5px;
 	--border-type: dashed;
 	--border: var(--border-thicknesss) var(--border-type);
+	--dashed-border: 1px dashed var(--gray-900);
 	--card-bg: #fdfdfd;
 	--location-text-color: var(--foreground);
 	--more-info-bg: var(--check-color);
@@ -328,6 +354,26 @@
 	--logo-background: var(--gray-100);
 	--logo-foreground: var(--color-theme-blue);
 
+	/* DEV RELATED */
+	--dev-border: 2px solid var(--yellow);
+
+	/* DISPLAY or NOT */
+	--grid-until-hide: grid;
+	--inline-until-hide: inline;
+	--block-until-hide: block;
+	--flex-until-hide: flex;
+	--hide-until-flex: none;
+	--hide-until-wide: none;
+	--hide-until-block: none;
+	--hide-until-grid: none;
+
+	--grid-hide-grid: none;
+	--hide-grid-hide: grid;
+	--hide-flex-hide: flex;
+	--flex-hide-flex: none;
+	--hide-block-hide: block;
+	--block-hide-block: none;
+
 }
 
 
@@ -345,8 +391,68 @@
 		--tagline-svg-fill: var(--gray-200);
 	}
 }
-@media and (width > 768px ) {
+
+
+/* at 1400 px we get a whole new site layout */
+@media (--wide) {
 	:root {
-		--global-font-size: 20px;
+		/* Scoll the body? Normally, yes. Widescreens, no */
+		--body-overflow: hidden;
+
+		/* font size should match on wide and slim screens */
+		--fontsize-xxs: 0.8em;
+		--fontsize-xs: 1em;
+		--fontsize-s: 1.8em;
+		--fontsize-m: clamp(2.2em, 2vw, 3em);
+		--fontsize-l: 2.8em;
+		--fontsize-xl: 3.9em;
+		--fontsize-xxl: 5em;
+
+		--font-size-h1: calc(60px + 0.698vw);
+		--font-size-h2: calc(50px + 0.698vw);
+		--font-size-h3: calc(34px + 0.698vw);
+		--font-size-h4: calc(12px + 0.698vw);
+
+		/* DISPLAY or NOT */
+		--hide-on-wide: none;
+		--grid-until-hide: none;
+		--inline-until-hide: none;
+		--block-until-hide: none;
+		--flex-until-hide: none;
+
+		--hide-until-flex: flex;
+		--hide-until-wide: block;
+		--hide-until-block: block;
+		--hide-until-grid: grid;
+
+		--grid-hide-grid: grid;
+		--hide-grid-hide: none;
+		--hide-flex-hide: none;
+		--flex-hide-flex: flex;
+		--hide-block-hide: none;
+		--block-hide-block: block;
 	}
+}
+
+@media (--slim) {
+	:root {
+
+		/* font size should match on wide and slim screens */
+		--fontsize-xxs: clamp(8px, 0.6vw, 12px);
+		--fontsize-xs: clamp(10px, 0.78vw, 16px);
+		--fontsize-s: clamp(14px, 1.15vw, 22px);
+		--fontsize-m: clamp(22px, 2, 28px);
+		--fontsize-l: clamp(26px, 2.5vw, 38px);
+		--fontsize-xl: clamp(30px, 3.9vw, 64px);
+		--fontsize-xxl: clamp(40px, 5.5vw, 90px);
+
+		/* DISPLAY or NOT */
+		--grid-hide-grid: grid;
+		--hide-grid-hide: none;
+		--hide-flex-hide: none;
+		--flex-hide-flex: flex;
+		--hide-block-hide: none;
+		--block-hide-block: block;
+	}
+
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * The template for displaying the footer
+ * The template for displaying the <footer class="
+ * Note that we are closing the 'main' so that it surrounds the footer and then adding all the screipts just above the closing body tag
  *
  * Contains the closing of the #content div and all content after.
  *
@@ -13,19 +14,10 @@ namespace WP_Rig\WP_Rig;
 
 ?>
 
-	<footer id="colophon" class="site-footer">
-		<?php get_template_part( 'template-parts/footer/info' ); ?>
-	</footer><!-- #colophon -->
-</div><!-- #page -->
-
-<?php wp_footer(); ?>
 
 
-<script>
+<section class="block-invisible" data-ajax-block="block-invisible">
 
-const images = document.querySelectorAll( '#sizedImgDiv > img');
-let ims = document.querySelectorAll( 'media-gallery-image');
+</section>
 
-</script>
-</body>
-</html>
+

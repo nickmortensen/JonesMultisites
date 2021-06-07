@@ -8,3 +8,11 @@
 	-webkit-text-stroke: 1px var(--star-outline);
 }
 
+.dev-aside {
+	background: var(-green-400);
+	min-height: 220px;
+}
+
+article {
+	font-size: var(--fontsize-l);
+}

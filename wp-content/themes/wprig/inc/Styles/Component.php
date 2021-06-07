@@ -2,6 +2,8 @@
 /**
  * WP_Rig\WP_Rig\Styles\Component class
  *
+ * Last Update 5-18-2021
+ *
  * @package wp_rig
  */
 
@@ -89,7 +91,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_jonessign_style' ], 9 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_styles' ], 10 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'add_material_icons_frontend' ], 12 );
-		add_action( 'wp_enqueue_scripts', [ $this, 'add_style_overrides' ], 15 );
+		// add_action( 'wp_enqueue_scripts', [ $this, 'add_style_overrides' ], 15 );
+		// add_action( 'wp_enqueue_scripts', [ $this, 'add_mono_overrides' ], 18 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_sheetrock' ], 16 );
 		add_action( 'wp_head', [ $this, 'action_preload_styles' ] );
 		add_action( 'after_setup_theme', [ $this, 'action_add_editor_styles' ] );
@@ -302,13 +305,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				'file'   => 'global.min.css',
 				'global' => true,
 			],
-			'wp-rig-safety'       => [
-				'file'             => 'safety.min.css',
-				'preload_callback' => function() {
-					global $template;
-					return 'front-page.php' === basename( $template );
-				},
-			],
+			// 'wp-rig-safety'       => [
+			// 	'file'             => 'safety.min.css',
+			// 	'preload_callback' => function() {
+			// 		global $template;
+			// 		return 'front-page.php' === basename( $template );
+			// 	},
+			// ],
 			'wp-rig-front-page'   => [
 				'file'             => 'front-page.min.css',
 				'preload_callback' => function() {
@@ -316,29 +319,33 @@ class Component implements Component_Interface, Templating_Component_Interface {
 					return 'front-page.php' === basename( $template );
 				},
 			],
-			'wp-sidebar-menus'    => [
-				'file'   => 'sidebar_menus.min.css',
+			'company-aspects'   => [
+				'file'             => 'company_aspects.min.css',
+				'preload_callback' => function() {
+					global $template;
+					return 'front-page.php' === basename( $template );
+				},
+			],
+			'wp-rig-sidebar'    => [
+				'file'   => 'sidebar.min.css',
 				'global' => true,
 			],
 			'wp-rig-contact-form' => [
 				'file'             => 'contact.min.css',
-				'preload_callback' => '__return_true',
-			],
-			'wp-rig-comments'     => [
-				'file'             => 'comments.min.css',
 				'preload_callback' => function() {
-					return ! post_password_required() && is_singular() && ( comments_open() || get_comments_number() );
-				},
+					global $template;
+					return 'front-page.php' === basename( $template );
+				}
 			],
 			'wp-rig-content'      => [
 				'file'             => 'content.min.css',
 				'preload_callback' => '__return_true',
 			],
 			'wp-rig-taxonomy'     => [
-				'file'             => 'taxonomies.min.css',
+				'file'             => 'taxonomy.min.css',
 				'preload_callback' => function() {
 					global $template;
-					return 'taxonomy-signtype.php' === basename( $template );
+					return 'taxonomy.php' === basename( $template );
 				},
 			],
 			'wp-rig-project'      => [
@@ -527,8 +534,8 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @see Use admin_enqueue_scripts hook.
 	 */
 	public function add_custom_admin_style() {
-		$filepath = get_theme_file_path( '/assets/css/admin.min.css' ); // outputs a path --needed for asset version.
-		$fileurl  = get_theme_file_uri( '/assets/css/admin.min.css' ); // outputs a path --needed for asset version.
+		$filepath = get_theme_file_path( '/admin.min.css' ); // outputs a path --needed for asset version.
+		$fileurl  = get_theme_file_uri( '/admin.min.css' ); // outputs a path --needed for asset version.
 		$version  = wp_rig()->get_asset_version( $filepath );
 		wp_enqueue_style( 'wp-rig-admin-styles', $fileurl, [], $version, 'all' );
 	}
@@ -595,4 +602,19 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$version      = wp_rig()->get_asset_version( $filepath );
 		wp_enqueue_style( $handle, $fileurl, $dependencies, $version, 'all' );
 	}
+
+	/**
+	 * Add MONO Overrides CSS to the frontend of the site.
+	 *
+	 * @see Use admin_enqueue_scripts hook.
+	 */
+	public function add_mono_overrides() {
+		$handle       = 'mono';
+		$filepath     = get_theme_file_path( '/assets/css/mono_overrides.min.css' );
+		$fileurl      = get_theme_file_uri( '/assets/css/mono_overrides.min.css' );
+		$dependencies = [ 'baseline' ];
+		$version      = wp_rig()->get_asset_version( $filepath );
+		wp_enqueue_style( $handle, $fileurl, $dependencies, $version, 'all' );
+	}
+
 }

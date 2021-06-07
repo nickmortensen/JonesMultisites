@@ -19,100 +19,65 @@ namespace WP_Rig\WP_Rig;
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 
+
 	<?php if ( ! wp_rig()->is_amp() ) : ?>
 		<script>document.documentElement.classList.remove( 'no-js' );</script>
 	<?php endif; ?>
-<script>
-	const ENVIRONMENT = 'development';
-</script>
 	<?php wp_head(); ?>
 </head>
 
-<body <?php body_class(); ?>>
+<?php
+global $post;
+global $post_type;
+$header_arguments = [];
+$request_from = '';
+
+$preloads                        = [ 'wp-rig-content' ];
+$body_classes                    = [];
+$template_args                   = [];
+$template_args['is_home']        = false;
+
+if ( is_home() && is_front_page() ) {
+	$template_args['is_home'] = ! $template_args['is_home'];
+}
+
+switch ( $post_type ) {
+	case 'project':
+		$preloads[]       = 'wp-rig-project';
+		$post_information = wp_rig()->get_definitive_project_info( $post->ID );
+		// $header_arguments['vertical_image_id'] =
+		break;
+	default:
+		$preloads = $preloads;
+}
+
+
+foreach ( $preloads as $preload ) {
+	wp_rig()->print_styles( $preload );
+}
+
+
+?>
+<body id="ajaxified-body" <?php body_class( $body_classes ); ?>>
+
 <?php wp_body_open(); ?>
 
-	<div class="floating-navigation-buttons">
-		<a href="#frontpage-email-cta" title="Connect with us!" id="sidemenu-mail-button" class="material-icons floating-btn"> mail_outline </a>
-		<a id="sidemenu-search-button" class="material-icons floating-btn" title="Search the site." > search </a>
-		<a id="sidemenu-toggle-button" title="Open/Close side navigation menu" class="material-icons floating-btn"> menu </a>
-	</div>
+<?php get_template_part( 'template-parts/sidebar/sidebar' ); ?>
 
 
-	<aside id="sidemenu">
-		<a id="close-sidemenu" class="material-icons button reversed" title="close side menu"> close </a>
-		<nav id="sidemenu-navigation">
-		<?= implode( "\n\t\t\t", wp_rig()->get_project_sidemenu_items( 8 ) ); ?>
-		</nav>
-	</aside>
-
-<!-- always on widget to show me how wide the screen is -->
+<section class="off-canvas"> </section>
 <?php
-if ( 'development' === ENVIRONMENT ) {
-	get_template_part( 'template-parts/developer/screenwidth' );
-}
-?>
-<!-- toggle side menu script -->
-<script>
-const sideNavToggler = document.querySelector( '#sidemenu-toggle-button' );
-const sideNavCloser  = document.querySelector( '#close-sidemenu' );
-
-sideNavToggler.addEventListener( 'click', toggleSideMenu, false);
-
-
-function toggleSideMenu( e ) {
-	document.body.classList.toggle( 'hide-sidemenu' );
-	let textContent = document.body.classList.contains( 'hide-sidemenu' ) ? 'menu' : 'close'
-	e.target.textContent = textContent;
+/**
+ * DEVELOPER ONLY
+ */
+if ( 'development' !== ENVIRONMENT ) {
+	get_template_part( 'template-parts/developer/developer', '', $template_args );
 }
 
-sideNavCloser.addEventListener( 'click', function() {
-	document.body.classList.toggle( 'hide-sidemenu' );
-	sideNavToggler.textContent = 'menu';
-}, true);
-
-
-// {
-
-// document.body.classList.toggle( 'hide-sidemenu' );
-// this.textContent = document.body.classList.contains( 'hide-sidemenu' ) ? a : b;
-// let title = document.body.classList.contains( 'hide-sidemenu' ) ? 'Open Side Menu' : 'Close Side Menu';
-// this.setAttribute( 'title', title );
-// window.focus( document.body ); // so you can still scroll
-// }
-
-
-</script>
-<!-- END toggle side menu script -->
 
 
 
 
 
 
-<script>
-const emailButton = document.querySelector( '#sidemenu-mail-button' );
 
-function onClickEmailButton() {
-	console.log( 'this should take you to the email call to action');
-	document.querySelector( '#contact-form' ).scrollIntoView( {
-		behavior: 'smooth',
-		block: 'center'
-	} );
-}
-
-emailButton.addEventListener( 'click', onClickEmailButton );
-</script>
-
-
-
-
-<div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp-rig' ); ?></a>
-
-	<header id="masthead" class="site-header">
-		<?php get_template_part( 'template-parts/header/custom_header' ); ?>
-
-		<?php get_template_part( 'template-parts/header/branding' ); ?>
-
-		<?php get_template_part( 'template-parts/header/navigation' ); ?>
-	</header><!-- #masthead -->

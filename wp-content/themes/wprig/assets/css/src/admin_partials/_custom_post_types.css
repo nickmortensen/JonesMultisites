@@ -1,6 +1,6 @@
 div[id$="-information-side-metabox"] {
 	background: var(--color-theme-primary);
-	color: var( --has-dark-bg);
+	color: var(--has-dark-bg);
 	height: 100%;
 
 	& > .postbox-header {
@@ -8,7 +8,7 @@ div[id$="-information-side-metabox"] {
 		& h2 {
 			text-transform: uppercase;
 			font-weight: var(--bold);
-			leter-spacing: 1px;
+			letter-spacing: 1px;
 		}
 
 		& h2,
@@ -89,6 +89,7 @@ div[id$="-information-side-metabox"] {
 		transition: box-shadow 0.3s ease;
 	}
 }
+
 /* =====================
 CLIENT POST TYPE STYLES
 ======================== */

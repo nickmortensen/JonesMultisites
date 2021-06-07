@@ -13,6 +13,33 @@ wp-content/*
 !wp-content/plugins/
 !wp-content/themes/
 
+wp-content/themes/wprig/assets/css/src/_grid.backup.june72021.css
+wp-content/themes/wprig/assets/css/src/sidebar.bak.css
+wp-content/themes/wprig/assets/images/src/
+wp-content/themes/wprig/assets/images/src/icon-*.png
+wp-content/themes/wprig/assets/images/src/*-*.png
+wp-content/themes/wprig/assets/images/src/*.png
+
+wp-content/themes/wprig/assets/images/src/*-*.svg
+wp-content/themes/wprig/assets/js/src/ajax-pagination.js
+wp-content/themes/wprig/assets/js/src/developer.js
+wp-content/themes/wprig/assets/js/src/packery.js
+wp-content/themes/wprig/footer-wide.php
+
+wp-content/themes/wprig/gulp/
+wp-content/themes/wprig/inc/Clearer.php
+wp-content/themes/wprig/inc/Nicer.php
+wp-content/themes/wprig/footer-wide.php
+
+wp-content/themes/wprig/gulp/adminStyles.js
+wp-content/themes/wprig/gulp/constants_two.js
+wp-content/themes/wprig/gulp/styles_two.js
+wp-content/themes/wprig/header-frontpage.php
+wp-content/themes/wprig/header-taxonomy.php
+"wp-content/themes/wprig/inc/JonesSign/# jobs.md"
+wp-content/themes/wprig/inc/JonesSign/fp_herader_backup_2021_06-02.php
+wp-content/themes/wprig/inc/Media/Untitled-1.sh
+  wp-content/themes/wprig/inc/Nicer.php
 
 
 

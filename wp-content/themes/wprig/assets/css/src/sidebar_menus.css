@@ -1,13 +1,57 @@
 /*---------------------------------------------------- ----------
 # Imports
 --------------------------------------------------------------*/
+@import "_custom-properties.css";
+@import "_custom-selectors.css";
+@import "_custom-media.css";
+
+#off-canvas-container {
+	--oc-bg: var(--foreground);
+	--oc-color: var(--background);
+	--canvas-z: 5;
+	--oc-height: 100%;
+}
+
+.off-canvas__left {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
 
 /*--------------------------------------------------------------
 # Side Hamburger Navigation
 --------------------------------------------------------------*/
 
 /* DO NOT DISPLAY THIS MENU ON SMALL SCREEN */
+:root {
+	--transform-origin: left 50%;
+	--hamburger-menu-width: 60px;
+	--hamburger-menu-font-size: var(--fontsize-s);
+	--hamburger-menu-width-on-hover: 480px;
+	--before-width: 0;
+	--before-width: 440px;
+	--dot-color: var(--foreground);
+	--dots-left: 26px;
+	--dots-top: 16px;
 
+	/*SAME AS CUSTOM */
+	--dots-h-w: 8px;
+	--hamburger-menu-box-shadow: var(--shadow-one), var(--shadow-two);
+	--hamburger-menu-background-color-one: var(--color-theme-primary);
+	--hamburger-menu-background-color-two: rgba(40, 80, 120, 0.9);
+	--hamburger-expanded-width: 440px;
+	--burger-div-height: 45px;
+	--bezier-transition: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	--burger-before-margin-top: 8px;
+	--burger-width: 24px;
+
+	/* --burger-margin: calc((var(--hamburger-menu-width) - var(--burger-width)) / 2); */
+	--burger-margin: 48px;
+
+	/*END SAME AS CUSTOM */
+}
+
+/*#region*/
 @media (--hide-hamburger-menu) {
 
 	nav#side-hamburger-nav {
@@ -22,7 +66,7 @@ nav#side-hamburger-nav {
 	position: fixed;
 	left: 0;
 	height: 100%;
-	width: var(--hamburger-menu-width);
+	width: 60px;
 	box-shadow: var(--hamburger-menu-box-shadow);
 	color: inherit;
 
@@ -30,14 +74,14 @@ nav#side-hamburger-nav {
 		background-color: var(--hamburger-menu-background-color-one);
 		content: " ";
 		height: 100%;
-		width: var(--hamburger-menu-width);
+		width: 60px;
 		position: absolute;
 		left: 0;
 	}
 
 	&::before {
 		background: var(--hamburger-menu-background-color-two);
-		left: var(--hamburger-menu-width);
+		left: 60px;
 		content: " ";
 		width: 0;
 		height: 100%;
@@ -47,8 +91,10 @@ nav#side-hamburger-nav {
 	}
 
 	&:hover::before {
-		width: calc(100 + var(--hamburger-menu-width));
-		width: var(--hamburger-menu-width-on-hover, 240px);
+		--hamburger-menu-width-on-hover: 480px;
+		width: 580px;
+		width: 480px;
+
 		transition: width 0.4s var(--alternate-bezier-transition);
 	}
 
@@ -67,7 +113,7 @@ nav#side-hamburger-nav {
 		& li {
 			font-size: 14px;
 			font-size: var(--fontsize-s);
-			width: calc(var(--hamburger-menu-width-on-hover) - 100px);
+			width: 380px;
 			height: 40px;
 			cursor: pointer;
 			position: relative;
@@ -145,7 +191,7 @@ nav#side-hamburger-nav:hover .burger {
 }
 
 nav#side-hamburger-nav:hover li a {
-	left: calc(10px + var(--hamburger-menu-width));
+	left: 70px;
 	opacity: 1;
 	transition-duration: 0.4s;
 	transition-delay: 0.2s;
@@ -160,11 +206,11 @@ nav#side-hamburger-nav:hover li a {
 }
 
 /* stylelint-disable */
-@for $i from 2 to 12 {
+/* @for $i from 2 to 12 {
 	nav#side-hamburger-nav:hover li:nth-child($i) a {
 		transition-delay: calc(($(i)s * 0.05) + 0.2s);
 	}
-}
+} */
 /* stylelint-enable */
 
 .nav-burger {
@@ -273,7 +319,6 @@ nav#side-hamburger-nav:hover li a {
 }
 
 
-
 .menu-item-object-project {
 	transform: translateX(-100%);
 
@@ -302,8 +347,372 @@ nav#side-hamburger-nav:hover li a {
 
 }
 /* stylelint-disable */
-@for $i from 1 to 12 {
+/* @for $i from 1 to 12 {
 	nav.menu-projects-container > span:nth-of-type($(i)n) {
 		animation-delay: calc(($(i)s * 0.05) + 0.2s);
 	}
+} */
+
+nav.menu-projects-container > span:nth-of-type(1n) { animation-delay: calc((1s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(2n) { animation-delay: calc((2s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(3n) { animation-delay: calc((3s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(4n) { animation-delay: calc((4s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(5n) { animation-delay: calc((5s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(6n) { animation-delay: calc((6s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(7n) { animation-delay: calc((7s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(8n) { animation-delay: calc((8s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(9n) { animation-delay: calc((9s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(10n) { animation-delay: calc((10s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(11n) { animation-delay: calc((11s * 0.05) + 0.2s); }
+
+
+nav.menu-projects-container > span:nth-of-type(12n) { animation-delay: calc((12s * 0.05) + 0.2s); }
+
+/*#endregion*/
+
+/*--------------------------------------------------------------
+# Side Hamburger Navigation Remixed
+--------------------------------------------------------------*/
+
+/* DO NOT DISPLAY THIS MENU ON SMALL SCREEN */
+
+@media (--hide-hamburger-menu) {
+
+	nav#hamburger_navigation {
+		display: none;
+	}
 }
+
+div#hamburger-menu-toggle {
+	display: block;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 60px;
+	box-shadow: var(--hamburger-menu-box-shadow);
+	z-index: 12;
+	margin: unset;
+	background: var(--blue-700);
+	border-bottom: 4px solid var(--blue-500);
+	height: 80px;
+
+	& > i {
+		position: absolute;
+		top: 20px;
+		transition: all 0.4s ease;
+		font-size: 40px;
+		color: var(--foreground);
+		left: 10px;
+		position: absolute;
+		}
+
+	&:hover {
+		transform: scale(1.08);
+		transition: all 0.4s ease;
+	}
+
+	&:active {
+		text-shadow: 2px 1px 2px var(--gray-900);
+		transition: all 0.4s ease;
+	}
+}
+
+
+nav#hamburger_navigation {
+	z-index: 3;
+	position: fixed;
+	left: 0;
+	height: 100%;
+	box-shadow: var(--hamburger-menu-box-shadow);
+	width: 60px;
+	background: var(--blue);
+
+
+	&::after {
+		background-color: var(--hamburger-menu-background-color-one);
+		content: " ";
+		height: 100%;
+		width: 60px;
+		position: absolute;
+		left: 0;
+	}
+
+	&::before {
+		background: var(--hamburger-menu-background-color-two);
+		left: 0;
+		content: " ";
+		width: var(--before-width);
+		height: 100%;
+		position: absolute;
+		transform-origin: var(--transform-origin);
+		transform: translateX(-100%);
+		transition: transform 0.5s linear;
+		box-shadow: var(--hamburger-menu-box-shadow);
+	}
+
+	& > ul {
+		position: absolute;
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		margin-top: calc(50vh - 160px);
+
+		& > li {
+				color: var(--foreground);
+				position: relative;
+				font-size: var(--fontsize-m);
+				width: 470px;
+				height: 40px;
+				cursor: pointer;
+				position: relative;
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+
+				&:hover::before,
+				&.active::before,
+				&:hover::before {
+					background-color: var(--foreground);
+				}
+
+				&.active::before,
+				&:hover::before {
+					transform: scale(1.5) translate3d(0, 0, 0);
+				}
+
+				&::before {
+					z-index: 6;
+					content: " ";
+					width: var(--dots-h-w);
+					height: var(--dots-h-w);
+					background-color: transparent;
+					position: absolute;
+					left: 24px;
+					top: 16px;
+					left: var(--dots-left);
+					top: var(--dots-top);
+					border-radius: 50%;
+					border: 2px solid var(--dot-color);
+					transform: scale(1) translate3d(0, 0, 0);
+					transition: all 0.2s ease-in-out;
+				}
+
+			& a {
+				display: block;
+				font-size: inherit;
+				min-width: 100%;
+				color: var(--background);
+				position: relative;
+				z-index: 0;
+				opacity: 0;
+				transform: translateX(-200%);
+				text-transform: uppercase;
+				text-decoration: none;
+				transition: transform 0.2s var(--bg-bezier), opacity 0.15s var(--alternate-bezier-transition);
+				&:hover,
+				&:active,
+				&:visited,
+				&:focus {
+					background-color: transparent;
+					color: var(--background);
+				}
+			}
+		}
+	}
+
+
+}/* end nav#hamburger_navigation */
+
+.sidemenu__open {
+	& nav#hamburger_navigation {
+		&::before {
+			transform: translateX(0);
+			transition: transform 0.8s var(--transition-timing-function);
+		}
+
+		& > ul > li > a {
+			font-size: var(--hamburger-menu-font-size);
+			color: inherit;
+			transform: translateX(0);
+			left: 70px;
+			opacity: 1;
+			transition-delay: 0.3s;
+			transition-duration: 0.4s;
+			transition-property: transform, left, opacity;
+			transition-timing-function: var(--alternate-bezier-transition);
+
+			&:hover {
+				color: var(--yellow-600);
+				transition: color 0.2s ease;
+				transition-delay: 0.1s;
+			}
+		}
+
+	}/* end nav#hamburger_navigation */
+}
+
+
+/*  I've compiled this @for function and pasted it in here -- Including in the event it needs to be altered in the future
+
+@for $i from 2 to 14 {
+	.sidemenu__open nav#hamburger_navigation > ul > li:nth-child($i) a {
+		transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc(($(i)s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+	}
+}
+*/
+
+/* ADDED @for Results*/
+.sidemenu__open nav#hamburger_navigation > ul > li:first-child a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s 0.5s;
+}
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(2) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((2s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(3) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((3s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(4) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((4s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(5) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((5s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(6) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((6s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(7) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((7s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(8) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((8s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(9) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((9s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(10) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((10s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(11) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((11s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(12) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((12s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(13) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((13s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+.sidemenu__open nav#hamburger_navigation > ul > li:nth-child(14) a {
+	transition: color 0.1s ease, left 0.4s ease, transform 0.4s calc((14s * 0.1) + 0.5s ) var(--alternate-bezier-transition);
+}
+
+
+/* END OF ADDED @for Results*/
+
+
+
+/*#region*/
+/* HAMBURGER ICON ITSELF */
+a.burger,
+.burger_cover {
+	z-index: 2;
+	grid-area: hamburger-menu-top;
+}
+.burger_cover {
+	z-index: 3;
+}
+
+.burger,
+.burger::before,
+.burger::after {
+	border-radius: 2px;
+	position: absolute;
+	width: 24px;
+	height: 4px;
+	background: var(--foreground);
+	transition: all 0.3s;
+	z-index: 3;
+}
+
+.burger {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-left: 48px;
+	margin-top: 30px;
+	cursor: pointer;
+	transition: transform 0.6s var(--transition-timing-function);
+
+	&::before,
+	&::after {
+		content: "";
+		display: block;
+	}
+
+	&::before { margin-top: -8px; }
+
+	&::after { margin-top: 8px; }
+
+	/* Burger Menu On Hover slides things around and creates an X */
+	&.cross {
+		color: var(--foreground);
+		transform: rotate(45deg) translate3d(0, 0, 0);
+		transition: transform 0.6s var(--transition-timing-function);
+
+		&::before {
+			margin-top: 0;
+			transform: rotate(-90deg) translate3d(0, 0, 0);
+		}
+
+		&::after {
+			margin-top: 0;
+			transform: rotate(0deg) translate3d(0, 0, 0);
+		}
+	}
+}
+/*#endregion*/

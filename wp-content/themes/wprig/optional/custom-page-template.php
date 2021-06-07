@@ -21,7 +21,6 @@ wp_rig()->print_styles( 'wp-rig-content' );
 ?>
 	<main id="primary" class="site-main">
 		<?php
-
 		while ( have_posts() ) {
 			the_post();
 
@@ -30,5 +29,4 @@ wp_rig()->print_styles( 'wp-rig-content' );
 		?>
 	</main><!-- #primary -->
 <?php
-get_sidebar();
 get_footer();

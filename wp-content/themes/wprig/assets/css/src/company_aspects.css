@@ -1,0 +1,102 @@
+@import "_custom-properties.css";
+@import "_custom-selectors.css";
+@import "_custom-media.css";
+
+section#aspects {
+	width: 100%;
+	--aspects-flex-flow: row wrap;
+	--aspect-img-width: 80px;
+	--aspect-width: 25%;
+	--aspect-text-color: var(--background);
+	--aspect-background: var(--foreground);
+	--aspect-underline: 1px solid var(--background);
+
+	@media (--slim) {
+		--aspect-width: 100%;
+		--aspect-img-width: 120px;
+	}
+	@media (--wide) {
+		--aspect-width: 50%;
+	}
+}
+
+.company_aspects {
+	display: flex;
+	width: 100%;
+	height: auto;
+	flex-flow: var(--aspects-flex-flow);
+	justify-content: flex-start;
+	align-items: stretch;
+	align-content: flex-start;
+
+	& .aspect {
+		background: var(--aspect-background);
+		width: var(--aspect-width);
+		color: var(--aspect-text-color);
+		padding: 40px 3%;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+
+		&:hover {
+			& .aspect-image { animation: image_animation 0.6s; }
+			& .aspect-description { animation: content_animation 0.6s; }
+		}
+
+		& .aspect-image {
+			display: block;
+			position: relative;
+			top: 0;
+
+			& img {
+				width: var(--aspect-img-width);
+				height: var(--aspect-img-width);
+				line-height: 1;
+			}
+		}
+
+		& .aspect-description {
+			& h3,
+			& p,
+			& a { color: var(--aspect-text-color); }
+
+			& h3 {
+				font-size: var(--fontsize-m);
+
+
+				@media (--slim) {
+					font-size: clamp(28px, 7vw, 64px);
+				}
+
+			}
+
+			& p { font-size: var(--fontsize-s); }
+
+			& a {
+				margin-top: 8px;
+				font-size: var(--fontsize-s);
+				text-transform: uppercase;
+				font-weight: 700;
+				border-bottom: var(--aspect-underline);
+				position: relative;
+				z-index: 1;
+			}
+		}
+
+		&.highlight,
+		&.dark {
+			--aspect-text-color: var(--foreground);
+			--aspect-background: var(--blue);
+			--aspect-underline: 1px solid var(--foreground);
+		}
+
+		&.dark {
+			--aspect-background: var(--gray-900);
+		} /* \dark */
+		&.dark:last-of-type {
+			--aspect-background: var(--gray-500);
+		} /* \dark */
+	} /* \.aspect */
+}/* \.company_aspects */

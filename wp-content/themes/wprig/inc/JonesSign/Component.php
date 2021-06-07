@@ -173,6 +173,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	public $twitter_url = TWITTER_URL;
 
 	/**
+	 * The Jones Sign Company twitter url.
+	 *
+	 * @access   public
+	 * @var      string    $twitter_url The Jones Sign Company twitter url.
+	 */
+	public $wescover_url = WESCOVER_URL;
+
+	/**
 	 * The Jones Sign Company twitter handle.
 	 *
 	 * @access   public
@@ -213,9 +221,11 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		add_action( 'cmb2_init', [ $this, 'create_location_taxonomy_extra_fields' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_locations_script' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_d3' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'action_enqueue_smoothstate' ] );
 		add_filter( 'manage_edit-' . $this->slug . '_columns', [ $this, 'set_admin_columns' ], 10, 1 );
 		add_filter( 'manage_edit-' . $this->slug . '_sortable_columns', [ $this, 'make_columns_sortable' ], 10, 1 );
 		add_filter( 'manage_' . $this->slug . '_custom_column', [ $this, 'set_data_for_custom_admin_columns' ], 10, 3 );
+		add_filter( 'get_the_archive_title', [ $this, 'update_the_archive_title' ] );
 	}
 
 	/**
@@ -250,6 +260,12 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'get_single_location_details_frontpage' => [ $this, 'get_single_location_details_frontpage' ],
 			'get_years_in_business'                 => [ $this, 'get_years_in_business' ],
 			'get_copyright_notice'                  => [ $this, 'get_copyright_notice' ],
+			'get_picture_element'                   => [ $this, 'get_picture_element' ],
+			'get_company_aspects'                   => [ $this, 'get_company_aspects' ],
+			'get_aspect_card'                       => [ $this, 'get_aspect_card' ],
+			'get_frontpage_header'                  => [ $this, 'get_frontpage_header' ],
+			'get_general_header'                    => [ $this, 'get_general_header' ],
+			'get_masthead'                          => [ $this, 'get_masthead' ],
 		];
 	}
 
@@ -305,7 +321,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return mixed Either the id of the image or the url of the image -- depending on the $return_as_url parameter.
 	 */
 	public function get_city_image_by_blog( $blog = 1, $return_as_url = false ) {
-		$key             = false === $return_as_url ? 'locationCityImage_id' : 'locationCityImage';
+		$key             = false === $return_as_url ? 'locationCinematic_id' : 'locationCinematic';
 		$term_identifier = $this->get_terms_blogs_array( 'blog' )[ $blog ];
 		return get_term_meta( $term_identifier, $key, true );
 	}
@@ -318,7 +334,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return int $city_image_id The city image ID from the jco_termmeta table. Defaults to 1.
 	 */
 	public function get_location_image_by_blog( $blog = 1, $return_as_url = false ) {
-		$key             = false === $return_as_url ? 'locationImage_id' : 'locationImage';
+		$key             = false === $return_as_url ? 'locationRectangular_id' : 'locationRectangular';
 		$term_identifier = $this->get_terms_blogs_array( 'blog' )[ $blog ];
 		return get_term_meta( $term_identifier, $key, true );
 	}
@@ -346,6 +362,45 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 */
 	public function get_locations() : array {
 		return $this->get_location_taxonomy();
+	}
+	/**
+	 * ASpects of the company array is returned
+	 */
+	public function get_company_aspects() {
+		return [
+			[
+				'title' => 'Large Venues',
+				'cta'   => 'Learn More',
+				'image' => get_template_directory_uri() . '/assets/images/icon-1.png',
+				'desc'  => 'We work with Architects & General Contractors on their biggest jobs. Tell us about your project.',
+				'url'   => '#',
+				'style' => 'light',
+			],
+			[
+				'title' => 'National Programs',
+				'cta'   => 'Learn More',
+				'image' => get_template_directory_uri() . '/assets/images/icon-2.png',
+				'desc'  => 'An individual project, or your whole sign program. Try us at one location & see the difference',
+				'url'   => '#',
+				'style' => 'dark',
+			],
+			[
+				'title' => 'Specialty Fabrication',
+				'cta'   => 'Learn More',
+				'image' => get_template_directory_uri() . '/assets/images/icon-3.png',
+				'desc'  => 'We aren\'t limited to signage. Whatever you can dream up, we can make manifest.',
+				'url'   => '#',
+				'style' => 'highlight',
+			],
+			[
+				'title' => 'National Maintenance',
+				'cta'   => 'Learn More',
+				'image' => get_template_directory_uri() . '/assets/images/icon-3.png',
+				'desc'  => 'Any sign. Any manufacturer. Anywhere in North America. Sign Maintenance made easy.',
+				'url'   => '#',
+				'style' => 'dark',
+			],
+		];
 	}
 
 	/**
@@ -546,6 +601,13 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
+	 * Count the locations.
+	 */
+	public function count_jones_locations() {
+		return count( $this->get_location_ids(75, 72 ) );
+	}
+
+	/**
 	 * Get the map of all the locations.
 	 */
 	public function get_locations_mapped() {
@@ -671,7 +733,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		$args = [
 			'name'         => 'Location Image',
 			'show_names'   => true,
-			'id'           => 'locationImage',
+			'id'           => 'locationRectangular',
 			'type'         => 'file',
 			'options'      => [ 'url' => false ], // No box that allows for the url to be typed in as I want to use the image ids.
 			'text'         => [ 'add_upload_file_text' => 'Upload or Find Location Image' ],
@@ -682,14 +744,55 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'preview_size' => 'medium',
 		];
 		$metabox->add_field( $args );
-		// City Image.
+		// Square Image.
 		$args = [
-			'name'         => 'City Image',
+			'name'         => 'Square Image',
 			'show_names'   => true,
-			'id'           => 'locationCityImage',
+			'id'           => 'locationSquare',
 			'type'         => 'file',
 			'options'      => [ 'url' => false ],
-			'text'         => [ 'add_upload_file_text' => 'Upload or Find City Image' ],
+			'text'         => [ 'add_upload_file_text' => 'Upload or Find Square Image' ],
+			'query_args'   => [
+				'type' => [ 'image/jpg', 'image/jpeg' ],
+			],
+			'preview_size' => 'medium',
+		];
+		$metabox->add_field( $args );
+
+		$args = [
+			'name'         => 'cinematic Image',
+			'show_names'   => true,
+			'id'           => 'locationCinematic',
+			'type'         => 'file',
+			'options'      => [ 'url' => false ],
+			'text'         => [ 'add_upload_file_text' => 'Upload 16x9 location image' ],
+			'query_args'   => [
+				'type' => [ 'image/jpg', 'image/jpeg' ],
+			],
+			'preview_size' => 'medium',
+		];
+		$metabox->add_field( $args );
+
+		$args = [
+			'name'         => 'vertical Image',
+			'show_names'   => true,
+			'id'           => 'locationVertical',
+			'type'         => 'file',
+			'options'      => [ 'url' => false ],
+			'text'         => [ 'add_upload_file_text' => 'Upload 3x4 location image' ],
+			'query_args'   => [
+				'type' => [ 'image/jpg', 'image/jpeg' ],
+			],
+			'preview_size' => 'medium',
+		];
+		$metabox->add_field( $args );
+		$args = [
+			'name'         => 'rectangular Image',
+			'show_names'   => true,
+			'id'           => 'locationRectangular',
+			'type'         => 'file',
+			'options'      => [ 'url' => false ],
+			'text'         => [ 'add_upload_file_text' => 'Upload 4x3 location image' ],
 			'query_args'   => [
 				'type' => [ 'image/jpg', 'image/jpeg' ],
 			],
@@ -713,7 +816,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			'name'       => 'longer description',
 			'desc'       => 'a longer, keyword-laden description -- may use html markup',
 			'id'         => $prefix . 'Indepth',
-			'type'       => 'textarea_code',
+			'type'       => 'wysiwyg',
 			'attributes' => [
 				'data-richsnippet' => 'long-description',
 			],
@@ -881,7 +984,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	}
 
 	/**
-	 * Retrieve the taxonomy meta for 'locationImage' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationRectangular' for this jones sign location.
 	 *
 	 * @param int  $term_id Location Taxonomy id.
 	 * @param bool $return_as_url Whether to return as the url or the id. Defaults to false, which is ID.
@@ -889,14 +992,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return int $output The id of the location's photo.
 	 */
 	public function get_location_image( $term_id, $return_as_url = false ) {
-		$key    = $return_as_url ? 'locationImage' : 'locationImage_id';
+		$key    = $return_as_url ? 'locationRectangular' : 'locationRectangular_id';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
 	}
 
 	/**
-	 * Retrieve the taxonomy meta for 'locationCityImage' for this jones sign location.
+	 * Retrieve the taxonomy meta for 'locationCinematic' for this jones sign location.
 	 *
 	 * @param int  $term_id Location Taxonomy id.
 	 * @param bool $return_as_url Whether to return as the url or the id. Defaults to false, which is ID.
@@ -904,7 +1007,7 @@ class Component implements Component_Interface, Templating_Component_Interface {
 	 * @return int $output The id of the location's city photo.
 	 */
 	public function get_city_image( $term_id, $return_as_url = false ) {
-		$key    = $return_as_url ? 'locationCityImage' : 'locationCityImage_id';
+		$key    = $return_as_url ? 'locationCinematic' : 'locationCinematic_id';
 		$single = true;
 		$output = get_term_meta( $term_id, $key, $single );
 		return $output;
@@ -922,14 +1025,14 @@ class Component implements Component_Interface, Templating_Component_Interface {
 			$locations[] = $this->get_location_info( $identifier );
 		}
 		$loc_data  = wp_json_encode( $locations );
-		$handle    = 'jones-locations-data'; // script handle.
+		$handle    = 'jonessign-general-scripts'; // script handle.
 		$path      = get_theme_file_uri( '/assets/js/jonessign.min.js' ); // path to script.
 		$deps      = []; // dependencies.
 		$version   = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/jonessign.min.js' ) ); // script version.
-		$in_footer = true; // Do we enqueue the script into the footer -- no.
+		$in_footer = false; // Do we enqueue the script into the footer -- no.
 		wp_enqueue_script( $handle, $path, $deps, $version, $in_footer );
 		wp_script_add_data( $handle, 'defer', false ); // if true - wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
-		wp_localize_script( $handle, 'jonesignInfo', [
+		wp_localize_script( $handle, 'jonessignInfo', [
 			'locations' => $loc_data,
 		] );
 
@@ -962,10 +1065,23 @@ class Component implements Component_Interface, Templating_Component_Interface {
 		wp_register_script( $handle, $path, $deps = [], $version, $in_footer );
 		wp_script_add_data( $handle, 'defer', false ); // if true - wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
 		wp_enqueue_script( $handle, $path, [], $version, false );
-
 	}
 
+	/**
+	 * EnqueueSmoothstate JS for page transitions.
+	 */
+	public function action_enqueue_smoothstate() {
 
+		$handle    = 'smoothstate-js'; // script handle.
+		$path      = 'https://cdnjs.cloudflare.com/ajax/libs/smoothState.js/0.7.2/jquery.smoothState.min.js'; // path to script.
+		$version   = 7;
+		$dependencies = [ 'jquery' ];
+		$in_footer = false; // Do we enqueue the script into the footer -- no.
+
+		wp_register_script( $handle, $path, $dependencies, $version, $in_footer );
+		wp_script_add_data( $handle, 'defer', false ); // if true - wait until everything loads -- since this will be in the footer (locations data), I would think I could wait to load it.
+		wp_enqueue_script( $handle, $path, [], $version, false );
+	}
 
 
 	/**
@@ -1080,10 +1196,13 @@ JSONLD;
 		$style = '
 		<style type="text/css">
 		circle {
-			fill: var(--logo-background);
+			fill: var(--circle-fill, #0273b9);
+			stroke: var(--circle-stroke-color, #0273b9);
+			stroke-width: var(--stroke-width, 10);
+			stroke-miterlimit: var(--miterlimit, 10);
 		}
 		path {
-			fill: var(--logo-foreground);
+			fill: var(--logo-fill, #fcdde6);
 		}
 		</style>';
 
@@ -1102,20 +1221,9 @@ JSONLD;
 		xml:space="preserve">
 		</svg>';
 		$pylon  = '
-		<svg
-		xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink"
-		version="1.1"
-		id="jones_icon"
-		class="icon_pylon"
-		x="0px"
-		y="0px"
-		viewBox="0 0 500 500"
-		style="enable-background:new 0 0 500 500;"
-		xml:space="preserve">
-		<circle id="circle-bg" class="signicon" cx="250" cy="250" r="245"/>
-		<path id="pylon" class="signicon" d="M450.5,215c8.6,0,15.5-8,15.5-16.6v-59.7c0-8.6-6.9-15.7-15.5-15.7H258.2c-8.6,0-15.2,7.1-15.2,15.7 V166h-29.8c-2.6-13-12.9-21-25.3-21c-14.3,0-25.9,11.2-25.9,25.5c0,7.5,3.2,13.8,8.3,18.6L43.8,382.7c4.3,6.5,8.8,12.8,13.7,18.8 L188.9,196c10.8-0.4,20-8,23.5-17H243v19.4c0,8.6,6.6,16.6,15.2,16.6L450.5,215L450.5,215z"/>
-		</svg>
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="pylon_circle" class="jones_icon" x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+		<circle id="background" class="circle_bg" cx="262.9" cy="242.5" r="215.3"/>
+		<path id="pylon" class="pylon_icon" d="M430.4,225.9H248.7c-8.1,0-14.8-6.6-14.8-14.8v-18h-18.6c-3.3,8.7-11.9,15.6-22.2,15.9L89.8,370.5 c-4.3-5.9-8.4-12-12.1-18.3l98.1-150c-4.8-4.5-7.8-10.6-7.8-17.7c0-13.5,10.9-24.3,24.5-24.3c11.7,0,21.5,7.8,23.9,19.3H234v-24.8 c0-8.1,6.6-14.8,14.8-14.8h181.6c8.1,0,14.8,6.6,14.8,14.8v56.3C445.1,219.3,438.5,225.9,430.4,225.9z"/> </svg>
 		';
 
 		$icon = 'sign' === $type ? $pylon : $letter;
@@ -1159,5 +1267,471 @@ ICO;
 	public function get_years_in_business( $opened = 1910 ) {
 		return date( 'Y' ) - $opened;
 	}
+	/**
+	 *
+	 * Return a picture html element from the id of the picture.
+	 *
+	 * @param int  $image_id The ID of the preferred image.
+	 * @param bool $widescreens If true, picture gets a class of 'hide-until-wide', if false, class is 'hide-on-wide'.
+	 *
+	 * @return string $output - the HTML - will need to echo.
+	 */
+	public function get_picture_element( $image_id, $widescreens = false ) {
+		$picture_class          = $widescreens ? 'hide-until-wide' : 'hide-on-wide';
+		$picture_meta           = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+		$picture_cropped_info   = wp_get_attachment_image_src( $image_id, 'large' );
+		$picture_breakpoint     = absint( $picture_cropped_info[1] ) + 1;
+		$picture_full_srcset    = wp_get_attachment_image_srcset( $image_id, 'full' );
+		$picture_full_sizes     = wp_get_attachment_image_sizes( $image_id, 'full' );
+		$picture_cropped_srcset = wp_get_attachment_image_srcset( $image_id, 'medium' );
+		$picture_cropped_sizes  = wp_get_attachment_image_sizes( $image_id, 'medium' );
+		$output                 = <<<OUTP
+		<picture class="$picture_class">
+			<div class="picture_overlay"></div>
+			<source
+				media="(min-width: $picture_breakpoint)"
+				srcset="$picture_full_srcset"
+		 		sizes="$picture_full_sizes" />
+			<img
+				srcset="$picture_cropped_srcset"
+				alt="$picture_meta"
+				sizes="$picture_full_sizes" />
+
+		</picture>
+OUTP;
+		return $output;
+
+	}
+	/**
+	 * Company aspects component.
+	 *
+	 * @param array $aspect An array of a single jones sign company aspect.
+	 */
+	public function get_aspect_card( $aspect ) {
+		[
+			'title' => $title,
+			'cta'   => $cta,
+			'image' => $image,
+			'desc'  => $desc,
+			'url'   => $url,
+			'style' => $style,
+		]        = $aspect;
+		$output  = '';
+		$output .= <<<ASPCT
+		<div class="aspect $style">
+			<div class="aspect-image"> <img src="$image" alt="$title" /> </div>
+			<div class="aspect-description">
+				<h3 class="aspect-title">$title</h3>
+				<p>$desc</p>
+				<a class="readmore" data-itemid="" href="$url">$cta</a>
+			</div><!-- end aspectdescription -->
+		</div><!-- end aspect.$style -->
+ASPCT;
+		return $output;
+	}
+
+	/**
+	 * Include a PayTrace link.
+	 *
+	 * @return string HTML for a link to paytrace.
+	 */
+	public function add_paytrace_link() {
+		$paytrace = <<<PAYTRACE
+		<section class="container-fluid">
+		<div class="row">
+			<button
+			type="submit"
+			onclick="window.location.href='https://paylink.paytrace.com?m=80574&amount=&invoice='"
+			style='border: 2px solid #0273b9;
+			border-radius: 7px;
+			height: 38px;
+			width: 160px;
+			color: white;
+			font-weight: bold;
+			background-color:#0273b9;'>Make Payment</button><!--Thank you for using PayTrace.com-->
+		</div>
+	</section>
+PAYTRACE;
+		return $paytrace;
+	}
+
+	/**
+	 * Following a tutorial to learn how to do ajax requests for pages.
+	 *
+	 * @link https://wpmudev.com/blog/load-posts-ajax/
+	 */
+/*
+public function action_enqueue_ajax_experiment() {
+		global $wp_query;
+		$handle       = 'jones-ajax-pagination';
+		$path         = get_theme_file_uri( '/assets/js/ajax-pagination.min.js' );
+		$dependencies = [ 'jquery' ];
+		$version      = wp_rig()->get_asset_version( get_theme_file_path( '/assets/js/ajax-pagination.min.js' ) ); // script version.
+		$in_footer    = true;
+		wp_enqueue_script( $handle, $path, $dependencies, $version, $in_footer );
+*/
+		/**
+		 * Give the AJAX a url to work with.
+		 */
+/*
+wp_localize_script(
+			$handle,
+			'ajaxpagination',
+			[
+				'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+				'query_vars' => json_encode( $wp_query->query )
+			]
+		);
+	}
+*/
+	/**
+	 * MORE AJAX TESTING.
+	 *
+	 * @link https://wpmudev.com/blog/load-posts-ajax/
+	 * @note: The function itself can contain anything you’d like.
+	 * You can log out users, grab their data, publish a post and so on.
+	 * Whatever you want to return to Javascript YOU MUST ECHO.
+	 */
+/*	public function my_ajax_pagination() {
+		$query_vars          = json_decode( stripslashes( $_POST['query_vars'] ), true );
+		$query_vars['paged'] = $_POST['page'];
+
+		$posts = new WP_Query( $query_vars );
+		$GLOBALS['wp_query'] = $posts;
+		add_filter( 'editor_max_image_size', [ $this, 'my_image_size_override' ] );
+
+		if( ! $posts->have_posts() ) {
+			get_template_part( 'content', 'none' );
+		}
+		else {
+			while ( $posts->have_posts() ) {
+				$posts->the_post();
+				get_template_part( 'content', get_post_format() );
+			}
+		}
+		remove_filter( 'editor_max_image_size',  [ $this, 'my_image_size_override' ] );
+
+		the_posts_pagination( array(
+			'prev_text'          => __( 'Previous page', 'twentyfifteen' ),
+			'next_text'          => __( 'Next page', 'twentyfifteen' ),
+			'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyfifteen' ) . ' </span>',
+		) );
+
+		die();
+	}
+*/
+	/**
+	 * USED WITHIN ABOVE FUNCTION
+	 */
+/*	public function my_image_size_override() {
+		return array( 825, 510 );
+	}
+*/
+
+/**
+ * Swap out existing archive title to not include the taxonomy name beforehand.
+ *
+ * @param string $title The title you'd otherwise get from WordPress.
+ * @link https://developer.wordpress.org/reference/functions/get_the_archive_title/
+ * @note uses get_the_archive_title as a filter
+ */
+public function update_the_archive_title( string $title ) {
+		if ( is_category() ) {
+			$title = single_cat_title( '', false );
+		} elseif ( is_tag() ) {
+			$title = single_tag_title( '', false );
+		} elseif ( is_author() ) {
+			$title = '<span class="vcard">' . get_the_author() . '</span>';
+		} elseif ( is_post_type_archive() ) {
+			$title = post_type_archive_title( '', false );
+		} elseif ( is_tax() ) {
+			$title = single_term_title( '', false );
+		}
+
+		return ucwords( $title );
+	}
+
+	/**
+	 * Get header_cta_button.
+	 *
+	 * @param string $url   Link for the button.
+	 * @param string $front Front text for the button.
+	 * @param string $back  Back text for the button.
+	 */
+	public function get_header_cta_button( $url = '#', $front = 'Learn More', $back = 'Within' ) {
+		$output = <<<CTABUTTON
+<div class="cta__button-container">
+<a href="$url" class="btn-flip-wrap" title="$front">
+<span class="btn btn-flip-front">$front</span>
+<span class="btn btn-flip-back">$back</span>
+</a>
+</div><!-- end div.cta__button-container -->
+CTABUTTON;
+		return $output;
+	}
+	/**
+	 * Get header figure caption heading.
+	 */
+	public function get_header_heading( $headline = 'We do the work', $nextline = 'Our Clients do our Advertising.' ) {
+		$output = <<<FIGHEAD
+		<div class="heading">
+			<span>$headline</span>
+			<span>$nextline</span>
+		</div><!--end cta div.heading -->
+FIGHEAD;
+		return $output;
+	}
+/**
+ * Get header figure figcaption.
+ */
+public function get_header_figcaption() {
+	$header_heading    = $this->get_header_heading();
+	$header_cta_button = $this->get_header_cta_button();
+$output = <<<HEADFIGCAPTION
+	<figcaption>
+		<div class="call-to-action">
+		$header_heading
+		$header_cta_button
+		</div><!-- end div.call-to-action -->
+	</figcaption>
+HEADFIGCAPTION;
+
+	return $output;
+}
+
+
+
+	/**
+	 * Get the header element for the front page of the website.
+	 *
+	 * @param int $horizontal_id ID of the horizontal image for the horizontal version of the header.
+	 * @param int $vertical_id   ID of the horizontal image for the vertical version of the header.
+	 */
+	public function get_frontpage_header( $horizontal_id = 659, $vertical_id = 809 ) {
+		$vertical_image   = wp_get_attachment_image( $vertical_id, 'medium_large', false, [ 'class' => 'vertical-header-image', 'loading' => false ] );
+		$horizontal_image = wp_get_attachment_image( $horizontal_id, 'medium_large', false, [ 'class' => 'horizontal-header-image', 'loading' => false ] );
+		$figcaption       = $this->get_header_figcaption();
+
+		// Guard Return if it isn't the home page OR if it isn't the front page of the site.
+		if ( ! is_home() OR ! is_front_page() ) {
+			return;
+		}
+
+		$html = '';
+		$html .= '<header class="frontpage">';
+		// $html .= '<figure class="vertical-header grid-hide-grid">';
+		$html .= '<figure>';
+		$html .= $vertical_image;
+		$html .= $horizontal_image;
+		$html .= '<div class="figure_overlay"> </div>';
+		$html .= $figcaption ;
+		$html .= '</figure>';
+		$html .= '<!-- only shows on small and wide screens -->';
+		// $html .= '<figure class="horizontal-header hide-grid-hide">';
+		// $html .= '<div class="figure_overlay"> </div>';
+		// $html .= $figcaption ;
+		// $html .= '</figure>';
+		$html .= '</header>';
+
+		return $html;
+	}
+
+	/**
+	 * Default args for the header.
+	 *
+	 * @access   public
+	 */
+	public function get_header_default_args() {
+		global $post;
+		$is_homepage = 699 === $post->ID ? true : false;
+
+		return [
+			'vertical_image_id'   => 809,
+			'horizontal_image_id' => 659,
+			'cta_headline' => 'We do the Work',
+			'cta_nextline' => 'Our Clients do our Advertising.',
+			'button' => [
+				'url'      => '#',
+				'frontext' => 'Learn More',
+				'backtext' => 'Continue',
+			],
+		];
+	}
+	/**
+	 * Get a generic header element.
+	 *
+	 * @param array $args Array of arguments to put inside the header.
+	 */
+	public function get_general_header( $args ) {
+		global $post;
+		global $wp_query;
+
+		$is_homepage  = 699 === $post->ID ? true : false;
+		$post_type    = $post->post_type;
+
+		$default_args = $this->get_header_default_args();
+		$final_args   = wp_parse_args( $args, $default_args );
+
+		[
+			'vertical_image_id'   => $vertical_id,
+			'horizontal_image_id' => $horizontal_id,
+			'cta_headline'        => $headline,
+			'cta_nextline'        => $nextline,
+			'button' => [
+				'url'      => $button_url,
+				'frontext' => $frontext,
+				'backtext' => $backtext,
+			],
+		] = $final_args;
+
+		if ( 'project' === $post_type && is_single() ) {
+			$vertical_id   = get_post_meta( $post->ID, 'projectVerticalImage_id', true ) ?? $vertical_id;
+			$horizontal_id = get_post_thumbnail_id( $post->ID ) ?? $horizontal_id;
+			$headline      = get_the_title( $post->ID );
+			[
+				'city' => $city,
+				'state' => $state
+			] = get_post_meta( $post->ID, 'projectLocation', true );
+			$nextline = ucwords( $city ) . ', ' . strtoupper( $state );
+		}
+
+		// Worth editing to have a custom photo for each post type;
+		if ( 'project' === $post_type && is_archive() ) {
+			$vertical_id   = get_post_meta( $post->ID, 'projectVerticalImage_id', true ) ?? $vertical_id;
+			$horizontal_id = get_post_thumbnail_id( $post->ID ) ?? $horizontal_id;
+			$headline      = $wp_query->get_queried_object()->label;
+			$nextline      = preg_replace( '/and/', '&amp;', $wp_query->get_queried_object()->description );
+		}
+
+		if ( is_tax() ) {
+			$term = $wp_query->get_queried_object();
+			$tax = $term->taxonomy;
+			$headline = ucwords( $term->name );
+			$nextline = '';
+			$vertical_id = get_term_meta( $term->term_id, $term->taxonomy . 'Vertical_id', true ) ?? $vertical_id;
+			$horizontal_id = get_term_meta( $term->term_id, $term->taxonomy . 'Cinematic_id', true ) ?? $horizontal_id;
+		}
+
+		$vertical_image   = wp_get_attachment_image( $vertical_id, 'medium_large', false, [ 'class' => 'vertical-header-image', 'loading' => false ] );
+		$horizontal_image = wp_get_attachment_image( $horizontal_id, 'medium_large', false, [ 'class' => 'horizontal-header-image', 'loading' => false ] );
+
+
+		$html = '';
+		$html .= '<header>';
+		// $html .= '<figure class="vertical-header grid-hide-grid">';
+		$html .= '<figure>';
+		$html .= $vertical_image;
+		$html .= $horizontal_image;
+		$html .= '<div class="figure_overlay"> </div>';
+$html .= '<figcaption>';
+$html .= '<div class="call-to-action">';
+$html .= '<div class="heading">';
+$html .= "<span>$headline</span>";
+$html .= "<span>$nextline</span>";
+$html .= '</div><!--end cta div.heading -->';
+$cta_button = '<div class="cta__button-container">';
+$cta_button .= "<a href='$button_url' class='btn-flip-wrap' title='$frontext'>";
+$cta_button .= "<span class='btn btn-flip-front'>$frontext</span>";
+$cta_button .= "<span class='btn btn-flip-back'>$backtext</span>";
+$cta_button .= '</a>';
+$cta_button .= '</div><!-- end div.cta__button-container -->';
+$html .= $is_homepage ? $cta_button : '';
+$html .= '';
+$html .= '</div><!-- end div.call-to-action -->';
+$html .= '</figcaption>';
+		$html .= '</figure>';
+		$html .= '<!-- only shows on small and wide screens -->';
+		$html .= '</header>';
+
+		return $html;
+	}
+
+		/**
+	 * Get the masthead for a given page.
+	 *
+	 * @param array $args Array of arguments to put inside the header.
+	 */
+	public function get_masthead( $args ) {
+		global $post;
+		global $wp_query;
+
+		$is_homepage  = 699 === $post->ID ? true : false;
+		$post_type    = $post->post_type;
+
+		$default_args = $this->get_header_default_args();
+		$final_args   = wp_parse_args( $args, $default_args );
+
+		[
+			'vertical_image_id'   => $vertical_id,
+			'horizontal_image_id' => $horizontal_id,
+			'cta_headline'        => $headline,
+			'cta_nextline'        => $nextline,
+			'button' => [
+				'url'      => $button_url,
+				'frontext' => $frontext,
+				'backtext' => $backtext,
+			],
+		] = $final_args;
+
+		if ( 'project' === $post_type && is_single() ) {
+			$vertical_id   = get_post_meta( $post->ID, 'projectVerticalImage_id', true ) ?? $vertical_id;
+			$horizontal_id = get_post_thumbnail_id( $post->ID ) ?? $horizontal_id;
+			$headline      = get_the_title( $post->ID );
+			[
+				'city' => $city,
+				'state' => $state
+			] = get_post_meta( $post->ID, 'projectLocation', true );
+			$nextline = ucwords( $city ) . ', ' . strtoupper( $state );
+		}
+
+		// Worth editing to have a custom photo for each post type;
+		if ( 'project' === $post_type && is_archive() ) {
+			$vertical_id   = get_post_meta( $post->ID, 'projectVerticalImage_id', true ) ?? $vertical_id;
+			$horizontal_id = get_post_thumbnail_id( $post->ID ) ?? $horizontal_id;
+			$headline      = $wp_query->get_queried_object()->label;
+			$nextline      = preg_replace( '/and/', '&amp;', $wp_query->get_queried_object()->description );
+		}
+
+		if ( is_tax() ) {
+			$term = $wp_query->get_queried_object();
+			$tax = $term->taxonomy;
+			$headline = ucwords( $term->name );
+			$nextline = '';
+			$vertical_id = get_term_meta( $term->term_id, $term->taxonomy . 'Vertical_id', true ) ?? $vertical_id;
+			$horizontal_id = get_term_meta( $term->term_id, $term->taxonomy . 'Cinematic_id', true ) ?? $horizontal_id;
+		}
+
+		$vertical_image   = wp_get_attachment_image( $vertical_id, 'medium_large', false, [ 'class' => 'vertical-header-image', 'loading' => false ] );
+		$horizontal_image = wp_get_attachment_image( $horizontal_id, 'medium_large', false, [ 'class' => 'horizontal-header-image', 'loading' => false ] );
+
+
+		$html = '';
+		// $html .= '<div class="header masthead">';
+		$html .= '<figure>';
+		$html .= $vertical_image;
+		$html .= $horizontal_image;
+		$html .= '<div class="figure_overlay"> </div>';
+$html .= '<figcaption>';
+$html .= '<div class="call-to-action">';
+$html .= '<div class="heading">';
+$html .= "<span>$headline</span>";
+$html .= "<span>$nextline</span>";
+$html .= '</div><!--end cta div.heading -->';
+$cta_button = '<div class="cta__button-container">';
+$cta_button .= "<a href='$button_url' class='btn-flip-wrap' title='$frontext'>";
+$cta_button .= "<span class='btn btn-flip-front'>$frontext</span>";
+$cta_button .= "<span class='btn btn-flip-back'>$backtext</span>";
+$cta_button .= '</a>';
+$cta_button .= '</div><!-- end div.cta__button-container -->';
+$html .= $is_homepage ? $cta_button : '';
+$html .= '';
+$html .= '</div><!-- end div.call-to-action -->';
+$html .= '</figcaption>';
+		$html .= '</figure>';
+		// $html .= '</div><!-- end div.header.masthead-->';
+
+		return $html;
+	}
+
 
 }//end class
